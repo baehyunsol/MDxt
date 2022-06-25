@@ -1,0 +1,172 @@
+pub fn into_v16(s: &str) -> Vec<u16> {
+    String::from(s).encode_utf16().filter(|c| *c != 13).collect()
+}
+
+
+pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
+
+    let mut index = 0;
+
+    while index < v.len() {
+
+        if v[index] != c {
+            break;
+        }
+
+        index += 1;
+    }
+
+    v[index..].to_vec()
+}
+
+
+pub fn take_while(v: &[u16], c: u16) -> Vec<u16> {
+
+    let mut index = 0;
+
+    while index < v.len() {
+
+        if v[index] != c {
+            break;
+        }
+
+        index += 1;
+    }
+
+    v[0..index].to_vec()
+}
+
+
+pub fn take_and_drop_while(v: &[u16], c: u16) -> (Vec<u16>, Vec<u16>) {
+
+    let mut index = 0;
+
+    while index < v.len() {
+
+        if v[index] != c {
+            break;
+        }
+
+        index += 1;
+    }
+
+    (v[0..index].to_vec(), v[index..].to_vec())
+}
+
+
+pub fn get_bracket_end_index(v: &[u16], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '[' as u16, ']' as u16)
+}
+
+
+pub fn get_parenthesis_end_index(v: &[u16], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '(' as u16, ')' as u16)
+}
+
+
+pub fn get_curly_brace_end_index(v: &[u16], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '{' as u16, '}' as u16)
+}
+
+
+fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<usize> {
+
+    let mut stack: i32 = 0;
+
+    for index in begin_index..v.len() {
+
+        if v[index] == s {
+            stack += 1;
+        }
+
+        else if v[index] == p {
+            stack -= 1;
+
+            if stack == 0 {
+                return Some(index);
+            }
+
+        }
+
+    }
+
+    None
+}
+
+
+pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
+    line.iter().filter(
+        |c| '0' as u16 <= **c && **c <= '9' as u16 ||
+        'a' as u16 <= **c && **c <= 'z' as u16 ||
+        'A' as u16 <= **c && **c <= 'Z' as u16 ||
+        '가' as u16 <= **c && **c <= '힣' as u16 ||  // korean
+        'ㄱ' as u16 <= **c && **c <= 'ㅣ' as u16 ||  // korean
+        'ぁ' as u16 <= **c && **c <= 'ヺ' as u16  // japanese
+    ).map(|c| *c).collect()
+}
+
+
+pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
+    line.iter().filter(
+        |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
+    ).map(|c| *c).collect()
+}
+
+
+pub fn lowercase(c: u16) -> u16 {
+
+    if 'A' as u16 <= c && c <= 'Z' as u16 {
+        c + 32
+    }
+
+    else {
+        c
+    }
+
+}
+
+
+pub fn is_alphabet(c: u16) -> bool {
+    'A' as u16 <= c && c <= 'Z' as u16 || 'a' as u16 <= c && c <= 'z' as u16
+}
+
+
+pub fn lowercase_and_remove_spaces(content: &[u16]) -> Vec<u16> {
+    content.iter().filter(|c| **c != ' ' as u16).map(|c| lowercase(*c)).collect::<Vec<u16>>()
+}
+
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn partner_test() {
+        use crate::utils::{get_parenthesis_end_index, get_bracket_end_index, into_v16};
+        let test1 = into_v16("[name](link)");
+
+        assert_eq!(get_bracket_end_index(&test1, 0), Some(5));
+        assert_eq!(get_bracket_end_index(&test1, 1), None);
+        assert_eq!(get_parenthesis_end_index(&test1, 6), Some(11));
+        assert_eq!(get_parenthesis_end_index(&test1, 7), None);
+
+        let test2 = into_v16("[[macro]]");
+
+        assert_eq!(get_bracket_end_index(&test2, 0), Some(8));
+        assert_eq!(get_bracket_end_index(&test2, 1), Some(7));
+        assert_eq!(get_bracket_end_index(&test2, 2), None);
+    }
+
+    #[test]
+    fn misc_test() {
+        use crate::utils::{into_v16, lowercase_and_remove_spaces, remove_special_characters};
+
+        let sample1 = into_v16("THIS IS BIG and this is small!");
+        let sample2 = into_v16("If you find any bug, please report: XXX-XXXX, 한글입력\nnewline\ttab");
+        assert_eq!(lowercase_and_remove_spaces(&sample1), into_v16("thisisbigandthisissmall!"));
+        assert_eq!(lowercase_and_remove_spaces(&sample2), into_v16("ifyoufindanybug,pleasereport:xxx-xxxx,한글입력\nnewline\ttab"));
+
+        assert_eq!(remove_special_characters(&sample1), into_v16("THISISBIGandthisissmall"));
+        assert_eq!(remove_special_characters(&sample2), into_v16("IfyoufindanybugpleasereportXXXXXXX한글입력newlinetab"));
+    }
+
+}

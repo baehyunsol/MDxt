@@ -1,0 +1,220 @@
+use crate::utils::into_v16;
+
+/*
+`<`s are converted to `&lt` and `&gt`, always!
+`>`s are kept untouched because they could be part of a blockquote
+backslashes are always escaped.
+*/
+pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len() + content.len() / 4);
+
+    for c in content.iter() {
+
+        match *c {
+            38 => {  // &
+                result.push('&' as u16);
+                result.push('a' as u16);
+                result.push('m' as u16);
+                result.push('p' as u16);
+                result.push(';' as u16);
+            },
+            60 => {  // <
+                result.push('&' as u16);
+                result.push('l' as u16);
+                result.push('t' as u16);
+                result.push(';' as u16);
+            },
+            34 => {  // "
+                result.push('&' as u16);
+                result.push('q' as u16);
+                result.push('u' as u16);
+                result.push('o' as u16);
+                result.push('t' as u16);
+                result.push(';' as u16);
+            },
+            39 => {  // '
+                result.push('&' as u16);
+                result.push('a' as u16);
+                result.push('p' as u16);
+                result.push('o' as u16);
+                result.push('s' as u16);
+                result.push(';' as u16);
+            },
+            _ => {
+                result.push(*c);
+            }
+        }
+    }
+
+    result
+}
+
+// `&` of `[](https://www.google.com/search?channel=fs&client=ubuntu&q=rust)` may not be escaped
+// characters in syntax highlighted texts may not be escaped
+pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        match is_escaped(content, index) {
+            None => {
+                result.push(content[index]);
+            }
+            Some((c, i)) => {
+                result.push(c);
+                index = i;
+            }
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
+
+fn is_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
+
+    if content[index] == '&' as u16 && index + 3 < content.len() {
+
+        if content[index + 1] == 'a' as u16 {
+
+            if index + 4 < content.len() && content[index + 2] == 'm' as u16 && content[index + 3] == 'p' as u16 && content[index + 4] == ';' as u16 {
+                return Some(('&' as u16, index + 4));
+            }
+
+            if content[index + 2] == 'p' as u16 && content[index + 3] == 'o' as u16 && content[index + 4] == 's' as u16 && index + 5 < content.len() && content[index + 5] == ';' as u16 {
+                return Some(('\'' as u16, index + 5));
+            }
+
+        }
+
+        else if content[index + 1] == 'l' as u16 && content[index + 2] == 't' as u16 && content[index + 3] == ';' as u16 {
+            return Some(('<' as u16, index + 3));
+        }
+
+        else if content[index + 1] == 'q' as u16 && content[index + 2] == 'u' as u16 && content[index + 3] == 'o' as u16 && content[index + 4] == 't' as u16 && index + 5 < content.len() && content[index + 5] == ';' as u16 {
+            return Some(('"' as u16, index + 5));
+        }
+
+    }
+
+    None
+}
+
+pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if content[index] != '\\' as u16 {
+            result.push(content[index]);
+        }
+
+        // content[index] is '\\', but not escaped
+        else if index == content.len() - 1 || content[index + 1] == '\n' as u16 {
+            result.push('\\' as u16);
+        }
+
+        else {
+            result.push(BACKSLASH_ESCAPE_MARKER);
+            result.push(u16::MAX - content[index + 1]);
+            index += 1;
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
+fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if content[index] != BACKSLASH_ESCAPE_MARKER {
+            result.push(content[index]);
+        }
+
+        else {
+            result.push('\\' as u16);
+            result.push(u16::MAX - content[index + 1]);
+            index += 1;
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
+fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len() * 5 / 4);
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if content[index] != BACKSLASH_ESCAPE_MARKER {
+            result.push(content[index]);
+        }
+
+        else {
+            result.push('&' as u16);
+            result.push('#' as u16);
+
+            for num in into_v16(&(u16::MAX - content[index + 1]).to_string()) {
+                result.push(num);
+            }
+
+            result.push(';' as u16);
+            index += 1;
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn escape_undo_test() {
+        use crate::testbench::random;
+        use crate::escape::*;
+
+        for i in 0..256 {
+            let test_case: Vec<u16> = (0..512).map(|j| (random(i * 8191 + j * 37) % 128) as u16).collect();
+            assert_eq!(undo_html_escapes(&escape_htmls(&test_case)), test_case);
+            assert_eq!(undo_backslash_escapes(&escape_backslashes(&test_case)), test_case);
+        }
+
+    }
+
+    #[test]
+    fn backslash_escape_test() {
+        use crate::utils::into_v16;
+        use crate::escape::*;
+
+        let input = into_v16("\\a\\\\\\\n\\*\\");
+        let output = into_v16("&#97;&#92;\\\n&#42;\\");
+
+        assert_eq!(
+            String::from_utf16(&render_backslash_escapes(&escape_backslashes(&input))).unwrap(),
+            String::from_utf16(&output).unwrap(),
+        );
+    }
+
+}
+
+const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
