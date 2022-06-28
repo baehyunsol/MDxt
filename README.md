@@ -41,14 +41,6 @@ The actual colors may differ depending on css files you use.
 | Red  | [[red]] This text is red! [[/red]]                 |
 | Blue | [[blue]] This text is blue! [[/blue]]              |
 
----
+## Backslash Escapes
 
-`a`
-
-``1a1``
-
-```a``
-
-``a```
-
-`  a  `
+Unlike gfm, backslash escapes work everywhere, even inside code blocks!

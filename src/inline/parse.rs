@@ -21,6 +21,34 @@ impl InlineNode {
                 continue;
             }
 
+            match is_bold_italic(content, index) {
+                Bool::True(end) => {
+                    let mut result = vec![];
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    result.push(Box::new(InlineNode::Decoration {
+                        deco_type: DecorationType::Italic,
+
+                        content: vec![Box::new(InlineNode::Decoration{
+                            deco_type: DecorationType::Bold,
+
+                            // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                            content: Self::from_md(&content[index + 3..end - 2]).to_vec()
+                        })]
+                    }));
+
+                    if end + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
             match is_italic(content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
@@ -45,10 +73,34 @@ impl InlineNode {
                 _ => {}
             }
 
+            match is_bold(content, index) {
+                Bool::True(end) => {
+                    let mut result = vec![];
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    result.push(Box::new(InlineNode::Decoration {
+                        deco_type: DecorationType::Bold,
+
+                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_md(&content[index + 2..end - 1]).to_vec()
+                    }));
+
+                    if end + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
             index += 1;
         }
 
-        // there're no inline elements in the content
+        // there're no inline element in the content
         InlineNode::Raw(content.to_vec()).render_code_spans()
     }
 

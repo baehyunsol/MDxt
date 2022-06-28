@@ -1,14 +1,15 @@
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
         ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*"),
-        ("`*italic in a codespan, which is not rendered*`", "<code class=\"short\">*italic in a codespan, which is not rendered*</code>"),
+        ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>"),
         ("**", "**"),
+        ("***", "***"),
+        ("****", "****"),
         ("~~deletion?~~~, ~~~deletion?~~", "WIP"),
-        ("****abcde****", "WIP"),
-        ("**bold** *italic*", "WIP"),
+        ("****abcde****", "*<em><strong>abcde</strong></em>*"),
         ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>"),
         ("*abc*", "<em>abc</em>"),
-        ("*abc**", "<em>abc</em>*"),
+        ("*abc**", "*abc**"),
         ("***abc**", "*<strong>abc</strong>"),
         ("****abc***", "*<em><strong>abc</strong></em>"),
         ("**abc***", "<strong>abc</strong>*"),
@@ -26,13 +27,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>"),
         ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>"),
         ("*abc\\*", "*abc&#42;"),
-        ("`abc\\` \\`abc`", "<code class=\"short\">abc\\</code> `abc`"),
+        ("`abc\\` \\`abc`", "<code class=\"short\">abc&#96; &#96;abc</code>"),
         ("`a``b`", "<code class=\"short\">a``b</code>"),
-        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "WIP"),
+        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "<em>italic</em> <strong>bold</strong> WIP"),
         ("~_~~del_and_underline~~_~", "WIP"),
         ("~_no_underline _~", "~_no_underline _~"),
         ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "WIP"),
-        ("[[red]][[center]] Broken Macros! [[/cetner]]", "WIP")
+        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]")
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
