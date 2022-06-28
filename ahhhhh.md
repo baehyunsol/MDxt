@@ -1,4 +1,4 @@
-`[[math]] sum{n=-infty}{infty} [[/math]]` inside a codespan must be ignored. `` inside a math formula must be ignored.
+`[[math]] sum{n=-infty}{infty} [[/math]]` inside a codespan must be ignored. A codespan inside a math formula must be ignored.
 
 - render_prev ++ `raw` ++ render_next
   - it was the original way, but I abandoned it for a reason that I don't remember...

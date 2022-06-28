@@ -43,4 +43,9 @@ impl Line {
 
         self.content.len() > 2 && (self.content[0] == '-' as u16 || self.content[0] == '*' as u16) && self.content[1] == ' ' as u16
     }
+
+    #[inline]
+    pub fn is_link_reference_definition(&self) -> bool {
+        self.indent < 4 && todo!()
+    }
 }

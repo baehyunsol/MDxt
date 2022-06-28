@@ -1,10 +1,12 @@
+[[giant]]***This document uses HMD's syntax. The syntax is slightly different to [gfm](https://github.github.com/gfm). If you're reading this document on github, please visit [my blog](https://somewhere) to see the properly rendered version.***[[/giant]]
+
 ## Inline elements
 
 It supports most inline decorations that [gfm](https://github.github.com/gfm) supports, and has a few more.
 
 ### Underlines
 
-`~_Underlines_~` is rendered to ~_Underlines_~. Underlines may not contain any newline. The first and the last character may not be space.
+`~_Underlines_~` is rendered to ~_Underlines_~. The first and the last character may not be a whitespace.
 
 ## Macros
 
@@ -31,6 +33,12 @@ Because the closing macro is in another paragraph. [[/red]]
 ```
 
 > Not proper.
+
+[[box]]
+
+All the double square brackets are rendered to macros. If you want a square bracket inside a link text, use escape characters. `[\\[link text\\]]` like this.
+
+[[/box]]
 
 ### Colors
 

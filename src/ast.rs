@@ -43,6 +43,8 @@ impl AST {
         let mut curr_node = vec![];
         let mut curr_node_type = NodeType::None;
 
+        let (headers, link_refs) = collect_headers_and_link_refs(&lines);
+
         for line in lines.iter() {
 
             if curr_node_type.is_code_fence() {
@@ -114,5 +116,9 @@ fn add_curr_node_to_ast(curr_ast: &mut Vec<Node>, curr_node: &mut Vec<Line>, cur
 }
 
 fn read_code_fence_info(line: &Line) -> (String, bool) {
+    todo!()
+}
+
+fn collect_headers_and_link_refs(lines: &Vec<Line>) -> (Vec<(usize, Vec<u16>)>, HashMap<Vec<u16>, Vec<u16>>) {
     todo!()
 }

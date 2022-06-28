@@ -104,7 +104,7 @@ pub fn is_bold_italic(content: &[u16], index: usize) -> Bool {
         return Bool::False;
     }
 
-    let mut end_index = index + 3;
+    let mut end_index = index + 4;
 
     while end_index < content.len() {
 
@@ -129,4 +129,193 @@ fn is_bold_italic_start(content: &[u16], index: usize) -> bool {
 
 fn is_bold_italic_end(content: &[u16], index: usize) -> bool {
     content[index] == '*' as u16 && index > 2 && content[index - 1] == '*' as u16 && content[index - 2] == '*' as u16 && content[index - 3] != ' ' as u16 && content[index - 3] != '*' as u16
+}
+
+pub fn is_deletion(content: &[u16], index: usize) -> Bool {
+
+    if !is_deletion_start(content, index) {
+        return Bool::False;
+    }
+
+    let mut end_index = index + 3;
+
+    while end_index < content.len() {
+
+        if is_code_span_marker_begin(content, end_index) {
+            end_index = get_code_span_marker_end_index(content, end_index);
+            continue;
+        }
+
+        if is_deletion_end(content, end_index) && end_index - index > 3 {
+            return Bool::True(end_index);
+        }
+
+        end_index += 1;
+    }
+
+    Bool::False
+}
+
+fn is_deletion_start(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index + 2 < content.len() && content[index + 1] == '~' as u16 && content[index + 2] != ' ' as u16 && content[index + 2] != '_' as u16
+}
+
+fn is_deletion_end(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index > 1 && content[index - 1] == '~' as u16 && content[index - 2] != ' ' as u16 && content[index - 2] != '_' as u16
+}
+
+pub fn is_underline(content: &[u16], index: usize) -> Bool {
+
+    if !is_underline_start(content, index) {
+        return Bool::False;
+    }
+
+    let mut end_index = index + 3;
+
+    while end_index < content.len() {
+
+        if is_code_span_marker_begin(content, end_index) {
+            end_index = get_code_span_marker_end_index(content, end_index);
+            continue;
+        }
+
+        if is_underline_end(content, end_index) {
+            return Bool::True(end_index);
+        }
+
+        end_index += 1;
+    }
+
+    Bool::False
+}
+
+fn is_underline_start(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index + 2 < content.len() && content[index + 1] == '_' as u16 && content[index + 2] != ' ' as u16
+}
+
+fn is_underline_end(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index > 1 && content[index - 1] == '_' as u16 && content[index - 2] != ' ' as u16
+}
+
+pub fn is_superscript(content: &[u16], index: usize) -> Bool {
+
+    if !is_superscript_start(content, index) {
+        return Bool::False;
+    }
+
+    let mut end_index = index + 1;
+
+    while end_index < content.len() {
+
+        if is_code_span_marker_begin(content, end_index) {
+            end_index = get_code_span_marker_end_index(content, end_index);
+            continue;
+        }
+
+        if is_superscript_end(content, end_index) {
+            return Bool::True(end_index);
+        }
+
+        end_index += 1;
+    }
+
+    Bool::False
+}
+
+fn is_superscript_start(content: &[u16], index: usize) -> bool {
+    content[index] == '^' as u16 && index + 1 < content.len() && content[index + 1] != '^' as u16 && content[index + 1] != ' ' as u16
+}
+
+fn is_superscript_end(content: &[u16], index: usize) -> bool {
+    content[index] == '^' as u16 && index > 0 && content[index - 1] != '^' as u16 && content[index - 1] != ' ' as u16
+}
+
+pub fn is_subscript(content: &[u16], index: usize) -> Bool {
+
+    if !is_subscript_start(content, index) {
+        return Bool::False;
+    }
+
+    let mut end_index = index + 1;
+
+    while end_index < content.len() {
+
+        if is_code_span_marker_begin(content, end_index) {
+            end_index = get_code_span_marker_end_index(content, end_index);
+            continue;
+        }
+
+        if is_subscript_end(content, end_index) {
+            return Bool::True(end_index);
+        }
+
+        end_index += 1;
+    }
+
+    Bool::False
+}
+
+fn is_subscript_start(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index + 1 < content.len() && content[index + 1] != '~' as u16 && content[index + 1] != ' ' as u16 && (index == 0 || content[index - 1] != '~' as u16)
+}
+
+fn is_subscript_end(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index > 0 && content[index - 1] != '~' as u16 && content[index - 1] != ' ' as u16 && (index == content.len() - 1 || content[index + 1] != '~' as u16)
+}
+
+pub fn is_deletion_subscript(content: &[u16], index: usize) -> Bool {
+
+    if !is_deletion_subscript_start(content, index) {
+        return Bool::False;
+    }
+
+    let mut end_index = index + 4;
+
+    while end_index < content.len() {
+
+        if is_code_span_marker_begin(content, end_index) {
+            end_index = get_code_span_marker_end_index(content, end_index);
+            continue;
+        }
+
+        if is_deletion_subscript_end(content, end_index) {
+            return Bool::True(end_index);
+        }
+
+        end_index += 1;
+    }
+
+    Bool::False
+}
+
+fn is_deletion_subscript_start(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index + 3 < content.len() && content[index + 1] == '~' as u16 && content[index + 2] == '~' as u16 && content[index + 3] != ' ' as u16 && content[index + 3] != '~' as u16 && content[index + 3] != '_' as u16
+}
+
+fn is_deletion_subscript_end(content: &[u16], index: usize) -> bool {
+    content[index] == '~' as u16 && index > 2 && content[index - 1] == '~' as u16 && content[index - 2] == '~' as u16 && content[index - 3] != ' ' as u16 && content[index - 3] != '~' as u16 && content[index - 3] != '_' as u16
+}
+
+// https://github.github.com/gfm/#links
+// 밑에 함수들이 link_ref_defs까지 인수로 받아서, 걍 저 안에서 ref에 있나 검사해버리자
+// 하는 김에 nested link가 있는지도 저 안에서 검사해버리자..!!
+
+// [foo](address)
+fn is_direct_link(content: &[u16], index: usize) -> Option<(Vec<u16>, Vec<u16>)> {  // Option<(link_text, link_destination)>
+    todo!()
+}
+
+// [foo]
+fn is_shortcut_reference_link(content: &[u16], index: usize) -> Option<Vec<u16>> {  // Option<link_text>
+    todo!()
+}
+
+// [foo][bar]
+fn is_full_reference_link(content: &[u16], index: usize) -> Option<(Vec<u16>, Vec<u16>)> {  // Option<(link_text, link_label)>
+    todo!()
+}
+
+// [foo][]
+fn is_collapsed_reference_link(content: &[u16], index: usize) -> Option<Vec<u16>> {  // Option<link_text>
+    todo!()
 }
