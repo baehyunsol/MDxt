@@ -1,1 +1,3 @@
-pub struct RenderResult {}
+pub struct RenderResult {
+    content: String
+}

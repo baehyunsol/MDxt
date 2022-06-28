@@ -1,5 +1,5 @@
 mod predicate;
-mod render;
+mod parse;
 
 #[cfg(test)]
 mod testbench;
@@ -141,3 +141,8 @@ impl InlineNode {
     }
 
 }
+
+const INLINE_CODESPAN_MARKER1: u16 = u16::MAX - 1999;
+const INLINE_CODESPAN_MARKER2: u16 = u16::MAX - 1998;
+const INLINE_CODESPAN_MARKER3: u16 = u16::MAX - 1997;
+const INLINE_CODESPAN_MARKER4: u16 = u16::MAX - 1996;

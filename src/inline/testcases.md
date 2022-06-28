@@ -38,6 +38,8 @@
 *abc\*: *abc*
 
 `abc\`: <code class="short">abc\</code>
+
+`a``b`: <code class="short">a``b</code>
 ```
 
 전략

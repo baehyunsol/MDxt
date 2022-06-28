@@ -156,7 +156,7 @@ fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
-fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
+pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
@@ -184,6 +184,8 @@ fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     result
 }
+
+const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
 
 #[cfg(test)]
 mod tests {
@@ -216,5 +218,3 @@ mod tests {
     }
 
 }
-
-const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
