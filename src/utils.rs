@@ -2,7 +2,6 @@ pub fn into_v16(s: &str) -> Vec<u16> {
     String::from(s).encode_utf16().filter(|c| *c != 13).collect()
 }
 
-
 pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
 
     let mut index = 0;
@@ -18,7 +17,6 @@ pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
 
     v[index..].to_vec()
 }
-
 
 pub fn take_while(v: &[u16], c: u16) -> Vec<u16> {
 
@@ -36,7 +34,6 @@ pub fn take_while(v: &[u16], c: u16) -> Vec<u16> {
     v[0..index].to_vec()
 }
 
-
 pub fn take_and_drop_while(v: &[u16], c: u16) -> (Vec<u16>, Vec<u16>) {
 
     let mut index = 0;
@@ -53,21 +50,17 @@ pub fn take_and_drop_while(v: &[u16], c: u16) -> (Vec<u16>, Vec<u16>) {
     (v[0..index].to_vec(), v[index..].to_vec())
 }
 
-
 pub fn get_bracket_end_index(v: &[u16], index: usize) -> Option<usize> {
     get_partner_index(v, index, '[' as u16, ']' as u16)
 }
-
 
 pub fn get_parenthesis_end_index(v: &[u16], index: usize) -> Option<usize> {
     get_partner_index(v, index, '(' as u16, ')' as u16)
 }
 
-
 pub fn get_curly_brace_end_index(v: &[u16], index: usize) -> Option<usize> {
     get_partner_index(v, index, '{' as u16, '}' as u16)
 }
-
 
 fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<usize> {
 
@@ -93,7 +86,6 @@ fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<us
     None
 }
 
-
 pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
     line.iter().filter(
         |c| '0' as u16 <= **c && **c <= '9' as u16 ||
@@ -105,13 +97,11 @@ pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
     ).map(|c| *c).collect()
 }
 
-
 pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
     line.iter().filter(
-        |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
+        |c| **c != ' ' as u16
     ).map(|c| *c).collect()
 }
-
 
 pub fn lowercase(c: u16) -> u16 {
 
@@ -125,16 +115,72 @@ pub fn lowercase(c: u16) -> u16 {
 
 }
 
-
 pub fn is_alphabet(c: u16) -> bool {
     'A' as u16 <= c && c <= 'Z' as u16 || 'a' as u16 <= c && c <= 'z' as u16
 }
-
 
 pub fn lowercase_and_remove_spaces(content: &[u16]) -> Vec<u16> {
     content.iter().filter(|c| **c != ' ' as u16).map(|c| lowercase(*c)).collect::<Vec<u16>>()
 }
 
+pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
+    let mut result = Vec::with_capacity(content.len());
+    let mut consecutive_whitespace = false;
+
+    for c in content.iter() {
+
+        if *c == ' ' as u16 {
+
+            if !consecutive_whitespace {
+                result.push(' ' as u16);
+                consecutive_whitespace = true;
+            }
+
+        }
+
+        else {
+            result.push(*c);
+            consecutive_whitespace = false;
+        }
+
+    }
+
+    result
+}
+
+pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
+
+    let mut start_index = 0;
+
+    while start_index < content.len() {
+
+        if content[start_index] != ' ' as u16 {
+            break;
+        }
+
+        start_index += 1;
+    }
+
+    let mut end_index = content.len() - 1;
+
+    while end_index > 0 {
+
+        if content[end_index] != ' ' as u16 {
+            break;
+        }
+
+        end_index -= 1;
+    }
+
+    if start_index < end_index + 1 {
+        content[start_index..end_index + 1].to_vec()
+    }
+
+    else {
+        vec![]
+    }
+
+}
 
 #[cfg(test)]
 mod tests {
@@ -157,7 +203,24 @@ mod tests {
     }
 
     #[test]
-    fn misc_test() {
+    fn whitespace_test() {
+        use crate::utils::{into_v16, collapse_whitespaces, strip_whitespaces};
+        let sample1 = into_v16(" F  OO BA R  ");
+        let sample2 = into_v16("   A    ");
+        let sample3 = into_v16("   ");
+
+        assert_eq!(collapse_whitespaces(&sample1), into_v16(" F OO BA R "));
+        assert_eq!(strip_whitespaces(&sample1), into_v16("F  OO BA R"));
+
+        assert_eq!(collapse_whitespaces(&sample2), into_v16(" A "));
+        assert_eq!(strip_whitespaces(&sample2), into_v16("A"));
+
+        assert_eq!(collapse_whitespaces(&sample3), into_v16(" "));
+        assert_eq!(strip_whitespaces(&sample3), into_v16(""));
+    }
+
+    #[test]
+    fn misc_test2() {
         use crate::utils::{into_v16, lowercase_and_remove_spaces, remove_special_characters};
 
         let sample1 = into_v16("THIS IS BIG and this is small!");

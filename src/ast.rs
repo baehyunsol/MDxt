@@ -2,8 +2,10 @@ pub mod line;
 mod predicate;
 mod node;
 
+use crate::render::render_option::RenderOption;
+use crate::link::{predicate::read_link_reference, normalize_link};
 use line::Line;
-use node::Node;
+use node::{Node, parse_header};
 use std::collections::HashMap;
 
 #[derive(PartialEq)]
@@ -32,18 +34,18 @@ pub struct ASTConfig {
 pub struct AST {
     config: ASTConfig,
     headers: Vec<(usize, Vec<u16>)>,  // (level, content)
-    link_refs: HashMap<Vec<u16>, Vec<u16>>,  // (name, address)
+    link_refs: HashMap<Vec<u16>, Vec<u16>>,  // (link_label, link_destination)
     nodes: Vec<Node>
 }
 
 impl AST {
 
-    pub fn from_lines(lines: Vec<Line>) -> AST {
+    pub fn from_lines(lines: Vec<Line>, options: &mut RenderOption) -> AST {
         let mut curr_ast = Vec::with_capacity(lines.len());
         let mut curr_node = vec![];
         let mut curr_node_type = NodeType::None;
-
-        let (headers, link_refs) = collect_headers_and_link_refs(&lines);
+        let mut link_refs = HashMap::new();
+        let mut headers = vec![];
 
         for line in lines.iter() {
 
@@ -62,7 +64,9 @@ impl AST {
 
             if line.is_header() {
                 add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
-                curr_ast.push(Node::new_header(line));
+                let (level, content) = parse_header(line);
+                headers.push((level, content.clone()));
+                curr_ast.push(Node::new_header(level, content));
             }
 
             else if line.is_empty() {
@@ -73,6 +77,11 @@ impl AST {
                 add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
                 let (language, line_num) = read_code_fence_info(line);
                 curr_node_type = NodeType::CodeFence { language, line_num };
+            }
+
+            else if line.is_link_reference_definition() {
+                let (link_label, link_destination) = read_link_reference(&line.content);
+                link_refs.insert(normalize_link(&link_label), (options.link_handler)(&link_destination));
             }
 
             else {
@@ -116,9 +125,5 @@ fn add_curr_node_to_ast(curr_ast: &mut Vec<Node>, curr_node: &mut Vec<Line>, cur
 }
 
 fn read_code_fence_info(line: &Line) -> (String, bool) {
-    todo!()
-}
-
-fn collect_headers_and_link_refs(lines: &Vec<Line>) -> (Vec<(usize, Vec<u16>)>, HashMap<Vec<u16>, Vec<u16>>) {
     todo!()
 }

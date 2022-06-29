@@ -10,6 +10,14 @@ pub enum InlineNode {
     Raw(Vec<u16>),
     Complex(Vec<Box<InlineNode>>),
     CodeSpan(Vec<u16>),
+    Link {
+        text: Vec<Box<InlineNode>>,
+        destination: Vec<u16>
+    },
+    Image {
+        description: Vec<u16>,
+        address: Vec<u16>
+    },
     Decoration {
         deco_type: DecorationType,
         content: Vec<Box<InlineNode>>
@@ -45,6 +53,22 @@ impl InlineNode {
             ].concat(),
 
             InlineNode::Complex(content) => content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+
+            InlineNode::Link {text, destination} => vec![
+                into_v16("<a href=\">"),
+                destination.clone(),
+                into_v16("\">"),
+                text.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                into_v16("</a>")
+            ].concat(),
+
+            InlineNode::Image {description, address} => vec![
+                into_v16("<img src=\""),
+                address.clone(),
+                into_v16("\" alt=\""),
+                description.clone(),
+                into_v16("\"/>")
+            ].concat(),
 
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
@@ -93,6 +117,22 @@ impl InlineNode {
             ].concat(),
 
             InlineNode::Complex(content) => content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+
+            InlineNode::Link {text, destination} => vec![
+                into_v16("["),
+                text.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                into_v16("]("),
+                destination.clone(),
+                into_v16(")")
+            ].concat(),
+
+            InlineNode::Image {description, address} => vec![
+                into_v16("!["),
+                description.clone(),
+                into_v16("]("),
+                address.clone(),
+                into_v16(")")
+            ].concat(),
 
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![

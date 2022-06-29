@@ -21,15 +21,8 @@ pub enum Node {
 
 impl Node {
 
-    pub fn new_header(line: &Line) -> Node {
-
-        let (sharps, sharps_removed) = take_and_drop_while(&line.content, '#' as u16);
-        let indents_removed = drop_while(&sharps_removed, ' ' as u16);
-
-        Node::Header {
-            level: sharps.len(),
-            content: indents_removed
-        }
+    pub fn new_header(level: usize, content: Vec<u16>) -> Node {
+        Node::Header { level, content }
     }
 
     pub fn new_paragraph(lines: &Vec<Line>) -> Node {
@@ -45,4 +38,11 @@ impl Node {
         }
     }
 
+}
+
+pub fn parse_header(line: &Line) -> (usize, Vec<u16>) {  // (level, content)
+    let (sharps, sharps_removed) = take_and_drop_while(&line.content, '#' as u16);
+    let indents_removed = drop_while(&sharps_removed, ' ' as u16);
+
+    (sharps.len(), indents_removed)
 }

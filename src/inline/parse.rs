@@ -3,10 +3,15 @@ use super::{
     InlineNode, DecorationType,
     INLINE_CODESPAN_MARKER1, INLINE_CODESPAN_MARKER2, INLINE_CODESPAN_MARKER3, INLINE_CODESPAN_MARKER4
 };
+use crate::link::predicate::{
+    read_direct_link, read_reference_link, read_shortcut_reference_link
+};
+use crate::render::render_option::RenderOption;
+use std::collections::HashMap;
 
 impl InlineNode {
 
-    pub fn from_md(content: &[u16]) -> Self {
+    pub fn from_md(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> Self {
 
         // it has to be rendered before other inline elements
         let content = &parse_code_spans(content);
@@ -36,12 +41,12 @@ impl InlineNode {
                             deco_type: DecorationType::Bold,
 
                             // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_md(&content[index + 3..end - 2]).to_vec()
+                            content: Self::from_md(&content[index + 3..end - 2], link_references, render_option).to_vec()
                         })]
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -64,12 +69,12 @@ impl InlineNode {
                             deco_type: DecorationType::Subscript,
 
                             // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_md(&content[index + 3..end - 2]).to_vec()
+                            content: Self::from_md(&content[index + 3..end - 2], link_references, render_option).to_vec()
                         })]
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -89,11 +94,11 @@ impl InlineNode {
                         deco_type: DecorationType::Italic,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end]).to_vec()
+                        content: Self::from_md(&content[index + 1..end], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -113,11 +118,11 @@ impl InlineNode {
                         deco_type: DecorationType::Bold,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1]).to_vec()
+                        content: Self::from_md(&content[index + 2..end - 1], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -137,11 +142,11 @@ impl InlineNode {
                         deco_type: DecorationType::Deletion,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1]).to_vec()
+                        content: Self::from_md(&content[index + 2..end - 1], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -161,11 +166,11 @@ impl InlineNode {
                         deco_type: DecorationType::Underline,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1]).to_vec()
+                        content: Self::from_md(&content[index + 2..end - 1], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -185,11 +190,11 @@ impl InlineNode {
                         deco_type: DecorationType::Superscript,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end]).to_vec()
+                        content: Self::from_md(&content[index + 1..end], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -209,11 +214,48 @@ impl InlineNode {
                         deco_type: DecorationType::Subscript,
 
                         // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end]).to_vec()
+                        content: Self::from_md(&content[index + 1..end], link_references, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()])));
+                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], link_references, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
+            match read_direct_link(content, index) {
+                Some((link_text, link_destination, last_index)) => {
+                    let mut result = vec![];
+                    let mut is_image = false;
+
+                    if index > 0 && content[index - 1] == '!' as u16 {
+                        is_image = true;
+                        index -= 1;
+                    }
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    if is_image {
+                        result.push(Box::new(InlineNode::Image {
+                            description: link_text,
+                            address: link_destination
+                        }));
+                    }
+
+                    else {
+                        result.push(Box::new(InlineNode::Link {
+                            text: Self::from_md(&link_text, link_references, render_option).to_vec(),
+                            destination: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], link_references, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -276,7 +318,12 @@ impl InlineNode {
                 deco_type,
                 content: content.into_iter().map(|node| Box::new(node.render_code_spans())).collect()
             },
-            InlineNode::CodeSpan(content) => InlineNode::CodeSpan(content)
+            InlineNode::Link {text, destination} => InlineNode::Link {
+                text: text.into_iter().map(|node| Box::new(node.render_code_spans())).collect(),
+                destination
+            },
+            InlineNode::Image {description, address} => InlineNode::Image {description, address},
+            InlineNode::CodeSpan(content) => InlineNode::CodeSpan(content),
         }
     }
 

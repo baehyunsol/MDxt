@@ -1,6 +1,8 @@
 use crate::inline::InlineNode;
 use crate::utils::into_v16;
 use crate::escape::{escape_backslashes, render_backslash_escapes};
+use crate::render::render_option::RenderOption;
+use std::collections::HashMap;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
@@ -64,7 +66,11 @@ fn inline_render_test() {
     let mut failures = vec![];
 
     for (case, answer) in test_cases.iter() {
-        let rendered = render_backslash_escapes(&InlineNode::from_md(&escape_backslashes(&into_v16(case))).to_html());
+        let rendered = render_backslash_escapes(
+            &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
+            &HashMap::new(),
+            &mut RenderOption::default()).to_html()
+        );
 
         if rendered != into_v16(answer) {
             failures.push(format!(
@@ -94,7 +100,7 @@ fn inline_inversion_test() {
     let mut failures = vec![];
 
     for (case, _) in samples().iter() {
-        let inverted = InlineNode::from_md(&into_v16(case)).to_md();
+        let inverted = InlineNode::from_md(&into_v16(case), &HashMap::new(), &mut RenderOption::default()).to_md();
 
         if inverted != into_v16(case) {
             failures.push(format!(
