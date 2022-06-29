@@ -1,3 +1,7 @@
+use crate::inline::InlineNode;
+use crate::utils::into_v16;
+use crate::escape::{escape_backslashes, render_backslash_escapes};
+
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
         ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*"),
@@ -53,73 +57,62 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
 }
 
-mod tests {
+#[test]
+fn inline_render_test() {
 
-    #[test]
-    fn inline_render_test() {
-        use super::samples;
-        use crate::inline::InlineNode;
-        use crate::utils::into_v16;
-        use crate::escape::{escape_backslashes, render_backslash_escapes};
+    let test_cases = samples();
+    let mut failures = vec![];
 
-        let test_cases = samples();
-        let mut failures = vec![];
+    for (case, answer) in test_cases.iter() {
+        let rendered = render_backslash_escapes(&InlineNode::from_md(&escape_backslashes(&into_v16(case))).to_html());
 
-        for (case, answer) in test_cases.iter() {
-            let rendered = render_backslash_escapes(&InlineNode::from_md(&escape_backslashes(&into_v16(case))).to_html());
-
-            if rendered != into_v16(answer) {
-                failures.push(format!(
-                    "inline_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
-                    case,
-                    answer,
-                    String::from_utf16(&rendered).unwrap()
-                ));
-            }
-
-        }
-
-        if failures.len() > 0 {
-            panic!(
-                "Inline render test: {} case(s) out of {} cases have failed!\n\n{}",
-                failures.len(),
-                test_cases.len(),
-                failures.join("\n\n")
-            );
+        if rendered != into_v16(answer) {
+            failures.push(format!(
+                "inline_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
+                case,
+                answer,
+                String::from_utf16(&rendered).unwrap()
+            ));
         }
 
     }
 
-    #[test]
-    fn inline_inversion_test() {
-        use super::samples;
-        use crate::inline::InlineNode;
-        use crate::utils::into_v16;
+    if failures.len() > 0 {
+        panic!(
+            "Inline render test: {} case(s) out of {} cases have failed!\n\n{}",
+            failures.len(),
+            test_cases.len(),
+            failures.join("\n\n")
+        );
+    }
 
-        let mut failures = vec![];
+}
 
-        for (case, _) in samples().iter() {
-            let inverted = InlineNode::from_md(&into_v16(case)).to_md();
+#[test]
+fn inline_inversion_test() {
 
-            if inverted != into_v16(case) {
-                failures.push(format!(
-                    "inline_test: failed!! given md:  {}\ninverted result:  {}",
-                    case,
-                    String::from_utf16(&inverted).unwrap()
-                ));
-            }
+    let mut failures = vec![];
 
+    for (case, _) in samples().iter() {
+        let inverted = InlineNode::from_md(&into_v16(case)).to_md();
+
+        if inverted != into_v16(case) {
+            failures.push(format!(
+                "inline_test: failed!! given md:  {}\ninverted result:  {}",
+                case,
+                String::from_utf16(&inverted).unwrap()
+            ));
         }
 
-        if failures.len() > 0 {
-            panic!(
-                "Inline inversion test: {} case(s) out of {} cases have failed!\n\n{}",
-                failures.len(),
-                samples().len(),
-                failures.join("\n\n")
-            );
-        }
+    }
 
+    if failures.len() > 0 {
+        panic!(
+            "Inline inversion test: {} case(s) out of {} cases have failed!\n\n{}",
+            failures.len(),
+            samples().len(),
+            failures.join("\n\n")
+        );
     }
 
 }
