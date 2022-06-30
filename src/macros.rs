@@ -85,6 +85,14 @@ impl Macro {
         }
     }
 
+    fn get_closing_macro(&self) -> Vec<u16> {
+        vec![
+            into_v16("[[/"),
+            self.name.clone(),
+            into_v16("]]")
+        ].concat()
+    }
+
 }
 
 fn normalize_macro(content: &[u16]) -> Vec<u16> {

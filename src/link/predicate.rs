@@ -21,7 +21,7 @@ pub fn read_direct_link(content: &[u16], index: usize, link_references: &HashMap
                         let link_text = &content[index + 1..bracket_end_index];
                         let link_destination = &content[bracket_end_index + 2..parenthesis_end_index];
 
-                        if is_valid_link_text(link_text, link_references) /*&& is_valid_link_destination(link_destination)*/ {
+                        if is_valid_link_text(link_text, link_references) {
                             Some((link_text.to_vec(), link_destination.to_vec(), parenthesis_end_index))
                         }
 
