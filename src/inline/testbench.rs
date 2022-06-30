@@ -64,12 +64,14 @@ fn inline_render_test() {
 
     let test_cases = samples();
     let mut failures = vec![];
+    let link_references = HashMap::new();
+    let mut render_option = RenderOption::default();
 
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
-            &HashMap::new(),
-            &mut RenderOption::default()).to_html()
+            &link_references,
+            &mut render_option).to_html()
         );
 
         if rendered != into_v16(answer) {
@@ -98,9 +100,11 @@ fn inline_render_test() {
 fn inline_inversion_test() {
 
     let mut failures = vec![];
+    let link_references = HashMap::new();
+    let mut render_option = RenderOption::default();
 
     for (case, _) in samples().iter() {
-        let inverted = InlineNode::from_md(&into_v16(case), &HashMap::new(), &mut RenderOption::default()).to_md();
+        let inverted = InlineNode::from_md(&into_v16(case), &link_references, &mut render_option).to_md();
 
         if inverted != into_v16(case) {
             failures.push(format!(

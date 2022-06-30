@@ -49,10 +49,10 @@ impl Line {
             None => false,
             Some(bracket_end_index) => self.content.len() > bracket_end_index + 2
             && self.content[bracket_end_index + 1] == ':' as u16 && {
-                let link_destination = drop_while(&self.content[bracket_end_index + 1..self.content.len()], ' ' as u16);
                 let link_label = &self.content[1..bracket_end_index];
+                // let link_destination = drop_while(&self.content[bracket_end_index + 1..self.content.len()], ' ' as u16);
 
-                is_valid_link_label(link_label) && is_valid_link_destination(&link_destination)
+                is_valid_link_label(link_label) // && is_valid_link_destination(&link_destination)
             }
         }
 

@@ -6,6 +6,7 @@ use super::{
 use crate::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
 };
+use crate::link::normalize_link;
 use crate::render::render_option::RenderOption;
 use std::collections::HashMap;
 
@@ -226,7 +227,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_direct_link(content, index) {
+            match read_direct_link(content, index, link_references) {
                 Some((link_text, link_destination, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
@@ -243,7 +244,87 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: link_text,
-                            address: link_destination
+                            address: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    else {
+                        result.push(Box::new(InlineNode::Link {
+                            text: Self::from_md(&link_text, link_references, render_option).to_vec(),
+                            destination: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], link_references, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
+            match read_reference_link(content, index, link_references) {
+                Some((link_text, link_label, last_index)) => {
+                    let mut result = vec![];
+                    let mut is_image = false;
+
+                    // the existence of the link reference was tested by the `read_reference_link` function
+                    let link_destination = link_references.get(&normalize_link(&link_label)).unwrap();
+
+                    if index > 0 && content[index - 1] == '!' as u16 {
+                        is_image = true;
+                        index -= 1;
+                    }
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    if is_image {
+                        result.push(Box::new(InlineNode::Image {
+                            description: link_text,
+                            address: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    else {
+                        result.push(Box::new(InlineNode::Link {
+                            text: Self::from_md(&link_text, link_references, render_option).to_vec(),
+                            destination: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], link_references, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
+            match read_shortcut_reference_link(content, index, link_references) {
+                Some((link_text, last_index)) => {
+                    let mut result = vec![];
+                    let mut is_image = false;
+
+                    // the existence of the link reference was tested by the `read_reference_link` function
+                    let link_destination = link_references.get(&normalize_link(&link_text)).unwrap();
+
+                    if index > 0 && content[index - 1] == '!' as u16 {
+                        is_image = true;
+                        index -= 1;
+                    }
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    if is_image {
+                        result.push(Box::new(InlineNode::Image {
+                            description: link_text,
+                            address: (render_option.link_handler)(&link_destination)
                         }));
                     }
 

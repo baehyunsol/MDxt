@@ -55,7 +55,7 @@ impl InlineNode {
             InlineNode::Complex(content) => content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
-                into_v16("<a href=\">"),
+                into_v16("<a href=\""),
                 destination.clone(),
                 into_v16("\">"),
                 text.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),

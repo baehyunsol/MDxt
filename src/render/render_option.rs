@@ -1,3 +1,5 @@
+use crate::link::predicate::is_valid_link_destination;
+
 pub struct RenderOption {
     pub link_handler: Box<dyn FnMut(&[u16]) -> Vec<u16>>
 }
@@ -12,6 +14,15 @@ impl Default for RenderOption {
 
 }
 
+// TODO: block javascript execution
 fn default_link_handler(link: &[u16]) -> Vec<u16> {
-    todo!()
+
+    if is_valid_link_destination(link) {
+        link.to_vec()
+    }
+
+    else {
+        vec![]
+    }
+
 }

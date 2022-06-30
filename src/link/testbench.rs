@@ -6,8 +6,39 @@ use crate::render::render_option::RenderOption;
 use std::collections::HashMap;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
+
+    // some cases are not the same as the gfm's spec  (https://github.github.com/gfm)
     let result = vec![
         ("[github](https://github.com)", "<a href=\"https://github.com\">github</a>"),
+        ("[*github*](https://github.com)", "<a href=\"https://github.com\"><em>github</em></a>"),
+        ("*[github](https://github.com)*", "<em><a href=\"https://github.com\">github</a></em>"),
+        ("*[github*](https://github.com)", "<em>[github</em>](https://github.com)"),
+        ("[github](*https://github.com*)", "<a href=\"\">github</a>"),
+        ("*[github](https://github.com*)", "WIP"),  // What should I do here?
+
+        ("[invalid url](*bold*~subscript~)", "<a href=\"\">invalid url</a>"),
+
+        ("[[macro]](https://github.com)", "[[macro]](https://github.com)"),
+        ("[not [macro]](https://github.com)", "<a href=\"https://github.com\">not [macro]</a>"),
+        ("[not [macro], but *bold*](https://github.com)", "<a href=\"https://github.com\">not [macro], but <em>bold</em></a>"),
+        ("[no nested [link]](https://github.com)", "[no nested <a href=\"https://example\">link</a>](https://github.com)"),
+
+        ("[link]", "<a href=\"https://example\">link</a>"),
+        ("[link][]", "<a href=\"https://example\">link</a>"),
+        ("[link]()", "<a href=\"\">link</a>"),
+        ("[valid_link][link]", "<a href=\"https://example\">valid_link</a>"),
+        ("[link][invalid_link]", "[link][invalid_link]"),
+        ("[link][[macro]]", "[link][[macro]]"),
+        ("[link](https://github.com)", "<a href=\"https://github.com\">link</a>"),
+
+        ("![github](https://github.com)", "<img src=\"https://github.com\" alt=\"github\"/>"),
+        ("![*github*](https://github.com)", "<img src=\"https://github.com\" alt=\"*github*\"/>"),
+        ("*![github](https://github.com)*", "<em><img src=\"https://github.com\" alt=\"github\"/></em>"),
+        ("*![github*](https://github.com)", "<em>![github</em>](https://github.com)"),
+        ("![github](*https://github.com*)", "<img src=\"\" alt=\"github\"/>"),
+        ("*![github](https://github.com*)", "WIP"),  // What should I do here?
+
+        ("![invalid url](*bold*~subscript~)", "<img src=\"\" alt=\"invalid url\"/>"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
@@ -18,12 +49,18 @@ fn link_render_test() {
 
     let test_cases = samples();
     let mut failures = vec![];
+    let mut link_references = HashMap::new();
+    let mut render_option = RenderOption::default();
+
+    link_references.insert(
+        into_v16("link"), into_v16("https://example")
+    );
 
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
-            &HashMap::new(),
-            &mut RenderOption::default()).to_html()
+            &link_references,
+            &mut render_option).to_html()
         );
 
         if rendered != into_v16(answer) {
