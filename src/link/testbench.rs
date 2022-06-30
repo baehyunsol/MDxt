@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
-    // some cases are not the same as the gfm's spec  (https://github.github.com/gfm)
+    // some cases are not the same as the [gfm's spec](https://github.github.com/gfm)
     let result = vec![
         ("[github](https://github.com)", "<a href=\"https://github.com\">github</a>"),
         ("[*github*](https://github.com)", "<a href=\"https://github.com\"><em>github</em></a>"),
@@ -22,6 +22,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[not [macro]](https://github.com)", "<a href=\"https://github.com\">not [macro]</a>"),
         ("[not [macro], but *bold*](https://github.com)", "<a href=\"https://github.com\">not [macro], but <em>bold</em></a>"),
         ("[no nested [link]](https://github.com)", "[no nested <a href=\"https://example\">link</a>](https://github.com)"),
+        ("[no nested [link]][link]", "[no nested <a href=\"https://example\">link</a>]<a href=\"https://example\">link</a>"),
 
         ("[link]", "<a href=\"https://example\">link</a>"),
         ("[link][]", "<a href=\"https://example\">link</a>"),
@@ -30,6 +31,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[link][invalid_link]", "[link][invalid_link]"),
         ("[link][[macro]]", "[link][[macro]]"),
         ("[link](https://github.com)", "<a href=\"https://github.com\">link</a>"),
+        ("[invalid_link]", "[invalid_link]"),
 
         ("![github](https://github.com)", "<img src=\"https://github.com\" alt=\"github\"/>"),
         ("![*github*](https://github.com)", "<img src=\"https://github.com\" alt=\"*github*\"/>"),
@@ -39,6 +41,21 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*![github](https://github.com*)", "WIP"),  // What should I do here?
 
         ("![invalid url](*bold*~subscript~)", "<img src=\"\" alt=\"invalid url\"/>"),
+
+        ("![[macro]](https://github.com)", "![[macro]](https://github.com)"),
+        ("![not [macro]](https://github.com)", "<img src=\"https://github.com\" alt=\"not [macro]\"/>"),
+        ("![not [macro], but *bold*](https://github.com)", "<img src=\"https://github.com\" alt=\"not [macro], but *bold*\"/>"),
+        ("![no nested [link]](https://github.com)", "![no nested <a href=\"https://example\">link</a>](https://github.com)"),
+        ("![no nested [link]][link]", "![no nested <a href=\"https://example\">link</a>]<a href=\"https://example\">link</a>"),
+
+        ("![link]", "<img src=\"https://example\" alt=\"link\"/>"),
+        ("![link][]", "<img src=\"https://example\" alt=\"link\"/>"),
+        ("![link]()", "<img src=\"\" alt=\"link\"/>"),
+        ("![valid_link][link]", "<img src=\"https://example\" alt=\"valid_link\"/>"),
+        ("![link][invalid_link]", "![link][invalid_link]"),
+        ("![link][[macro]]", "![link][[macro]]"),
+        ("![link](https://github.com)", "<img src=\"https://github.com\" alt=\"link\"/>"),
+        ("![invalid_link]", "![invalid_link]"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

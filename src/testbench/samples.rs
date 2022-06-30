@@ -82,39 +82,3 @@ Valid header
 ")
 
 }
-
-fn set3() -> (&'static str, &'static str) {
-    ("[invalid_ref], [valid_ref], [[invalid]](https://github.com), [valid](https://github.com), [*valid*](https://github.com)
-
----
-
-이거 걍 다 분리해서 testbench에 넣으셈... 그게 훨씬 나을 듯... ㅠㅠ
-
-![invalid_ref], ![valid_ref], ![[invalid]](https://github.com), ![valid](https://github.com), ![*valid*](https://github.com)
-
----
-
-[*valid ref*][valid_ref], [invalid ref][invalid_ref], ![*valid ref*][valid_ref], ![invalid ref][invalid_ref]
-
----
-
-nested links are not allowed
-
-[link [valid_ref]][valid_ref], [link [another link](https://github.com)][valid_ref], [link [another link](https://github.com)](https://github.com)
-
----
-
-collapsed links... are these used? nobody would even know it...
-
-[valid_ref][], [invalid_ref][], ![valid_ref][], ![invalid_ref][]
-
----
-
-Consecutive link ref defs without blank lines are ok, but they cannot interrupt a paragraph.
-Link ref defs are not rendered whether or not they're used.
-
-[valid_ref]: https://github.com
-[unused_ref]: https://github.com
-", "
-")
-}
