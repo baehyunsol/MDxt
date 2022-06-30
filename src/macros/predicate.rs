@@ -1,4 +1,5 @@
-use crate::utils::{get_bracket_end_index, lowercase_and_remove_spaces};
+use crate::utils::get_bracket_end_index;
+use super::normalize_macro;
 
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
@@ -8,7 +9,16 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
             None => {return None;}
             Some(end_index1) => match get_bracket_end_index(content, index + 1) {
                 Some(end_index2) if end_index2 + 1 == end_index1 && content[index + 2..end_index2].iter().all(is_valid_macro_character) => {
-                    Some(lowercase_and_remove_spaces(&content[index + 2..end_index2].to_vec()))
+                    let macro_content = normalize_macro(&content[index + 2..end_index2]);
+                    
+                    if macro_content.len() > 0 {
+                        Some(macro_content)
+                    }
+
+                    else {
+                        None
+                    }
+
                 }
                 _ => {return None;}
             }
@@ -18,6 +28,17 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
     else {
         None
+    }
+
+}
+
+pub fn check_and_parse_macro(content: &[u16], index: usize) -> Option<!> {
+
+    match read_macro(content, index) {
+        Some(macro_content) => {
+            todo!()
+        },
+        None => None
     }
 
 }

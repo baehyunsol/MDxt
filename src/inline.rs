@@ -30,9 +30,9 @@ pub enum DecorationType {
 }
 
 pub enum InlineMacro {
-    Align,
-    Color,
-    Size,
+    Align(Vec<u16>),
+    Color(Vec<u16>),
+    Size(Vec<u16>),
     SpecialCharacter(u16),
     Svg {
         name: Vec<u16>,

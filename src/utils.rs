@@ -119,10 +119,6 @@ pub fn is_alphabet(c: u16) -> bool {
     'A' as u16 <= c && c <= 'Z' as u16 || 'a' as u16 <= c && c <= 'z' as u16
 }
 
-pub fn lowercase_and_remove_spaces(content: &[u16]) -> Vec<u16> {
-    content.iter().filter(|c| **c != ' ' as u16).map(|c| lowercase(*c)).collect::<Vec<u16>>()
-}
-
 pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
     let mut result = Vec::with_capacity(content.len());
     let mut consecutive_whitespace = false;
@@ -221,12 +217,12 @@ mod tests {
 
     #[test]
     fn misc_test2() {
-        use crate::utils::{into_v16, lowercase_and_remove_spaces, remove_special_characters};
+        use crate::utils::{into_v16, remove_special_characters};
 
         let sample1 = into_v16("THIS IS BIG and this is small!");
         let sample2 = into_v16("If you find any bug, please report: XXX-XXXX, 한글입력\nnewline\ttab");
-        assert_eq!(lowercase_and_remove_spaces(&sample1), into_v16("thisisbigandthisissmall!"));
-        assert_eq!(lowercase_and_remove_spaces(&sample2), into_v16("ifyoufindanybug,pleasereport:xxx-xxxx,한글입력\nnewline\ttab"));
+        //assert_eq!(lowercase_and_remove_spaces(&sample1), into_v16("thisisbigandthisissmall!"));
+        //assert_eq!(lowercase_and_remove_spaces(&sample2), into_v16("ifyoufindanybug,pleasereport:xxx-xxxx,한글입력\nnewline\ttab"));
 
         assert_eq!(remove_special_characters(&sample1), into_v16("THISISBIGandthisissmall"));
         assert_eq!(remove_special_characters(&sample2), into_v16("IfyoufindanybugpleasereportXXXXXXX한글입력newlinetab"));

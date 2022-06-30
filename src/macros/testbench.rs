@@ -5,7 +5,7 @@ fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
     let macros = vec![
         ("[[blue]]", "blue"),
         ("[[red ]]", "red"),
-        ("[[Red_]]", "red_"),
+        ("[[Red_]]", "red"),
         ("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
@@ -16,7 +16,8 @@ fn invalid_macros() -> Vec<Vec<u16>> {
     let macros = vec![
         "[ [red]]", "[[red] ]",
         "[[[icon = github, size = 24]]",
-        "[[big!!]]"
+        "[[big!!]]",
+        "[[]]", "[[ ]]", "[[__]]"
     ];
 
     macros.iter().map(|m| into_v16(m)).collect()
