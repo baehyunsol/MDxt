@@ -1,18 +1,24 @@
 mod predicate;
+mod parse;
 
 #[cfg(test)]
 mod testbench;
 
+use crate::inline::InlineNode;
 use crate::utils::{into_v16, lowercase};
+use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 // print("\n".join([str((i, chr(i))) for i in range(128)]))
 
+lazy_static! {
+    static ref MACROS: HashMap<Vec<u16>, Macro> = Macro::get_all_macros();
+}
+
 struct Macro {
     pub name: Vec<u16>,
     macro_type: MacroType,
-    no_closing: bool,
-    no_args: bool,
+    no_closing: bool
 }
 
 enum MacroType {
@@ -35,12 +41,12 @@ impl Macro {
             Self::new_alignment("center"),
             Self::new_alignment("left"),
             Self::new_alignment("right"),
-            Self::new("box", MacroType::Box, false, true),
-            Self::new("toc", MacroType::Toc, true, true),
-            Self::new("blank", MacroType::Blank, true, true),
-            Self::new("br", MacroType::Br, true, true),
-            Self::new("char", MacroType::Char, true, false),
-            Self::new("math", MacroType::Math, false, true),
+            Self::new("box", MacroType::Box, false),
+            Self::new("toc", MacroType::Toc, true),
+            Self::new("blank", MacroType::Blank, true),
+            Self::new("br", MacroType::Br, true),
+            Self::new("char", MacroType::Char, true),
+            Self::new("math", MacroType::Math, false),
         ];
 
         let mut result = HashMap::new();
@@ -52,9 +58,9 @@ impl Macro {
         result
     }
 
-    fn new(name: &str, macro_type: MacroType, no_closing: bool, no_args: bool) -> Self {
+    fn new(name: &str, macro_type: MacroType, no_closing: bool) -> Self {
         Macro {
-            name: into_v16(name), macro_type, no_closing, no_args
+            name: into_v16(name), macro_type, no_closing
         }
     }
 
@@ -62,8 +68,7 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Color,
-            no_closing: false,
-            no_args: true
+            no_closing: false
         }
     }
 
@@ -71,8 +76,7 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Size,
-            no_closing: false,
-            no_args: true
+            no_closing: false
         }
     }
 
@@ -80,8 +84,7 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Alignment,
-            no_closing: false,
-            no_args: true
+            no_closing: false
         }
     }
 

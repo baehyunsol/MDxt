@@ -1,5 +1,6 @@
 use crate::utils::get_bracket_end_index;
-use super::normalize_macro;
+use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
+use crate::inline::InlineNode;
 
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
@@ -32,11 +33,45 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
 }
 
-pub fn check_and_parse_macro(content: &[u16], index: usize) -> Option<!> {
+pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
 
     match read_macro(content, index) {
         Some(macro_content) => {
-            todo!()
+            let macro_arguments = parse_arguments(&macro_content);
+            let macro_name = get_macro_name(&macro_arguments);
+            let macro_end_index = get_bracket_end_index(content, index).unwrap();
+
+            match MACROS.get(&macro_name) {
+                Some(macro_) => {
+
+                    if macro_.no_closing {
+                        Some((macro_.parse(&macro_arguments, &vec![]), macro_end_index))
+                    }
+
+                    else {
+                        let closing_macro = macro_.get_closing_macro();
+                        let mut curr_index = macro_end_index + 1;
+
+                        while curr_index < content.len() {
+
+                            match read_macro(content, curr_index) {
+                                Some(macro_content) if macro_content == closing_macro => {
+                                    return Some((macro_.parse(&macro_arguments, &content[macro_end_index + 1..curr_index]), get_bracket_end_index(content, curr_index).unwrap()));
+                                },
+                                _ => {}
+                            }
+
+                            curr_index += 1;
+                        }
+
+                        // the closing macro is not found
+                        None
+                    }
+
+                },
+                None => None
+            }
+
         },
         None => None
     }

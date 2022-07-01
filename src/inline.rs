@@ -34,6 +34,9 @@ pub enum InlineMacro {
     Color(Vec<u16>),
     Size(Vec<u16>),
     SpecialCharacter(u16),
+    Math(Vec<u16>),
+    Blank,
+    Br,
     Svg {
         name: Vec<u16>,
         size: u16
