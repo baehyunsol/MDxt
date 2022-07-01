@@ -34,6 +34,10 @@ impl InlineNode {
 
         while index < content.len() {
 
+            /*
+            if not special_character: continue;
+            */
+
             if is_code_span_marker_begin(content, index) {
                 index = get_code_span_marker_end_index(content, index);
                 continue;
@@ -356,8 +360,22 @@ impl InlineNode {
                 _ => {}
             }
 
-            match check_and_parse_macro_inline(content, index) {
-                Some((parsed, last_index)) => todo!(),
+            match check_and_parse_macro_inline(content, index, link_references, render_option) {
+                Some((parsed, last_index)) => {
+                    let mut result = vec![];
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    result.push(Box::new(parsed));
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], link_references, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                }
                 _ => {}
             }
 

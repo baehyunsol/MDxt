@@ -50,6 +50,7 @@ impl Macro {
             Self::new("br", MacroType::Br, true),
             Self::new("char", MacroType::Char, true),
             Self::new("math", MacroType::Math, false),
+            Self::new("icon", MacroType::Icon, true)
         ];
 
         let mut result = HashMap::new();

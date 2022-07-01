@@ -1,6 +1,8 @@
-use crate::utils::get_bracket_end_index;
 use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
+use crate::utils::get_bracket_end_index;
 use crate::inline::InlineNode;
+use crate::render::render_option::RenderOption;
+use std::collections::HashMap;
 
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
@@ -33,7 +35,7 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
 }
 
-pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
+pub fn check_and_parse_macro_inline(content: &[u16], index: usize, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
 
     match read_macro(content, index) {
         Some(macro_content) => {
@@ -45,7 +47,7 @@ pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(In
                 Some(macro_) if macro_.is_valid(&macro_arguments) => {
 
                     if macro_.no_closing {
-                        Some((macro_.parse(&macro_arguments, &vec![]), macro_end_index))
+                        Some((macro_.parse(&macro_arguments, &vec![], link_references, render_option), macro_end_index))
                     }
 
                     else {
@@ -56,7 +58,7 @@ pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(In
 
                             match read_macro(content, curr_index) {
                                 Some(macro_content) if macro_content == closing_macro => {
-                                    return Some((macro_.parse(&macro_arguments, &content[macro_end_index + 1..curr_index]), get_bracket_end_index(content, curr_index).unwrap()));
+                                    return Some((macro_.parse(&macro_arguments, &content[macro_end_index + 1..curr_index], link_references, render_option), get_bracket_end_index(content, curr_index).unwrap()));
                                 },
                                 _ => {}
                             }

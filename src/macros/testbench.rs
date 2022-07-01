@@ -1,6 +1,8 @@
+use super::predicate::{read_macro, check_and_parse_macro_inline};
 use crate::utils::into_v16;
 use crate::inline::InlineNode;
-use super::predicate::{read_macro, check_and_parse_macro_inline};
+use crate::render::render_option::RenderOption;
+use std::collections::HashMap;
 
 fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
     let macros = vec![
@@ -8,6 +10,7 @@ fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
         ("[[blue]] [[/blue]]", "blue"),
         ("[[red ]] ... [[/ red]]", "red"),
         ("[[Red_]] ... [[/Red]]", "red"),
+        ("[[char = 44032]]", "char=44032"),
         ("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
@@ -34,13 +37,21 @@ fn macro_test() {
     let valid_cases = valid.iter().map(|m| read_macro(&m.0, 0).unwrap()).collect::<Vec<Vec<u16>>>();
     let valid_answers = valid.iter().map(|m| m.1.clone()).collect::<Vec<Vec<u16>>>();
 
-    assert_eq!(valid_cases, valid_answers);
+    if valid_cases != valid_answers {
+        panic!(
+            "{:?}\n{:?}",
+            valid_cases.iter().map(|s| String::from_utf16(s).unwrap()).collect::<Vec<String>>(),
+            valid_answers.iter().map(|s| String::from_utf16(s).unwrap()).collect::<Vec<String>>(),
+        );
+    }
 
     let invalid_cases = invalid.iter().map(|m| read_macro(m, 0)).collect::<Vec<Option<Vec<u16>>>>();
 
-    assert!(invalid_cases.iter().all(|i| i.is_none()));
+    if !invalid_cases.iter().all(|i| i.is_none()) {
+        panic!("{:?}", invalid_cases);
+    }
 
-    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0)).collect::<Vec<Option<(InlineNode, usize)>>>();
+    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &HashMap::new(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
 
     for (index, parsed) in valid_cases_parsed.iter().enumerate() {
 

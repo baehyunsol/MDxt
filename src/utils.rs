@@ -178,6 +178,34 @@ pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
 
 }
 
+pub fn to_int(string: &[u16]) -> Option<u32> {
+
+    if string.len() == 0 {
+        return None;
+    }
+
+    let mut result = 0;
+    let size_limit = u32::MAX / 10 - 1;
+
+    for c in string.iter() {
+
+        if result > size_limit {
+            // instead of raising an error, it returns None
+            // that's because rendering a markdown document never has to fail!
+            return None;
+        }
+
+        if *c < '0' as u16 || *c > '9' as u16 {
+            return None;
+        }
+
+        result *= 10;
+        result += *c as u32 - 48;
+    }
+
+    Some(result)
+}
+
 #[cfg(test)]
 mod tests {
 

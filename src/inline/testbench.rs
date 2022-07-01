@@ -9,6 +9,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*"),
         ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>"),
         ("^^super^^", "^<sup>super</sup>^"),
+        ("", ""), (" ", " "),
         ("^^", "^^"),
         ("^^^", "^^^"),
         ("^\\^^", "<sup>&#94;</sup>"),
@@ -21,7 +22,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("***", "***"),
         ("*\\**", "<em>&#42;</em>"),
         ("****", "****"),
-        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>"),
+
         ("****abcde****", "*<em><strong>abcde</strong></em>*"),
         ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>"),
         ("*abc*", "<em>abc</em>"),
@@ -43,17 +44,21 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>"),
         ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>"),
         ("*abc\\*", "*abc&#42;"),
+
         ("`abc\\` \\`abc`", "<code class=\"short\">abc&#96; &#96;abc</code>"),
         ("`a``b`", "<code class=\"short\">a``b</code>"),
         ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "<em>italic</em> <strong>bold</strong> <u>underline</u> <sub>subscript</sub> <sup>superscript</sup> <code class=\"short\">codespan</code> <del>deletion</del>"),
+        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>"),
         ("~_~~del_and_underline~~_~", "<u><del>del_and_underline</del></u>"),
         ("~~~_del_and_underline_~~~", "<del><u>del_and_underline</u></del>"),
         ("~~~del_and_subscript~~~", "<del><sub>del_and_subscript</sub></del>"),
         ("~~_underline_~~", "~<u>underline</u>~"),
         ("~~_~underline_~~", "~<u>~underline</u>~"),
         ("~_no_underline _~", "<sub>_no_underline _</sub>"),
-        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "WIP"),
-        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]")
+
+        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>"),
+        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
+        ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]")
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

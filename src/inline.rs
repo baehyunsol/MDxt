@@ -30,14 +30,16 @@ pub enum DecorationType {
 }
 
 pub enum InlineMacro {
-    Align(Vec<u16>),
+    Alignment(Vec<u16>),
     Color(Vec<u16>),
     Size(Vec<u16>),
     Char(u16),
     Math(Vec<u16>),
+    Box,
+    Toc,
     Blank,
     Br,
-    Svg {
+    Icon {
         name: Vec<u16>,
         size: u16
     }
@@ -104,7 +106,38 @@ impl InlineNode {
                     content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sup>")
                 ].concat(),
-                DecorationType::Macro(_) => todo!()
+                DecorationType::Macro(macro_) => match macro_ {
+                    InlineMacro::Color(color) => vec![
+                        into_v16("<div class=\"color_"),
+                        color.clone(),
+                        into_v16("\">"),
+                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</div>")
+                    ].concat(),
+                    InlineMacro::Size(size) => vec![
+                        into_v16("<div class=\"size_"),
+                        size.clone(),
+                        into_v16("\">"),
+                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</div>")
+                    ].concat(),
+                    InlineMacro::Alignment(alignment) => vec![
+                        into_v16("<div class=\"align_"),
+                        alignment.clone(),
+                        into_v16("\">"),
+                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</div>")
+                    ].concat(),
+                    InlineMacro::Box => vec![
+                        into_v16("<div class=\"box\">"),
+                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</div>")
+                    ].concat(),
+                    InlineMacro::Char(num) => into_v16(&format!("&#{};", num)),
+                    InlineMacro::Br => into_v16("<br/>"),
+                    InlineMacro::Blank => into_v16("&nbsp;"),
+                    InlineMacro::Toc | InlineMacro::Math(_) | InlineMacro::Icon { .. } => todo!()
+                }
             }
         }
     }
@@ -173,7 +206,7 @@ impl InlineNode {
         }
     }
 
-    fn to_vec(self) -> Vec<Box<InlineNode>> {
+    pub fn to_vec(self) -> Vec<Box<InlineNode>> {
 
         match self {
             InlineNode::Raw(_) => vec![Box::new(self)],
