@@ -1,4 +1,5 @@
 use crate::utils::into_v16;
+pub use crate::inline::parse::{escape_code_spans, undo_code_span_escapes};
 
 /*
 `<`s are converted to `&lt` and `&gt`, always!

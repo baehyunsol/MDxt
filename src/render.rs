@@ -14,6 +14,15 @@ pub fn render(content: &String, mut options: RenderOption) -> RenderResult {
     u16_content = escape_htmls(&u16_content);
 
     let lines = code_to_lines(&u16_content);
-    let ast = AST::from_lines(lines, &mut options);
+    let mut ast = AST::from_lines(lines, &mut options);
+
+    ast.parse_inlines(&mut options);
     todo!()
+
+    /*
+    #[cfg(test)]
+    if result.iter().any(|c| c == BACKSLASH_ESCAPE_MARKER, CODESPAN_MARKER, ...) {
+        panic!()
+    }
+    */
 }

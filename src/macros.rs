@@ -1,5 +1,6 @@
-mod predicate;
+pub mod predicate;
 mod parse;
+mod validate;
 
 #[cfg(test)]
 mod testbench;
@@ -15,12 +16,14 @@ lazy_static! {
     static ref MACROS: HashMap<Vec<u16>, Macro> = Macro::get_all_macros();
 }
 
-struct Macro {
+#[derive(Debug)]
+pub struct Macro {
     pub name: Vec<u16>,
     macro_type: MacroType,
     no_closing: bool
 }
 
+#[derive(Debug)]
 enum MacroType {
     Color, Size, Alignment,
     Box, Toc, Blank, Br, Char, Icon, Math
@@ -90,9 +93,8 @@ impl Macro {
 
     fn get_closing_macro(&self) -> Vec<u16> {
         vec![
-            into_v16("[[/"),
-            self.name.clone(),
-            into_v16("]]")
+            into_v16("/"),
+            self.name.clone()
         ].concat()
     }
 

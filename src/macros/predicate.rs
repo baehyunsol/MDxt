@@ -42,7 +42,7 @@ pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(In
             let macro_end_index = get_bracket_end_index(content, index).unwrap();
 
             match MACROS.get(&macro_name) {
-                Some(macro_) => {
+                Some(macro_) if macro_.is_valid(&macro_arguments) => {
 
                     if macro_.no_closing {
                         Some((macro_.parse(&macro_arguments, &vec![]), macro_end_index))
@@ -69,7 +69,7 @@ pub fn check_and_parse_macro_inline(content: &[u16], index: usize) -> Option<(In
                     }
 
                 },
-                None => None
+                _ => None
             }
 
         },

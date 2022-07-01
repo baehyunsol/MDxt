@@ -8,14 +8,26 @@ use crate::link::predicate::{
 };
 use crate::link::normalize_link;
 use crate::render::render_option::RenderOption;
+use crate::macros::predicate::check_and_parse_macro_inline;
 use std::collections::HashMap;
 
 impl InlineNode {
 
+    pub fn parse_raw(&mut self, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) {
+
+        match self {
+            InlineNode::Raw(content) => {
+                *self = Self::from_md(&content, link_references, render_option);
+            }
+            _ => panic!("the program's logic went wrong!")
+        }
+
+    }
+
     pub fn from_md(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> Self {
 
         // it has to be rendered before other inline elements
-        let content = &parse_code_spans(content);
+        let content = &escape_code_spans(content);
 
         let mut index = 0;
         let mut result: Vec<Box<InlineNode>> = vec![];
@@ -243,7 +255,7 @@ impl InlineNode {
 
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
-                            description: link_text,
+                            description: undo_code_span_escapes(&link_text),
                             address: (render_option.link_handler)(&link_destination)
                         }));
                     }
@@ -283,7 +295,7 @@ impl InlineNode {
 
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
-                            description: link_text,
+                            description: undo_code_span_escapes(&link_text),
                             address: (render_option.link_handler)(&link_destination)
                         }));
                     }
@@ -323,7 +335,7 @@ impl InlineNode {
 
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
-                            description: link_text,
+                            description: undo_code_span_escapes(&link_text),
                             address: (render_option.link_handler)(&link_destination)
                         }));
                     }
@@ -341,6 +353,11 @@ impl InlineNode {
 
                     return InlineNode::Complex(result).render_code_spans();
                 },
+                _ => {}
+            }
+
+            match check_and_parse_macro_inline(content, index) {
+                Some((parsed, last_index)) => todo!(),
                 _ => {}
             }
 
@@ -410,7 +427,7 @@ impl InlineNode {
 
 }
 
-fn parse_code_spans(content: &[u16]) -> Vec<u16> {
+pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
@@ -443,8 +460,34 @@ fn parse_code_spans(content: &[u16]) -> Vec<u16> {
     result
 }
 
+pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if is_code_span_marker_begin(content, index) || is_code_span_marker_end(content, index) {
+            result.push('`' as u16);
+            index += 1;
+        }
+
+        else {
+            result.push(content[index]);
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
 pub fn is_code_span_marker_begin(content: &[u16], index: usize) -> bool {
     content[index] == INLINE_CODESPAN_MARKER1 && index + 1 < content.len() && content[index + 1] == INLINE_CODESPAN_MARKER2
+}
+
+pub fn is_code_span_marker_end(content: &[u16], index: usize) -> bool {
+    content[index] == INLINE_CODESPAN_MARKER3 && index + 1 < content.len() && content[index + 1] == INLINE_CODESPAN_MARKER4
 }
 
 pub fn get_code_span_marker_end_index(content: &[u16], mut index: usize) -> usize {
@@ -454,4 +497,29 @@ pub fn get_code_span_marker_end_index(content: &[u16], mut index: usize) -> usiz
     }
 
     index
+}
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn code_span_escape_test() {
+        use super::{escape_code_spans, undo_code_span_escapes};
+        use crate::utils::into_v16;
+
+        let cases = vec![
+            "``", "`a`", "`codespan`",
+            "```", "`a`a", "codespan",
+            "*`*", "`*`*", "`*`*`", "",
+            "*`*`*`", "*`*`*`*", "`*`*`*`*", "`*`*`*`*`"
+        ];
+
+        let cases = cases.iter().map(|s| into_v16(s)).collect::<Vec<Vec<u16>>>();
+
+        for case in cases.iter() {
+            assert_eq!(case, &undo_code_span_escapes(&escape_code_spans(case)));
+        }
+
+    }
+
 }

@@ -1,11 +1,13 @@
 use crate::utils::into_v16;
-use super::predicate::read_macro;
+use crate::inline::InlineNode;
+use super::predicate::{read_macro, check_and_parse_macro_inline};
 
 fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
     let macros = vec![
-        ("[[blue]]", "blue"),
-        ("[[red ]]", "red"),
-        ("[[Red_]]", "red"),
+        ("[[br]]", "br"),
+        ("[[blue]] [[/blue]]", "blue"),
+        ("[[red ]] ... [[/ red]]", "red"),
+        ("[[Red_]] ... [[/Red]]", "red"),
         ("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
@@ -37,4 +39,15 @@ fn macro_test() {
     let invalid_cases = invalid.iter().map(|m| read_macro(m, 0)).collect::<Vec<Option<Vec<u16>>>>();
 
     assert!(invalid_cases.iter().all(|i| i.is_none()));
+
+    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0)).collect::<Vec<Option<(InlineNode, usize)>>>();
+
+    for (index, parsed) in valid_cases_parsed.iter().enumerate() {
+
+        if parsed.is_none() {
+            panic!("failed to parse {:?}", valid[index]);
+        }
+
+    }
+
 }

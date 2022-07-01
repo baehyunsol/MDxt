@@ -2,14 +2,15 @@ use crate::utils::*;
 
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
+use crate::inline::InlineNode;
 
 pub enum Node {
     Paragraph {
-        content: Vec<u16>
+        content: InlineNode
     },
     Header {
         level: usize,
-        content: Vec<u16>
+        content: InlineNode
     },
     FencedCode {
         language: String,
@@ -22,12 +23,12 @@ pub enum Node {
 impl Node {
 
     pub fn new_header(level: usize, content: Vec<u16>) -> Node {
-        Node::Header { level, content }
+        Node::Header { level, content: InlineNode::Raw(content) }
     }
 
     pub fn new_paragraph(lines: &Vec<Line>) -> Node {
         Node::Paragraph {
-            content: lines.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
+            content: InlineNode::Raw(lines.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]))
         }
     }
 

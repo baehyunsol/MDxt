@@ -2,6 +2,7 @@ pub mod line;
 mod predicate;
 mod node;
 
+use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
 use crate::link::{predicate::read_link_reference, normalize_link};
 use line::Line;
@@ -34,7 +35,7 @@ pub struct ASTConfig {
 pub struct AST {
     config: ASTConfig,
     headers: Vec<(usize, Vec<u16>)>,  // (level, content)
-    link_refs: HashMap<Vec<u16>, Vec<u16>>,  // (link_label, link_destination)
+    link_references: HashMap<Vec<u16>, Vec<u16>>,  // (link_label, link_destination)
     nodes: Vec<Node>
 }
 
@@ -44,7 +45,7 @@ impl AST {
         let mut curr_ast = Vec::with_capacity(lines.len());
         let mut curr_node = vec![];
         let mut curr_node_type = NodeType::None;
-        let mut link_refs = HashMap::new();
+        let mut link_references = HashMap::new();
         let mut headers = vec![];
 
         for line in lines.iter() {
@@ -81,7 +82,7 @@ impl AST {
 
             else if line.is_link_reference_definition() {
                 let (link_label, link_destination) = read_link_reference(&line.content);
-                link_refs.insert(normalize_link(&link_label), (options.link_handler)(&link_destination));
+                link_references.insert(normalize_link(&link_label), (options.link_handler)(&link_destination));
             }
 
             else {
@@ -96,6 +97,16 @@ impl AST {
         }
 
         todo!()
+    }
+
+    pub fn parse_inlines(&mut self, render_option: &mut RenderOption) {
+        self.nodes.iter_mut().for_each(
+            |node| match node {
+                Node::Paragraph { content } => {content.parse_raw(&self.link_references, render_option);},
+                Node::Header { content, .. } => {content.parse_raw(&self.link_references, render_option);},
+                Node::Empty | Node::FencedCode {..} => {}
+            }
+        )
     }
 
 }

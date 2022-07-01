@@ -1,5 +1,5 @@
 mod predicate;
-mod parse;
+pub mod parse;
 
 #[cfg(test)]
 mod testbench;
@@ -33,7 +33,7 @@ pub enum InlineMacro {
     Align(Vec<u16>),
     Color(Vec<u16>),
     Size(Vec<u16>),
-    SpecialCharacter(u16),
+    Char(u16),
     Math(Vec<u16>),
     Blank,
     Br,
