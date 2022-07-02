@@ -69,6 +69,7 @@ fn link_render_test() {
     let test_cases = samples();
     let mut failures = vec![];
     let mut link_references = HashMap::new();
+    let mut footnote_references = HashMap::new();
     let mut render_option = RenderOption::default();
 
     link_references.insert(
@@ -79,6 +80,7 @@ fn link_render_test() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
             &link_references,
+            &footnote_references,
             &mut render_option).to_html()
         );
 

@@ -41,7 +41,7 @@ impl AST {
 
     pub fn from_lines(lines: Vec<Line>, options: &RenderOption) -> AST {
         let mut curr_ast = Vec::with_capacity(lines.len());
-        let mut curr_node = vec![];
+        let mut curr_nodes = vec![];
         let mut curr_node_type = NodeType::None;
         let mut link_references = HashMap::new();
         let mut footnote_references = HashMap::new();
@@ -52,29 +52,31 @@ impl AST {
             if curr_node_type.is_code_fence() {
 
                 if line.is_code_fence() {
-                    add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
+                    add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
                 }
 
                 else {
-                    curr_node.push(line.clone());
+                    curr_nodes.push(line.clone());
                 }
 
                 continue;
             }
 
             if line.is_header() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
+                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
+
                 let (level, content) = parse_header(line);
                 headers.push((level, content.clone()));
                 curr_ast.push(Node::new_header(level, content));
             }
 
             else if line.is_empty() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
+                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
             }
 
             else if line.is_code_fence() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_node, &mut curr_node_type);
+                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
+
                 let (language, line_num) = read_code_fence_info(line);
                 curr_node_type = NodeType::CodeFence { language, line_num };
             }
@@ -93,7 +95,7 @@ impl AST {
             }
 
             else {
-                curr_node.push(line.clone());
+                curr_nodes.push(line.clone());
 
                 if curr_node_type == NodeType::None {
                     curr_node_type = NodeType::Paragraph;
@@ -109,8 +111,8 @@ impl AST {
     pub fn parse_inlines(&mut self, render_option: &RenderOption) {
         self.nodes.iter_mut().for_each(
             |node| match node {
-                Node::Paragraph { content } => {content.parse_raw(&self.link_references, render_option);},
-                Node::Header { content, .. } => {content.parse_raw(&self.link_references, render_option);},
+                Node::Paragraph { content } => {content.parse_raw(&self.link_references, &self.footnote_references, render_option);},
+                Node::Header { content, .. } => {content.parse_raw(&self.link_references, &self.footnote_references, render_option);},
                 Node::Empty | Node::FencedCode {..} => {}
             }
         )
@@ -118,21 +120,21 @@ impl AST {
 
 }
 
-fn add_curr_node_to_ast(curr_ast: &mut Vec<Node>, curr_node: &mut Vec<Line>, curr_node_type: &mut NodeType) {
+fn add_curr_node_to_ast(curr_ast: &mut Vec<Node>, curr_nodes: &mut Vec<Line>, curr_node_type: &mut NodeType) {
 
-    if curr_node.len() == 0 {
+    if curr_nodes.len() == 0 {
         return;
     }
 
     match curr_node_type {
         NodeType::Paragraph => {
-            curr_ast.push(Node::new_paragraph(curr_node));
-            *curr_node = vec![];
+            curr_ast.push(Node::new_paragraph(curr_nodes));
+            *curr_nodes = vec![];
             *curr_node_type = NodeType::None;
         }
         NodeType::CodeFence { language, line_num } => {
-            curr_ast.push(Node::new_code_fence(curr_node, language.clone(), *line_num));
-            *curr_node = vec![];
+            curr_ast.push(Node::new_code_fence(curr_nodes, language.clone(), *line_num));
+            *curr_nodes = vec![];
             *curr_node_type = NodeType::None;
         },
         NodeType::None => {

@@ -10,6 +10,7 @@ pub enum InlineNode {
     Raw(Vec<u16>),
     Complex(Vec<Box<InlineNode>>),
     CodeSpan(Vec<u16>),
+    Footnote((usize, Vec<u16>)),  // index, label
     Link {
         text: Vec<Box<InlineNode>>,
         destination: Vec<u16>
@@ -56,6 +57,12 @@ impl InlineNode {
                 content.clone(),
                 into_v16("</code>")
             ].concat(),
+
+            InlineNode::Footnote((index, _)) => into_v16(&format!(
+                "<sup><a href=\"#footnote_cite{}\">{}</a></sup>",
+                index,
+                index
+            )),
 
             InlineNode::Complex(content) => content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
 
@@ -150,6 +157,12 @@ impl InlineNode {
                 into_v16("`"),
                 content.clone(),
                 into_v16("`")
+            ].concat(),
+
+            InlineNode::Footnote((_, label)) => vec![
+                into_v16("["),
+                label.clone(),
+                into_v16("]")
             ].concat(),
 
             InlineNode::Complex(content) => content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),

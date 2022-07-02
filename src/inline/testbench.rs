@@ -74,12 +74,14 @@ fn inline_render_test() {
     let test_cases = samples();
     let mut failures = vec![];
     let link_references = HashMap::new();
+    let footnote_references = HashMap::new();
     let mut render_option = RenderOption::default();
 
     for (case, answer, _) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
             &link_references,
+            &footnote_references,
             &mut render_option).to_html()
         );
 
@@ -110,6 +112,7 @@ fn inline_inversion_test() {
 
     let mut failures = vec![];
     let link_references = HashMap::new();
+    let footnote_references = HashMap::new();
     let mut render_option = RenderOption::default();
 
     for (case, _, invertible) in samples().iter() {
@@ -118,7 +121,12 @@ fn inline_inversion_test() {
             continue;
         }
 
-        let inverted = InlineNode::from_md(&into_v16(case), &link_references, &mut render_option).to_md();
+        let inverted = InlineNode::from_md(
+            &into_v16(case),
+            &link_references,
+            &footnote_references,
+            &mut render_option
+        ).to_md();
 
         if inverted != into_v16(case) {
             failures.push(format!(

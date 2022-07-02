@@ -65,6 +65,7 @@ AST 안에 render_option이라는 field를 만들자. 그리고 parse든 render�
 - footnote랑 toc 정보도 parse 함수한테 넘겨야하는데, 그러려면 걍 AST를 통째로 넘기는게 낫지...ㅎㅎ
 - 근데 inline node가 AST 안에 들어있는데 `&mut InlineNode`한테 `AST`를 넘기는게 되나?
 
-그리고 link_handler가 지금 `FnMut`으로 돼 있지? 그래서 `&render_option` 안되고 `&mut render_option`만 되는 거 같은데, `FnMut`을 그냥 `Fn`으로 고쳐봐.
-
 파일들 `mod.rs`로 바꿔서 폴더 안에 넣자..!
+
+만약에 누가 header에 `[[toc]]`를 넣으면 어떻게 되는 거임..??
+- 걍 header 안에 macro는 못 넣게 하자!

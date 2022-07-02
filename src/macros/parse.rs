@@ -6,7 +6,14 @@ use std::collections::HashMap;
 
 impl Macro {
 
-    pub fn parse(&self, arguments: &Vec<Vec<Vec<u16>>>, content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &RenderOption) -> InlineNode {
+    pub fn parse(
+        &self,
+        arguments: &Vec<Vec<Vec<u16>>>,
+        content: &[u16],
+        link_references: &HashMap<Vec<u16>, Vec<u16>>,
+        footnote_references: &HashMap<Vec<u16>, (usize, InlineNode)>,
+        render_option: &RenderOption
+    ) -> InlineNode {
 
         match self.macro_type {
 
@@ -27,22 +34,22 @@ impl Macro {
 
             MacroType::Color => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Color(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, link_references, render_option).to_vec()
+                content: InlineNode::from_md(content, link_references, footnote_references, render_option).to_vec()
             },
 
             MacroType::Size => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Size(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, link_references, render_option).to_vec()
+                content: InlineNode::from_md(content, link_references, footnote_references, render_option).to_vec()
             },
 
             MacroType::Alignment => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Alignment(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, link_references, render_option).to_vec()
+                content: InlineNode::from_md(content, link_references, footnote_references, render_option).to_vec()
             },
 
             MacroType::Box => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Box),
-                content: InlineNode::from_md(content, link_references, render_option).to_vec()
+                content: InlineNode::from_md(content, link_references, footnote_references, render_option).to_vec()
             },
 
             MacroType::Toc => InlineNode::Decoration {
