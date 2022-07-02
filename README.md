@@ -52,3 +52,17 @@ The actual colors may differ depending on css files you use.
 ## Backslash Escapes
 
 Unlike gfm, backslash escapes work everywhere, even inside code blocks!
+
+## TODO
+
+normalize_어쩌구저쩌구, link_handler 등에 특수문자를 넣어서 저 함수를 여러번 거치는 친구들이 있는지 검사
+
+ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, normalize 함수에 들어온 input에 0x8000이 포함돼 있으면 에러 던지기
+
+---
+
+AST 안에 render_option이라는 field를 만들자. 그리고 parse든 render든 인수로 `&AST`를 받게 하자. 왜냐면 parse나 render가 인수로 받아야할 게 계속 늘어날텐데, 그렇다고 함수의 parameter를 계속 늘리면 너무 코드가 더러워지잖아? 그냥 AST에 싹 다 집어넣고 `&AST`만 넘기자..!
+- footnote랑 toc 정보도 parse 함수한테 넘겨야하는데, 그러려면 걍 AST를 통째로 넘기는게 낫지...ㅎㅎ
+- 근데 inline node가 AST 안에 들어있는데 `&mut InlineNode`한테 `AST`를 넘기는게 되나?
+
+그리고 link_handler가 지금 `FnMut`으로 돼 있지? 그래서 `&render_option` 안되고 `&mut render_option`만 되는 거 같은데, `FnMut`을 그냥 `Fn`으로 고쳐봐.

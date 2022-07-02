@@ -191,7 +191,7 @@ pub fn to_int(string: &[u16]) -> Option<u32> {
 
         if result > size_limit {
             // instead of raising an error, it returns None
-            // that's because rendering a markdown document never has to fail!
+            // that's because rendering a markdown document should not fail!
             return None;
         }
 

@@ -106,7 +106,7 @@ impl InlineNode {
                     content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sup>")
                 ].concat(),
-                DecorationType::Macro(macro_) => match macro_ {
+                DecorationType::Macro(macro_type) => match macro_type {
                     InlineMacro::Color(color) => vec![
                         into_v16("<div class=\"color_"),
                         color.clone(),
@@ -201,7 +201,32 @@ impl InlineNode {
                     content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("^")
                 ].concat(),
-                DecorationType::Macro(_) => todo!()
+                DecorationType::Macro(macro_type) => match macro_type {
+                    InlineMacro::Color(name) | InlineMacro::Size(name) | InlineMacro::Alignment(name) => vec![
+                        into_v16("[["),
+                        name.clone(),
+                        into_v16("]]"),
+                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("[[/"),
+                        name.clone(),
+                        into_v16("]]")
+                    ].concat(),
+                    InlineMacro::Box => vec![
+                        into_v16("[[box]]"),
+                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("[[/box]]"),
+                    ].concat(),
+                    InlineMacro::Math(content) => vec![
+                        into_v16("[[math]]"),
+                        content.clone(),
+                        into_v16("[[/math]]"),
+                    ].concat(),
+                    InlineMacro::Char(num) => into_v16(&format!("[[char={}]]", num)),
+                    InlineMacro::Br => into_v16("[[br]]"),
+                    InlineMacro::Blank => into_v16("[[blank]]"),
+                    InlineMacro::Toc => into_v16("[[toc]]"),
+                    InlineMacro::Icon { .. } => todo!()
+                }
             }
         }
     }

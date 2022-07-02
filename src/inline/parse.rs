@@ -34,12 +34,17 @@ impl InlineNode {
 
         while index < content.len() {
 
-            /*
-            if not special_character: continue;
-            */
-
             if is_code_span_marker_begin(content, index) {
                 index = get_code_span_marker_end_index(content, index);
+                continue;
+            }
+
+            // it continues if the current character is not a special character
+            if content[index] < '*' as u16 ||
+            ('*' as u16) < content[index] && content[index] < '[' as u16 ||
+            ('`' as u16) < content[index] && content[index] < '~' as u16 ||
+            content[index] > '~' as u16 {
+                index += 1;
                 continue;
             }
 

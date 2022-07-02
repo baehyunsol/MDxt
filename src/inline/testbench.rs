@@ -4,64 +4,68 @@ use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use std::collections::HashMap;
 
-fn samples() -> Vec<(String, String)> {  // (test_case, answer)
+fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible)
     let result = vec![
-        ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*"),
-        ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>"),
-        ("^^super^^", "^<sup>super</sup>^"),
-        ("", ""), (" ", " "),
-        ("^^", "^^"),
-        ("^^^", "^^^"),
-        ("^\\^^", "<sup>&#94;</sup>"),
-        ("^^^^", "^^^^"),
-        ("~~", "~~"),
-        ("~~~", "~~~"),
-        ("~\\~~", "<sub>&#126;</sub>"),
-        ("~~~~", "~~~~"),
-        ("**", "**"),
-        ("***", "***"),
-        ("*\\**", "<em>&#42;</em>"),
-        ("****", "****"),
+        ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*", true),
+        ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>", true),
+        ("^^super^^", "^<sup>super</sup>^", true),
+        ("", "", true), (" ", " ", true),
+        ("^^", "^^", true),
+        ("^^^", "^^^", true),
+        ("^\\^^", "<sup>&#94;</sup>", true),
+        ("^^^^", "^^^^", true),
+        ("~~", "~~", true),
+        ("~~~", "~~~", true),
+        ("~\\~~", "<sub>&#126;</sub>", true),
+        ("~~~~", "~~~~", true),
+        ("**", "**", true),
+        ("***", "***", true),
+        ("*\\**", "<em>&#42;</em>", true),
+        ("****", "****", true),
 
-        ("****abcde****", "*<em><strong>abcde</strong></em>*"),
-        ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>"),
-        ("*abc*", "<em>abc</em>"),
-        ("*abc**", "*abc**"),
-        ("***abc**", "*<strong>abc</strong>"),
-        ("****abc***", "*<em><strong>abc</strong></em>"),
-        ("**abc***", "<strong>abc</strong>*"),
-        ("*abc *", "*abc *"),
-        ("*abc**def**ghi*", "<em>abc<strong>def</strong>ghi</em>"),
-        ("*abc **def** ghi*", "<em>abc <strong>def</strong> ghi</em>"),
-        ("*abc ** def ** ghi*", "<em>abc ** def ** ghi</em>"),
-        ("*abc*def*", "<em>abc</em>def*"),
-        ("*abc * def*", "<em>abc * def</em>"),
-        ("*abc ** def*", "<em>abc ** def</em>"),
-        ("**abc*def*ghi**", "<strong>abc<em>def</em>ghi</strong>"),
-        ("*abc**def*ghi**", "<em>abc**def</em>ghi**"),
-        ("*abc~~abcd~~abc*", "<em>abc<del>abcd</del>abc</em>"),
-        ("*abc~~abcd*abc~~", "<em>abc~~abcd</em>abc~~"),
-        ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>"),
-        ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>"),
-        ("*abc\\*", "*abc&#42;"),
+        ("****abcde****", "*<em><strong>abcde</strong></em>*", true),
+        ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>", true),
+        ("*abc*", "<em>abc</em>", true),
+        ("*abc**", "*abc**", true),
+        ("***abc**", "*<strong>abc</strong>", true),
+        ("****abc***", "*<em><strong>abc</strong></em>", true),
+        ("**abc***", "<strong>abc</strong>*", true),
+        ("*abc *", "*abc *", true),
+        ("*abc**def**ghi*", "<em>abc<strong>def</strong>ghi</em>", true),
+        ("*abc **def** ghi*", "<em>abc <strong>def</strong> ghi</em>", true),
+        ("*abc ** def ** ghi*", "<em>abc ** def ** ghi</em>", true),
+        ("*abc*def*", "<em>abc</em>def*", true),
+        ("*abc * def*", "<em>abc * def</em>", true),
+        ("*abc ** def*", "<em>abc ** def</em>", true),
+        ("**abc*def*ghi**", "<strong>abc<em>def</em>ghi</strong>", true),
+        ("*abc**def*ghi**", "<em>abc**def</em>ghi**", true),
+        ("*abc~~abcd~~abc*", "<em>abc<del>abcd</del>abc</em>", true),
+        ("*abc~~abcd*abc~~", "<em>abc~~abcd</em>abc~~", true),
+        ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>", true),
+        ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>", true),
+        ("*abc\\*", "*abc&#42;", true),
 
-        ("`abc\\` \\`abc`", "<code class=\"short\">abc&#96; &#96;abc</code>"),
-        ("`a``b`", "<code class=\"short\">a``b</code>"),
-        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "<em>italic</em> <strong>bold</strong> <u>underline</u> <sub>subscript</sub> <sup>superscript</sup> <code class=\"short\">codespan</code> <del>deletion</del>"),
-        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>"),
-        ("~_~~del_and_underline~~_~", "<u><del>del_and_underline</del></u>"),
-        ("~~~_del_and_underline_~~~", "<del><u>del_and_underline</u></del>"),
-        ("~~~del_and_subscript~~~", "<del><sub>del_and_subscript</sub></del>"),
-        ("~~_underline_~~", "~<u>underline</u>~"),
-        ("~~_~underline_~~", "~<u>~underline</u>~"),
-        ("~_no_underline _~", "<sub>_no_underline _</sub>"),
+        ("`abc\\` \\`abc`", "<code class=\"short\">abc&#96; &#96;abc</code>", true),
+        ("`a``b`", "<code class=\"short\">a``b</code>", true),
+        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "<em>italic</em> <strong>bold</strong> <u>underline</u> <sub>subscript</sub> <sup>superscript</sup> <code class=\"short\">codespan</code> <del>deletion</del>", true),
+        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>", true),
+        ("~_~~del_and_underline~~_~", "<u><del>del_and_underline</del></u>", true),
+        ("~~~_del_and_underline_~~~", "<del><u>del_and_underline</u></del>", true),
+        ("~~~del_and_subscript~~~", "<del><sub>del_and_subscript</sub></del>", true),
+        ("~~_underline_~~", "~<u>underline</u>~", true),
+        ("~~_~underline_~~", "~<u>~underline</u>~", true),
+        ("~_no_underline _~", "<sub>_no_underline _</sub>", true),
 
-        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>"),
-        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
-        ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]")
+        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>", true),
+        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]", true),
+        ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
+        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>", true),
+        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true),
+        //("[[math]] 3*4*0.15 = cfrac{9}{5} [[/math]]", "", true),
+        //("[[math]]`a` + `b`[[/math]]", "WIP", true)
     ];
 
-    result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
+    result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
 }
 
 #[test]
@@ -72,7 +76,7 @@ fn inline_render_test() {
     let link_references = HashMap::new();
     let mut render_option = RenderOption::default();
 
-    for (case, answer) in test_cases.iter() {
+    for (case, answer, _) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
             &link_references,
@@ -108,7 +112,12 @@ fn inline_inversion_test() {
     let link_references = HashMap::new();
     let mut render_option = RenderOption::default();
 
-    for (case, _) in samples().iter() {
+    for (case, _, invertible) in samples().iter() {
+
+        if !invertible {
+            continue;
+        }
+
         let inverted = InlineNode::from_md(&into_v16(case), &link_references, &mut render_option).to_md();
 
         if inverted != into_v16(case) {
