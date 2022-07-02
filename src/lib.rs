@@ -5,6 +5,7 @@ mod inline;
 mod escape;
 mod link;
 mod macros;
+mod footnote;
 
 #[cfg(test)]
 mod testbench;

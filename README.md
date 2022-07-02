@@ -66,3 +66,5 @@ AST 안에 render_option이라는 field를 만들자. 그리고 parse든 render�
 - 근데 inline node가 AST 안에 들어있는데 `&mut InlineNode`한테 `AST`를 넘기는게 되나?
 
 그리고 link_handler가 지금 `FnMut`으로 돼 있지? 그래서 `&render_option` 안되고 `&mut render_option`만 되는 거 같은데, `FnMut`을 그냥 `Fn`으로 고쳐봐.
+
+파일들 `mod.rs`로 바꿔서 폴더 안에 넣자..!

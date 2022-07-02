@@ -35,7 +35,7 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
 }
 
-pub fn check_and_parse_macro_inline(content: &[u16], index: usize, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
+pub fn check_and_parse_macro_inline(content: &[u16], index: usize, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &RenderOption) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
 
     match read_macro(content, index) {
         Some(macro_content) => {

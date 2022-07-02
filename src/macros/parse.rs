@@ -6,7 +6,7 @@ use std::collections::HashMap;
 
 impl Macro {
 
-    pub fn parse(&self, arguments: &Vec<Vec<Vec<u16>>>, content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> InlineNode {
+    pub fn parse(&self, arguments: &Vec<Vec<Vec<u16>>>, content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &RenderOption) -> InlineNode {
 
         match self.macro_type {
 

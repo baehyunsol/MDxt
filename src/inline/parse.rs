@@ -13,7 +13,7 @@ use std::collections::HashMap;
 
 impl InlineNode {
 
-    pub fn parse_raw(&mut self, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) {
+    pub fn parse_raw(&mut self, link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &RenderOption) {
 
         match self {
             InlineNode::Raw(content) => {
@@ -24,7 +24,7 @@ impl InlineNode {
 
     }
 
-    pub fn from_md(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &mut RenderOption) -> Self {
+    pub fn from_md(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>, render_option: &RenderOption) -> Self {
 
         // it has to be rendered before other inline elements
         let content = &escape_code_spans(content);

@@ -1,14 +1,16 @@
 use crate::link::predicate::is_valid_link_destination;
 
 pub struct RenderOption {
-    pub link_handler: Box<dyn FnMut(&[u16]) -> Vec<u16>>
+    pub link_handler: Box<dyn Fn(&[u16]) -> Vec<u16>>,
+    pub header_anchor: bool
 }
 
 impl Default for RenderOption {
 
     fn default() -> Self {
         RenderOption {
-            link_handler: Box::new(default_link_handler)
+            link_handler: Box::new(default_link_handler),
+            header_anchor: true
         }
     }
 
