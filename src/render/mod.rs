@@ -28,7 +28,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     }
     
     RenderResult {
-        content: String::from_utf16(&html).unwrap()
+        content: String::from_utf16_lossy(&html)
     }
 
 }

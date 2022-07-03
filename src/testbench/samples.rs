@@ -60,7 +60,7 @@ HMD's table syntax resembles that of [Github Flavored Markdown](https://github.g
 
 Don't forget to write `|` at the end and the start of each row.
 ", "
-\n<h1 id=\"Testdocument\">Test document</h1>\n\n<p>This is a sample document for testing purpose. The rendered result of this document is written manually, and tested by various web-browsers.</p>\n\n<div class=\"box\">\n<p><div class=\"align_center\"><span class=\"size_big\">Table of Contents</span></div></p>\n<div class=\"align_left\">\n<ul><li><a href=\"#Testdocument\">Test document</a><ul><li><a href=\"#HMD\">HMD</a><ul><li><a href=\"#Macros\">Macros</a></li><li><a href=\"#Unicode\">Unicode</a></li><li><a href=\"#Tables\">Tables</a></li></ul></li></ul></li></ul>\n</div>\n</div>\n\n\n\n<h2 id=\"HMD\">HMD</h2>\n\n<p>In most cases, a valid <a href=\"https://github.github.com/gfm/\">Github Flavored Markdown</a> document is a valid HMD document. HMD adds extra syntaxes, including <a href=\"#macros\">macros</a>, sub<sub>scripts</sub>, super<sup>scripts</sup>, <u>underlines</u>, <del>deletion lines</del> and a few more.</p>\n\n<p>If you want to know more about it, checkout its <a href=\"https://github.com/baehyunsol/HMD\">repo</a>.</p>\n\n<h3 id=\"Macros\">Macros</h3>\n\n<div class=\"box\">\n\n<p><span class=\"color_red\"> This text is red. </span></p>\n\n<p><span class=\"size_big\"> This text is big. </span></p>\n\n<p><div class=\"align_center\"> This text is center-aligned. </div></p>\n\n<p>[[cetner]] This macro is broken. Broken macros are treated like normal paragraphs. [[/cetner]]</p>\n\n<p><code class=\"short\">[[blank]]</code> for <code class=\"short\">&amp;nbsp;</code> and <code class=\"short\">[[br]]</code> for <code class=\"short\">&lt;br/></code>.</p>\n\n</div>\n\n<h3 id=\"Unicode\">Unicode</h3>\n\n<p>The HMD engine uses UTF-8 encoding, which means it supports 한글, ひらがな, and 漢字. If your keyboard doesn&apos;t support those characters, use <code class=\"short\">[[char]]</code> macro. &#44032;</p>\n\n<h3 id=\"Tables\">Tables</h3>\n\n<p>HMD&apos;s table syntax resembles that of <a href=\"https://github.github.com/gfm/\">Github Flavored Markdown</a>. It has a few more extra syntaxes.</p>\n\n<pre><code>|Left aligned Column |Centered Column |Right aligned Column |\n|:-------------------|:--------------:|--------------------:|\n|        Left        |     Center     |        Right        |\n|        Left        |     Center     |        Right        |\n|        Left        |     Center     |        Right        |\n|        Left        |     Center     |        Right        |\n|        Left        |     Center     |        Right        |</code></pre>\n\n<table><thead><th>Left aligned Column </th><th>Centered Column </th><th>Right aligned Column </th></thead><tbody><tr><td class=\"align_left\">        Left        </td><td class=\"align_center\">     Center     </td><td class=\"align_right\">        Right        </td></tr><tr><td class=\"align_left\">        Left        </td><td class=\"align_center\">     Center     </td><td class=\"align_right\">        Right        </td></tr><tr><td class=\"align_left\">        Left        </td><td class=\"align_center\">     Center     </td><td class=\"align_right\">        Right        </td></tr><tr><td class=\"align_left\">        Left        </td><td class=\"align_center\">     Center     </td><td class=\"align_right\">        Right        </td></tr><tr><td class=\"align_left\">        Left        </td><td class=\"align_center\">     Center     </td><td class=\"align_right\">        Right        </td></tr></tbody></table>\n\n<p>Don&apos;t forget to write <code class=\"short\">|</code> at the end and the start of each row.</p>\n\n")
+")
 }
 
 fn set2() -> (&'static str, &'static str) {
@@ -78,7 +78,26 @@ Valid header
 # [[red]] Red header [[/red]]
 
 # `Code header`", "
-<h1>Valid header</h1><p>Valid header</p><h1>Valid header</h1><h1>Valid header</h1><p>Valid header</p><h1>Valid header</h1><h1><div class=\"color_red\">Red header</div></h1><h1><code class=\"short\">Code header</code></h1>
 ")
 
+}
+
+fn set3() -> (&'static str, &'static str) {
+    ("
+[[math]] `a codespan in a math` [[/math]] `[[math]] a math in a codespan [[/math]]`
+
+`[[math]] a codespan before a math`[[/math]] [[math]] `a codespan after a math [[/math]]`
+
+[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]
+
+[[math]] a * b * c = abc [[/math]]
+
+*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]
+
+|          a          |          b          |          c          |
+|---------------------|---------------------|---------------------|
+| math inside a table | [[math]] |a| [[/math]] | the pipe shouldn't break a cell |
+|         `|`         | a pipe in a *cell   | inter-cell highlights* |
+", "
+")
 }

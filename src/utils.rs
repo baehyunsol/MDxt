@@ -58,6 +58,10 @@ pub fn get_parenthesis_end_index(v: &[u16], index: usize) -> Option<usize> {
     get_partner_index(v, index, '(' as u16, ')' as u16)
 }
 
+pub fn get_curly_brace_end_index(v: &[u16], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '{' as u16, '}' as u16)
+}
+
 fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<usize> {
 
     let mut stack: i32 = 0;

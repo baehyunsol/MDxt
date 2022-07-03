@@ -1,5 +1,5 @@
 use super::Footnote;
-use crate::link::{predicate::is_valid_link_label, normalize_link};
+use crate::link::normalize_link;
 use crate::inline::InlineNode;
 use crate::utils::get_bracket_end_index;
 use std::collections::HashMap;

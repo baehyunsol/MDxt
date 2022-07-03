@@ -63,3 +63,11 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 만약에 누가 header에 `[[toc]]`를 넣으면 어떻게 되는 거임..??
 - 걍 header 안에 macro는 못 넣게 하자!
+
+---
+
+table 안에서 escape 없이 `|` 쓰고싶음.
+
+`[[math]]` 안에 `|` 들어가는 것도 escape 하기 싫음
+
+inline 하기 전에 `[[math]]` 전부 찾아서 escape 하고 시작하자! 번거롭지만 math를 포기할 수는 없음...

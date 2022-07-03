@@ -186,7 +186,7 @@ pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
-const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
+pub const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
 
 #[cfg(test)]
 mod tests {

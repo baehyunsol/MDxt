@@ -5,6 +5,7 @@ pub mod parse;
 mod testbench;
 
 use crate::utils::into_v16;
+use crate::math::render_math;
 
 #[derive(Clone)]
 pub enum InlineNode {
@@ -147,7 +148,8 @@ impl InlineNode {
                     InlineMacro::Char(num) => into_v16(&format!("&#{};", num)),
                     InlineMacro::Br => into_v16("<br/>"),
                     InlineMacro::Blank => into_v16("&nbsp;"),
-                    InlineMacro::Toc | InlineMacro::Math(_) | InlineMacro::Icon { .. } => todo!()
+                    InlineMacro::Math (content) => render_math(content),
+                    InlineMacro::Toc | InlineMacro::Icon { .. } => todo!()
                 }
             }
         }

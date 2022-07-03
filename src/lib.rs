@@ -6,6 +6,7 @@ mod escape;
 mod link;
 mod macros;
 mod footnote;
+mod math;
 
 #[cfg(test)]
 mod testbench;

@@ -61,9 +61,7 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]", true),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>", true),
-        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true),
-        ("[[math]] 3*4*0.15 = cfrac{9}{5} [[/math]]", "", true),
-        ("[[math]]`a` + `b`[[/math]]", "WIP", true)
+        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true)
     ];
 
     result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
