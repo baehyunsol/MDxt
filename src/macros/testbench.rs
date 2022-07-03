@@ -2,7 +2,7 @@ use super::predicate::{read_macro, check_and_parse_macro_inline};
 use crate::utils::into_v16;
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
-use std::collections::HashMap;
+use crate::ast::MdData;
 
 fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
     let macros = vec![
@@ -51,7 +51,7 @@ fn macro_test() {
         panic!("{:?}", invalid_cases);
     }
 
-    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &HashMap::new(), &HashMap::new(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
+    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &MdData::default(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
 
     for (index, parsed) in valid_cases_parsed.iter().enumerate() {
 

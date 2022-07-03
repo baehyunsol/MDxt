@@ -29,11 +29,27 @@ impl NodeType {
     }
 }
 
-pub struct AST {
-    head_anchor: bool,
+pub struct MdData {
     headers: Vec<(usize, Vec<u16>)>,  // (level, content)
-    link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
-    footnote_references: HashMap<Vec<u16>, (usize, InlineNode)>,  // (label, (index, content))
+    pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
+    pub footnote_references: HashMap<Vec<u16>, (usize, InlineNode)>,  // (label, (index, content))
+}
+
+impl Default for MdData {
+
+    fn default() -> Self {
+        MdData {
+            headers: vec![],
+            link_references: HashMap::new(),
+            footnote_references: HashMap::new()
+        }
+    }
+
+}
+
+pub struct AST {
+    render_option: RenderOption,
+    md_data: MdData,
     nodes: Vec<Node>
 }
 
@@ -111,8 +127,8 @@ impl AST {
     pub fn parse_inlines(&mut self, render_option: &RenderOption) {
         self.nodes.iter_mut().for_each(
             |node| match node {
-                Node::Paragraph { content } => {content.parse_raw(&self.link_references, &self.footnote_references, render_option);},
-                Node::Header { content, .. } => {content.parse_raw(&self.link_references, &self.footnote_references, render_option);},
+                Node::Paragraph { content } => {content.parse_raw(&self.md_data, render_option);},
+                Node::Header { content, .. } => {content.parse_raw(&self.md_data, render_option);},
                 Node::Empty | Node::FencedCode {..} => {}
             }
         )

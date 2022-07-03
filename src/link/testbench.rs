@@ -3,7 +3,7 @@ use crate::inline::InlineNode;
 use crate::utils::into_v16;
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
-use std::collections::HashMap;
+use crate::ast::MdData;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
@@ -68,20 +68,20 @@ fn link_render_test() {
 
     let test_cases = samples();
     let mut failures = vec![];
-    let mut link_references = HashMap::new();
-    let mut footnote_references = HashMap::new();
+    let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
-    link_references.insert(
+    md_data.link_references.insert(
         into_v16("link"), into_v16("https://example")
     );
 
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
-            &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
-            &link_references,
-            &footnote_references,
-            &mut render_option).to_html()
+            &InlineNode::from_md(
+                &escape_backslashes(&into_v16(case)),
+                &md_data,
+                &mut render_option
+            ).to_html()
         );
 
         if rendered != into_v16(answer) {

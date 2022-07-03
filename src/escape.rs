@@ -60,7 +60,7 @@ pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
 
     while index < content.len() {
 
-        match is_escaped(content, index) {
+        match is_html_escaped(content, index) {
             None => {
                 result.push(content[index]);
             }
@@ -77,7 +77,7 @@ pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
 }
 
 
-fn is_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
+fn is_html_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
 
     if content[index] == '&' as u16 && index + 3 < content.len() {
 

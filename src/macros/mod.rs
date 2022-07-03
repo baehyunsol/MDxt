@@ -5,7 +5,6 @@ mod validate;
 #[cfg(test)]
 mod testbench;
 
-use crate::inline::InlineNode;
 use crate::utils::{into_v16, lowercase};
 use lazy_static::lazy_static;
 use std::collections::HashMap;

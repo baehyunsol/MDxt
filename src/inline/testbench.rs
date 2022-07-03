@@ -2,7 +2,7 @@ use crate::inline::InlineNode;
 use crate::utils::into_v16;
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
-use std::collections::HashMap;
+use crate::ast::MdData;
 
 fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible)
     let result = vec![
@@ -73,16 +73,16 @@ fn inline_render_test() {
 
     let test_cases = samples();
     let mut failures = vec![];
-    let link_references = HashMap::new();
-    let footnote_references = HashMap::new();
+    let md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
     for (case, answer, _) in test_cases.iter() {
         let rendered = render_backslash_escapes(
-            &InlineNode::from_md(&escape_backslashes(&into_v16(case)),
-            &link_references,
-            &footnote_references,
-            &mut render_option).to_html()
+            &InlineNode::from_md(
+                &escape_backslashes(&into_v16(case)),
+                &md_data,
+                &mut render_option
+            ).to_html()
         );
 
         if rendered != into_v16(answer) {
@@ -111,8 +111,7 @@ fn inline_render_test() {
 fn inline_inversion_test() {
 
     let mut failures = vec![];
-    let link_references = HashMap::new();
-    let footnote_references = HashMap::new();
+    let md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
     for (case, _, invertible) in samples().iter() {
@@ -123,8 +122,7 @@ fn inline_inversion_test() {
 
         let inverted = InlineNode::from_md(
             &into_v16(case),
-            &link_references,
-            &footnote_references,
+            &md_data,
             &mut render_option
         ).to_md();
 
