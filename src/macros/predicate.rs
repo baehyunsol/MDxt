@@ -38,7 +38,7 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 pub fn check_and_parse_macro_inline(
     content: &[u16],
     index: usize,
-    md_data: &MdData,
+    md_data: &mut MdData,
     render_option: &RenderOption
 ) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
 

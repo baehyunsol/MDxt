@@ -1,3 +1,3 @@
 pub struct RenderResult {
-    content: String
+    pub content: String
 }

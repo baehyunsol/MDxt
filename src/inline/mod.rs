@@ -6,11 +6,12 @@ mod testbench;
 
 use crate::utils::into_v16;
 
+#[derive(Clone)]
 pub enum InlineNode {
     Raw(Vec<u16>),
     Complex(Vec<Box<InlineNode>>),
     CodeSpan(Vec<u16>),
-    Footnote((usize, Vec<u16>)),  // index, label
+    Footnote((usize, usize, Vec<u16>)),  // index, inverse_index, label
     Link {
         text: Vec<Box<InlineNode>>,
         destination: Vec<u16>
@@ -25,11 +26,13 @@ pub enum InlineNode {
     }
 }
 
+#[derive(Clone)]
 pub enum DecorationType {
     Bold, Italic, Underline, Deletion, Subscript, Superscript,
     Macro(InlineMacro)
 }
 
+#[derive(Clone)]
 pub enum InlineMacro {
     Alignment(Vec<u16>),
     Color(Vec<u16>),
@@ -58,10 +61,11 @@ impl InlineNode {
                 into_v16("</code>")
             ].concat(),
 
-            InlineNode::Footnote((index, _)) => into_v16(&format!(
-                "<sup><a href=\"#footnote_cite{}\">{}</a></sup>",
+            InlineNode::Footnote((index, inverse_index, _)) => into_v16(&format!(
+                "<sup id=\"footnote_ref{}\"><a href=\"#footnote_cite{}\">[{}]</a></sup>",
+                inverse_index,
                 index,
-                index
+                inverse_index
             )),
 
             InlineNode::Complex(content) => content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
@@ -159,7 +163,7 @@ impl InlineNode {
                 into_v16("`")
             ].concat(),
 
-            InlineNode::Footnote((_, label)) => vec![
+            InlineNode::Footnote((_, _, label)) => vec![
                 into_v16("["),
                 label.clone(),
                 into_v16("]")

@@ -1,5 +1,3 @@
-use crate::utils::*;
-
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
@@ -17,6 +15,7 @@ pub enum Node {
         line_num: bool,
         content: Vec<u16>
     },
+    ThematicBreak,
     Empty
 }
 
@@ -39,11 +38,4 @@ impl Node {
         }
     }
 
-}
-
-pub fn parse_header(line: &Line) -> (usize, Vec<u16>) {  // (level, content)
-    let (sharps, sharps_removed) = take_and_drop_while(&line.content, '#' as u16);
-    let indents_removed = drop_while(&sharps_removed, ' ' as u16);
-
-    (sharps.len(), indents_removed)
 }

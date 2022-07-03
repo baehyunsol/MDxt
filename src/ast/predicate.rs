@@ -21,8 +21,15 @@ impl Line {
     }
 
     #[inline]
-    pub fn is_code_fence(&self) -> bool {
+    pub fn is_code_fence_begin(&self) -> bool {
+        // TODO check the following string
         self.indent == 0 && self.content.len() > 2 && &self.content[0..3] == &into_v16("```")
+    }
+
+    #[inline]
+    pub fn is_code_fence_end(&self) -> bool {
+        // TODO
+        self.is_code_fence_begin()
     }
 
     #[inline]

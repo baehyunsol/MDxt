@@ -10,7 +10,7 @@ impl Macro {
         &self,
         arguments: &Vec<Vec<Vec<u16>>>,
         content: &[u16],
-        md_data: &MdData,
+        md_data: &mut MdData,
         render_option: &RenderOption
     ) -> InlineNode {
 

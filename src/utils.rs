@@ -58,10 +58,6 @@ pub fn get_parenthesis_end_index(v: &[u16], index: usize) -> Option<usize> {
     get_partner_index(v, index, '(' as u16, ')' as u16)
 }
 
-pub fn get_curly_brace_end_index(v: &[u16], index: usize) -> Option<usize> {
-    get_partner_index(v, index, '{' as u16, '}' as u16)
-}
-
 fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<usize> {
 
     let mut stack: i32 = 0;
@@ -94,12 +90,6 @@ pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
         '가' as u16 <= **c && **c <= '힣' as u16 ||  // korean
         'ㄱ' as u16 <= **c && **c <= 'ㅣ' as u16 ||  // korean
         'ぁ' as u16 <= **c && **c <= 'ヺ' as u16  // japanese
-    ).map(|c| *c).collect()
-}
-
-pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
-    line.iter().filter(
-        |c| **c != ' ' as u16
     ).map(|c| *c).collect()
 }
 

@@ -8,3 +8,9 @@ pub fn random(mut seed: usize) -> usize {
 
     seed
 }
+
+pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
+    line.iter().filter(
+        |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
+    ).map(|c| *c).collect()
+}

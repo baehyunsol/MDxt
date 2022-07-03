@@ -1,38 +1,21 @@
 pub mod line;
 mod predicate;
+mod parse;
 mod node;
 
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
-use crate::link::{predicate::read_link_reference, normalize_link};
-use crate::footnote::predicate::is_valid_footnote_label;
-use line::Line;
-use node::{Node, parse_header};
+use crate::footnote::{footnotes_to_html, Footnote};
+use crate::utils::into_v16;
+use node::Node;
 use std::collections::HashMap;
 
-#[derive(PartialEq)]
-enum NodeType {  // this enum is only used internally by `AST::from_lines`
-    Paragraph,
-    CodeFence {
-        language: String,
-        line_num: bool
-    },
-    None
-}
-
-impl NodeType {
-    pub fn is_code_fence(&self) -> bool {
-        match self {
-            NodeType::CodeFence{..} => true,
-            _ => false
-        }
-    }
-}
-
+#[derive(Clone)]
 pub struct MdData {
     headers: Vec<(usize, Vec<u16>)>,  // (level, content)
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
-    pub footnote_references: HashMap<Vec<u16>, (usize, InlineNode)>,  // (label, (index, content))
+    pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
+    footnote_reference_count: usize
 }
 
 impl Default for MdData {
@@ -41,8 +24,25 @@ impl Default for MdData {
         MdData {
             headers: vec![],
             link_references: HashMap::new(),
-            footnote_references: HashMap::new()
+            footnote_references: HashMap::new(),
+            footnote_reference_count: 0
         }
+    }
+
+}
+
+impl MdData {
+
+    pub fn new(headers: Vec<(usize, Vec<u16>)>, link_references: HashMap<Vec<u16>, Vec<u16>>, footnote_references: HashMap<Vec<u16>, Footnote>) -> Self {
+        MdData { headers, link_references, footnote_references, footnote_reference_count: 0 }
+    }
+
+    pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {
+        let footnote = self.footnote_references.get_mut(label).unwrap();
+        footnote.inverse_index.push(self.footnote_reference_count);
+        self.footnote_reference_count += 1;
+
+        self.footnote_reference_count - 1
     }
 
 }
@@ -50,116 +50,95 @@ impl Default for MdData {
 pub struct AST {
     render_option: RenderOption,
     md_data: MdData,
-    nodes: Vec<Node>
+    nodes: Vec<Node>,
+    is_inline_parsed: bool
 }
 
 impl AST {
 
-    pub fn from_lines(lines: Vec<Line>, options: &RenderOption) -> AST {
-        let mut curr_ast = Vec::with_capacity(lines.len());
-        let mut curr_nodes = vec![];
-        let mut curr_node_type = NodeType::None;
-        let mut link_references = HashMap::new();
-        let mut footnote_references = HashMap::new();
-        let mut headers = vec![];
+    pub fn parse_inlines(&mut self) {
 
-        for line in lines.iter() {
-
-            if curr_node_type.is_code_fence() {
-
-                if line.is_code_fence() {
-                    add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
-                }
-
-                else {
-                    curr_nodes.push(line.clone());
-                }
-
-                continue;
-            }
-
-            if line.is_header() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
-
-                let (level, content) = parse_header(line);
-                headers.push((level, content.clone()));
-                curr_ast.push(Node::new_header(level, content));
-            }
-
-            else if line.is_empty() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
-            }
-
-            else if line.is_code_fence() {
-                add_curr_node_to_ast(&mut curr_ast, &mut curr_nodes, &mut curr_node_type);
-
-                let (language, line_num) = read_code_fence_info(line);
-                curr_node_type = NodeType::CodeFence { language, line_num };
-            }
-
-            else if line.is_link_or_footnote_reference_definition() {
-                let (link_label, link_destination) = read_link_reference(&line.content);
-
-                if is_valid_footnote_label(&link_label) {
-                    footnote_references.insert(normalize_link(&link_label), (footnote_references.len(), InlineNode::Raw(link_destination)));
-                }
-
-                else {
-                    link_references.insert(normalize_link(&link_label), (options.link_handler)(&link_destination));
-                }
-
-            }
-
-            else {
-                curr_nodes.push(line.clone());
-
-                if curr_node_type == NodeType::None {
-                    curr_node_type = NodeType::Paragraph;
-                }
-
-            }
-
+        if self.is_inline_parsed {
+            return;
         }
 
-        todo!()
-    }
-
-    pub fn parse_inlines(&mut self, render_option: &RenderOption) {
         self.nodes.iter_mut().for_each(
             |node| match node {
-                Node::Paragraph { content } => {content.parse_raw(&self.md_data, render_option);},
-                Node::Header { content, .. } => {content.parse_raw(&self.md_data, render_option);},
-                Node::Empty | Node::FencedCode {..} => {}
+                Node::Paragraph { content } => {content.parse_raw(&mut self.md_data, &self.render_option);},
+                Node::Header { content, .. } => {
+                    let tmp = self.render_option.is_macro_enabled;
+                    self.render_option.is_macro_enabled = false;
+
+                    // macros in headers are not rendered
+                    content.parse_raw(&mut self.md_data, &self.render_option);
+
+                    self.render_option.is_macro_enabled = tmp;
+                },
+                Node::Empty | Node::FencedCode {..} | Node::ThematicBreak => {}
             }
-        )
-    }
+        );
 
-}
+        // I couldn't find any better way to avoid the borrow checker
+        if self.md_data.footnote_references.len() > 0 {
+            let mut md_data_cloned = self.md_data.clone();
+            let render_option_cloned = self.render_option.clone();
 
-fn add_curr_node_to_ast(curr_ast: &mut Vec<Node>, curr_nodes: &mut Vec<Line>, curr_node_type: &mut NodeType) {
+            let mut footnote_parsed = self.md_data.footnote_references.iter().map(
+                |(label, Footnote { content, .. })| {
+                    let mut footnote_content = content.clone();
+                    footnote_content.parse_raw(&mut md_data_cloned, &render_option_cloned);
+                    (label.clone(), footnote_content)
+                }
+            ).collect::<Vec<(Vec<u16>, InlineNode)>>();
 
-    if curr_nodes.len() == 0 {
-        return;
-    }
+            for (label, content) in footnote_parsed.into_iter() {
+                let mut footnote_reference = self.md_data.footnote_references.get_mut(&label).unwrap();
+                footnote_reference.content = content;
+            }
 
-    match curr_node_type {
-        NodeType::Paragraph => {
-            curr_ast.push(Node::new_paragraph(curr_nodes));
-            *curr_nodes = vec![];
-            *curr_node_type = NodeType::None;
         }
-        NodeType::CodeFence { language, line_num } => {
-            curr_ast.push(Node::new_code_fence(curr_nodes, language.clone(), *line_num));
-            *curr_nodes = vec![];
-            *curr_node_type = NodeType::None;
-        },
-        NodeType::None => {
-            panic!("something went wrong!");
-        }
+
+        self.is_inline_parsed = true;
     }
 
-}
+    pub fn to_html(&mut self) -> Vec<u16> {
+        self.parse_inlines();
+        let mut result = Vec::with_capacity(self.nodes.len());
 
-fn read_code_fence_info(line: &Line) -> (String, bool) {
-    todo!()
+        for node in self.nodes.iter() {
+
+            match node {
+                Node::Paragraph { content } => {
+                    result.push(
+                        vec![
+                            into_v16("<p>"),
+                            content.to_html(),
+                            into_v16("</p>")
+                        ].concat()
+                    );
+                },
+                Node::ThematicBreak => {
+                    result.push(
+                        into_v16("<hr/>")
+                    );
+                },
+                Node::Header { level, content } => {
+                    result.push(
+                        vec![
+                            into_v16(&format!("<h{}>", level)),
+                            content.to_html(),
+                            into_v16(&format!("</h{}>", level)),
+                        ].concat()
+                    );
+                },
+                Node::FencedCode { language, line_num, content } => todo!(),
+                Node::Empty => {}
+            }
+
+        }
+
+        result.push(footnotes_to_html(&mut self.md_data.footnote_references));
+        result.concat()
+    }
+
 }

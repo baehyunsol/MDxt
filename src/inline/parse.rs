@@ -17,7 +17,7 @@ impl InlineNode {
 
     pub fn parse_raw(
         &mut self,
-        md_data: &MdData,
+        md_data: &mut MdData,
         render_option: &RenderOption
     ) {
 
@@ -25,18 +25,17 @@ impl InlineNode {
             InlineNode::Raw(content) => {
                 *self = Self::from_md(&content, md_data, render_option);
             }
-            _ => panic!("the program's logic went wrong!")
+            _ => {}  // it's already parsed
         }
 
     }
 
-    pub fn from_md(content: &[u16], md_data: &MdData, render_option: &RenderOption) -> Self {
+    pub fn from_md(content: &[u16], md_data: &mut MdData, render_option: &RenderOption) -> Self {
 
         // it has to be rendered before other inline elements
         let content = &escape_code_spans(content);
 
         let mut index = 0;
-        let mut result: Vec<Box<InlineNode>> = vec![];
 
         while index < content.len() {
 
@@ -297,47 +296,8 @@ impl InlineNode {
                     let mut is_image = false;
 
                     // the existence of the link reference was tested by the `read_reference_link` function
-                    let link_destination = md_data.link_references.get(&normalize_link(&link_label)).unwrap();
-
-                    if index > 0 && content[index - 1] == '!' as u16 {
-                        is_image = true;
-                        index -= 1;
-                    }
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
-                    }
-
-                    if is_image {
-                        result.push(Box::new(InlineNode::Image {
-                            description: undo_code_span_escapes(&link_text),
-                            address: (render_option.link_handler)(&link_destination)
-                        }));
-                    }
-
-                    else {
-                        result.push(Box::new(InlineNode::Link {
-                            text: Self::from_md(&link_text, md_data, render_option).to_vec(),
-                            destination: (render_option.link_handler)(&link_destination)
-                        }));
-                    }
-
-                    if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match read_shortcut_reference_link(content, index, &md_data.link_references) {
-                Some((link_text, last_index)) => {
-                    let mut result = vec![];
-                    let mut is_image = false;
-
-                    // the existence of the link reference was tested by the `read_reference_link` function
-                    let link_destination = md_data.link_references.get(&normalize_link(&link_text)).unwrap();
+                    // it clones to result in order to avoid the borrow checker
+                    let link_destination = md_data.link_references.get(&normalize_link(&link_label)).unwrap().clone();
 
                     if index > 0 && content[index - 1] == '!' as u16 {
                         is_image = true;
@@ -372,19 +332,62 @@ impl InlineNode {
             }
 
             match read_footnote(content, index, &md_data.footnote_references) {
-                Some(n) => {
+                Some(footnote_index) => {
                     let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
                     let footnote_label = normalize_link(&content[index + 1..bracket_end_index]);
                     let mut result = vec![];
+
+                    let inverse_index = md_data.add_footnote_inverse_index(&footnote_label);
 
                     if index > 0 {
                         result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
                     }
 
-                    result.push(Box::new(InlineNode::Footnote((n, footnote_label))));
+                    result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
 
                     if bracket_end_index + 1 < content.len() {
                         result.push(Box::new(Self::from_md(&content[bracket_end_index + 1..content.len()], md_data, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                },
+                _ => {}
+            }
+
+            match read_shortcut_reference_link(content, index, &md_data.link_references) {
+                Some((link_text, last_index)) => {
+                    let mut result = vec![];
+                    let mut is_image = false;
+
+                    // the existence of the link reference was tested by the `read_reference_link` function
+                    // it clones to result in order to avoid the borrow checker
+                    let link_destination = md_data.link_references.get(&normalize_link(&link_text)).unwrap().clone();
+
+                    if index > 0 && content[index - 1] == '!' as u16 {
+                        is_image = true;
+                        index -= 1;
+                    }
+
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                    }
+
+                    if is_image {
+                        result.push(Box::new(InlineNode::Image {
+                            description: undo_code_span_escapes(&link_text),
+                            address: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    else {
+                        result.push(Box::new(InlineNode::Link {
+                            text: Self::from_md(&link_text, md_data, render_option).to_vec(),
+                            destination: (render_option.link_handler)(&link_destination)
+                        }));
+                    }
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();

@@ -51,7 +51,7 @@ fn macro_test() {
         panic!("{:?}", invalid_cases);
     }
 
-    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &MdData::default(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
+    let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &mut MdData::default(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
 
     for (index, parsed) in valid_cases_parsed.iter().enumerate() {
 

@@ -9,6 +9,7 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*", true),
         ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>", true),
         ("^^super^^", "^<sup>super</sup>^", true),
+        ("^a", "^a", true),
         ("", "", true), (" ", " ", true),
         ("^^", "^^", true),
         ("^^^", "^^^", true),
@@ -61,8 +62,8 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>", true),
         ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true),
-        //("[[math]] 3*4*0.15 = cfrac{9}{5} [[/math]]", "", true),
-        //("[[math]]`a` + `b`[[/math]]", "WIP", true)
+        ("[[math]] 3*4*0.15 = cfrac{9}{5} [[/math]]", "", true),
+        ("[[math]]`a` + `b`[[/math]]", "WIP", true)
     ];
 
     result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
@@ -73,14 +74,14 @@ fn inline_render_test() {
 
     let test_cases = samples();
     let mut failures = vec![];
-    let md_data = MdData::default();
+    let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
     for (case, answer, _) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(
                 &escape_backslashes(&into_v16(case)),
-                &md_data,
+                &mut md_data,
                 &mut render_option
             ).to_html()
         );
@@ -111,7 +112,7 @@ fn inline_render_test() {
 fn inline_inversion_test() {
 
     let mut failures = vec![];
-    let md_data = MdData::default();
+    let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
     for (case, _, invertible) in samples().iter() {
@@ -122,7 +123,7 @@ fn inline_inversion_test() {
 
         let inverted = InlineNode::from_md(
             &into_v16(case),
-            &md_data,
+            &mut md_data,
             &mut render_option
         ).to_md();
 

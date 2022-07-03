@@ -5,6 +5,8 @@ use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
 
+// 쟤네 말고 render_to_html 써서 escape 제대로 처리하는지도 보자! 주소 안에 `&`가 있으면 걔 제대로 처리하는지.
+
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
     // some cases are not the same as the [gfm's spec](https://github.github.com/gfm)
@@ -34,6 +36,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[link](https://github.com)", "<a href=\"https://github.com\">link</a>"),
         ("[invalid_link]", "[invalid_link]"),
 
+        ("[[red]][link]", "[[red]]<a href=\"https://example\">link</a>"),
+        ("[[red]][link](https://github.com)", "[[red]]<a href=\"https://github.com\">link</a>"),
+        ("[[red]][link][[/red]]", "<div class=\"color_red\"><a href=\"https://example\">link</a></div>"),
+        ("[[red]][link](https://github.com)[[/red]]", "<div class=\"color_red\"><a href=\"https://github.com\">link</a></div>"),
+
+        ("[link][link2][link][link2]", "<a href=\"https://example2\">link</a><a href=\"https://example2\">link</a>"),
+
         ("![github](https://github.com)", "<img src=\"https://github.com\" alt=\"github\"/>"),
         ("![*github*](https://github.com)", "<img src=\"https://github.com\" alt=\"*github*\"/>"),
         ("*![github](https://github.com)*", "<em><img src=\"https://github.com\" alt=\"github\"/></em>"),
@@ -58,6 +67,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("![link][[macro]]", "![link][[macro]]"),
         ("![link](https://github.com)", "<img src=\"https://github.com\" alt=\"link\"/>"),
         ("![invalid_link]", "![invalid_link]"),
+
+        ("[[red]]![link]", "[[red]]<img src=\"https://example\" alt=\"link\"/>"),
+        ("[[red]]![link](https://github.com)", "[[red]]<img src=\"https://github.com\" alt=\"link\"/>"),
+        ("[[red]]![link][[/red]]", "<div class=\"color_red\"><img src=\"https://example\" alt=\"link\"/></div>"),
+        ("[[red]]![link](https://github.com)[[/red]]", "<div class=\"color_red\"><img src=\"https://github.com\" alt=\"link\"/></div>"),
+
+        ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
@@ -75,11 +91,15 @@ fn link_render_test() {
         into_v16("link"), into_v16("https://example")
     );
 
+    md_data.link_references.insert(
+        into_v16("link2"), into_v16("https://example2")
+    );
+
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_md(
                 &escape_backslashes(&into_v16(case)),
-                &md_data,
+                &mut md_data,
                 &mut render_option
             ).to_html()
         );

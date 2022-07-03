@@ -1,6 +1,6 @@
 use crate::utils::into_v16;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Line {
     pub content: Vec<u16>,
     pub indent: usize
