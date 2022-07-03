@@ -66,8 +66,6 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 ---
 
-table 안에서 escape 없이 `|` 쓰고싶음.
-
-`[[math]]` 안에 `|` 들어가는 것도 escape 하기 싫음
+table 안의 codespan이나 `[[math]]`에서 pipe 나오는 거 escape 없이 쓰고 싶음..!!
 
 inline 하기 전에 `[[math]]` 전부 찾아서 escape 하고 시작하자! 번거롭지만 math를 포기할 수는 없음...

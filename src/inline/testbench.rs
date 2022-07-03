@@ -61,7 +61,12 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]", true),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>", true),
-        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true)
+        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true),
+        ("[[math]] `a codespan inside a math` [[/math]] `[[math]] a math inside a codespan [[/math]]`", "\\( `a codespan inside a math` \\) <code class=\"short\">[[math]] a math inside a codespan [[/math]]</code>", true),
+        ("`[[math]] a codespan before a math`[[/math]] [[math]] `a codespan after a math [[/math]]`", "<code class=\"short\">[[math]] a codespan before a math</code>[[/math]] \\( `a codespan after a math \\)`", true),
+        ("[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]", "\\( `a codespan after a math \\)` <code class=\"short\">[[math]] a codespan before a math</code>[[/math]]", true),
+        ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)", false),
+        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false)
     ];
 
     result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
@@ -104,6 +109,7 @@ fn inline_render_test() {
         );
     }
 
+    assert!(md_data.has_math);
 }
 
 #[test]

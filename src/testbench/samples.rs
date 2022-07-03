@@ -1,5 +1,5 @@
 pub fn samples() -> Vec<(&'static str, &'static str)> {
-    vec![set1(), set2()]
+    vec![set1(), set2(), set3(), set4()]
 }
 
 fn set1() -> (&'static str, &'static str) {
@@ -79,7 +79,6 @@ Valid header
 
 # `Code header`", "
 ")
-
 }
 
 fn set3() -> (&'static str, &'static str) {
@@ -98,6 +97,47 @@ fn set3() -> (&'static str, &'static str) {
 |---------------------|---------------------|---------------------|
 | math inside a table | [[math]] |a| [[/math]] | the pipe shouldn't break a cell |
 |         `|`         | a pipe in a *cell   | inter-cell highlights* |
+", "
+")
+}
+
+fn set4() -> (&'static str, &'static str) {
+    ("
+- 1
+  - 1.1
+1.1
+1.1
+- 2
+
+- 1
+  - 1.1
+- 2
+2
+- 3
+  - 3.1
+    - 3.1.1
+  - 3.2
+    - 3.2.1
+    - 3.2.2
+- 4
+
+> 1
+  > 1.1
+1.1
+1.1
+> 2
+
+> 1
+  > 1.1
+> 2
+2
+> 3
+  > 3.1
+    > 3.1.1
+  > 3.2
+    > 3.2.1
+    > 3.2.2
+> 4
 ", "
 ")
 }

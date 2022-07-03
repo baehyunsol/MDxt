@@ -3,7 +3,7 @@ mod render_result;
 
 use render_option::RenderOption;
 use render_result::RenderResult;
-use crate::escape::{escape_backslashes, escape_htmls};
+use crate::escape::{escape_backslashes, escape_htmls, undo_backslash_escapes};
 use crate::utils::into_v16;
 use crate::ast::{AST, line::code_to_lines};
 
@@ -20,13 +20,14 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     let lines = code_to_lines(&u16_content);
     let mut ast = AST::from_lines(lines, &mut options);
 
-    let html = ast.to_html();
+    let mut html = ast.to_html();
+    html = undo_backslash_escapes(&html);
 
     #[cfg(test)]
     if html.iter().any(|c| *c > 60000) {
         panic!("test cases do not contain such character!")
     }
-    
+
     RenderResult {
         content: String::from_utf16_lossy(&html)
     }

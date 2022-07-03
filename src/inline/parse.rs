@@ -6,6 +6,7 @@ use super::{
 use crate::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
 };
+use crate::math::escape_inside_math_blocks;
 use crate::footnote::predicate::read_footnote;
 use crate::link::normalize_link;
 use crate::ast::MdData;
@@ -32,15 +33,21 @@ impl InlineNode {
 
     pub fn from_md(content: &[u16], md_data: &mut MdData, render_option: &RenderOption) -> Self {
 
-        // it has to be rendered before other inline elements
-        let content = &escape_code_spans(content);
+        // it prevents inline elements inside codespans from being rendered
+        // codespans are rendered later
+        let mut content = escape_code_spans(content);
+
+        // inline elements inside math blocks are not rendered
+        if render_option.is_macro_enabled {
+            content = escape_inside_math_blocks(content);
+        }
 
         let mut index = 0;
 
         while index < content.len() {
 
-            if is_code_span_marker_begin(content, index) {
-                index = get_code_span_marker_end_index(content, index);
+            if is_code_span_marker_begin(&content, index) {
+                index = get_code_span_marker_end_index(&content, index);
                 continue;
             }
 
@@ -53,7 +60,7 @@ impl InlineNode {
                 continue;
             }
 
-            match is_bold_italic(content, index) {
+            match is_bold_italic(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -81,7 +88,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_deletion_subscript(content, index) {
+            match is_deletion_subscript(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -109,7 +116,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_italic(content, index) {
+            match is_italic(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -133,7 +140,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_bold(content, index) {
+            match is_bold(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -157,7 +164,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_deletion(content, index) {
+            match is_deletion(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -181,7 +188,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_underline(content, index) {
+            match is_underline(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -205,7 +212,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_superscript(content, index) {
+            match is_superscript(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -229,7 +236,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match is_subscript(content, index) {
+            match is_subscript(&content, index) {
                 Bool::True(end) => {
                     let mut result = vec![];
 
@@ -253,7 +260,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_direct_link(content, index, &md_data.link_references) {
+            match read_direct_link(&content, index, &md_data.link_references) {
                 Some((link_text, link_destination, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
@@ -290,7 +297,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_reference_link(content, index, &md_data.link_references) {
+            match read_reference_link(&content, index, &md_data.link_references) {
                 Some((link_text, link_label, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
@@ -331,7 +338,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_footnote(content, index, &md_data.footnote_references) {
+            match read_footnote(&content, index, &md_data.footnote_references) {
                 Some(footnote_index) => {
                     let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
                     let footnote_label = normalize_link(&content[index + 1..bracket_end_index]);
@@ -354,7 +361,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_shortcut_reference_link(content, index, &md_data.link_references) {
+            match read_shortcut_reference_link(&content, index, &md_data.link_references) {
                 Some((link_text, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
@@ -397,7 +404,7 @@ impl InlineNode {
 
             if render_option.is_macro_enabled {
 
-                match check_and_parse_macro_inline(content, index, md_data, render_option) {
+                match check_and_parse_macro_inline(&content, index, md_data, render_option) {
                     Some((parsed, last_index)) => {
                         let mut result = vec![];
 
@@ -422,10 +429,10 @@ impl InlineNode {
         }
 
         // there're no inline element in the content
-        InlineNode::Raw(content.to_vec()).render_code_spans()
+        InlineNode::Raw(content).render_code_spans()
     }
 
-    pub fn render_code_spans(mut self) -> Self {
+    pub fn render_code_spans(self) -> Self {
         match self {
             InlineNode::Raw(content) => {
                 let mut complex_contents = vec![];
@@ -447,6 +454,15 @@ impl InlineNode {
 
                         last_index = code_span_end_index + 2;
                         index = code_span_end_index + 2;
+                        continue;
+                    }
+
+                    // when `[[math]]` macros and codespans messed up really badly,
+                    // a code_span_marker_begin dies and its corresponding code_span_marker_end survives
+                    else if is_code_span_marker_end(&content, index) {
+                        complex_contents.push(Box::new(InlineNode::Raw(undo_code_span_escapes(&content[last_index..index + 2]))));
+                        last_index = index + 2;
+                        index += 2;
                         continue;
                     }
 

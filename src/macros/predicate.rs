@@ -1,5 +1,5 @@
 use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
-use crate::utils::get_bracket_end_index;
+use crate::utils::{get_bracket_end_index, into_v16};
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
@@ -63,6 +63,11 @@ pub fn check_and_parse_macro_inline(
 
                             match read_macro(content, curr_index) {
                                 Some(macro_content) if macro_content == closing_macro => {
+
+                                    if macro_name == into_v16("math") {
+                                        md_data.has_math = true;
+                                    }
+
                                     return Some(
                                         (
                                             macro_.parse(

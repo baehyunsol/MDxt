@@ -1,5 +1,7 @@
+use crate::inline::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
+use crate::macros::predicate::read_macro;
 use crate::escape::{undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
-use crate::utils::{into_v16, get_curly_brace_end_index, is_alphabet};
+use crate::utils::{into_v16, get_curly_brace_end_index, get_bracket_end_index, is_alphabet};
 use lazy_static::lazy_static;
 
 lazy_static! {
@@ -30,7 +32,8 @@ pub fn translate_to_latex(content: &[u16]) -> Vec<u16> {
     let mut result = Vec::with_capacity(content.len());
     let mut curr_word = vec![];
     let mut index = 0;
-    let mut content = escape_special_characters(content);  // `escape_special_characters` has to be called before any other inline parses, even before table parses
+
+    let mut content = content.to_vec();
     content.push(' ' as u16);  // so that it handles the last word
 
     while index < content.len() {
@@ -222,7 +225,7 @@ pub fn translate_to_latex(content: &[u16]) -> Vec<u16> {
 }
 
 
-fn get_arguments(content: &Vec<u16>, index: usize, mut current_args: Vec<Vec<u16>>, mut arg_end_indexes: Vec<usize>) -> (Vec<Vec<u16>>, Vec<usize>) {
+fn get_arguments(content: &[u16], index: usize, mut current_args: Vec<Vec<u16>>, mut arg_end_indexes: Vec<usize>) -> (Vec<Vec<u16>>, Vec<usize>) {
 
     if index >= content.len() {
         (current_args, arg_end_indexes)
@@ -286,7 +289,65 @@ fn escape_special_characters(content: &[u16]) -> Vec<u16> {
 
     }
 
-    result
+    undo_code_span_escapes(&result)
+}
+
+pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
+
+    let mut result = vec![];
+    let mut index = 0;
+    let mut last_index = 0;
+
+    while index < content.len() {
+
+        if is_code_span_marker_begin(&content, index) {
+            index = get_code_span_marker_end_index(&content, index);
+            continue;
+        }
+
+        match read_macro(&content, index) {
+
+            // it met `[[math]]`
+            Some(macro_name) if macro_name == into_v16("math") => {
+                let mut end_index = index + 5;
+
+                // seek `[[/math]]`
+                while end_index < content.len() {
+
+                    match read_macro(&content, end_index) {
+                        Some(macro_name) if macro_name == into_v16("/math") => {
+                            let math_begin_index = get_bracket_end_index(&content, index).unwrap() + 1;
+                            let escaped_math = escape_special_characters(&content[math_begin_index..end_index]);
+
+                            result.push(content[last_index..math_begin_index].to_vec());
+                            result.push(escaped_math);
+
+                            last_index = end_index;
+                            index = end_index;
+                            break;
+                        }
+                        _ => {}
+                    }
+
+                    end_index += 1;
+                }
+
+            },
+            _ => {}
+        }
+
+        index += 1;
+    }
+
+    if result.len() == 0 {
+        content
+    }
+
+    else {
+        result.push(content[last_index..content.len()].to_vec());
+        result.concat()
+    }
+
 }
 
 const LATEX_SYMBOLS_RAW: [&str;103] = ["lt", "gt", "leq", "geq", "ll", "gg", "equiv", "subset", "supset", "approx", "in", "ni", "subseteq", "supseteq", "cong", "simeq", "notin", "propto", "neq", "therefore", "because", "pm", "mp", "times", "div", "star", "cap", "cup", "vee", "wedge", "cdot", "diamond", "bullet", "oplus", "ominus", "otimes", "oslash", "odot", "circ", "exists", "nexists", "forall", "neg", "land", "lor", "rightarrow", "leftarrow", "iff", "top", "bot", "varnothing", "quad", "backslash", "leftcurlybrace", "rightcurlybrace", "alpha", "beta", "gamma", "Gamma", "delta", "Delta", "epsilon", "zeta", "eta", "theta", "Theta", "iota", "kappa", "lambda", "Lambda", "mu", "nu", "xi", "Xi", "pi", "Pi", "rho", "sigma", "Sigma", "tau", "upsilon", "Upsilon", "phi", "Phi", "chi", "psi", "Psi", "omega", "Omega", "partial", "nabla", "infty", "cos", "sin", "tan", "cosh", "sinh", "tanh", "angle", "leftrightarrow", "sqcap", "sqcup", "space"];
@@ -341,7 +402,9 @@ mod tests {
         let orig = crate::utils::into_v16("sum{n=1}{infty} frac{1}{n sup{2}} < 10");
         let rendered = String::from_utf16_lossy(&crate::math::translate_to_latex(&orig));
 
-        assert_eq!(rendered, "\\sum\\limits _{n=1}^{\\infty } \\frac{1}{n ^{2}}  \\lt   10".to_string());
+        // `render_to_html` will render `<` inside `[[math]]` to `\\lt`.
+        // but the escape is done by `InlineNode::from_md`, which is not used in this test
+        assert_eq!(rendered, "\\sum\\limits _{n=1}^{\\infty } \\frac{1}{n ^{2}} < 10".to_string());
     }
 
     #[test]

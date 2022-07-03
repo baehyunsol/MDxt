@@ -56,7 +56,12 @@ impl Macro {
                 content: vec![]
             },
 
-            MacroType::Icon | MacroType::Math => todo!()
+            MacroType::Math => InlineNode::Decoration {
+                deco_type: DecorationType::Macro(InlineMacro::Math(content.to_vec())),
+                content: vec![]
+            },
+
+            MacroType::Icon => todo!()
         }
 
     }

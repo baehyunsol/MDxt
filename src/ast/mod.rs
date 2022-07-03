@@ -13,6 +13,7 @@ use std::collections::HashMap;
 #[derive(Clone)]
 pub struct MdData {
     headers: Vec<(usize, Vec<u16>)>,  // (level, content)
+    pub has_math: bool,
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize
@@ -23,6 +24,7 @@ impl Default for MdData {
     fn default() -> Self {
         MdData {
             headers: vec![],
+            has_math: false,
             link_references: HashMap::new(),
             footnote_references: HashMap::new(),
             footnote_reference_count: 0
@@ -34,7 +36,7 @@ impl Default for MdData {
 impl MdData {
 
     pub fn new(headers: Vec<(usize, Vec<u16>)>, link_references: HashMap<Vec<u16>, Vec<u16>>, footnote_references: HashMap<Vec<u16>, Footnote>) -> Self {
-        MdData { headers, link_references, footnote_references, footnote_reference_count: 0 }
+        MdData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false }
     }
 
     pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {
@@ -83,7 +85,7 @@ impl AST {
             let mut md_data_cloned = self.md_data.clone();
             let render_option_cloned = self.render_option.clone();
 
-            let mut footnote_parsed = self.md_data.footnote_references.iter().map(
+            let footnote_parsed = self.md_data.footnote_references.iter().map(
                 |(label, Footnote { content, .. })| {
                     let mut footnote_content = content.clone();
                     footnote_content.parse_raw(&mut md_data_cloned, &render_option_cloned);

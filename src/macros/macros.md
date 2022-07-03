@@ -3,9 +3,10 @@
 
 Macro content is case insensitive, and all the whitespaces and underbars are ignored.
 
-`a-z`, `A-Z`, `0-9`, `=`, `,`, ` `, `_`, `/`
+> Valid characters inside macros [[br]]
+> `a-z`, `A-Z`, `0-9`, `=`, `,`, ` `, `_`, `/`
 
-## Colors
+## Color
 
 - `[[red]] ... [[/red]]`
 - `[[green]] ... [[/green]]`
@@ -19,6 +20,8 @@ Macro content is case insensitive, and all the whitespaces and underbars are ign
   - default
 - `[[big]] ... [[/big]]`
 - `[[giant]] ... [[/giant]]`
+
+It changes not only font sizes, but also image sizes.
 
 ## Alignment
 
@@ -50,3 +53,5 @@ Macro content is case insensitive, and all the whitespaces and underbars are ign
 ## Math
 
 `[[math]] cfrac{-b pm sqrt{b sup{2} - 4 a c}}{2 a} [[/math]]`
+
+Math macros are special. Every inline element inside a `[[math]]` block is not rendered. Not even codespans!

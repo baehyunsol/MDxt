@@ -134,7 +134,7 @@ pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
     result
 }
 
-fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
+pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
