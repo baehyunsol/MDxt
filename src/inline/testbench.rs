@@ -125,11 +125,11 @@ fn inline_inversion_test() {
             continue;
         }
 
-        let inverted = InlineNode::from_md(
+        let inverted = render_backslash_escapes(&InlineNode::from_md(
             &into_v16(case),
             &mut md_data,
             &mut render_option
-        ).to_md();
+        ).to_md());
 
         if inverted != into_v16(case) {
             failures.push(format!(

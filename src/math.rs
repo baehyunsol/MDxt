@@ -53,7 +53,8 @@ pub fn translate_to_latex(content: &[u16]) -> Vec<u16> {
                     }
 
                     else if curr_word == into_v16("rightcurlybrace") {
-                        result.push(into_v16("\\} "));}
+                        result.push(into_v16("\\} "));
+                    }
 
                     else {
                         result.push(

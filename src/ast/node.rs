@@ -1,6 +1,7 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
+use crate::table::Table;
 
 pub enum Node {
     Paragraph {
@@ -15,6 +16,7 @@ pub enum Node {
         line_num: bool,
         content: Vec<u16>
     },
+    Table(Table),
     ThematicBreak,
     Empty
 }
@@ -36,6 +38,10 @@ impl Node {
             content: lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
             language, line_num
         }
+    }
+
+    pub fn new_table(lines: &Vec<Line>) -> Node {
+        Node::Table (Table::from_lines(lines))
     }
 
 }

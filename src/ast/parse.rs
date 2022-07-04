@@ -2,6 +2,7 @@ use super::{MdData, AST, line::Line, node::Node};
 use crate::inline::InlineNode;
 use crate::link::{predicate::read_link_reference, normalize_link};
 use crate::footnote::{predicate::is_valid_footnote_label, Footnote};
+use crate::table::{count_cells, count_delimiter_cells};
 use crate::utils::{drop_while, take_and_drop_while};
 use crate::render::render_option::RenderOption;
 use std::collections::HashMap;
@@ -13,6 +14,7 @@ enum ParseState {  // this enum is only used internally by `AST::from_lines`
         language: String,
         line_num: bool
     },
+    Table,
     None
 }
 
@@ -26,62 +28,92 @@ impl AST {
         let mut footnote_references = HashMap::new();
         let mut headers = vec![];
 
-        for line in lines.iter() {
+        let mut index = 0;
+
+        while index < lines.len() {
 
             match &curr_parse_state {
                 ParseState::CodeFence { language, line_num } => {
 
-                    if line.is_code_fence_end() {
+                    if lines[index].is_code_fence_end() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_parse_state = ParseState::None;
                     }
     
                     else {
-                        curr_lines.push(line.clone());
+                        curr_lines.push(lines[index].clone());
                     }
 
                 },
                 ParseState::Paragraph => {
 
-                    if line.is_code_fence_begin() {
+                    if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-                        let (language, line_num) = read_code_fence_info(line);
+                        let (language, line_num) = read_code_fence_info(&lines[index]);
                         curr_parse_state = ParseState::CodeFence { language, line_num };
                     }
 
-                    else if line.is_header() {
+                    else if lines[index].is_header() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-                        let (level, content) = parse_header(line);
+                        let (level, content) = parse_header(&lines[index]);
                         headers.push((level, content.clone()));
                         curr_nodes.push(Node::new_header(level, content));
                         curr_parse_state = ParseState::None;
                     }
 
-                    else if line.is_empty() {
+                    else if lines[index].is_empty() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_nodes.push(Node::Empty);
                         curr_parse_state = ParseState::None;
                     }
 
+                    else if lines[index].is_table_row() {
+
+                        if index + 1 < lines.len() && lines[index + 1].is_table_delimiter() &&
+                        count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[index + 1].content) {
+                            add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                            curr_lines.push(lines[index].clone());
+                            curr_parse_state = ParseState::Table;
+                        }
+
+                        // paragraph
+                        else {
+                            curr_lines.push(lines[index].clone());
+                        }
+
+                    }
+
                     // paragraph
                     else {
-                        curr_lines.push(line.clone());
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                },
+                ParseState::Table => {
+
+                    if lines[index].is_table_row() {
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                    else {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        continue;
                     }
 
                 },
                 ParseState::None => {
 
-                    if line.is_code_fence_begin() {
+                    if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-                        let (language, line_num) = read_code_fence_info(line);
+                        let (language, line_num) = read_code_fence_info(&lines[index]);
                         curr_parse_state = ParseState::CodeFence { language, line_num };
                     }
 
-                    else if line.is_link_or_footnote_reference_definition() {
-                        let (link_label, link_destination) = read_link_reference(&line.content);
+                    else if lines[index].is_link_or_footnote_reference_definition() {
+                        let (link_label, link_destination) = read_link_reference(&lines[index].content);
 
                         if is_valid_footnote_label(&link_label) {
                             let footnote_label = normalize_link(&link_label);
@@ -109,23 +141,24 @@ impl AST {
 
                     }
 
-                    else if line.is_thematic_break() {
+                    else if lines[index].is_thematic_break() {
                         curr_nodes.push(Node::ThematicBreak);
                     }
 
-                    else if line.is_empty() {
+                    else if lines[index].is_empty() {
                         curr_nodes.push(Node::Empty);
                     }
 
                     // paragraph
                     else {
-                        curr_lines.push(line.clone());
+                        curr_lines.push(lines[index].clone());
                         curr_parse_state = ParseState::Paragraph;
                     }
 
                 }
             }
 
+            index += 1;
         }
 
         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
@@ -162,7 +195,12 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             curr_nodes.push(Node::new_paragraph(curr_lines));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
-        }
+        },
+        ParseState::Table => {
+            curr_nodes.push(Node::new_table(curr_lines));
+            *curr_lines = vec![];
+            *curr_parse_state = ParseState::None;
+        },
         ParseState::CodeFence { language, line_num } => {
             curr_nodes.push(Node::new_code_fence(curr_lines, language.clone(), *line_num));
             *curr_lines = vec![];

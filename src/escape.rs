@@ -106,6 +106,7 @@ fn is_html_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
     None
 }
 
+// \c -> <special_form>
 pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len());
@@ -134,6 +135,7 @@ pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
     result
 }
 
+// <special_form> -> /c
 pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len());
@@ -157,6 +159,7 @@ pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
+// <special_form> -> &#__;
 pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len() * 5 / 4);

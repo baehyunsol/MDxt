@@ -7,6 +7,7 @@ mod link;
 mod macros;
 mod footnote;
 mod math;
+mod table;
 
 #[cfg(test)]
 mod testbench;

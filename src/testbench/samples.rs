@@ -1,5 +1,5 @@
 pub fn samples() -> Vec<(&'static str, &'static str)> {
-    vec![set1(), set2(), set3(), set4()]
+    vec![set1(), set2(), set3()]
 }
 
 fn set1() -> (&'static str, &'static str) {
@@ -82,26 +82,6 @@ Valid header
 }
 
 fn set3() -> (&'static str, &'static str) {
-    ("
-[[math]] `a codespan in a math` [[/math]] `[[math]] a math in a codespan [[/math]]`
-
-`[[math]] a codespan before a math`[[/math]] [[math]] `a codespan after a math [[/math]]`
-
-[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]
-
-[[math]] a * b * c = abc [[/math]]
-
-*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]
-
-|          a          |          b          |          c          |
-|---------------------|---------------------|---------------------|
-| math inside a table | [[math]] |a| [[/math]] | the pipe shouldn't break a cell |
-|         `|`         | a pipe in a *cell   | inter-cell highlights* |
-", "
-")
-}
-
-fn set4() -> (&'static str, &'static str) {
     ("
 - 1
   - 1.1

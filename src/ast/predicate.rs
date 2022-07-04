@@ -33,6 +33,38 @@ impl Line {
     }
 
     #[inline]
+    pub fn is_table_row(&self) -> bool {
+        self.indent < 4 && self.content.len() > 1 && self.content[0] == '|' as u16 && self.content[self.content.len() - 1] == '|' as u16
+    }
+
+    #[inline]
+    pub fn is_table_delimiter(&self) -> bool {
+
+        self.is_table_row() && self.content.iter().all(
+            |c|
+            *c == '|' as u16 || *c == '-' as u16 || *c == ':' as u16 || *c == ' ' as u16
+        ) && {
+            // the first and the last element of `cells` is empty, because the line has trailing and leading pipes.
+            // the empty elements should be eliminated
+            let cells = self.content.split(|c| *c == '|' as u16).collect::<Vec<&[u16]>>();
+
+            cells[1..cells.len() - 1].iter().all(
+                |delim| {
+                    let stripped = strip_whitespaces(delim);
+
+                    stripped.len() > 0 && (
+                        (stripped.len() == 1 && stripped[0] == '-' as u16) || (
+                            stripped[1..stripped.len() - 1].iter().all(|c| *c == '-' as u16)
+                            && (stripped[0] == '-' as u16 || stripped[0] == ':' as u16)
+                            && (stripped[stripped.len() - 1] == '-' as u16 || stripped[stripped.len() - 1] == ':' as u16)
+                        )
+                    )
+                }
+            )
+        }
+    }
+
+    #[inline]
     pub fn is_thematic_break(&self) -> bool {
         self.indent < 4 && self.content.len() > 2 && (
             self.content[0] == '*' as u16 ||

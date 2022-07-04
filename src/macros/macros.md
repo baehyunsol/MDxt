@@ -55,3 +55,20 @@ It changes not only font sizes, but also image sizes.
 `[[math]] cfrac{-b pm sqrt{b sup{2} - 4 a c}}{2 a} [[/math]]`
 
 Math macros are special. Every inline element inside a `[[math]]` block is not rendered. Not even codespans!
+
+## Incubator
+
+### Table Configs
+
+```
+[[theme = default, border_color = red]]
+|a|b|c|
+|-|-|-|
+|d|e|f|
+```
+
+### Anchors
+
+`[[anchor = test]]` -> `<a id="test"></a>`
+
+### Line Height
