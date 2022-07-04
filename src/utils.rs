@@ -140,6 +140,10 @@ pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
 
 pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
 
+    if content.len() == 0 {
+        return vec![];
+    }
+
     let mut start_index = 0;
 
     while start_index < content.len() {

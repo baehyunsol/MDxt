@@ -1,6 +1,8 @@
 use super::count_cells;
 use crate::ast::line::Line;
 use crate::utils::into_v16;
+use crate::render_to_html_with_default_options;
+use crate::testbench::remove_whitespaces;
 
 fn row_samples() -> Vec<(String, usize, bool)> {  // (row, cell_count, is_delimiter)
     let result = vec![
@@ -27,7 +29,27 @@ fn table_samples() -> Vec<(String, String)> {
 |-------------------------|-------------------------|-------------------------|
 | math inside a table     | [[math]] |a| [[/math]]  | the pipe shouldn't break a cell |
 |           `|`           | a pipe in a *cell       | inter-cell highlights*  |
-", ""), ("
+", "
+<table>
+    <thead>
+        <th> a </th>
+        <th> b </th>
+        <th> c </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td> math inside a table </td>
+            <td> \\( &#124;a&#124; \\) </td>
+            <td> the pipe shouldn&apos;t break a cell </td>
+        </tr>
+        <tr>
+            <td> <code class=\"short\">&#124;</code> </td>
+            <td> a pipe in a *cell </td>
+            <td> inter-cell highlights* </td>
+        </tr>
+    </tbody>
+</table>
+"), ("
 |Left aligned Column |Centered Column |Right aligned Column |
 |:-------------------|:--------------:|--------------------:|
 |        Left        |     Center     |        Right        |
@@ -37,13 +59,68 @@ fn table_samples() -> Vec<(String, String)> {
 cut
 |        Left        |     Center     |        Right        |
 
-", ""), ("
+", "
+<table>
+    <thead>
+        <th> <div class=\"align_left\">Left aligned Column</div> </th>
+        <th> <div class=\"align_center\">Centered Column </div> </th>
+        <th> <div class=\"align_right\">Right aligned Column </div> </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td> <div class=\"align_left\"> Left </div> </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align_right\"> Right </div> </td>
+        </tr>
+        <tr>
+            <td> <div class=\"align_left\"> Left </div> </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align_right\"> Right </div> </td>
+        </tr>
+        <tr>
+            <td> <div class=\"align_left\"> Left </div> </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align_right\"> Right </div> </td>
+        </tr>
+        <tr>
+            <td> <div class=\"align_left\"> Left </div> </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align_right\"> Right </div> </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>cut |        Left        |     Center     |        Right        |</p>
+"), ("
 |  not  |   a   | table |
 |-------|:-----:|
 
 |  not  | a table |
 |-------|---------|------|
-", ""), ("
+
+|  not  | a table
+|-------|---------|
+
+|  not  | a table |
+|-------|---------
+", "
+<p>
+    |  not  |   a   | table |
+    |-------|:-----:|
+</p>
+<p>
+    |  not  | a table |
+    |-------|---------|------|
+</p>
+<p>
+    |  not  | a table
+    |-------|---------|
+</p>
+<p>
+    |  not  | a table |
+    |-------|---------
+</p>
+"), ("
 |  valid  |  table  |
 |---------|---------|
 | okay    |
@@ -51,7 +128,26 @@ cut
 | not a row
 | not a row
 | not     | in the  | table   |
-", ""), ("
+", "
+<table>
+    <thead>
+        <th> valid </th>
+        <th> table </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td> okay </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> okay </td>
+            <td> okay </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>| not a row | not a row | not | in the | table |</p>
+"), ("
 |-----|-----|
 |-----|-----|-----|
 |-----|-----|
@@ -59,7 +155,33 @@ cut
 |-----|-----|-----|
 |-----|-----|
 |-----|-----|-----|
-", ""),
+", "
+<p>
+    |-----|-----|
+    |-----|-----|-----|
+    |-----|-----|
+</p>
+
+<table>
+    <thead>
+        <th>-----</th>
+        <th>-----</th>
+        <th>-----</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>-----</td>
+            <td>-----</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>-----</td>
+            <td>-----</td>
+            <td>-----</td>
+        </tr>
+    </tbody>
+</table>
+"),
     ];
 
     result.into_iter().map(
@@ -115,6 +237,15 @@ fn cell_count_test() {
 }
 
 #[test]
-fn table_test() {
-    todo!()
+fn footnote_test() {
+
+    for (md, html) in table_samples().iter() {
+        let rendered = render_to_html_with_default_options(md);
+
+        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+            panic!("{} \n\n {}", md, rendered);
+        }
+
+    }
+
 }

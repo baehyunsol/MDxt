@@ -145,6 +145,23 @@ impl AST {
                         curr_nodes.push(Node::ThematicBreak);
                     }
 
+                    else if lines[index].is_table_row() {
+
+                        if index + 1 < lines.len() && lines[index + 1].is_table_delimiter() &&
+                        count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[index + 1].content) {
+                            add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                            curr_lines.push(lines[index].clone());
+                            curr_parse_state = ParseState::Table;
+                        }
+
+                        // paragraph
+                        else {
+                            curr_lines.push(lines[index].clone());
+                            curr_parse_state = ParseState::Paragraph;
+                        }
+
+                    }
+
                     else if lines[index].is_empty() {
                         curr_nodes.push(Node::Empty);
                     }
@@ -207,7 +224,11 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_parse_state = ParseState::None;
         },
         ParseState::None => {
-            panic!("something went wrong!");
+
+            if curr_lines.len() != 0 {
+                panic!("What should I do?");
+            }
+
         }
     }
 

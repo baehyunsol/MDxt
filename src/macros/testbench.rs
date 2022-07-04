@@ -20,8 +20,8 @@ fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
 fn invalid_macros() -> Vec<Vec<u16>> {
     let macros = vec![
         "[ [red]]", "[[red] ]",
-        "[[[icon = github, size = 24]]",
         "[[big!!]]",
+        "[[[icon = github, size = 24]]",
         "[[]]", "[[ ]]", "[[__]]"
     ];
 

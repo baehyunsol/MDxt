@@ -67,6 +67,17 @@ Math macros are special. Every inline element inside a `[[math]]` block is not r
 |d|e|f|
 ```
 
+### Table spans
+
+```
+|          a          |          b          |          c          |
+|---------------------|---------------------|---------------------|
+| d                   | [[rowspan=2]] e     | f                   |
+| [[colspan=2]] d     | e                   |
+```
+
+`colspan` and `rowspan` are not compatible with alignments though.
+
 ### Anchors
 
 `[[anchor = test]]` -> `<a id="test"></a>`

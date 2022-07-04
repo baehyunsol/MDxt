@@ -24,8 +24,11 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     html = render_backslash_escapes(&html);
 
     #[cfg(test)]
-    if html.iter().any(|c| *c > 60000 || *c == '\\' as u16) {
-        panic!("test cases do not contain such character!")
+    if html.iter().any(|c| *c > 60000) {
+        panic!(
+            "A character that's not supposed to be in the result is found\n{}",
+            String::from_utf16(&html).unwrap()
+        )
     }
 
     RenderResult {

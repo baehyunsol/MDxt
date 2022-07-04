@@ -76,6 +76,7 @@ impl AST {
 
                     self.render_option.is_macro_enabled = tmp;
                 },
+                Node::Table(table) => {table.parse_inlines(&mut self.md_data, &self.render_option);},
                 Node::Empty | Node::FencedCode {..} | Node::ThematicBreak => {}
             }
         );
@@ -124,6 +125,9 @@ impl AST {
                         into_v16("<hr/>")
                     );
                 },
+                Node::Table(table) => {
+                    result.push(table.to_html());
+                }
                 Node::Header { level, content } => {
                     result.push(
                         vec![
@@ -139,7 +143,10 @@ impl AST {
 
         }
 
-        result.push(footnotes_to_html(&mut self.md_data.footnote_references));
+        if self.md_data.footnote_references.len() > 0 {
+            result.push(footnotes_to_html(&mut self.md_data.footnote_references));
+        }
+
         result.concat()
     }
 

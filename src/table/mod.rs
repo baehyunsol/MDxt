@@ -1,20 +1,81 @@
+mod alignment;
 mod cell;
 
 #[cfg(test)]
 mod testbench;
 
-use cell::Cell;
-use crate::ast::line::Line;
+use alignment::{TableAlignment, parse_alignments};
+use cell::{Cell, row_to_cells};
+use crate::ast::{MdData, line::Line};
+use crate::render::render_option::RenderOption;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
 use crate::math::escape_inside_math_blocks;
 use crate::escape::BACKSLASH_ESCAPE_MARKER;
+use crate::utils::into_v16;
 
 pub struct Table {
+    header: Vec<Cell>,
+    alignments: Vec<TableAlignment>,
     cells: Vec<Vec<Cell>>
 }
 
 impl Table {
-    pub fn from_lines(lines: &Vec<Line>) -> Self {}
+
+    // it has at least two lines: header, and delimiter
+    // it assumes all the lines are valid table rows
+    pub fn from_lines(lines: &Vec<Line>) -> Self {
+        let alignments = parse_alignments(&lines[1]);
+        let header = row_to_cells(&lines[0], alignments.len(), &alignments);
+
+        let rows = &lines[2..lines.len()];
+        let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
+
+        Table {
+            header, alignments, cells
+        }
+
+    }
+
+    pub fn parse_inlines(&mut self, md_data: &mut MdData, render_option: &RenderOption) {
+
+        self.header.iter_mut().for_each(
+            |cell| {cell.content.parse_raw(md_data, render_option);}
+        );
+
+        self.cells.iter_mut().for_each(
+            |row| {
+                row.iter_mut().for_each(
+                    |cell| {cell.content.parse_raw(md_data, render_option);}
+                );
+            }
+        );
+
+    }
+
+    pub fn to_html(&self) -> Vec<u16> {
+        let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
+        result.push(into_v16("<table>"));
+
+        result.push(into_v16("<thead>"));
+        result.push(self.header.iter().map(|h| h.to_html(true)).collect::<Vec<Vec<u16>>>().concat());
+        result.push(into_v16("</thead>"));
+
+        if self.cells.len() > 0 {
+            result.push(into_v16("<tbody>"));
+            self.cells.iter().for_each(
+                |row| {
+                    result.push(into_v16("<tr>"));
+                    result.push(row.iter().map(|c| c.to_html(false)).collect::<Vec<Vec<u16>>>().concat());
+                    result.push(into_v16("</tr>"));
+                }
+            );
+            result.push(into_v16("</tbody>"));
+        }
+
+        result.push(into_v16("</table>"));
+        result.concat()
+    }
+
 }
 
 // it does not check whether the row is valid
