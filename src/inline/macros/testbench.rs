@@ -1,6 +1,6 @@
 use super::predicate::{read_macro, check_and_parse_macro_inline};
-use crate::utils::into_v16;
 use crate::inline::InlineNode;
+use crate::utils::into_v16;
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
 

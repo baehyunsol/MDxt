@@ -1,6 +1,6 @@
 use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
-use crate::utils::{get_bracket_end_index, into_v16};
 use crate::inline::InlineNode;
+use crate::utils::{get_bracket_end_index, into_v16};
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
 

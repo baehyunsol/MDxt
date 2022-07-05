@@ -1,6 +1,6 @@
 use super::{Macro, MacroType};
-use crate::render::render_option::RenderOption;
 use crate::inline::{InlineNode, DecorationType, InlineMacro};
+use crate::render::render_option::RenderOption;
 use crate::utils::to_int;
 use crate::ast::MdData;
 

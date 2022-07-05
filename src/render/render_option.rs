@@ -1,4 +1,4 @@
-use crate::link::predicate::is_valid_link_destination;
+use crate::inline::link::predicate::is_valid_link_destination;
 
 #[derive(Clone)]
 pub struct RenderOption {

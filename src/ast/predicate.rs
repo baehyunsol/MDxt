@@ -1,5 +1,6 @@
-use crate::footnote::predicate::is_valid_footnote_label;
-use crate::link::predicate::is_valid_link_label;
+use crate::inline::footnote::predicate::is_valid_footnote_label;
+use crate::inline::link::predicate::is_valid_link_label;
+use crate::codefence::predicate::is_valid_info_string;
 use crate::ast::line::Line;
 use crate::utils::*;
 
@@ -22,14 +23,31 @@ impl Line {
 
     #[inline]
     pub fn is_code_fence_begin(&self) -> bool {
-        // TODO check the following string
-        self.indent == 0 && self.content.len() > 2 && &self.content[0..3] == &into_v16("```")
+        self.is_code_fence() && is_valid_info_string(&drop_while(&self.content[3..self.content.len()], self.content[0]))
     }
 
     #[inline]
     pub fn is_code_fence_end(&self) -> bool {
-        // TODO
-        self.is_code_fence_begin()
+        self.is_code_fence() && {
+            let mut index = 3;
+
+            while index < self.content.len() {
+
+                if self.content[index] != self.content[0] {
+                    return false;
+                }
+
+                index += 1;
+            }
+
+            true
+        }
+    }
+
+    #[inline]
+    fn is_code_fence(&self) -> bool {
+        self.indent < 4 && self.content.len() > 2 && (self.content[0] == '`' as u16 || self.content[0] == '~' as u16)
+        && self.content[0] == self.content[1] && self.content[1] == self.content[2]
     }
 
     #[inline]

@@ -9,7 +9,7 @@ use cell::{Cell, row_to_cells};
 use crate::ast::{MdData, line::Line};
 use crate::render::render_option::RenderOption;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
-use crate::math::escape_inside_math_blocks;
+use crate::inline::math::escape_inside_math_blocks;
 use crate::escape::BACKSLASH_ESCAPE_MARKER;
 use crate::utils::into_v16;
 

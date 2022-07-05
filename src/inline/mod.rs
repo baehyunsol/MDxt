@@ -1,11 +1,15 @@
 mod predicate;
 pub mod parse;
+pub mod link;
+pub mod footnote;
+pub mod macros;
+pub mod math;
 
 #[cfg(test)]
 mod testbench;
 
 use crate::utils::into_v16;
-use crate::math::render_math;
+use math::render_math;
 
 #[derive(Clone)]
 pub enum InlineNode {

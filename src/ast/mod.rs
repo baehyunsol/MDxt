@@ -1,11 +1,11 @@
 pub mod line;
+pub mod parse;
 mod predicate;
-mod parse;
 mod node;
 
 use crate::inline::InlineNode;
+use crate::inline::footnote::{footnotes_to_html, Footnote};
 use crate::render::render_option::RenderOption;
-use crate::footnote::{footnotes_to_html, Footnote};
 use crate::utils::into_v16;
 use node::Node;
 use std::collections::HashMap;

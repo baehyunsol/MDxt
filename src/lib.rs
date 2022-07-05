@@ -3,11 +3,8 @@ mod render;
 mod utils;
 mod inline;
 mod escape;
-mod link;
-mod macros;
-mod footnote;
-mod math;
 mod table;
+mod codefence;
 
 #[cfg(test)]
 mod testbench;

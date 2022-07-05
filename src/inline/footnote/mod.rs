@@ -4,7 +4,7 @@ pub mod predicate;
 mod testbench;
 
 use crate::utils::into_v16;
-use crate::inline::InlineNode;
+use super::InlineNode;
 use std::collections::HashMap;
 
 #[derive(Clone)]

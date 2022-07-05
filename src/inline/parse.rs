@@ -3,15 +3,15 @@ use super::{
     InlineNode, DecorationType,
     INLINE_CODESPAN_MARKER1, INLINE_CODESPAN_MARKER2, INLINE_CODESPAN_MARKER3, INLINE_CODESPAN_MARKER4
 };
-use crate::link::predicate::{
+use super::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
 };
-use crate::math::escape_inside_math_blocks;
-use crate::footnote::predicate::read_footnote;
-use crate::link::normalize_link;
+use super::math::escape_inside_math_blocks;
+use super::footnote::predicate::read_footnote;
+use super::link::normalize_link;
+use super::macros::predicate::check_and_parse_macro_inline;
 use crate::ast::MdData;
 use crate::render::render_option::RenderOption;
-use crate::macros::predicate::check_and_parse_macro_inline;
 use crate::utils::get_bracket_end_index;
 
 impl InlineNode {
