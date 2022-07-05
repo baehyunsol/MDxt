@@ -1,5 +1,6 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
+use crate::ast::parse::ParseState;
 use crate::inline::InlineNode;
 use crate::table::Table;
 
@@ -12,8 +13,8 @@ pub enum Node {
         content: InlineNode
     },
     FencedCode {
-        language: String,
-        line_num: bool,
+        language: Vec<u16>,
+        line_num: Option<usize>,
         content: Vec<u16>
     },
     Table(Table),
@@ -33,10 +34,12 @@ impl Node {
         }
     }
 
-    pub fn new_code_fence(lines: &Vec<Line>, language: String, line_num: bool) -> Node {
+    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>) -> Node {
+
         Node::FencedCode {
             content: lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
-            language, line_num
+            language: language.to_vec(),
+            line_num: line_num.clone()
         }
     }
 

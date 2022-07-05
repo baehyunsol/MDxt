@@ -1,6 +1,5 @@
 use crate::render_to_html_with_default_options;
-use crate::testbench::remove_whitespaces;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, remove_whitespaces};
 
 fn samples() -> Vec<(String, String)> {
     vec![

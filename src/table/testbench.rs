@@ -1,8 +1,7 @@
 use super::count_cells;
 use crate::ast::line::Line;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, remove_whitespaces};
 use crate::render_to_html_with_default_options;
-use crate::testbench::remove_whitespaces;
 
 fn row_samples() -> Vec<(String, usize, bool)> {  // (row, cell_count, is_delimiter)
     let result = vec![

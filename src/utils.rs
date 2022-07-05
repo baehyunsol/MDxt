@@ -113,6 +113,10 @@ pub fn is_alphabet(c: u16) -> bool {
     'A' as u16 <= c && c <= 'Z' as u16 || 'a' as u16 <= c && c <= 'z' as u16
 }
 
+pub fn is_numeric(c: &u16) -> bool {
+    '0' as u16 <= *c && *c <= '9' as u16
+}
+
 pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
     let mut result = Vec::with_capacity(content.len());
     let mut consecutive_whitespace = false;
@@ -202,6 +206,12 @@ pub fn to_int(string: &[u16]) -> Option<u32> {
     }
 
     Some(result)
+}
+
+pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
+    line.iter().filter(
+        |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
+    ).map(|c| *c).collect()
 }
 
 #[cfg(test)]

@@ -14,8 +14,8 @@ use std::collections::HashMap;
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     Paragraph,
     CodeFence {
-        language: String,
-        line_num: bool,
+        language: Vec<u16>,
+        line_num: Option<usize>,
         code_fence_size: usize,
         is_tilde_fence: bool
     },
@@ -223,7 +223,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_parse_state = ParseState::None;
         },
         ParseState::CodeFence { language, line_num, .. } => {
-            curr_nodes.push(Node::new_code_fence(curr_lines, language.clone(), *line_num));
+            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
