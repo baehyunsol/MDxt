@@ -101,7 +101,7 @@ impl Macro {
 }
 
 fn normalize_macro(content: &[u16]) -> Vec<u16> {
-    content.iter().filter(|c| **c != ' ' as u16 && **c != '_' as u16).map(|c| lowercase(*c)).collect::<Vec<u16>>()
+    content.iter().filter(|c| **c != ' ' as u16 && **c != '_' as u16).map(lowercase).collect::<Vec<u16>>()
 }
 
 // [[icon = github, size = 32]] => [['icon', 'github'], ['size', '32']]

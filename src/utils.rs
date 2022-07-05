@@ -97,14 +97,14 @@ pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
     ).map(|c| *c).collect()
 }
 
-pub fn lowercase(c: u16) -> u16 {
+pub fn lowercase(c: &u16) -> u16 {
 
-    if 'A' as u16 <= c && c <= 'Z' as u16 {
+    if 'A' as u16 <= *c && *c <= 'Z' as u16 {
         c + 32
     }
 
     else {
-        c
+        *c
     }
 
 }

@@ -9,5 +9,5 @@ use crate::utils::{collapse_whitespaces, strip_whitespaces, lowercase};
 
 // [  F  OO ] -> [f oo]
 pub fn normalize_link(original: &[u16]) -> Vec<u16> {
-    strip_whitespaces(&collapse_whitespaces(original)).into_iter().map(lowercase).collect()
+    strip_whitespaces(&collapse_whitespaces(original)).iter().map(lowercase).collect()
 }
