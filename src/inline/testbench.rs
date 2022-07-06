@@ -75,6 +75,9 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
 #[test]
 fn inline_render_test() {
 
+    #[cfg(not(feature = "test-all"))]
+    return;
+
     let test_cases = samples();
     let mut failures = vec![];
     let mut md_data = MdData::default();
@@ -114,6 +117,9 @@ fn inline_render_test() {
 
 #[test]
 fn inline_inversion_test() {
+
+    #[cfg(not(feature = "test-all"))]
+    return;
 
     let mut failures = vec![];
     let mut md_data = MdData::default();

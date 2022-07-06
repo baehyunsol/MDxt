@@ -107,7 +107,10 @@ impl Line {
             None => false,
             Some(bracket_end_index) => self.content.len() > bracket_end_index + 2
             && self.content[bracket_end_index + 1] == ':' as u16
-            && (is_valid_link_label(&self.content[1..bracket_end_index]) || is_valid_footnote_label(&self.content[1..bracket_end_index]))
+            && drop_while(&self.content[1..bracket_end_index], ' ' as u16).len() > 0 && (
+                is_valid_link_label(&self.content[1..bracket_end_index]) ||
+                is_valid_footnote_label(&self.content[1..bracket_end_index])
+            )
         }
 
     }

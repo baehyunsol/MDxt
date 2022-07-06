@@ -31,6 +31,9 @@ fn invalid_macros() -> Vec<Vec<u16>> {
 #[test]
 fn macro_test() {
 
+    #[cfg(not(feature = "test-all"))]
+    return;
+
     let valid = valid_macros();
     let invalid = invalid_macros();
 

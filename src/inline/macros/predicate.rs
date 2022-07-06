@@ -6,7 +6,7 @@ use crate::ast::MdData;
 
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
-    if content[index] == '[' as u16 && index + 1 < content.len() && content[index + 1] == '[' as u16 {
+    if content.len() > 0 && content[index] == '[' as u16 && index + 1 < content.len() && content[index + 1] == '[' as u16 {
 
         match get_bracket_end_index(content, index) {
             None => {return None;}

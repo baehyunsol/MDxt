@@ -43,8 +43,8 @@ impl Node {
         }
     }
 
-    pub fn new_table(lines: &Vec<Line>) -> Node {
-        Node::Table (Table::from_lines(lines))
+    pub fn new_table(headers: &Vec<Line>, lines: &Vec<Line>, alignments: &Line) -> Node {
+        Node::Table (Table::from_lines(headers, lines, alignments))
     }
 
 }

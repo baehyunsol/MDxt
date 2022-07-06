@@ -31,9 +31,11 @@ fn table_samples() -> Vec<(String, String)> {
 ", "
 <table>
     <thead>
-        <th> a </th>
-        <th> b </th>
-        <th> c </th>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -61,9 +63,11 @@ cut
 ", "
 <table>
     <thead>
-        <th> <div class=\"align_left\">Left aligned Column</div> </th>
-        <th> <div class=\"align_center\">Centered Column </div> </th>
-        <th> <div class=\"align_right\">Right aligned Column </div> </th>
+        <tr>
+            <th> <div class=\"align_left\">Left aligned Column</div> </th>
+            <th> <div class=\"align_center\">Centered Column </div> </th>
+            <th> <div class=\"align_right\">Right aligned Column </div> </th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -130,8 +134,10 @@ cut
 ", "
 <table>
     <thead>
-        <th> valid </th>
-        <th> table </th>
+        <tr>
+            <th> valid </th>
+            <th> table </th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -163,9 +169,11 @@ cut
 
 <table>
     <thead>
-        <th>-----</th>
-        <th>-----</th>
-        <th>-----</th>
+        <tr>
+            <th>-----</th>
+            <th>-----</th>
+            <th>-----</th>
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -180,7 +188,9 @@ cut
         </tr>
     </tbody>
 </table>
-"),
+"), ("
+", "
+")
     ];
 
     result.into_iter().map(
@@ -190,6 +200,10 @@ cut
 
 #[test]
 fn cell_count_test() {
+
+    #[cfg(not(feature = "test-all"))]
+    return;
+
     let mut failures = vec![];
 
     for (row, cell_count, is_delimiter) in row_samples().into_iter() {
@@ -236,7 +250,10 @@ fn cell_count_test() {
 }
 
 #[test]
-fn footnote_test() {
+fn table_test() {
+
+    #[cfg(not(feature = "test-all"))]
+    return;
 
     for (md, html) in table_samples().iter() {
         let rendered = render_to_html_with_default_options(md);

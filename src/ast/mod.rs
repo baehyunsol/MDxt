@@ -51,7 +51,7 @@ impl MdData {
 
 pub struct AST {
     render_option: RenderOption,
-    md_data: MdData,
+    pub md_data: MdData,
     nodes: Vec<Node>,
     is_inline_parsed: bool
 }

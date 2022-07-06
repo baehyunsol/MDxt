@@ -32,7 +32,8 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     }
 
     RenderResult {
-        content: String::from_utf16_lossy(&html)
+        content: String::from_utf16_lossy(&html),
+        has_math: ast.md_data.has_math
     }
 
 }

@@ -219,6 +219,10 @@ mod tests {
 
     #[test]
     fn partner_test() {
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
         use crate::utils::{get_parenthesis_end_index, get_bracket_end_index, into_v16};
         let test1 = into_v16("[name](link)");
 
@@ -236,6 +240,10 @@ mod tests {
 
     #[test]
     fn whitespace_test() {
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
         use crate::utils::{into_v16, collapse_whitespaces, strip_whitespaces};
         let sample1 = into_v16(" F  OO BA R  ");
         let sample2 = into_v16("   A    ");
@@ -253,6 +261,10 @@ mod tests {
 
     #[test]
     fn misc_test2() {
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
         use crate::utils::{into_v16, remove_special_characters};
 
         let sample1 = into_v16("THIS IS BIG and this is small!");

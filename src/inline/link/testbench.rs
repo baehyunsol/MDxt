@@ -11,6 +11,15 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
     // some cases are not the same as the [gfm's spec](https://github.github.com/gfm)
     let result = vec![
+        ("[]()", "<a href=\"\"></a>"),
+        ("[ ]()", "<a href=\"\"> </a>"),
+        ("[]( )", "<a href=\"\"></a>"),
+        ("[ ]( )", "<a href=\"\"> </a>"),
+        ("[] ()", "[] ()"),
+        ("[ ] ()", "[ ] ()"),
+        ("[] ( )", "[] ( )"),
+        ("[ ] ( )", "[ ] ( )"),
+
         ("[github](https://github.com)", "<a href=\"https://github.com\">github</a>"),
         ("[*github*](https://github.com)", "<a href=\"https://github.com\"><em>github</em></a>"),
         ("*[github](https://github.com)*", "<em><a href=\"https://github.com\">github</a></em>"),
@@ -42,6 +51,16 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[red]][link](https://github.com)[[/red]]", "<div class=\"color_red\"><a href=\"https://github.com\">link</a></div>"),
 
         ("[link][link2][link][link2]", "<a href=\"https://example2\">link</a><a href=\"https://example2\">link</a>"),
+
+        ("![]()", "<img src=\"\" alt=\"\"/>"),
+        ("![ ]()", "<img src=\"\" alt=\" \"/>"),
+        ("![]( )", "<img src=\"\" alt=\"\"/>"),
+        ("![ ]( )", "<img src=\"\" alt=\" \"/>"),
+        ("![] ()", "![] ()"),
+        ("![ ] ()", "![ ] ()"),
+        ("![] ( )", "![] ( )"),
+        ("![ ] ( )", "![ ] ( )"),
+        ("! []()", "! <a href=\"\"></a>"),
 
         ("![github](https://github.com)", "<img src=\"https://github.com\" alt=\"github\"/>"),
         ("![*github*](https://github.com)", "<img src=\"https://github.com\" alt=\"*github*\"/>"),
@@ -81,6 +100,9 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
 #[test]
 fn link_render_test() {
+
+    #[cfg(not(feature = "test-all"))]
+    return;
 
     let test_cases = samples();
     let mut failures = vec![];
@@ -128,6 +150,10 @@ fn link_render_test() {
 
 #[test]
 fn normalize_link_test() {
+
+    #[cfg(not(feature = "test-all"))]
+    return;
+
     let cases_and_answers = vec![
         (into_v16("FOO"), into_v16("foo")),
         (into_v16("  F  OO "), into_v16("f oo"))

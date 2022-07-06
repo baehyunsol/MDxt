@@ -5,7 +5,7 @@ mod cell;
 mod testbench;
 
 use alignment::{TableAlignment, parse_alignments};
-use cell::{Cell, row_to_cells};
+use cell::{Cell, row_to_cells, get_colspan};
 use crate::ast::{MdData, line::Line};
 use crate::render::render_option::RenderOption;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
@@ -14,7 +14,7 @@ use crate::escape::BACKSLASH_ESCAPE_MARKER;
 use crate::utils::into_v16;
 
 pub struct Table {
-    header: Vec<Cell>,
+    header: Vec<Vec<Cell>>,
     alignments: Vec<TableAlignment>,
     cells: Vec<Vec<Cell>>
 }
@@ -23,11 +23,10 @@ impl Table {
 
     // it has at least two lines: header, and delimiter
     // it assumes all the lines are valid table rows
-    pub fn from_lines(lines: &Vec<Line>) -> Self {
-        let alignments = parse_alignments(&lines[1]);
-        let header = row_to_cells(&lines[0], alignments.len(), &alignments);
+    pub fn from_lines(headers: &Vec<Line>, rows: &Vec<Line>, alignments: &Line) -> Self {
+        let alignments = parse_alignments(&alignments);
+        let header = headers.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
 
-        let rows = &lines[2..lines.len()];
         let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
 
         Table {
@@ -39,7 +38,11 @@ impl Table {
     pub fn parse_inlines(&mut self, md_data: &mut MdData, render_option: &RenderOption) {
 
         self.header.iter_mut().for_each(
-            |cell| {cell.content.parse_raw(md_data, render_option);}
+            |row| {
+                row.iter_mut().for_each(
+                    |cell| {cell.content.parse_raw(md_data, render_option);}
+                );
+            }
         );
 
         self.cells.iter_mut().for_each(
@@ -57,7 +60,13 @@ impl Table {
         result.push(into_v16("<table>"));
 
         result.push(into_v16("<thead>"));
-        result.push(self.header.iter().map(|h| h.to_html(true)).collect::<Vec<Vec<u16>>>().concat());
+        self.header.iter().for_each(
+            |row| {
+                result.push(into_v16("<tr>"));
+                result.push(row.iter().map(|c| c.to_html(true)).collect::<Vec<Vec<u16>>>().concat());
+                result.push(into_v16("</tr>"));
+            }
+        );
         result.push(into_v16("</thead>"));
 
         if self.cells.len() > 0 {
@@ -85,7 +94,9 @@ pub fn count_cells(row: &[u16], pipes_escaped: bool) -> usize {
         return count_cells(&escape_pipes(row), true);
     }
 
-    row.iter().filter(|c| **c == '|' as u16).collect::<Vec<&u16>>().len() - 1
+    // the `.split` method generates 2 extra elements, the trailing and leading empty cells
+    // they should be removed
+    row.split(|c| *c == '|' as u16).map(|cell| get_colspan(cell)).sum::<usize>() - 2
 }
 
 // it does not check whether the delimiter is valid

@@ -162,7 +162,7 @@ fn is_valid_link_text(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u
     !contains_link(content, link_references)
 
     // the syntax below is for macros, not links
-    && (content[0] != '[' as u16 || content[content.len() - 1] != ']' as u16)
+    && (content.len() == 0 || (content[0] != '[' as u16 || content[content.len() - 1] != ']' as u16))
 }
 
 pub fn is_valid_link_label(content: &[u16]) -> bool {

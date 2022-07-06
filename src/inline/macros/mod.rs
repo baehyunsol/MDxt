@@ -105,7 +105,7 @@ fn normalize_macro(content: &[u16]) -> Vec<u16> {
 }
 
 // [[icon = github, size = 32]] => [['icon', 'github'], ['size', '32']]
-fn parse_arguments(content: &[u16]) -> Vec<Vec<Vec<u16>>> {
+pub fn parse_arguments(content: &[u16]) -> Vec<Vec<Vec<u16>>> {
     content.split(
         |c| *c == ',' as u16
     ).map(
@@ -118,6 +118,6 @@ fn parse_arguments(content: &[u16]) -> Vec<Vec<Vec<u16>>> {
     ).collect()
 }
 
-fn get_macro_name(arguments: &Vec<Vec<Vec<u16>>>) -> Vec<u16> {
+pub fn get_macro_name(arguments: &Vec<Vec<Vec<u16>>>) -> Vec<u16> {
     arguments[0][0].clone()
 }

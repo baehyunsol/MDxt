@@ -357,51 +357,77 @@ const LATEX_2ARG_FUNCS_RAW: [&str;9] = ["frac", "cfrac", "sqrt", "int", "oint", 
 
 #[cfg(test)]
 mod tests {
+    use crate::utils::into_v16;
+    use crate::inline::math::translate_to_latex;
 
     #[test]
     fn math_test1() {
-        let orig = crate::utils::into_v16("sub{sub{-3}}sup {-x}{4} neq infty text{1234}");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("sub{sub{-3}}sup {-x}{4} neq infty text{1234}");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "_{_{-3}}^{-x}{4} \\neq  \\infty  \\text{1234}".to_string());
     }
 
     #[test]
     fn math_test2() {
-        let orig = crate::utils::into_v16("sqrt{1 + sqrt{2 + 3}} leq sqrt{3}{5 + frac   {2 + 5} {3 + 7}}");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+        
+        let orig = into_v16("sqrt{1 + sqrt{2 + 3}} leq sqrt{3}{5 + frac   {2 + 5} {3 + 7}}");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "\\sqrt{1 + \\sqrt{2 + 3}} \\leq  \\sqrt[3]{5 + \\frac{2 + 5}{3 + 7}}".to_string());
     }
 
     #[test]
     fn math_test3() {
-        let orig = crate::utils::into_v16("frac {3} sum {3} sqrt {3}");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("frac {3} sum {3} sqrt {3}");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "frac {3} sum {3} \\sqrt{3}".to_string());
     }
 
     #[test]
     fn math_test4() {
-        let orig = crate::utils::into_v16("int{0}{infty} e sup{-x} dx");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("int{0}{infty} e sup{-x} dx");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "\\int\\limits _{0}^{\\infty } e ^{-x} dx".to_string());
     }
 
     #[test]
     fn math_test5() {
-        let orig = crate::utils::into_v16("(vec{a} neq vec {b}) = (hat{a} neq hat {b})");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("(vec{a} neq vec {b}) = (hat{a} neq hat {b})");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "(\\vec{a} \\neq  \\vec{b}) = (\\hat{a} \\neq  \\hat{b})".to_string());
     }
 
     #[test]
     fn math_test6() {
-        let orig = crate::utils::into_v16("sum{n=1}{infty} frac{1}{n sup{2}} < 10");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("sum{n=1}{infty} frac{1}{n sup{2}} < 10");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         // `render_to_html` will render `<` inside `[[math]]` to `\\lt`.
         // but the escape is done by `InlineNode::from_md`, which is not used in this test
@@ -410,8 +436,12 @@ mod tests {
 
     #[test]
     fn math_test7() {
-        let orig = crate::utils::into_v16("text{delta} delta");
-        let rendered = String::from_utf16_lossy(&crate::inline::math::translate_to_latex(&orig));
+
+        #[cfg(not(feature = "test-all"))]
+        return;
+
+        let orig = into_v16("text{delta} delta");
+        let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
         assert_eq!(rendered, "\\text{delta} \\delta ".to_string());
     }
