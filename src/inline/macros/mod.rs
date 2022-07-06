@@ -24,7 +24,7 @@ pub struct Macro {
 
 #[derive(Debug)]
 enum MacroType {
-    Color, Size, Alignment,
+    Color, Size, Alignment, Highlight,
     Box, Toc, Blank, Br, Char, Icon, Math
 }
 
@@ -43,6 +43,7 @@ impl Macro {
             Self::new_alignment("center"),
             Self::new_alignment("left"),
             Self::new_alignment("right"),
+            Self::new("highlight", MacroType::Highlight, false),
             Self::new("box", MacroType::Box, false),
             Self::new("toc", MacroType::Toc, true),
             Self::new("blank", MacroType::Blank, true),

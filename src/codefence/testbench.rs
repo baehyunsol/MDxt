@@ -1,7 +1,8 @@
 use super::read_code_fence_info;
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, remove_whitespaces};
+use crate::render_to_html_with_default_options;
 
 fn fence_samples() -> Vec<(
     String,         // case
@@ -103,11 +104,12 @@ fn fence_test() {
         let (
             language_actual,
             line_num_actual,
+            highlights_actual,
             fence_size_actual,
             is_tilde_fence_actual
         ) = match read_code_fence_info(&line) {
-            ParseState::CodeFence { language, line_num, code_fence_size, is_tilde_fence } => (
-                String::from_utf16(&language).unwrap(), line_num, code_fence_size, is_tilde_fence
+            ParseState::CodeFence { language, line_num, highlights, code_fence_size, is_tilde_fence } => (
+                String::from_utf16(&language).unwrap(), line_num, highlights, code_fence_size, is_tilde_fence
             ),
             _ => panic!("This doesn't make sense at all."),
         };
@@ -153,6 +155,44 @@ fn fence_test() {
             test_cases.len(),
             failures.join("\n\n")
         );
+    }
+
+}
+
+fn code_fence_samples() -> Vec<(String, String)> {
+    let result = vec![
+        ("
+```rust
+fn main() {
+    println!(\"Hello World!\");
+}
+```
+
+````
+```rust
+fn main() {
+    println!(\"Hello World!\");
+}
+```
+````
+", "
+"), ("", "")
+    ];
+
+    result.into_iter().map(
+        |(case, answer)| (case.to_string(), answer.to_string())
+    ).collect()
+}
+
+#[test]
+fn code_fence_test() {
+    for (md, html) in code_fence_samples().iter() {
+        let rendered = render_to_html_with_default_options(md);
+
+        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+            panic!("{} \n\n {}", md, rendered);
+        }
+
     }
 
 }

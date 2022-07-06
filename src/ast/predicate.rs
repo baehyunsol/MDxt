@@ -52,7 +52,15 @@ impl Line {
 
     #[inline]
     pub fn is_table_row(&self) -> bool {
-        self.indent < 4 && self.content.len() > 1 && self.content[0] == '|' as u16 && self.content[self.content.len() - 1] == '|' as u16
+        self.indent < 4 && self.content.len() > 1 && self.content[0] == '|' as u16 && {
+            let mut last_index = self.content.len() - 1;
+
+            while self.content[last_index] == ' ' as u16 {
+                last_index -= 1;
+            }
+
+            self.content[last_index] == '|' as u16
+        }
     }
 
     #[inline]

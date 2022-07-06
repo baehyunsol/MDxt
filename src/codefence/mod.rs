@@ -1,32 +1,34 @@
 pub mod predicate;
+pub mod html;
 
 #[cfg(test)]
 mod testbench;
 
 use crate::ast::line::Line;
-use crate::ast::parse::ParseState;
 use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase, to_int};
-use predicate::is_line_num;
+use crate::ast::parse::ParseState;
+use predicate::{is_line_num, is_highlight};
 
-/*
-```rust, line_num(5)
-fn main() {
-    println!("Hello World!");
-}
-```
+pub use html::to_html;
 
-``` rust
-fn main() {
-    println!("Hello World!");
+pub struct FencedCode {
+    language: Vec<u16>,
+    content: Vec<u16>,
+    line_num: Option<usize>,
+    highlights: Vec<usize>
 }
-```
 
-```line_num
-fn main() {
-    println!("Hello World!");
+impl FencedCode {
+
+    pub fn new(content: Vec<u16>, language: Vec<u16>, line_num: Option<usize>, highlights: Vec<usize>) -> Self {
+        FencedCode { language, content, line_num, highlights }
+    }
+
+    pub fn to_html(&self) -> Vec<u16> {
+        todo!()
+    }
+
 }
-```
-*/
 
 // it assumes that the given line is a valid code fence
 pub fn read_code_fence_info(line: &Line) -> ParseState {
@@ -35,6 +37,7 @@ pub fn read_code_fence_info(line: &Line) -> ParseState {
 
     let mut language = into_v16("");
     let mut line_num = None;
+    let mut highlights = vec![];
 
     let arguments = info_string.split(|c| *c == ',' as u16).collect::<Vec<&[u16]>>();
 
@@ -52,6 +55,10 @@ pub fn read_code_fence_info(line: &Line) -> ParseState {
 
         }
 
+        else if is_highlight(argument) {
+            todo!();
+        }
+
         else {
             language = argument.to_vec();
         }
@@ -61,6 +68,7 @@ pub fn read_code_fence_info(line: &Line) -> ParseState {
     ParseState::CodeFence {
         language,
         line_num,
+        highlights,
         code_fence_size: fence.len(),
         is_tilde_fence: line.content[0] == '~' as u16
     }

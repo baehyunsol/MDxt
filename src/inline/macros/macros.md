@@ -23,6 +23,10 @@ Macro content is case insensitive, and all the whitespaces and underbars are ign
 
 It changes not only font sizes, but also image sizes.
 
+## Highlight
+
+- `[[highlight = red]] ... [[/highlight]]`
+
 ## Alignment
 
 - `[[center]] ... [[/center]]`
@@ -72,7 +76,3 @@ Math macros are special. Every inline element inside a `[[math]]` block is not r
 `[[anchor = test]]` -> `<a id="test"></a>`
 
 ### Line Height
-
-### Highlight
-
-`[[highlight = red]]`

@@ -30,3 +30,7 @@ pub fn is_line_num(content: &[u16]) -> bool {
     }
 
 }
+
+pub fn is_highlight(content: &[u16]) -> bool {
+    content.len() > 11 && content[0..10] == into_v16("highlight(") && content[content.len() - 1] == ')' as u16 && todo!()
+}

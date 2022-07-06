@@ -8,6 +8,7 @@ mod testbench;
 
 use crate::inline::InlineNode;
 use crate::inline::footnote::{footnotes_to_html, Footnote};
+use crate::codefence;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
 use node::Node;
@@ -140,7 +141,9 @@ impl AST {
                         ].concat()
                     );
                 },
-                Node::FencedCode { language, line_num, content } => todo!(),
+                Node::FencedCode(fenced_code) => {
+                    result.push(fenced_code.to_html());
+                }
                 Node::Empty => {}
             }
 

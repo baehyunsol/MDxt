@@ -2,6 +2,7 @@ use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::table::Table;
+use crate::codefence::FencedCode;
 
 pub enum Node {
     Paragraph {
@@ -11,11 +12,7 @@ pub enum Node {
         level: usize,
         content: InlineNode
     },
-    FencedCode {
-        language: Vec<u16>,
-        line_num: Option<usize>,
-        content: Vec<u16>
-    },
+    FencedCode(FencedCode),
     Table(Table),
     ThematicBreak,
     Empty
@@ -33,13 +30,14 @@ impl Node {
         }
     }
 
-    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>) -> Node {
+    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>, highlights: &Vec<usize>) -> Node {
 
-        Node::FencedCode {
-            content: lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
-            language: language.to_vec(),
-            line_num: line_num.clone()
-        }
+        Node::FencedCode(FencedCode::new(
+            lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
+            language.to_vec(),
+            line_num.clone(),
+            highlights.clone()
+        ))
     }
 
     pub fn new_table(headers: &Vec<Line>, lines: &Vec<Line>, alignments: &Line) -> Node {

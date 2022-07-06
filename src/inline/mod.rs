@@ -42,6 +42,7 @@ pub enum InlineMacro {
     Alignment(Vec<u16>),
     Color(Vec<u16>),
     Size(Vec<u16>),
+    Highlight(Vec<u16>),
     Char(u16),
     Math(Vec<u16>),
     Box,
@@ -133,6 +134,13 @@ impl InlineNode {
                     InlineMacro::Size(size) => vec![
                         into_v16("<div class=\"size_"),
                         size.clone(),
+                        into_v16("\">"),
+                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</div>")
+                    ].concat(),
+                    InlineMacro::Highlight(color) => vec![
+                        into_v16("<div class=\"highlight_"),
+                        color.clone(),
                         into_v16("\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</div>")
@@ -233,6 +241,13 @@ impl InlineNode {
                         into_v16("[[/"),
                         name.clone(),
                         into_v16("]]")
+                    ].concat(),
+                    InlineMacro::Highlight(color) => vec![
+                        into_v16("[[highlight="),
+                        color.clone(),
+                        into_v16("]]"),
+                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("[[/highlight]]")
                     ].concat(),
                     InlineMacro::Box => vec![
                         into_v16("[[box]]"),

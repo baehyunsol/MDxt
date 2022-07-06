@@ -17,6 +17,8 @@ impl Macro {
                 _ => false
             },
 
+            MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2, // && arguments[0][1] is a valid color
+
             MacroType::Icon => todo!()
         }
 

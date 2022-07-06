@@ -16,6 +16,7 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     CodeFence {
         language: Vec<u16>,
         line_num: Option<usize>,
+        highlights: Vec<usize>,
         code_fence_size: usize,
         is_tilde_fence: bool
     },
@@ -41,7 +42,7 @@ impl AST {
         while index < lines.len() {
 
             match &curr_parse_state {
-                ParseState::CodeFence { language, line_num, code_fence_size, is_tilde_fence } => {
+                ParseState::CodeFence { language, line_num, highlights, code_fence_size, is_tilde_fence } => {
 
                     if lines[index].is_code_fence_end() {
                         let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index]) {
@@ -252,8 +253,8 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
-        ParseState::CodeFence { language, line_num, .. } => {
-            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num));
+        ParseState::CodeFence { language, line_num, highlights, .. } => {
+            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },

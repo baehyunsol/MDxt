@@ -313,12 +313,12 @@ cut
 </table>
 "), ("
 ## Table 1
-|a|b|c|
+|a|b|c|  
 |-|-|-|
 ## Table 2
-|a|b|c|
+ |a|b|c| 
 |-|-|-|
-|a|b|c|
+  |a|b|c| 
 ## Table 3
 |a|b|c|
 |a|b|c|

@@ -41,6 +41,11 @@ impl Macro {
                 content: InlineNode::from_md(content, md_data, render_option).to_vec()
             },
 
+            MacroType::Highlight => InlineNode::Decoration {
+                deco_type: DecorationType::Macro(InlineMacro::Highlight(arguments[0][1].clone())),
+                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+            },
+
             MacroType::Alignment => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Alignment(arguments[0][0].clone())),
                 content: InlineNode::from_md(content, md_data, render_option).to_vec()

@@ -11,7 +11,9 @@ fn ast_samples() -> Vec<(String, String)> {
 #### Header 4
 ##### Header 5
 ###### Header 6
-####### Header 7", "
+####### Header 7
+
+### *Header*", "
 <h1>Header 1</h1>
 <h2>Header 2</h2>
 <h3></h3>
@@ -20,6 +22,7 @@ fn ast_samples() -> Vec<(String, String)> {
 <h5>Header 5</h5>
 <h6>Header 6</h6>
 <p>####### Header 7</p>
+<h3><em>Header</em></h3>
 "
 ), ("
 #Header 1
