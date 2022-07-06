@@ -3,6 +3,9 @@ pub mod parse;
 mod predicate;
 mod node;
 
+#[cfg(test)]
+mod testbench;
+
 use crate::inline::InlineNode;
 use crate::inline::footnote::{footnotes_to_html, Footnote};
 use crate::render::render_option::RenderOption;

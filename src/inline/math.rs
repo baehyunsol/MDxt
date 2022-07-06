@@ -362,10 +362,6 @@ mod tests {
 
     #[test]
     fn math_test1() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("sub{sub{-3}}sup {-x}{4} neq infty text{1234}");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -374,10 +370,6 @@ mod tests {
 
     #[test]
     fn math_test2() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-        
         let orig = into_v16("sqrt{1 + sqrt{2 + 3}} leq sqrt{3}{5 + frac   {2 + 5} {3 + 7}}");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -386,10 +378,6 @@ mod tests {
 
     #[test]
     fn math_test3() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("frac {3} sum {3} sqrt {3}");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -398,10 +386,6 @@ mod tests {
 
     #[test]
     fn math_test4() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("int{0}{infty} e sup{-x} dx");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -410,10 +394,6 @@ mod tests {
 
     #[test]
     fn math_test5() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("(vec{a} neq vec {b}) = (hat{a} neq hat {b})");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -422,10 +402,6 @@ mod tests {
 
     #[test]
     fn math_test6() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("sum{n=1}{infty} frac{1}{n sup{2}} < 10");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 
@@ -436,10 +412,6 @@ mod tests {
 
     #[test]
     fn math_test7() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         let orig = into_v16("text{delta} delta");
         let rendered = String::from_utf16_lossy(&translate_to_latex(&orig));
 

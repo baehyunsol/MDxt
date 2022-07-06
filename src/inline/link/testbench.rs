@@ -100,10 +100,6 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
 #[test]
 fn link_render_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let test_cases = samples();
     let mut failures = vec![];
     let mut md_data = MdData::default();
@@ -150,10 +146,6 @@ fn link_render_test() {
 
 #[test]
 fn normalize_link_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let cases_and_answers = vec![
         (into_v16("FOO"), into_v16("foo")),
         (into_v16("  F  OO "), into_v16("f oo"))

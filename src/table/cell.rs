@@ -5,6 +5,7 @@ use crate::inline::macros::{predicate::read_macro, parse_arguments, get_macro_na
 use crate::ast::line::Line;
 use crate::utils::{get_bracket_end_index, into_v16, drop_while, to_int};
 
+#[derive(Clone)]
 pub struct Cell {
     pub content: InlineNode,
     pub alignment: TableAlignment,
@@ -30,9 +31,17 @@ impl Cell {
 
     pub fn to_html(&self, is_header: bool) -> Vec<u16> {
 
+        let colspan_attr = if self.colspan > 1 {
+            format!(" colspan=\"{}\"", self.colspan)
+        }
+
+        else {
+            String::new()
+        };
+
         if is_header {
             vec![
-                into_v16("<th>"),
+                into_v16(&format!("<th{}>", colspan_attr)),
                 self.alignment.opening_tag(),
                 self.content.to_html(),
                 self.alignment.closing_tag(),
@@ -42,7 +51,7 @@ impl Cell {
 
         else {
             vec![
-                into_v16("<td>"),
+                into_v16(&format!("<td{}>", colspan_attr)),
                 self.alignment.opening_tag(),
                 self.content.to_html(),
                 self.alignment.closing_tag(),
@@ -73,9 +82,11 @@ pub fn row_to_cells(row: &Line, num_of_cells: usize, alignments: &Vec<TableAlign
         cells.push(Cell::default());
     }
 
-    for (index, alignment) in alignments.iter().enumerate() {
-        todo!("colspans and alignments");
-        cells[index].alignment = alignment.clone();
+    let mut cell_index = 0;
+
+    for cell in cells.iter_mut() {
+        cell.alignment = alignments[cell_index].clone();
+        cell_index += cell.colspan;
     }
 
     cells

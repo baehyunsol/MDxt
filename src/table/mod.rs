@@ -25,6 +25,7 @@ impl Table {
     // it assumes all the lines are valid table rows
     pub fn from_lines(headers: &Vec<Line>, rows: &Vec<Line>, alignments: &Line) -> Self {
         let alignments = parse_alignments(&alignments);
+
         let header = headers.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
 
         let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
@@ -32,7 +33,6 @@ impl Table {
         Table {
             header, alignments, cells
         }
-
     }
 
     pub fn parse_inlines(&mut self, md_data: &mut MdData, render_option: &RenderOption) {

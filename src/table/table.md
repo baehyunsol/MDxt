@@ -1,5 +1,3 @@
-## Colspan
-
 ```
 |         [[colspan = 6]] Shopping List         |
 | [[colspan = 3]] Food  | [[colspan = 3]] Drink |
@@ -8,4 +6,4 @@
 | None  | Center| None  | Center| None  | None  |
 ```
 
-colspan & multiline headers
+colspan & multiline headers & alignments

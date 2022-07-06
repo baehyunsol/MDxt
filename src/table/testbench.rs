@@ -125,6 +125,7 @@ cut
 </p>
 "), ("
 |  valid  |  table  |
+|||
 |---------|---------|
 | okay    |
 | okay    | okay    | ignored |
@@ -137,6 +138,10 @@ cut
         <tr>
             <th> valid </th>
             <th> table </th>
+        </tr>
+        <tr>
+            <th> </th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -160,6 +165,9 @@ cut
 |-----|-----|-----|
 |-----|-----|
 |-----|-----|-----|
+
+|a|b|
+|-|-|
 ", "
 <p>
     |-----|-----|
@@ -188,8 +196,180 @@ cut
         </tr>
     </tbody>
 </table>
+
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+        </tr>
+    </thead>
+</table>
 "), ("
+|         [[colspan = 6]] Shopping List         |
+| [[colspan = 3]] Food  | [[colspan = 3]] Drink |
+|-------|:-----:|-------|:-----:|-------|-------|
+| Bread | Cake  | Pie   | Beer  | Water | Coffee|
+| None  | Center| None  | Center| None  | None  |
+| Foo   | [[colspan = 4]] *Bar*         |
 ", "
+<table>
+    <thead>
+        <tr>
+            <th colspan=\"6\"> Shopping List </th>
+        </tr>
+        <tr>
+            <th colspan=\"3\"> Food </th>
+            <th colspan=\"3\"> <div class=\"align_center\"> Drink </div> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> Bread </td>
+            <td> <div class=\"align_center\"> Cake </div> </td>
+            <td> Pie </td>
+            <td> <div class=\"align_center\"> Beer </div> </td>
+            <td> Water </td>
+            <td> Coffee </td>
+        </tr>
+        <tr>
+            <td> None </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> None </td>
+            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> None </td>
+            <td> None </td>
+        </tr>
+        <tr>
+            <td> Foo </td>
+            <td colspan=\"4\"> <div class=\"align_center\"> <em> Bar </em> </div> </td>
+            <td> </td>
+        </tr>
+    </tbody>
+</table>
+"), ("
+|a|b|c|
+|-|-|-|
+ a|b|c
+ a|b|c
+|a|b|c|
+|a|b|c|
+|-|-|-|
+|a|b|c|
+
+|a|b|c|
+|-|-|-|
+|a|b|c|
+", "
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+    </thead>
+</table>
+
+<p>a|b|c a|b|c</p>
+
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> a </td>
+            <td> b </td>
+            <td> c </td>
+        </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> a </td>
+            <td> b </td>
+            <td> c </td>
+        </tr>
+    </tbody>
+</table>
+"), ("
+## Table 1
+|a|b|c|
+|-|-|-|
+## Table 2
+|a|b|c|
+|-|-|-|
+|a|b|c|
+## Table 3
+|a|b|c|
+|a|b|c|
+|-|-|-|
+||||", "
+<h2>Table 1</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+    </thead>
+</table>
+
+<h2>Table 2</h2>
+
+<table>
+    <thead>
+        <tr><th>a</th><th>b</th><th>c</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>a</td><td>b</td><td>c</td></tr>
+    </tbody>
+</table>
+
+<h2>Table 3</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+        <tr>
+            <th> a </th>
+            <th> b </th>
+            <th> c </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    </tbody>
+</table>
 ")
     ];
 
@@ -200,10 +380,6 @@ cut
 
 #[test]
 fn cell_count_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let mut failures = vec![];
 
     for (row, cell_count, is_delimiter) in row_samples().into_iter() {
@@ -251,10 +427,6 @@ fn cell_count_test() {
 
 #[test]
 fn table_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     for (md, html) in table_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 

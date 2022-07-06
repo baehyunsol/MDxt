@@ -105,10 +105,6 @@ d[^b][^d]
 
 #[test]
 fn footnote_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     for (md, html) in samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 

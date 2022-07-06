@@ -10,7 +10,7 @@ use crate::render::render_option::RenderOption;
 use crate::codefence::read_code_fence_info;
 use std::collections::HashMap;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     Paragraph,
     CodeFence {
@@ -134,6 +134,15 @@ impl AST {
                         curr_parse_state = read_code_fence_info(&lines[index]);
                     }
 
+                    else if lines[index].is_header() {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+
+                        let (level, content) = parse_header(&lines[index]);
+                        headers.push((level, content.clone()));
+                        curr_nodes.push(Node::new_header(level, content));
+                        curr_parse_state = ParseState::None;
+                    }
+
                     else if lines[index].is_link_or_footnote_reference_definition() {
                         let (link_label, link_destination) = read_link_reference(&lines[index].content);
 
@@ -231,10 +240,6 @@ pub fn parse_header(line: &Line) -> (usize, Vec<u16>) {  // (level, content)
 }
 
 fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, curr_parse_state: &mut ParseState) {
-
-    if curr_lines.len() == 0 {
-        return;
-    }
 
     match curr_parse_state {
         ParseState::Paragraph => {

@@ -578,10 +578,6 @@ mod tests {
 
     #[test]
     fn code_span_escape_test() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         use super::{escape_code_spans, undo_code_span_escapes};
         use crate::utils::into_v16;
 

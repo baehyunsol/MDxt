@@ -57,6 +57,7 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("~~_~underline_~~", "~<u>~underline</u>~", true),
         ("~_no_underline _~", "<sub>_no_underline _</sub>", true),
 
+        ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros", true),
         ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>", true),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]", true),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
@@ -74,10 +75,6 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
 
 #[test]
 fn inline_render_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let test_cases = samples();
     let mut failures = vec![];
     let mut md_data = MdData::default();
@@ -117,10 +114,6 @@ fn inline_render_test() {
 
 #[test]
 fn inline_inversion_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let mut failures = vec![];
     let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();

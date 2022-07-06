@@ -62,10 +62,6 @@ fn fence_samples() -> Vec<(
 
 #[test]
 fn fence_test() {
-
-    #[cfg(not(feature = "test-all"))]
-    return;
-
     let mut failures = vec![];
     let test_cases = fence_samples();
 

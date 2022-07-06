@@ -76,6 +76,4 @@ test cases
 
 empty or white cases
 
-table cell: `||`, `| |`
-macro: `[[]]`, `[[ ]]`
 header: `#`, `# `

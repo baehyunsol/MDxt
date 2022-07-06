@@ -196,10 +196,6 @@ mod tests {
 
     #[test]
     fn escape_undo_test() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         use crate::testbench::random;
         use crate::escape::*;
 
@@ -213,10 +209,6 @@ mod tests {
 
     #[test]
     fn backslash_escape_test() {
-
-        #[cfg(not(feature = "test-all"))]
-        return;
-
         use crate::utils::into_v16;
         use crate::escape::*;
 

@@ -64,7 +64,7 @@ pub fn add_br_if_needed(line: &Line) -> Vec<u16> {
         ].concat()
     }
 
-    else if line.content.len() > 2 && line.content[line.content.len() - 1] == ' ' as u16 && line.content[line.content.len() - 1] == ' ' as u16 {
+    else if line.content.len() > 2 && line.content[line.content.len() - 1] == ' ' as u16 && line.content[line.content.len() - 2] == ' ' as u16 {
         vec![
             line.content[0..line.content.len() - 2].to_vec(),
             into_v16("[[br]]")  // will later be converted to `<br />`

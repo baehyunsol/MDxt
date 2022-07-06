@@ -12,7 +12,7 @@ impl Line {
         && {
             let (pre, post) = take_and_drop_while(&self.content, '#' as u16);
 
-            pre.len() > 0 && pre.len() < 7 && post[0] == ' ' as u16 && drop_while(&post, ' ' as u16).len() > 0
+            pre.len() > 0 && pre.len() < 7 && (post.len() == 0 || post[0] == ' ' as u16)
         }
     }
 

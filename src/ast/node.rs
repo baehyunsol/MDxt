@@ -1,6 +1,5 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
-use crate::ast::parse::ParseState;
 use crate::inline::InlineNode;
 use crate::table::Table;
 
