@@ -43,6 +43,8 @@ pub fn is_syntax_available(language: &[u16]) -> bool {
 }
 
 fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
+
+    // convert syntect's palette to its own
     let color = match color {
         Color { r: 211, g: 208, b: 200, .. } => "white",
         Color { r: 242, g: 119, b: 122, .. } => "red",
@@ -52,6 +54,8 @@ fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
         Color { r: 249, g: 145, b: 87, .. } => "gold",
         Color { r: 153, g: 204, b: 153, .. } => "green",
         Color { r: 102, g: 204, b: 204, .. } => "emerald",
+        Color { r: 210, g: 123, b: 83, .. } => "pink",
+        Color { r: 255, g: 204, b: 102, .. } => "grassgreen",
         Color { r, g, b, .. } => if cfg!(test) {
             panic!("Uninitialized Color: (r: {} g: {} b: {})", r, g, b)
         } else {
