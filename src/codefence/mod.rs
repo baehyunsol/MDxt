@@ -1,5 +1,6 @@
 pub mod predicate;
 mod html;
+mod syntect;
 
 #[cfg(test)]
 mod testbench;

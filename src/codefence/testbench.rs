@@ -42,6 +42,9 @@ fn fence_samples() -> Vec<(
         ("```line_num, highlight(4)", true, true, false, "", Some(1), vec![4], 3, false),
         ("```line_num, highlight(4, 5)", true, true, false, "", Some(1), vec![4, 5], 3, false),
         ("```highlight(4", true, true, false, "highlight(4", None, vec![], 3, false),
+        ("```!!", false, false, false, "", None, vec![], 0, false),
+        ("```sublime-syntax", true, true, false, "sublime-syntax", None, vec![], 3, false),
+        ("```.bash_login", true, true, false, ".bash_login", None, vec![], 3, false)
     ];
 
     samples.into_iter().map(

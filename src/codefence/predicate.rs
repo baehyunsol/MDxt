@@ -4,14 +4,15 @@ pub fn is_valid_info_string(content: &[u16]) -> bool {
     content.iter().all(is_valid_info_string_character)
 }
 
-// a-z A-Z `,` `(` `)` ` ` `_`
+// a-z A-Z `,` `(` `)` ` ` `_` `.` `-`
 fn is_valid_info_string_character(chr: &u16) -> bool {
     '0' as u16 <= *chr && *chr <= '9' as u16 ||
     'a' as u16 <= *chr && *chr <= 'z' as u16 ||
     'A' as u16 <= *chr && *chr <= 'Z' as u16 ||
     '(' as u16 == *chr || ')' as u16 == *chr ||
     ' ' as u16 == *chr || ',' as u16 == *chr ||
-    '_' as u16 == *chr
+    '_' as u16 == *chr || '.' as u16 == *chr ||
+    '-' as u16 == *chr
 }
 
 pub fn is_line_num(content: &[u16]) -> bool {

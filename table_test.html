@@ -19,13 +19,19 @@
         border-right: 2px solid yellowgreen;
     }
     pre tr.highlight {
-        background-color: red;
+        background-color: rgb(64, 64, 64);
     }
     pre tr:hover {
         background-color: gray;
     }
     pre tr.highlight:hover {
         background-color: orange;
+    }
+    pre td .string, pre td .entity.name.function {
+        color: yellow;
+    }
+    pre td .macro {
+        color: red;
     }
 </style>
 
@@ -46,5 +52,17 @@
         </tbody>
 </table></code></pre>
 
-<pre><code><table><tbody><tr ><td class="index">1</td><td>fn main() {</td></tr><tr class="highlight"><td class="index">2</td><td>    println!(&quot;Hello World!&#110;&quot;);</td></tr><tr class="highlight"><td class="index">3</td><td>}</td></tr></tbody></table></code></pre><pre><code><table><tbody><tr ><td class="index">5</td><td>fn main() {</td></tr><tr ><td class="index">6</td><td>    println!(&quot;Hello World!&#110;&quot;);</td></tr><tr ><td class="index">7</td><td>}</td></tr></tbody></table></code></pre><pre><code><table><tbody><tr ><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr></tbody></table></code></pre><pre><code><table><tbody><tr 
-    ><td class="index">1</td><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr></tbody></table></code></pre>
+<pre><code><table><tbody>
+    <tr >
+        <td class="index">1</td>
+        <td><span class="source rust"><span class="meta function rust"><span class="meta function rust"><span class="storage type function rust">fn</span> </span><span class="entity name function rust">main</span></span><span class="meta function rust"><span class="meta function parameters rust"><span class="punctuation section parameters begin rust">(</span></span><span class="meta function rust"><span class="meta function parameters rust"><span class="punctuation section parameters end rust">)</span></span></span></span><span class="meta function rust"> </span><span class="meta function rust"><span class="meta block rust"><span class="punctuation section block begin rust">{</span></td>
+    </tr>
+    <tr class="highlight">
+        <td class="index">2</td>
+        <td>    <span class="support macro rust">println!</span><span class="meta group rust"><span class="punctuation section group begin rust">(</span></span><span class="meta group rust"><span class="string quoted double rust"><span class="punctuation definition string begin rust">&quot;</span>Hello World!<span class="constant character escape rust">\n</span><span class="punctuation definition string end rust">&quot;</span></span></span><span class="meta group rust"><span class="punctuation section group end rust">)</span></span><span class="punctuation terminator rust">;</span></td>
+    </tr>
+    <tr class="highlight">
+        <td class="index">3</td>
+        <td></span><span class="meta block rust"><span class="punctuation section block end rust">}</span></span></span></span></td>
+    </tr>
+</tbody></table></code></pre>
