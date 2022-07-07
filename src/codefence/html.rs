@@ -48,13 +48,13 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
     };
 
     let highlight = if highlight.contains(&curr_line) {
-        "class=\"highlight\""
+        " class=\"highlight\""
     } else {
         ""
     };
 
     vec![
-        into_v16(&format!("<tr {}>", highlight)),
+        into_v16(&format!("<tr{}>", highlight)),
         line_num,
         line.to_vec(),
         into_v16("</td></tr>")

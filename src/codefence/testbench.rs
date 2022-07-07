@@ -183,9 +183,28 @@ fn code_fence_samples() -> Vec<(String, String)> {
     let result = vec![
         ("
 ```rust
+/*
+    multiline
+    comment
+*/
+// single line comment
 fn main() {
-    println!(\"Hello World!\");
+    let mut x = 3;
+    let mut y = if x == 3 {
+        4
+    } else {
+        5
+    };
+    println!(\"Hello World!\\n\");
+    println!(\"{:?}\", 3 + 4);
 }
+
+pub struct Point {
+    x: f32,
+    y: f32
+}
+
+pub const CONST: u32 = 1;
 ```
 
 ````
@@ -196,31 +215,153 @@ fn main() {
 ```
 ````
 ", "
+<pre><code><table><tbody>
+    <tr>
+        <td><span class=\"color_gray\">/*</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_gray\">    multiline</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_gray\">    comment</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_gray\">*/</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_gray\">//</span><span class=\"color_gray\"> single line comment</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> y </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_violet\">if</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">        </span><span class=\"color_gold\">4</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\"> </span><span class=\"color_violet\">else</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">        </span><span class=\"color_gold\">5</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_gold\">{:?}</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">,</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">+</span><span class=\"color_white\"> </span><span class=\"color_gold\">4</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">}</span></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">struct</span><span class=\"color_white\"> </span><span class=\"color_white\">Point</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_red\">x</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span><span class=\"color_white\">,</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">    </span><span class=\"color_red\">y</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_white\">}</span></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">const</span><span class=\"color_white\"> </span><span class=\"color_gold\">CONST</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">u32</span><span class=\"color_white\"> </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">1</span><span class=\"color_white\">;</span></td>
+    </tr>
+</tbody></table></code></pre>
+
+<pre><code><table><tbody>
+    <tr>
+        <td>```rust</td>
+    </tr>
+    <tr>
+        <td>fn main() {</td>
+    </tr>
+    <tr>
+        <td>    println!(&quot;Hello World!&quot;);</td>
+    </tr>
+    <tr>
+        <td>}</td>
+    </tr>
+    <tr>
+        <td>```</td>
+    </tr>
+</tbody></table></code></pre>
 "), ("
 ```rust, line_num, highlight(2, 3)
 fn main() {
     println!(\"Hello World!\\n\");
 }
 ```
-", ""), ("
+", "
+<pre><code><table><tbody>
+    <tr>
+        <td class=\"index\">1</td>
+        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr class=\"highlight\">
+        <td class=\"index\">2</td>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr class=\"highlight\">
+        <td class=\"index\">3</td>
+        <td><span class=\"color_white\">}</span></td>
+    </tr>
+</tbody></table></code></pre>
+"), ("
 ```rust, line_num(5)
 fn main() {
     println!(\"Hello World!\\n\");
 }
 ```
-", ""), ("
+", "
+<pre><code><table><tbody>
+    <tr>
+        <td class=\"index\">5</td>
+        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
+    </tr>
+    <tr>
+        <td class=\"index\">6</td>
+        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
+    </tr>
+    <tr>
+        <td class=\"index\">7</td>
+        <td><span class=\"color_white\">}</span></td>
+    </tr>
+</tbody></table></code></pre>
+"), ("
 ``` html
 <p> <div class=\"box\"> box </div> </p>
 ```
-", ""), ("
+", "
+<pre><code><table><tbody><tr><td><span class=\"color_white\">&lt;</span><span class=\"color_red\">p</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\"> </span><span class=\"color_gold\">class</span><span class=\"color_white\">=</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">box</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">></span><span class=\"color_white\"> box </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">p</span><span class=\"color_white\">></span></td></tr></tbody></table></code></pre>
+"), ("
 ```line_num
 <p> <div class=\"box\"> box </div> </p>
 ```
-", ""), ("
+", "
+<pre><code><table><tbody><tr><td class=\"index\">1</td><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr></tbody></table></code></pre>
+"), ("
 ```invalid_language_name
 <p> <div class=\"box\"> box </div> </p>
 ```
-", "")
+", "
+<pre><code><table><tbody><tr><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr></tbody></table></code></pre>
+")
     ];
 
     result.into_iter().map(
@@ -234,7 +375,7 @@ fn code_fence_test() {
         let rendered = render_to_html_with_default_options(md);
 
         if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
-            panic!("{} \n\n {}", md, rendered);
+            panic!("{} \n\n {} \n\n {:?}", md, rendered, rendered);
         }
 
     }

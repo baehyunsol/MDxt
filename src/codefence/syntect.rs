@@ -1,8 +1,9 @@
 use lazy_static::lazy_static;
 use syntect::parsing::SyntaxSet;
-use syntect::highlighting::{ThemeSet, Theme};
+use syntect::highlighting::{ThemeSet, Theme, Color, Style};
 use syntect::easy::HighlightLines;
 use crate::utils::into_v16;
+use crate::escape::escape_htmls;
 
 lazy_static! {
     pub static ref SYNTAX_SET: SyntaxSet = SyntaxSet::load_defaults_newlines();
@@ -21,21 +22,46 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
     // it assumes that the given language is available
     let syntax_reference = SYNTAX_SET.find_syntax_by_token(&String::from_utf16_lossy(language)).unwrap();
     let mut highlighter = HighlightLines::new(syntax_reference, &THEME);
+    let mut result = vec![];
 
     for line_u16 in content.split(|c| *c == '\n' as u16) {
         let mut line_u16 = line_u16.to_vec();
-        line_u16.push('\n' as u16);
+        // line_u16.push('\n' as u16);  // can I remove this line?
         let curr_line = &String::from_utf16_lossy(&line_u16);
         let styled_line = highlighter.highlight(curr_line, &SYNTAX_SET);
 
-        // render `styled_line` to css classes
-        todo!()
-        panic!("{:?}", styled_line);
+        result.push(styled_line.iter().map(
+            |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content)
+        ).collect::<Vec<Vec<u16>>>().concat());
     }
 
-    panic!()
+    result
 }
 
 pub fn is_syntax_available(language: &[u16]) -> bool {
     SYNTAX_SET.find_syntax_by_token(&String::from_utf16_lossy(language)).is_some()
+}
+
+fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
+    let color = match color {
+        Color { r: 211, g: 208, b: 200, .. } => "white",
+        Color { r: 242, g: 119, b: 122, .. } => "red",
+        Color { r: 116, g: 115, b: 105, .. } => "gray",
+        Color { r: 204, g: 153, b: 204, .. } => "violet",
+        Color { r: 102, g: 153, b: 204, .. } => "aqua",
+        Color { r: 249, g: 145, b: 87, .. } => "gold",
+        Color { r: 153, g: 204, b: 153, .. } => "green",
+        Color { r: 102, g: 204, b: 204, .. } => "emerald",
+        Color { r, g, b, .. } => if cfg!(test) {
+            panic!("Uninitialized Color: (r: {} g: {} b: {})", r, g, b)
+        } else {
+            "white"
+        }
+    };
+
+    vec![
+        into_v16(&format!("<span class=\"color_{}\">", color)),
+        escape_htmls(&into_v16(content)),
+        into_v16("</span>")
+    ].concat()
 }

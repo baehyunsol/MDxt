@@ -2,11 +2,15 @@
     pre {
         background-color: black;
         padding: 12px;
+        font-size: 18px;
     }
     pre table {
         color: white;
         border-collapse: collapse;
         width: 100%;
+    }
+    pre td {
+        height: 18px;  /* so that it renders empty lines. don't worry, it won't affect non-empty lines */
     }
     pre td {
         padding-left: 9px;
@@ -27,11 +31,29 @@
     pre tr.highlight:hover {
         background-color: orange;
     }
-    pre td .string, pre td .entity.name.function {
-        color: yellow;
+    .color_red {
+        color: rgb(192, 64, 64);
     }
-    pre td .macro {
-        color: red;
+    .color_violet {
+        color: rgb(192, 64, 255);
+    }
+    .color_gold {
+        color: rgb(255, 192, 64);
+    }
+    .color_gray {
+        color: rgb(128, 128, 128);
+    }
+    .color_aqua {
+        color: rgb(64, 192, 255);
+    }
+    .color_emerald {
+        color: rgb(64, 255, 192);
+    }
+    .color_green {
+        color: rgb(64, 192, 64);
+    }
+    .color_white {
+        color: rgb(255, 255, 255);
     }
 </style>
 
@@ -53,16 +75,88 @@
 </table></code></pre>
 
 <pre><code><table><tbody>
-    <tr >
-        <td class="index">1</td>
-        <td><span class="source rust"><span class="meta function rust"><span class="meta function rust"><span class="storage type function rust">fn</span> </span><span class="entity name function rust">main</span></span><span class="meta function rust"><span class="meta function parameters rust"><span class="punctuation section parameters begin rust">(</span></span><span class="meta function rust"><span class="meta function parameters rust"><span class="punctuation section parameters end rust">)</span></span></span></span><span class="meta function rust"> </span><span class="meta function rust"><span class="meta block rust"><span class="punctuation section block begin rust">{</span></td>
+    <tr>
+        <td><span class="color_gray">/*</span></td>
     </tr>
-    <tr class="highlight">
-        <td class="index">2</td>
-        <td>    <span class="support macro rust">println!</span><span class="meta group rust"><span class="punctuation section group begin rust">(</span></span><span class="meta group rust"><span class="string quoted double rust"><span class="punctuation definition string begin rust">&quot;</span>Hello World!<span class="constant character escape rust">\n</span><span class="punctuation definition string end rust">&quot;</span></span></span><span class="meta group rust"><span class="punctuation section group end rust">)</span></span><span class="punctuation terminator rust">;</span></td>
+    <tr>
+        <td><span class="color_gray">    multiline</span></td>
     </tr>
-    <tr class="highlight">
-        <td class="index">3</td>
-        <td></span><span class="meta block rust"><span class="punctuation section block end rust">}</span></span></span></span></td>
+    <tr>
+        <td><span class="color_gray">    comment</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_gray">*/</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_gray">//</span><span class="color_gray"> single line comment</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_violet">fn</span><span class="color_white"> </span><span class="color_aqua">main</span><span class="color_white">(</span><span class="color_white">)</span><span class="color_white"> </span><span class="color_white">{</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_violet">let</span><span class="color_white"> </span><span class="color_violet">mut</span><span class="color_white"> x </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white">;</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_violet">let</span><span class="color_white"> </span><span class="color_violet">mut</span><span class="color_white"> y </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_violet">if</span><span class="color_white"> x </span><span class="color_white">=</span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white"> </span><span class="color_white">{</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">        </span><span class="color_gold">4</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_white">}</span><span class="color_white"> </span><span class="color_violet">else</span><span class="color_white"> </span><span class="color_white">{</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">        </span><span class="color_gold">5</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_white">}</span><span class="color_white">;</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_white">println!</span><span class="color_white">(</span><span class="color_white">&quot;</span><span class="color_green">Hello World!</span><span class="color_emerald">\n</span><span class="color_white">&quot;</span><span class="color_white">)</span><span class="color_white">;</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_white">println!</span><span class="color_white">(</span><span class="color_white">&quot;</span><span class="color_gold">{:?}</span><span class="color_white">&quot;</span><span class="color_white">,</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white"> </span><span class="color_white">+</span><span class="color_white"> </span><span class="color_gold">4</span><span class="color_white">)</span><span class="color_white">;</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">}</span></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td><span class="color_violet">pub</span><span class="color_white"> </span><span class="color_violet">struct</span><span class="color_white"> </span><span class="color_white">Point</span><span class="color_white"> </span><span class="color_white">{</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_red">x</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">f32</span><span class="color_white">,</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">    </span><span class="color_red">y</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">f32</span></td>
+    </tr>
+    <tr>
+        <td><span class="color_white">}</span></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td><span class="color_violet">pub</span><span class="color_white"> </span><span class="color_violet">const</span><span class="color_white"> </span><span class="color_gold">CONST</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">u32</span><span class="color_white"> </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">1</span><span class="color_white">;</span></td>
+    </tr>
+</tbody></table></code></pre>
+
+<pre><code><table><tbody>
+    <tr>
+        <td>```rust</td>
+    </tr>
+    <tr>
+        <td>fn main() {</td>
+    </tr>
+    <tr>
+        <td>    println!(&quot;Hello World!&quot;);</td>
+    </tr>
+    <tr>
+        <td>}</td>
+    </tr>
+    <tr>
+        <td>```</td>
     </tr>
 </tbody></table></code></pre>
