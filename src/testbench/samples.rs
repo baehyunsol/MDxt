@@ -77,7 +77,10 @@ Valid header
 
 # [[red]] Red header [[/red]]
 
-# `Code header`", "
+# `Code header`
+
+[&](&)  escape test
+", "
 ")
 }
 

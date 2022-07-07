@@ -1,5 +1,5 @@
 pub mod predicate;
-pub mod html;
+mod html;
 
 #[cfg(test)]
 mod testbench;
@@ -7,9 +7,7 @@ mod testbench;
 use crate::ast::line::Line;
 use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase, to_int};
 use crate::ast::parse::ParseState;
-use predicate::{is_line_num, is_highlight};
-
-pub use html::to_html;
+use predicate::{is_line_num, is_highlight, parse_arguments};
 
 pub struct FencedCode {
     language: Vec<u16>,
@@ -24,10 +22,6 @@ impl FencedCode {
         FencedCode { language, content, line_num, highlights }
     }
 
-    pub fn to_html(&self) -> Vec<u16> {
-        todo!()
-    }
-
 }
 
 // it assumes that the given line is a valid code fence
@@ -39,7 +33,7 @@ pub fn read_code_fence_info(line: &Line) -> ParseState {
     let mut line_num = None;
     let mut highlights = vec![];
 
-    let arguments = info_string.split(|c| *c == ',' as u16).collect::<Vec<&[u16]>>();
+    let arguments = parse_arguments(&info_string);
 
     for argument in arguments.iter() {
 
@@ -56,7 +50,11 @@ pub fn read_code_fence_info(line: &Line) -> ParseState {
         }
 
         else if is_highlight(argument) {
-            todo!();
+            highlights = parse_arguments(&argument[10..argument.len() - 1]).iter().filter_map(
+                |arg| to_int(arg)
+            ).map(
+                |n| n as usize
+            ).collect();
         }
 
         else {

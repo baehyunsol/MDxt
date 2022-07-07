@@ -11,31 +11,37 @@ fn fence_samples() -> Vec<(
     bool,           // is_code_fence_end
     String,         // language
     Option<usize>,  // line_num
+    Vec<usize>,     // highlights
     usize,          // fence_size
     bool            // is_tilde_fence
 )> {
     let samples = vec![
-        ("```", true, true, true, "", None, 3, false),
-        ("````", true, true, true, "", None, 4, false),
-        ("~~~", true, true, true, "", None, 3, true),
-        ("~~~~", true, true, true, "", None, 4, true),
-        ("``", false, false, false, "", None, 0, false),
-        ("``` `", false, false, false, "", None, 0, false),
-        ("```rust `", false, false, false, "", None, 0, false),
-        ("`~~", false, false, false, "", None, 0, false),
-        ("~~`", false, false, false, "", None, 0, false),
-        ("```Rust", true, true, false, "rust", None, 3, false),
-        ("``` rust", true, true, false, "rust", None, 3, false),
-        ("``` line_num", true, true, false, "", Some(1), 3, false),
-        ("```line_num(5)", true, true, false, "", Some(5), 3, false),
-        ("```rust, line_num(5)", true, true, false, "rust", Some(5), 3, false),
-        ("```line_num(5), rust", true, true, false, "rust", Some(5), 3, false),
-        ("~~~Rust", true, true, false, "rust", None, 3, true),
-        ("~~~ rust", true, true, false, "rust", None, 3, true),
-        ("~~~ line_num", true, true, false, "", Some(1), 3, true),
-        ("~~~line_num(5)", true, true, false, "", Some(5), 3, true),
-        ("~~~rust, line_num(5)", true, true, false, "rust", Some(5), 3, true),
-        ("~~~line_num(5), rust", true, true, false, "rust", Some(5), 3, true),
+        ("```", true, true, true, "", None, vec![], 3, false),
+        ("````", true, true, true, "", None, vec![], 4, false),
+        ("~~~", true, true, true, "", None, vec![], 3, true),
+        ("~~~~", true, true, true, "", None, vec![], 4, true),
+        ("``", false, false, false, "", None, vec![], 0, false),
+        ("``` `", false, false, false, "", None, vec![], 0, false),
+        ("```rust `", false, false, false, "", None, vec![], 0, false),
+        ("`~~", false, false, false, "", None, vec![], 0, false),
+        ("~~`", false, false, false, "", None, vec![], 0, false),
+        ("```Rust", true, true, false, "rust", None, vec![], 3, false),
+        ("``` rust", true, true, false, "rust", None, vec![], 3, false),
+        ("``` line_num", true, true, false, "", Some(1), vec![], 3, false),
+        ("```line_num(5)", true, true, false, "", Some(5), vec![], 3, false),
+        ("```rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, false),
+        ("```line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, false),
+        ("~~~Rust", true, true, false, "rust", None, vec![], 3, true),
+        ("~~~ rust", true, true, false, "rust", None, vec![], 3, true),
+        ("~~~ line_num", true, true, false, "", Some(1), vec![], 3, true),
+        ("~~~line_num(5)", true, true, false, "", Some(5), vec![], 3, true),
+        ("~~~rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, true),
+        ("~~~line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, true),
+        ("```highlight(4), line_num", true, true, false, "", Some(1), vec![4], 3, false),
+        ("```highlight(4, 5), line_num", true, true, false, "", Some(1), vec![4, 5], 3, false),
+        ("```line_num, highlight(4)", true, true, false, "", Some(1), vec![4], 3, false),
+        ("```line_num, highlight(4, 5)", true, true, false, "", Some(1), vec![4, 5], 3, false),
+        ("```highlight(4", true, true, false, "highlight(4", None, vec![], 3, false),
     ];
 
     samples.into_iter().map(
@@ -46,6 +52,7 @@ fn fence_samples() -> Vec<(
             is_code_fence_end,
             language,
             line_num,
+            highlights,
             fence_size,
             is_tilde_fence
         )| (
@@ -55,6 +62,7 @@ fn fence_samples() -> Vec<(
             is_code_fence_end,
             language.to_string(),
             line_num,
+            highlights,
             fence_size,
             is_tilde_fence
         )
@@ -73,6 +81,7 @@ fn fence_test() {
         is_code_fence_end,
         language_answer,
         line_num_answer,
+        highlights_answer,
         fence_size_answer,
         is_tilde_fence_answer
     ) in test_cases.iter() {
@@ -130,6 +139,14 @@ fn fence_test() {
             continue;
         }
 
+        if highlights_answer != &highlights_actual {
+            failures.push(format!(
+                "case: {}\nhighlights: answer: {:?}, actual: {:?}",
+                case, highlights_answer, highlights_actual
+            ));
+            continue;
+        }
+
         if fence_size_answer != &fence_size_actual {
             failures.push(format!(
                 "case: {}\nfence_size: answer: {:?}, actual: {:?}",
@@ -176,7 +193,31 @@ fn main() {
 ```
 ````
 ", "
-"), ("", "")
+"), ("
+```rust, line_num, highlight(2, 3)
+fn main() {
+    println!(\"Hello World!\\n\");
+}
+```
+", ""), ("
+```rust, line_num(5)
+fn main() {
+    println!(\"Hello World!\\n\");
+}
+```
+", ""), ("
+``` html
+<p> <div class=\"box\"> box </div> </p>
+```
+", ""), ("
+```line_num
+<p> <div class=\"box\"> box </div> </p>
+```
+", ""), ("
+```invalid_language_name
+<p> <div class=\"box\"> box </div> </p>
+```
+", "")
     ];
 
     result.into_iter().map(

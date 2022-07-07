@@ -263,7 +263,11 @@ impl InlineNode {
                     InlineMacro::Br => into_v16("[[br]]"),
                     InlineMacro::Blank => into_v16("[[blank]]"),
                     InlineMacro::Toc => into_v16("[[toc]]"),
-                    InlineMacro::Icon { .. } => todo!()
+                    InlineMacro::Icon { name, size } => vec![
+                        into_v16("[[icon="),
+                        name.clone(),
+                        into_v16(&format!(",size={}]]", size))
+                    ].concat()
                 }
             }
         }

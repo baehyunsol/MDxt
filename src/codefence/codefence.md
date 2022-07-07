@@ -11,25 +11,21 @@ no `<thead>`, two `<td>` per `<tr>`. first for the line_num, and the other for t
 ````
 ```rust, line_num, highlight(2, 3)
 fn main() {
-    println!("Hello World!");
+    println!("Hello World!\n");
 }
 ```
 
 ```rust, line_num(5)
 fn main() {
-    println!("Hello World!");
+    println!("Hello World!\n");
 }
 ```
 
-``` rust
-fn main() {
-    println!("Hello World!");
-}
+``` html
+<p> <div class="box"> box </div> </p>
 ```
 
 ```line_num
-fn main() {
-    println!("Hello World!");
-}
+<p> <div class="box"> box </div> </p>
 ```
 ````
