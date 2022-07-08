@@ -209,15 +209,15 @@ mod tests {
 
     #[test]
     fn backslash_escape_test() {
-        use crate::utils::into_v16;
+        use crate::utils::{into_v16, from_v16};
         use crate::escape::*;
 
         let input = into_v16("\\a\\\\\\\n\\*\\");
         let output = into_v16("&#97;&#92;\\\n&#42;\\");
 
         assert_eq!(
-            String::from_utf16(&render_backslash_escapes(&escape_backslashes(&input))).unwrap(),
-            String::from_utf16(&output).unwrap(),
+            from_v16(&render_backslash_escapes(&escape_backslashes(&input))),
+            from_v16(&output),
         );
     }
 

@@ -5,7 +5,8 @@ mod validate;
 #[cfg(test)]
 mod testbench;
 
-use crate::utils::{into_v16, lowercase};
+use crate::utils::{into_v16, from_v16, lowercase};
+use crate::color::COLOR_NAMES;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
@@ -31,10 +32,7 @@ enum MacroType {
 impl Macro {
 
     pub fn get_all_macros() -> HashMap<Vec<u16>, Macro> {
-        let macros = vec![
-            Self::new_color("red"),
-            Self::new_color("green"),
-            Self::new_color("blue"),
+        let mut macros = vec![
             Self::new_size("tiny"),
             Self::new_size("small"),
             Self::new_size("medium"),
@@ -52,6 +50,10 @@ impl Macro {
             Self::new("math", MacroType::Math, false),
             Self::new("icon", MacroType::Icon, true)
         ];
+
+        for color in COLOR_NAMES.iter() {
+            macros.push(Self::new_color(&from_v16(color)));
+        }
 
         let mut result = HashMap::new();
 

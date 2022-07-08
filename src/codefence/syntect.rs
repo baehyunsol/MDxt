@@ -2,7 +2,7 @@ use lazy_static::lazy_static;
 use syntect::parsing::SyntaxSet;
 use syntect::highlighting::{ThemeSet, Theme, Color, Style};
 use syntect::easy::HighlightLines;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
 use crate::escape::escape_htmls;
 
 lazy_static! {
@@ -20,14 +20,14 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
     assert!(is_syntax_available(language));
 
     // it assumes that the given language is available
-    let syntax_reference = SYNTAX_SET.find_syntax_by_token(&String::from_utf16_lossy(language)).unwrap();
+    let syntax_reference = SYNTAX_SET.find_syntax_by_token(&from_v16(language)).unwrap();
     let mut highlighter = HighlightLines::new(syntax_reference, &THEME);
     let mut result = vec![];
 
     for line_u16 in content.split(|c| *c == '\n' as u16) {
         let mut line_u16 = line_u16.to_vec();
         // line_u16.push('\n' as u16);  // can I remove this line?
-        let curr_line = &String::from_utf16_lossy(&line_u16);
+        let curr_line = &from_v16(&line_u16);
         let styled_line = highlighter.highlight(curr_line, &SYNTAX_SET);
 
         result.push(styled_line.iter().map(
@@ -39,7 +39,7 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
 }
 
 pub fn is_syntax_available(language: &[u16]) -> bool {
-    SYNTAX_SET.find_syntax_by_token(&String::from_utf16_lossy(language)).is_some()
+    SYNTAX_SET.find_syntax_by_token(&from_v16(language)).is_some()
 }
 
 fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {

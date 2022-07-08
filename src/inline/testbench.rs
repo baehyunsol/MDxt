@@ -1,5 +1,5 @@
 use crate::inline::InlineNode;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
@@ -71,7 +71,8 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]", "\\( `a codespan after a math \\)` <code class=\"short\">[[math]] a codespan before a math</code>[[/math]]", true),
         ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)", false),
         ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>", false),
-        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false)
+        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false),
+        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]", false)
     ];
 
     result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
@@ -98,7 +99,7 @@ fn inline_render_test() {
                 "inline_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
                 case,
                 answer,
-                String::from_utf16(&rendered).unwrap()
+                from_v16(&rendered)
             ));
         }
 
@@ -138,7 +139,7 @@ fn inline_inversion_test() {
             failures.push(format!(
                 "inline_test: failed!! given md:  {}\ninverted result:  {}",
                 case,
-                String::from_utf16(&inverted).unwrap()
+                from_v16(&inverted)
             ));
         }
 

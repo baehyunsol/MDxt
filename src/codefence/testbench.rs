@@ -1,7 +1,7 @@
 use super::read_code_fence_info;
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
-use crate::utils::{into_v16, remove_whitespaces};
+use crate::utils::{into_v16, from_v16, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn fence_samples() -> Vec<(
@@ -121,7 +121,7 @@ fn fence_test() {
             is_tilde_fence_actual
         ) = match read_code_fence_info(&line) {
             ParseState::CodeFence { language, line_num, highlights, code_fence_size, is_tilde_fence } => (
-                String::from_utf16(&language).unwrap(), line_num, highlights, code_fence_size, is_tilde_fence
+                from_v16(&language), line_num, highlights, code_fence_size, is_tilde_fence
             ),
             _ => panic!("This doesn't make sense at all."),
         };

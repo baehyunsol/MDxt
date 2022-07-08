@@ -1,16 +1,17 @@
 use super::predicate::{read_macro, check_and_parse_macro_inline};
 use crate::inline::InlineNode;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
 
-fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // case, answer
+fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // valid macro, normalized
     let macros = vec![
         ("[[br]]", "br"),
         ("[[blue]] [[/blue]]", "blue"),
         ("[[red ]] ... [[/ red]]", "red"),
         ("[[Red_]] ... [[/Red]]", "red"),
         ("[[char = 44032]]", "char=44032"),
+        ("[[highlight = red]]", "highlight=red"),
         ("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
@@ -39,8 +40,8 @@ fn macro_test() {
     if valid_cases != valid_answers {
         panic!(
             "{:?}\n{:?}",
-            valid_cases.iter().map(|s| String::from_utf16(s).unwrap()).collect::<Vec<String>>(),
-            valid_answers.iter().map(|s| String::from_utf16(s).unwrap()).collect::<Vec<String>>(),
+            valid_cases.iter().map(|c| from_v16(c)).collect::<Vec<String>>(),
+            valid_answers.iter().map(|c| from_v16(c)).collect::<Vec<String>>(),
         );
     }
 

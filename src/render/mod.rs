@@ -4,7 +4,7 @@ mod render_result;
 use render_option::RenderOption;
 use render_result::RenderResult;
 use crate::escape::{escape_backslashes, escape_htmls, render_backslash_escapes};
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
 use crate::ast::{AST, line::code_to_lines};
 
 pub fn render_to_html_with_default_options(content: &String) -> String {
@@ -27,12 +27,12 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     if html.iter().any(|c| *c > 60000) {
         panic!(
             "A character that's not supposed to be in the result is found\n{}",
-            String::from_utf16(&html).unwrap()
+            from_v16(&html)
         )
     }
 
     RenderResult {
-        content: String::from_utf16_lossy(&html),
+        content: from_v16(&html),
         has_math: ast.md_data.has_math
     }
 

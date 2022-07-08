@@ -1,5 +1,6 @@
 use super::{Macro, MacroType};
 use crate::utils::to_int;
+use crate::color::COLOR_NAMES;
 
 impl Macro {
 
@@ -17,7 +18,7 @@ impl Macro {
                 _ => false
             },
 
-            MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2, // && arguments[0][1] is a valid color
+            MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2 && COLOR_NAMES.contains(&arguments[0][1]),
 
             MacroType::Icon => todo!()
         }

@@ -1,6 +1,6 @@
 use super::normalize_link;
 use crate::inline::InlineNode;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
@@ -127,7 +127,7 @@ fn link_render_test() {
                 "link_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
                 case,
                 answer,
-                String::from_utf16(&rendered).unwrap()
+                from_v16(&rendered)
             ));
         }
 
