@@ -1,0 +1,10 @@
+- `-`랑 `*`랑 구분 X
+- list element 바로 아래에 paragraph가 오면 element에 편입. (empty line 오면 편입 X)
+  - 단, 편입 시에는 줄바꿈이나 문단 바꿈 없음. 즉, 한 list 안에 여러 `<p>` 못 씀
+  - list 안에 blockquote 넣는 거나 fenced code 넣는 거나 전부 불가능!
+- ordered list는 `1. ` ~ `999999999. `로 시작함.
+  - `a. `, `A. `, `i. `, `I. ` 등도 가능!
+  - 쟤네가 `start`랑 `type`을 결정!
+  - 다른 type을 섞어도 상관없음. 첫번째 element의 type이 전체의 type을 결정
+- 빈 element 허용 X
+- ordered랑 unordered랑 혼용 불가

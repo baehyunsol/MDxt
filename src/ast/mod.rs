@@ -8,7 +8,6 @@ mod testbench;
 
 use crate::inline::InlineNode;
 use crate::inline::footnote::{footnotes_to_html, Footnote};
-use crate::codefence;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
 use node::Node;

@@ -3,6 +3,7 @@ use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::table::Table;
 use crate::codefence::FencedCode;
+use crate::list::List;
 
 pub enum Node {
     Paragraph {
@@ -14,6 +15,7 @@ pub enum Node {
     },
     FencedCode(FencedCode),
     Table(Table),
+    List(List),
     ThematicBreak,
     Empty
 }

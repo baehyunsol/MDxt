@@ -25,9 +25,11 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
     let mut result = vec![];
 
     for line_u16 in content.split(|c| *c == '\n' as u16) {
-        let mut line_u16 = line_u16.to_vec();
+        let line_u16 = line_u16.to_vec();
         // line_u16.push('\n' as u16);  // can I remove this line?
         let curr_line = &from_v16(&line_u16);
+
+        "hey compiler, here's an error!"  // try `highlighter.highlight_line` -> the `.highlight` method is deprecated
         let styled_line = highlighter.highlight(curr_line, &SYNTAX_SET);
 
         result.push(styled_line.iter().map(

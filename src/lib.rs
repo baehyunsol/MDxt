@@ -5,6 +5,7 @@ mod inline;
 mod escape;
 mod table;
 mod codefence;
+mod list;
 mod color;
 
 #[cfg(test)]

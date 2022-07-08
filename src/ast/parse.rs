@@ -24,6 +24,9 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         header_lines: Vec<Line>,
         alignments: Line
     },
+    List {
+        ordered: bool
+    },
     None
 }
 
@@ -42,7 +45,7 @@ impl AST {
         while index < lines.len() {
 
             match &curr_parse_state {
-                ParseState::CodeFence { language, line_num, highlights, code_fence_size, is_tilde_fence } => {
+                ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => {
 
                     if lines[index].is_code_fence_end() {
                         let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index]) {

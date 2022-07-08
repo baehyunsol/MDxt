@@ -75,3 +75,8 @@ test cases
 empty or white cases
 
 header: `#`, `# `
+
+---
+
+CRLF
+- chr(11), chr(12), chr(13)

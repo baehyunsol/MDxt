@@ -109,6 +109,21 @@ impl Line {
     }
 
     #[inline]
+    pub fn is_ordered_list(&self) -> bool {
+
+        match self.content.iter().position(|c| *c == '.' as u16) {
+            Some(ind) if ind + 1 < self.content.len() && self.content[ind + 1] == ' ' as u16 => {
+                let marker = &self.content[0..ind];
+
+                marker.iter().all(is_numeric) ||
+                marker == into_v16("a.") || marker == into_v16("A.") ||
+                marker == into_v16("i.") || marker == into_v16("I.")
+            },
+            _ => false,
+        }
+    }
+
+    #[inline]
     pub fn is_link_or_footnote_reference_definition(&self) -> bool {
         self.indent < 4 && self.content.len() > 4 && self.content[0] == '[' as u16
         && match get_bracket_end_index(&self.content, 0) {
