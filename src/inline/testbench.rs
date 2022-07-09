@@ -72,7 +72,8 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)", false),
         ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>", false),
         ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false),
-        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]", false)
+        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]", false),
+        ("[[red]] [[big]] error [[/red]] [[/big]]", "<div class=\"color_red\"> [[big]] error </div> [[/big]]", true)
     ];
 
     result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()

@@ -9,6 +9,10 @@ pub struct Line {
 
 impl Line {
 
+    pub fn new(content: Vec<u16>, indent: usize) -> Line {
+        Line { content, indent }
+    }
+
     pub fn from_raw(raw: &[u16]) -> Line {
 
         let mut indent = 0;

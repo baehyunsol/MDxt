@@ -361,6 +361,11 @@ fn main() {
 ```
 ", "
 <pre><code><table><tbody><tr><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr></tbody></table></code></pre>
+"), ("
+```
+```
+", "
+<pre><code><table><tbody><tr><td></td></tr></tbody></table></code></pre>
 ")
     ];
 

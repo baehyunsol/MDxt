@@ -24,9 +24,7 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         header_lines: Vec<Line>,
         alignments: Line
     },
-    List {
-        ordered: bool
-    },
+    List,
     None
 }
 
@@ -131,6 +129,20 @@ impl AST {
                     }
 
                 },
+                ParseState::List => {
+
+                    if lines[index].is_empty() || lines[index].is_code_fence_begin() ||
+                    lines[index].is_header() || lines[index].is_thematic_break() ||
+                    lines[index].is_table_row() {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        continue;
+                    }
+
+                    else {
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                },
                 ParseState::None => {
 
                     if lines[index].is_code_fence_begin() {
@@ -191,7 +203,6 @@ impl AST {
 
                         if header_end_index < lines.len() && lines[header_end_index].is_table_delimiter() &&
                         count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content) {
-                            add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
                             let header_lines = header_lines.into_iter().map(|line| (*line).clone()).collect::<Vec<Line>>();
                             let alignments = lines[header_end_index].clone();
@@ -206,6 +217,14 @@ impl AST {
                             curr_parse_state = ParseState::Paragraph;
                         }
 
+                    }
+
+                    // a single line of an ordered list is not rendered to `<ol>`
+                    // a single line of an unordered list is fine
+                    else if lines[index].is_unordered_list() ||
+                    lines[index].is_ordered_list() && index + 1 < lines.len() && lines[index + 1].is_ordered_list() {
+                        curr_parse_state = ParseState::List;
+                        curr_lines.push(lines[index].clone());
                     }
 
                     else if lines[index].is_empty() {
@@ -256,6 +275,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
+        ParseState::List { .. } => todo!(),
         ParseState::CodeFence { language, line_num, highlights, .. } => {
             curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights));
             *curr_lines = vec![];

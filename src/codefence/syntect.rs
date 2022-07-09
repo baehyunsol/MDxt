@@ -26,15 +26,19 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
 
     for line_u16 in content.split(|c| *c == '\n' as u16) {
         let line_u16 = line_u16.to_vec();
-        // line_u16.push('\n' as u16);  // can I remove this line?
         let curr_line = &from_v16(&line_u16);
 
-        "hey compiler, here's an error!"  // try `highlighter.highlight_line` -> the `.highlight` method is deprecated
-        let styled_line = highlighter.highlight(curr_line, &SYNTAX_SET);
+        match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
+            Ok(styled_line) => {
+                result.push(styled_line.iter().map(
+                    |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content)
+                ).collect::<Vec<Vec<u16>>>().concat());
+            }
+            Err(_) => {
+                result.push(classify_style_to_css(&Color::WHITE, curr_line));
+            }
+        }
 
-        result.push(styled_line.iter().map(
-            |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content)
-        ).collect::<Vec<Vec<u16>>>().concat());
     }
 
     result

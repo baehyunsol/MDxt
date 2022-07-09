@@ -1,5 +1,7 @@
 [[giant]]***This document uses HMD's syntax. The syntax is slightly different to [gfm](https://github.github.com/gfm). If you're reading this document on github, please visit [my blog](https://somewhere) to see the properly rendered version.***[[/giant]]
 
+MDx can read most gfm documents, but the output is different. (ex: Unlike gfm, fenced code blocks are rendered to tables.)
+
 ## Inline elements
 
 It supports most inline decorations that [gfm](https://github.github.com/gfm) supports, and has a few more.
@@ -80,3 +82,7 @@ header: `#`, `# `
 
 CRLF
 - chr(11), chr(12), chr(13)
+
+---
+
+math 안에 `\n`, math 안에 `\`, mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물에는 svg만 넣으면 안되나?
