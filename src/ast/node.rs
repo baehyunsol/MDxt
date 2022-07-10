@@ -1,10 +1,10 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
-use crate::table::Table;
-use crate::codefence::FencedCode;
-use crate::blockquote::Blockquote;
-use crate::list::List;
+use crate::container::table::Table;
+use crate::container::codefence::FencedCode;
+use crate::container::blockquote::Blockquote;
+use crate::container::list::List;
 
 pub enum Node {
     Paragraph {

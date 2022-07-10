@@ -4,10 +4,10 @@ use crate::inline::{
     link::{predicate::read_link_reference, normalize_link},
     footnote::{predicate::is_valid_footnote_label, Footnote}
 };
-use crate::table::{count_cells, count_delimiter_cells};
+use crate::container::table::{count_cells, count_delimiter_cells};
 use crate::utils::{drop_while, take_and_drop_while};
 use crate::render::render_option::RenderOption;
-use crate::codefence::read_code_fence_info;
+use crate::container::codefence::read_code_fence_info;
 use std::collections::HashMap;
 
 #[derive(PartialEq, Debug)]

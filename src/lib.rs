@@ -3,10 +3,7 @@ mod render;
 mod utils;
 mod inline;
 mod escape;
-mod table;
-mod codefence;
-mod list;
-mod blockquote;
+mod container;
 mod color;
 
 #[cfg(test)]

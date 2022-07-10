@@ -1,6 +1,6 @@
 use crate::inline::footnote::predicate::is_valid_footnote_label;
 use crate::inline::link::predicate::is_valid_link_label;
-use crate::codefence::predicate::is_valid_info_string;
+use crate::container::codefence::predicate::is_valid_info_string;
 use crate::ast::line::Line;
 use crate::utils::*;
 
