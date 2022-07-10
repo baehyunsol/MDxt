@@ -24,6 +24,7 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         header_lines: Vec<Line>,
         alignments: Line
     },
+    Blockquote,
     List,
     None
 }
@@ -277,6 +278,11 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
         },
         ParseState::List => {
             curr_nodes.push(Node::new_list(curr_lines));
+            *curr_lines = vec![];
+            *curr_parse_state = ParseState::None;
+        },
+        ParseState::Blockquote => {
+            curr_nodes.push(Node::new_blockquote(curr_lines));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },

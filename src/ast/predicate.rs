@@ -104,6 +104,11 @@ impl Line {
     }
 
     #[inline]
+    pub fn is_blockquote(&self) -> bool {
+        self.indent < 4 && self.content.len() > 0 && self.content[0] == '>' as u16
+    }
+
+    #[inline]
     pub fn is_unordered_list(&self) -> bool {
         self.content.len() > 2 && (self.content[0] == '-' as u16 || self.content[0] == '*' as u16) && self.content[1] == ' ' as u16
     }

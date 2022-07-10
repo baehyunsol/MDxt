@@ -6,6 +6,7 @@ mod escape;
 mod table;
 mod codefence;
 mod list;
+mod blockquote;
 mod color;
 
 #[cfg(test)]

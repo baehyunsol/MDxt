@@ -370,6 +370,27 @@ cut
         </tr>
     </tbody>
 </table>
+"), ("
+| an  | escaped | pipe |
+|-----|---------|------|
+|*\\|*|\\|\\|\\||\\|\\||
+", "
+<table>
+    <thead>
+        <tr>
+            <th> an </th>
+            <th> escaped </th>
+            <th> pipe </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><em>&#124;</em></td>
+            <td>&#124;&#124;&#124;</td>
+            <td>&#124;&#124;</td>
+        </tr>
+    </tbody>
+</table>
 ")
     ];
 

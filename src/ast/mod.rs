@@ -81,6 +81,7 @@ impl AST {
                 },
                 Node::Table(table) => {table.parse_inlines(&mut self.md_data, &self.render_option);},
                 Node::List(list) => {list.parse_inlines(&mut self.md_data, &self.render_option);},
+                Node::Blockquote(blockquote) => {blockquote.parse_inlines(&mut self.md_data, &self.render_option);},
                 Node::Empty | Node::FencedCode {..} | Node::ThematicBreak => {}
             }
         );
@@ -134,6 +135,9 @@ impl AST {
                 }
                 Node::List(list) => {
                     result.push(list.to_html());
+                }
+                Node::Blockquote(blockquote) => {
+                    result.push(blockquote.to_html());
                 }
                 Node::Header { level, content } => {
                     result.push(

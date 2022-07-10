@@ -276,4 +276,33 @@ mod tests {
         assert_eq!(remove_special_characters(&sample2), into_v16("IfyoufindanybugpleasereportXXXXXXX한글입력newlinetab"));
     }
 
+    #[test]
+    fn whiles_test() {
+        use crate::utils::{into_v16, take_while, drop_while, take_and_drop_while};
+
+        let samples = vec![  // (content, char, take, drop)
+            ("", ' ', "", ""),
+            (" ", ' ', " ", ""),
+            ("### Header3", '#', "###", " Header3"),
+            ("### Header3", ' ', "", "### Header3"),
+        ];
+
+        let samples = samples.iter().map(
+            |(content, character, take, drop)|
+            (into_v16(content), *character as u16, into_v16(take), into_v16(drop))
+        ).collect::<Vec<(Vec<u16>, u16, Vec<u16>, Vec<u16>)>>();
+
+        for (sample, character, taken_answer, dropped_answer) in samples.iter() {
+            let taken_actual = take_while(sample, *character);
+            assert_eq!(&taken_actual, taken_answer);
+
+            let dropped_actual = drop_while(sample, *character);
+            assert_eq!(&dropped_actual, dropped_answer);
+
+            let (taken_actual, dropped_actual) = take_and_drop_while(sample, *character);
+            assert_eq!(&taken_actual, taken_answer);
+            assert_eq!(&dropped_actual, dropped_answer);
+        }
+    }
+
 }

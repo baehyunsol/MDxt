@@ -2,6 +2,7 @@ use super::{Macro, MacroType};
 use crate::inline::{InlineNode, DecorationType, InlineMacro};
 use crate::render::render_option::RenderOption;
 use crate::utils::to_int;
+use crate::escape::render_backslash_escapes;
 use crate::ast::MdData;
 
 impl Macro {
@@ -62,7 +63,7 @@ impl Macro {
             },
 
             MacroType::Math => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Math(content.to_vec())),
+                deco_type: DecorationType::Macro(InlineMacro::Math(render_backslash_escapes(&content))),
                 content: vec![]
             },
 

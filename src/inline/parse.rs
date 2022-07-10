@@ -13,6 +13,7 @@ use super::macros::predicate::check_and_parse_macro_inline;
 use crate::ast::MdData;
 use crate::render::render_option::RenderOption;
 use crate::utils::get_bracket_end_index;
+use crate::escape::render_backslash_escapes;
 
 impl InlineNode {
 
@@ -65,7 +66,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -93,7 +94,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -121,7 +122,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -145,7 +146,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -169,7 +170,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -193,7 +194,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -217,7 +218,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -241,7 +242,7 @@ impl InlineNode {
                     let mut result = vec![];
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Decoration {
@@ -271,7 +272,7 @@ impl InlineNode {
                     }
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     if is_image {
@@ -312,7 +313,7 @@ impl InlineNode {
                     }
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     if is_image {
@@ -347,7 +348,7 @@ impl InlineNode {
                     let inverse_index = md_data.add_footnote_inverse_index(&footnote_label);
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
@@ -376,7 +377,7 @@ impl InlineNode {
                     }
 
                     if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
                     if is_image {
@@ -409,7 +410,7 @@ impl InlineNode {
                         let mut result = vec![];
 
                         if index > 0 {
-                            result.push(Box::new(InlineNode::Raw(content[0..index].to_vec())));
+                            result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                         }
 
                         result.push(Box::new(parsed));
@@ -429,7 +430,7 @@ impl InlineNode {
         }
 
         // there're no inline element in the content
-        InlineNode::Raw(content).render_code_spans()
+        InlineNode::Raw(render_backslash_escapes(&content)).render_code_spans()
     }
 
     pub fn render_code_spans(self) -> Self {

@@ -3,6 +3,7 @@ use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::table::Table;
 use crate::codefence::FencedCode;
+use crate::blockquote::Blockquote;
 use crate::list::List;
 
 pub enum Node {
@@ -16,6 +17,7 @@ pub enum Node {
     FencedCode(FencedCode),
     Table(Table),
     List(List),
+    Blockquote(Blockquote),
     ThematicBreak,
     Empty
 }
@@ -48,6 +50,10 @@ impl Node {
 
     pub fn new_list(lines: &Vec<Line>) -> Node {
         Node::List(List::from_lines(lines))
+    }
+
+    pub fn new_blockquote(lines: &Vec<Line>) -> Node {
+        Node::Blockquote(Blockquote::from_lines(lines))
     }
 
 }

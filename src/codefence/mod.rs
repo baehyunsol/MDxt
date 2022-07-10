@@ -20,7 +20,12 @@ pub struct FencedCode {
 impl FencedCode {
 
     pub fn new(content: Vec<u16>, language: Vec<u16>, line_num: Option<usize>, highlights: Vec<usize>) -> Self {
-        FencedCode { language, content, line_num, highlights }
+        FencedCode {
+            language,
+            content,
+            line_num,
+            highlights
+        }
     }
 
 }

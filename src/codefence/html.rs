@@ -1,6 +1,7 @@
 use super::FencedCode;
 use super::syntect::{is_syntax_available, highlight_syntax};
 use crate::utils::into_v16;
+use crate::escape::render_backslash_escapes;
 use crate::escape::{undo_html_escapes, undo_backslash_escapes};
 
 // `<` in code, `\` in code
@@ -56,7 +57,7 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
     vec![
         into_v16(&format!("<tr{}>", highlight)),
         line_num,
-        line.to_vec(),
+        render_backslash_escapes(line),
         into_v16("</td></tr>")
     ].concat()
 }

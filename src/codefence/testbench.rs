@@ -366,6 +366,38 @@ fn main() {
 ```
 ", "
 <pre><code><table><tbody><tr><td></td></tr></tbody></table></code></pre>
+"), ("
+# Backslash test
+
+`\\\\`
+
+```
+\\\\
+```
+", "
+<h1>Backslash test</h1>
+
+<p><code class=\"short\">&#92;</code></p>
+
+<pre><code><table><tbody>
+    <tr>
+        <td>&#92;</td>
+    </tr>
+</tbody></table></code></pre>
+"), ("
+`````
+````
+``````
+````
+``````
+", "
+<pre><code><table><tbody>
+    <tr><td>````</td></tr>
+</tbody></table></code></pre>
+
+<pre><code><table><tbody>
+    <tr><td></td></tr>
+</tbody></table></code></pre>
 ")
     ];
 
