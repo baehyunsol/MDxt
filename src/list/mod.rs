@@ -1,3 +1,5 @@
+mod tasklist;
+
 #[cfg(test)]
 mod testbench;
 
@@ -6,12 +8,13 @@ use crate::ast::line::{Line, add_br_if_needed};
 use crate::ast::MdData;
 use crate::render::render_option::RenderOption;
 use crate::utils::{is_numeric, to_int, into_v16};
+use tasklist::{parse_task_list, TaskMarker};
 
 #[derive(Clone)]
 pub struct List {
     list_type: ListType,
     start_index: usize,
-    elements: Vec<Element>
+    elements: Vec<ElementOrSublist>
 }
 
 impl List {
@@ -90,13 +93,29 @@ impl List {
         for element in self.elements.iter() {
 
             match element {
-                Element::Content(content) => {
+                ElementOrSublist::Element{ content, task_list } => {
                     result.push(into_v16("<li>"));
+
+                    match task_list {
+                        Some(marker) => match marker {
+                            TaskMarker::Unchecked => {
+                                result.push(into_v16("<div class=\"unchecked_box\"></div>"));
+                            },
+                            TaskMarker::Checked => {
+                                result.push(into_v16("<div class=\"checked_box\"><span class=\"checkmark\"></span></div>"));
+                            },
+                            TaskMarker::Triangle => {
+                                result.push(into_v16("<div class=\"checked_box\"><span class=\"triangle\"></span></div>"));
+                            },
+                        },
+                        _ => {}
+                    }
+
                     result.push(content.to_html());
                     result.push(into_v16("</li>"));
                 }
-                Element::Sublist(sublist) => {
-                    result.pop().unwrap();  // </li>  // the first element is `Element::Content`
+                ElementOrSublist::Sublist(sublist) => {
+                    result.pop().unwrap();  // </li>  // the first element is `ElementOrSublist::Element`
                     result.push(sublist.to_html());
                     result.push(into_v16("</li>"));
                 }
@@ -114,8 +133,8 @@ impl List {
         for element in self.elements.iter_mut() {
 
             match element {
-                Element::Content(content) => {content.parse_raw(md_data, options);}
-                Element::Sublist(sublist) => {sublist.parse_inlines(md_data, options);}
+                ElementOrSublist::Element{ content, task_list } => {content.parse_raw(md_data, options);}
+                ElementOrSublist::Sublist(sublist) => {sublist.parse_inlines(md_data, options);}
             }
 
         }
@@ -129,6 +148,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
     let mut elements = Vec::with_capacity(lines.len());
     let mut curr_indent = lines[curr_index].indent;
     let mut curr_element = vec![];
+    let mut curr_task_marker = None;
 
     while curr_index < lines.len() {
 
@@ -136,10 +156,12 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
 
             if curr_element.len() > 0 {
                 elements.push(
-                    Element::new_element(
-                        &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
+                    ElementOrSublist::new_element(
+                        &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                        curr_task_marker
                     )
                 );
+                curr_task_marker = None;
                 curr_element = vec![];
             }
 
@@ -150,7 +172,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
             // sublist
             else if curr_indent + 1 < lines[curr_index].indent {
                 let (sublist, new_index) = from_lines_recursive(lines, curr_index);
-                elements.push(Element::new_sublist(Box::new(sublist)));
+                elements.push(ElementOrSublist::new_sublist(Box::new(sublist)));
                 curr_index = new_index;
                 continue;
             }
@@ -159,7 +181,10 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
                 curr_indent = lines[curr_index].indent;
             }
 
-            curr_element = vec![remove_marker(&lines[curr_index])];
+            let (line, task_list_marker) = parse_task_list(&remove_marker(&lines[curr_index]));
+
+            curr_task_marker = task_list_marker;
+            curr_element = vec![line];
         }
 
         else {
@@ -171,8 +196,9 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
 
     if curr_element.len() > 0 {
         elements.push(
-            Element::new_element(
-                &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
+            ElementOrSublist::new_element(
+                &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                curr_task_marker
             )
         );
     }
@@ -262,19 +288,25 @@ enum Marker {
 }
 
 #[derive(Clone)]
-enum Element {
-    Content(InlineNode),
+enum ElementOrSublist {
+    Element{
+        content: InlineNode,
+        task_list: Option<TaskMarker>
+    },
     Sublist(Box<List>)
 }
 
-impl Element {
+impl ElementOrSublist {
 
-    fn new_element(content: &[u16]) -> Self {
-        Element::Content(InlineNode::Raw(content.to_vec()))
+    fn new_element(content: &[u16], task_list: Option<TaskMarker>) -> Self {
+        ElementOrSublist::Element{
+            content: InlineNode::Raw(content.to_vec()),
+            task_list
+        }
     }
 
     fn new_sublist(list: Box<List>) -> Self {
-        Element::Sublist(list)
+        ElementOrSublist::Sublist(list)
     }
 
 }
