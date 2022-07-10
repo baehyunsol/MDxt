@@ -1,6 +1,31 @@
-[[giant]]***This document uses HMD's syntax. The syntax is slightly different to [gfm](https://github.github.com/gfm). If you're reading this document on github, please visit [my blog](https://somewhere) to see the properly rendered version.***[[/giant]]
+# MDex
 
-MDx can read most gfm documents, but the output is different. (ex: Unlike gfm, fenced code blocks are rendered to tables.)
+MDex is an extended markdown format. Though not a strict superset of [gfm], MDex supports most of its features. You can read more about it [here](#gfm-compatibility)
+
+Some elements require proper CSS files to be rendered. You can either write your own, or use CSS files in this repo.
+
+If you wanna know more about MDex, see these articles.
+
+- [showcase]
+- [reference]
+
+## GFM compatibility
+
+[GFM] is a Github-flavored markdown format, which is one of the most widely used markdown extension.
+
+MDx can read most gfm documents, but the output is different. (ex: unlike gfm, fenced code blocks are rendered to tables.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
+
+I'm planning to add more compatibility layers for gfm, but they're all WIP.
+
+- [ ] GFM <-> MDex converter.
+- [ ] Render MDex to GFM's output format.
+
+[GFM]: https:github.github.com/gfm
+[showcase]: showcase.md
+
+---
+
+# OLD
 
 ## Inline elements
 

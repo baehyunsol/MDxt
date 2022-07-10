@@ -1,7 +1,8 @@
+// use this module to automate the creation of CSS files.
+
 use lazy_static::lazy_static;
 use crate::utils::{into_v16, from_v16};
 
-// use this module to automate the creation of CSS files.
 pub struct Color {
     pub name: String,
     pub r: u8,
@@ -35,6 +36,7 @@ lazy_static! {
         Color::new("black", 0, 0, 0),
         Color::new("dark", 64, 64, 64),
         Color::new("gray", 128, 128, 128),
+        Color::new("lightgray", 192, 192, 192),
         Color::new("white", 255, 255, 255),
         Color::new("red", 192, 64, 64),
         Color::new("green", 64, 192, 64),

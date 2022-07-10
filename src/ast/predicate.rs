@@ -115,9 +115,12 @@ impl Line {
             Some(ind) if ind + 1 < self.content.len() && self.content[ind + 1] == ' ' as u16 => {
                 let marker = &self.content[0..ind];
 
-                marker.iter().all(is_numeric) ||
-                marker == into_v16("a.") || marker == into_v16("A.") ||
-                marker == into_v16("i.") || marker == into_v16("I.")
+                marker.iter().all(is_numeric) && match to_int(marker) {
+                    Some(n) if n < 1_000_000_000 => true,
+                    _ => false
+                } ||
+                marker == into_v16("a") || marker == into_v16("A") ||
+                marker == into_v16("i") || marker == into_v16("I")
             },
             _ => false,
         }

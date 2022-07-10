@@ -5,8 +5,9 @@ use crate::inline::InlineNode;
 use crate::ast::line::{Line, add_br_if_needed};
 use crate::ast::MdData;
 use crate::render::render_option::RenderOption;
-use crate::utils::{is_numeric, to_int};
+use crate::utils::{is_numeric, to_int, into_v16};
 
+#[derive(Clone)]
 pub struct List {
     list_type: ListType,
     start_index: usize,
@@ -16,64 +17,172 @@ pub struct List {
 impl List {
 
     pub fn from_lines(lines: &Vec<Line>) -> Self {
+        let (mut list, mut index) = from_lines_recursive(&lines[..], 0);
 
-        let mut indentation_stack = vec![i32::MIN];
-        let mut elements = Vec::with_capacity(lines.len());
-        let (list_type, start_index) = get_list_type_and_start_index(&lines[0]);
-        let mut curr_element = vec![];
+        /*
+        It's needed in ordered to parse
+        ```
+                - 1
+              - 1
+            - 1
+          - 1
+        - 1
+        ```
+        */
+        while index < lines.len() {
+            let (new_list, new_index) = from_lines_recursive(&lines[..], index);
+            index = new_index;
 
-        for line in lines.iter() {
-
-            if !line.is_ordered_list() && list_type.is_ordered() || !line.is_unordered_list() && list_type.is_unordered() {
-                curr_element.push(line.clone());
-                continue;
-            }
-
-            if curr_element.len() > 0 {
-                elements.push(Element::new(
-                    indentation_stack.len(),
-                    &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
-                ));
-            }
-
-            let head = indentation_stack[indentation_stack.len() - 1];
-            let curr_indent = line.indent as i32;
-
-            if head + 1 < curr_indent {
-                indentation_stack.push(curr_indent);
-            }
-
-            else if head - 1 > curr_indent {
-
-                while indentation_stack[indentation_stack.len() - 1] > curr_indent {
-                    indentation_stack.pop().unwrap();
-                }
-
-                if indentation_stack[indentation_stack.len() - 1] + 1 < curr_indent {
-                    indentation_stack.push(curr_indent);
-                }
-
-            }
-
-            else {
-                let last_index = indentation_stack.len() - 1;
-                indentation_stack[last_index] = curr_indent;
-            }
-
-            curr_element = vec![remove_marker(&line)];
+            list.elements = vec![
+                list.elements,
+                new_list.elements
+            ].concat();
         }
 
-        List { elements, list_type, start_index }
+        list
     }
 
     pub fn to_html(&self) -> Vec<u16> {
-        todo!()
+
+        let start_index = if self.start_index != 1 {
+            format!(" start=\"{}\"", self.start_index)
+        } else {
+            "".to_string()
+        };
+
+        let (opening_tag, closing_tag) = match &self.list_type {
+            ListType::Unordered => (
+                format!("<ul{}>", start_index),
+                "</ul>".to_string()
+            ),
+            ListType::Ordered(marker) => match marker {
+                Marker::Number => (
+                    format!("<ol type=\"1\"{}>", start_index),
+                    "</ol>".to_string()
+                ),
+                Marker::UpperAlpha => (
+                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
+                    format!("<ol type=\"A\"{}>", start_index),
+                    "</ol>".to_string()
+                ),
+                Marker::LowerAlpha => (
+                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
+                    format!("<ol type=\"a\"{}>", start_index),
+                    "</ol>".to_string()
+                ),
+                Marker::UpperRoman => (
+                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
+                    format!("<ol type=\"I\"{}>", start_index),
+                    "</ol>".to_string()
+                ),
+                Marker::LowerRoman => (
+                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
+                    format!("<ol type=\"i\"{}>", start_index),
+                    "</ol>".to_string()
+                ),
+            }
+        };
+
+        let mut result = Vec::with_capacity(self.elements.len() * 3 + 2);
+
+        result.push(into_v16(&opening_tag));
+
+        for element in self.elements.iter() {
+
+            match element {
+                Element::Content(content) => {
+                    result.push(into_v16("<li>"));
+                    result.push(content.to_html());
+                    result.push(into_v16("</li>"));
+                }
+                Element::Sublist(sublist) => {
+                    result.pop().unwrap();  // </li>  // the first element is `Element::Content`
+                    result.push(sublist.to_html());
+                    result.push(into_v16("</li>"));
+                }
+            }
+
+        }
+
+        result.push(into_v16(&closing_tag));
+
+        result.concat()
     }
 
     pub fn parse_inlines(&mut self, md_data: &mut MdData, options: &RenderOption) {
-        todo!()
+        
+        for element in self.elements.iter_mut() {
+
+            match element {
+                Element::Content(content) => {content.parse_raw(md_data, options);}
+                Element::Sublist(sublist) => {sublist.parse_inlines(md_data, options);}
+            }
+
+        }
+
     }
 
+}
+
+fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) {
+    let (list_type, start_index) = get_list_type_and_start_index(&lines[curr_index]);
+    let mut elements = Vec::with_capacity(lines.len());
+    let mut curr_indent = lines[curr_index].indent;
+    let mut curr_element = vec![];
+
+    while curr_index < lines.len() {
+
+        if lines[curr_index].is_ordered_list() || lines[curr_index].is_unordered_list() {
+
+            if curr_element.len() > 0 {
+                elements.push(
+                    Element::new_element(
+                        &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
+                    )
+                );
+                curr_element = vec![];
+            }
+
+            if lines[curr_index].indent + 1 < curr_indent {
+                break;
+            }
+
+            // sublist
+            else if curr_indent + 1 < lines[curr_index].indent {
+                let (sublist, new_index) = from_lines_recursive(lines, curr_index);
+                elements.push(Element::new_sublist(Box::new(sublist)));
+                curr_index = new_index;
+                continue;
+            }
+
+            else {
+                curr_indent = lines[curr_index].indent;
+            }
+
+            curr_element = vec![remove_marker(&lines[curr_index])];
+        }
+
+        else {
+            curr_element.push(lines[curr_index].clone());
+        }
+
+        curr_index += 1;
+    }
+
+    if curr_element.len() > 0 {
+        elements.push(
+            Element::new_element(
+                &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..])
+            )
+        );
+    }
+
+    (
+        List {
+            list_type, start_index, elements
+        },
+        curr_index
+    )
 }
 
 fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
@@ -123,6 +232,7 @@ fn remove_marker(line: &Line) -> Line {
     Line::new(content, 0)
 }
 
+#[derive(Clone)]
 enum ListType {
     Unordered,
     Ordered(Marker)
@@ -146,22 +256,25 @@ impl ListType {
 
 }
 
+#[derive(Clone)]
 enum Marker {
     Number, UpperAlpha, LowerAlpha, UpperRoman, LowerRoman
 }
 
-struct Element {
-    level: usize,
-    content: InlineNode
+#[derive(Clone)]
+enum Element {
+    Content(InlineNode),
+    Sublist(Box<List>)
 }
 
 impl Element {
 
-    fn new(level: usize, content: &[u16]) -> Self {
-        Element {
-            level,
-            content: InlineNode::Raw(content.to_vec())
-        }
+    fn new_element(content: &[u16]) -> Self {
+        Element::Content(InlineNode::Raw(content.to_vec()))
+    }
+
+    fn new_sublist(list: Box<List>) -> Self {
+        Element::Sublist(list)
     }
 
 }
