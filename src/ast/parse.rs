@@ -112,6 +112,21 @@ impl AST {
 
                     }
 
+                    else if lines[index].is_blockquote() {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        curr_parse_state = ParseState::Blockquote;
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                    // a single line of an ordered list is not rendered to `<ol>`
+                    // a single line of an unordered list is fine
+                    else if lines[index].is_unordered_list() ||
+                    lines[index].is_ordered_list() && index + 1 < lines.len() && lines[index + 1].is_ordered_list() {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        curr_parse_state = ParseState::List;
+                        curr_lines.push(lines[index].clone());
+                    }
+
                     // paragraph
                     else {
                         curr_lines.push(lines[index].clone());
@@ -134,7 +149,22 @@ impl AST {
 
                     if lines[index].is_empty() || lines[index].is_code_fence_begin() ||
                     lines[index].is_header() || lines[index].is_thematic_break() ||
-                    lines[index].is_table_row() {
+                    lines[index].is_table_row() || lines[index].is_blockquote() {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        continue;
+                    }
+
+                    else {
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                },
+                ParseState::Blockquote => {
+
+                    if lines[index].is_empty() || lines[index].is_code_fence_begin() ||
+                    lines[index].is_header() || lines[index].is_thematic_break() ||
+                    lines[index].is_table_row() || lines[index].is_ordered_list() ||
+                    lines[index].is_unordered_list() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         continue;
                     }
@@ -225,6 +255,11 @@ impl AST {
                     else if lines[index].is_unordered_list() ||
                     lines[index].is_ordered_list() && index + 1 < lines.len() && lines[index + 1].is_ordered_list() {
                         curr_parse_state = ParseState::List;
+                        curr_lines.push(lines[index].clone());
+                    }
+
+                    else if lines[index].is_blockquote() {
+                        curr_parse_state = ParseState::Blockquote;
                         curr_lines.push(lines[index].clone());
                     }
 

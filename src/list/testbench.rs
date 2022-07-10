@@ -380,6 +380,18 @@ nothing
         <td>nothing</td>
     </tr>
 </tbody></table></code></pre>
+"), ("
+interrupt
+paragraph
+- 1
+- 1
+", "
+<p>interrupt paragraph</p>
+
+<ul>
+    <li>1</li>
+    <li>1</li>
+</ul>
 ")
     ];
 

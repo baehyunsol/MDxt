@@ -110,7 +110,7 @@ impl List {
     }
 
     pub fn parse_inlines(&mut self, md_data: &mut MdData, options: &RenderOption) {
-        
+
         for element in self.elements.iter_mut() {
 
             match element {

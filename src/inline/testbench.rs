@@ -70,6 +70,7 @@ fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible
         ("`[[math]] a codespan before a math`[[/math]] [[math]] `a codespan after a math [[/math]]`", "<code class=\"short\">[[math]] a codespan before a math</code>[[/math]] \\( `a codespan after a math \\)`", true),
         ("[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]", "\\( `a codespan after a math \\)` <code class=\"short\">[[math]] a codespan before a math</code>[[/math]]", true),
         ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)", false),
+        ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)", false),
         ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>", false),
         ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false),
         ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]", false),
