@@ -41,6 +41,8 @@ It changes not only font sizes, but also image sizes.
 
 `[[toc]]`
 
+header 안에 link가 있으면? nested link가 생겨버리는데?
+
 ## Characters
 
 - `[[blank]]`

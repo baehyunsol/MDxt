@@ -2,6 +2,9 @@
 <html>
     <head>
         <style>
+            table {
+                margin: 12px;
+            }
             table, td, th {
                 border-collapse: collapse;
                 border: 1px solid black;
@@ -27,7 +30,7 @@
     <body>
         <table>
             <thead id="table-collapse-toggle-1" class="collapsible" onclick = "collapse_table('1')">
-                <th>1</th>
+                <th>Default: open</th>
                 <th>2</th>
                 <th>3</th>
             </thead>
@@ -45,12 +48,12 @@
             </tbody>
         </table>
         <table>
-            <thead id="table-collapse-toggle-2" class="collapsible" onclick="collapse_table('2')">
-                <th>1</th>
+            <thead id="table-collapse-toggle-2" class="collapsible activated" onclick="collapse_table('2')">
+                <th>Default: Collapsed</th>
                 <th>2</th>
                 <th>3</th>
             </thead>
-            <tbody id="collapsible-table-2">
+            <tbody id="collapsible-table-2" class="invisible">
                 <tr>
                     <td>4</td>
                     <td>5</td>

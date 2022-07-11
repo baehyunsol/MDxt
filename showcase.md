@@ -24,7 +24,7 @@ Tables with multiline-headers, colspans and column alingments!
 
 ### Collapsible Tables
 
-TODO: syntax
+TODO: syntax, toggle open/close
 
 ```
 |  Click Me!  |

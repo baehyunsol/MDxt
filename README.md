@@ -91,10 +91,7 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 ---
 
-tooltip, collapsible, button
-
-collapsible table을 만들 수 있게 하자!
-- 설정 복잡하게는 못하고 tbody 통째로 collapse
+tooltip, button
 
 ---
 

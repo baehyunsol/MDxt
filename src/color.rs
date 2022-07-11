@@ -17,6 +17,15 @@ impl Color {
         }
     }
 
+    pub fn complement(&self) -> Self {
+        Color {
+            name: self.name.clone(),
+            r: 255 - self.r,
+            g: 255 - self.g,
+            b: 255 - self.b
+        }
+    }
+
     pub fn to_rgb(&self) -> String {
         format!("rgb({}, {}, {})", self.r, self.g, self.b)
     }
