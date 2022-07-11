@@ -3,7 +3,7 @@ use crate::inline::InlineNode;
 use crate::utils::{into_v16, from_v16};
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 
 // 쟤네 말고 render_to_html 써서 escape 제대로 처리하는지도 보자! 주소 안에 `&`가 있으면 걔 제대로 처리하는지.
 
@@ -102,22 +102,22 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 fn link_render_test() {
     let test_cases = samples();
     let mut failures = vec![];
-    let mut md_data = MdData::default();
+    let mut doc_data = DocData::default();
     let mut render_option = RenderOption::default();
 
-    md_data.link_references.insert(
+    doc_data.link_references.insert(
         into_v16("link"), into_v16("https://example")
     );
 
-    md_data.link_references.insert(
+    doc_data.link_references.insert(
         into_v16("link2"), into_v16("https://example2")
     );
 
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
-            &InlineNode::from_md(
+            &InlineNode::from_mdxt(
                 &escape_backslashes(&into_v16(case)),
-                &mut md_data,
+                &mut doc_data,
                 &mut render_option
             ).to_html()
         );

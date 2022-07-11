@@ -3,7 +3,7 @@ pub mod render_result;
 
 use render_option::RenderOption;
 use render_result::RenderResult;
-use crate::escape::{escape_backslashes, escape_htmls};
+use crate::escape::{escape_backslashes, escape_htmls, remove_invalid_characters};
 use crate::utils::{into_v16, from_v16};
 use crate::ast::{AST, line::code_to_lines};
 
@@ -14,6 +14,7 @@ pub fn render_to_html_with_default_options(content: &String) -> String {
 pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResult {
 
     let mut u16_content = into_v16(content);
+    u16_content = remove_invalid_characters(&u16_content);
     u16_content = escape_backslashes(&u16_content);
     u16_content = escape_htmls(&u16_content);
 
@@ -32,7 +33,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     RenderResult {
         content: from_v16(&html),
-        has_math: ast.md_data.has_math
+        has_math: ast.doc_data.has_math
     }
 
 }

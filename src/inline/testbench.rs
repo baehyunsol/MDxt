@@ -3,7 +3,7 @@ use crate::inline::InlineNode;
 use crate::utils::{into_v16, from_v16};
 use crate::escape::escape_backslashes;
 use crate::render::render_option::RenderOption;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
@@ -95,13 +95,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 fn inline_render_test() {
     let test_cases = samples();
     let mut failures = vec![];
-    let mut md_data = MdData::default();
+    let mut doc_data = DocData::default();
     let mut render_option = RenderOption::default();
 
     for (case, answer) in test_cases.iter() {
-        let rendered = InlineNode::from_md(
+        let rendered = InlineNode::from_mdxt(
             &escape_backslashes(&into_v16(case)),
-            &mut md_data,
+            &mut doc_data,
             &mut render_option
         ).to_html();
 
@@ -125,25 +125,25 @@ fn inline_render_test() {
         );
     }
 
-    assert!(md_data.has_math);
+    assert!(doc_data.has_math);
 }
 
 #[test]
 fn inline_inversion_test() {
     let mut failures = vec![];
-    let mut md_data = MdData::default();
+    let mut doc_data = DocData::default();
     let mut render_option = RenderOption::default();
 
     for (case, html) in samples().iter() {
 
-        let inverted = InlineNode::from_md(
+        let inverted = InlineNode::from_mdxt(
             &escape_backslashes(&into_v16(case)),
-            &mut md_data,
+            &mut doc_data,
             &mut render_option
-        ).to_md();
+        ).to_mdxt();
 
-        let inverted_html = InlineNode::from_md(
-            &escape_backslashes(&inverted), &mut md_data, &mut render_option
+        let inverted_html = InlineNode::from_mdxt(
+            &escape_backslashes(&inverted), &mut doc_data, &mut render_option
         ).to_html();
 
         if into_v16(&html) != inverted_html {

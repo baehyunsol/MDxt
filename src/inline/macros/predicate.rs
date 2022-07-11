@@ -2,7 +2,7 @@ use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
 use crate::inline::InlineNode;
 use crate::utils::{get_bracket_end_index, into_v16};
 use crate::render::render_option::RenderOption;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
@@ -38,7 +38,7 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 pub fn check_and_parse_macro_inline(
     content: &[u16],
     index: usize,
-    md_data: &mut MdData,
+    doc_data: &mut DocData,
     render_option: &RenderOption
 ) -> Option<(InlineNode, usize)> {  // (parsed_macro, last_index)
 
@@ -52,7 +52,7 @@ pub fn check_and_parse_macro_inline(
                 Some(macro_) if macro_.is_valid(&macro_arguments) => {
 
                     if macro_.no_closing {
-                        Some((macro_.parse(&macro_arguments, &vec![], md_data, render_option), macro_end_index))
+                        Some((macro_.parse(&macro_arguments, &vec![], doc_data, render_option), macro_end_index))
                     }
 
                     else {
@@ -65,7 +65,7 @@ pub fn check_and_parse_macro_inline(
                                 Some(macro_content) if macro_content == closing_macro => {
 
                                     if macro_name == into_v16("math") {
-                                        md_data.has_math = true;
+                                        doc_data.has_math = true;
                                     }
 
                                     return Some(
@@ -73,7 +73,7 @@ pub fn check_and_parse_macro_inline(
                                             macro_.parse(
                                                 &macro_arguments,
                                                 &content[macro_end_index + 1..curr_index],
-                                                md_data,
+                                                doc_data,
                                                 render_option
                                             ),
                                             get_bracket_end_index(content, curr_index).unwrap()

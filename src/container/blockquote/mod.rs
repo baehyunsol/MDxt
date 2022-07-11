@@ -2,7 +2,7 @@
 mod testbench;
 
 use crate::render::render_option::RenderOption;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::utils::into_v16;
@@ -36,12 +36,12 @@ impl Blockquote {
         result.concat()
     }
 
-    pub fn parse_inlines(&mut self, md_data: &mut MdData, options: &RenderOption) {
+    pub fn parse_inlines(&mut self, doc_data: &mut DocData, options: &RenderOption) {
 
         for element in self.elements.iter_mut() {
 
             match element {
-                ElementOrIndent::Element(content) => {content.parse_raw(md_data, options);}
+                ElementOrIndent::Element(content) => {content.parse_raw(doc_data, options);}
                 _ => {}
             }
 

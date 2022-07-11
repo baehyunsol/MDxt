@@ -189,6 +189,18 @@ pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
+pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
+    content.iter().filter(
+        |c| **c < 11 || **c > 13  // only `\n`, no other newline characters!
+    ).map(
+        |c| if *c > u16::MAX - 5000 {  // the engine uses these characters as meta characters!
+            '?' as u16
+        } else {
+            *c
+        }
+    ).collect()
+}
+
 pub const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
 
 #[cfg(test)]

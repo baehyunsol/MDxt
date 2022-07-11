@@ -10,7 +10,7 @@ use super::math::escape_inside_math_blocks;
 use super::footnote::predicate::read_footnote;
 use super::link::normalize_link;
 use super::macros::predicate::check_and_parse_macro_inline;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 use crate::render::render_option::RenderOption;
 use crate::utils::get_bracket_end_index;
 use crate::escape::{render_backslash_escapes, undo_backslash_escapes};
@@ -19,20 +19,20 @@ impl InlineNode {
 
     pub fn parse_raw(
         &mut self,
-        md_data: &mut MdData,
+        doc_data: &mut DocData,
         render_option: &RenderOption
     ) {
 
         match self {
             InlineNode::Raw(content) => {
-                *self = Self::from_md(&content, md_data, render_option);
+                *self = Self::from_mdxt(&content, doc_data, render_option);
             }
             _ => {}  // it's already parsed
         }
 
     }
 
-    pub fn from_md(content: &[u16], md_data: &mut MdData, render_option: &RenderOption) -> Self {
+    pub fn from_mdxt(content: &[u16], doc_data: &mut DocData, render_option: &RenderOption) -> Self {
 
         // it prevents inline elements inside code spans from being rendered
         // code spans are rendered later
@@ -75,13 +75,13 @@ impl InlineNode {
                         content: vec![Box::new(InlineNode::Decoration{
                             deco_type: DecorationType::Bold,
 
-                            // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_md(&content[index + 3..end - 2], md_data, render_option).to_vec()
+                            // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                            content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
                         })]
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -103,13 +103,13 @@ impl InlineNode {
                         content: vec![Box::new(InlineNode::Decoration{
                             deco_type: DecorationType::Subscript,
 
-                            // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_md(&content[index + 3..end - 2], md_data, render_option).to_vec()
+                            // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                            content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
                         })]
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -128,12 +128,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Italic,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -152,12 +152,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Bold,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -176,12 +176,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Deletion,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -200,12 +200,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Underline,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 2..end - 1], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -224,12 +224,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Superscript,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -248,12 +248,12 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Decoration {
                         deco_type: DecorationType::Subscript,
 
-                        // `Self::from_md` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_md(&content[index + 1..end], md_data, render_option).to_vec()
+                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
                     }));
 
                     if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[end + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -261,7 +261,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_direct_link(&content, index, &md_data.link_references) {
+            match read_direct_link(&content, index, &doc_data.link_references) {
                 Some((link_text, link_destination, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
@@ -284,13 +284,13 @@ impl InlineNode {
 
                     else {
                         result.push(Box::new(InlineNode::Link {
-                            text: Self::from_md(&link_text, md_data, render_option).to_vec(),
+                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
                             destination: (render_option.link_handler)(&link_destination)
                         }));
                     }
 
                     if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -298,14 +298,14 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_reference_link(&content, index, &md_data.link_references) {
+            match read_reference_link(&content, index, &doc_data.link_references) {
                 Some((link_text, link_label, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
 
                     // the existence of the link reference was tested by the `read_reference_link` function
                     // it clones to result in order to avoid the borrow checker
-                    let link_destination = md_data.link_references.get(&normalize_link(&link_label)).unwrap().clone();
+                    let link_destination = doc_data.link_references.get(&normalize_link(&link_label)).unwrap().clone();
 
                     if index > 0 && content[index - 1] == '!' as u16 {
                         is_image = true;
@@ -325,13 +325,13 @@ impl InlineNode {
 
                     else {
                         result.push(Box::new(InlineNode::Link {
-                            text: Self::from_md(&link_text, md_data, render_option).to_vec(),
+                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
                             destination: (render_option.link_handler)(&link_destination)
                         }));
                     }
 
                     if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -339,13 +339,13 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_footnote(&content, index, &md_data.footnote_references) {
+            match read_footnote(&content, index, &doc_data.footnote_references) {
                 Some(footnote_index) => {
                     let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
                     let footnote_label = normalize_link(&content[index + 1..bracket_end_index]);
                     let mut result = vec![];
 
-                    let inverse_index = md_data.add_footnote_inverse_index(&footnote_label);
+                    let inverse_index = doc_data.add_footnote_inverse_index(&footnote_label);
 
                     if index > 0 {
                         result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
@@ -354,7 +354,7 @@ impl InlineNode {
                     result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
 
                     if bracket_end_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[bracket_end_index + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -362,14 +362,14 @@ impl InlineNode {
                 _ => {}
             }
 
-            match read_shortcut_reference_link(&content, index, &md_data.link_references) {
+            match read_shortcut_reference_link(&content, index, &doc_data.link_references) {
                 Some((link_text, last_index)) => {
                     let mut result = vec![];
                     let mut is_image = false;
 
                     // the existence of the link reference was tested by the `read_reference_link` function
                     // it clones to result in order to avoid the borrow checker
-                    let link_destination = md_data.link_references.get(&normalize_link(&link_text)).unwrap().clone();
+                    let link_destination = doc_data.link_references.get(&normalize_link(&link_text)).unwrap().clone();
 
                     if index > 0 && content[index - 1] == '!' as u16 {
                         is_image = true;
@@ -389,13 +389,13 @@ impl InlineNode {
 
                     else {
                         result.push(Box::new(InlineNode::Link {
-                            text: Self::from_md(&link_text, md_data, render_option).to_vec(),
+                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
                             destination: (render_option.link_handler)(&link_destination)
                         }));
                     }
 
                     if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
+                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
                     return InlineNode::Complex(result).render_code_spans();
@@ -405,7 +405,7 @@ impl InlineNode {
 
             if render_option.is_macro_enabled {
 
-                match check_and_parse_macro_inline(&content, index, md_data, render_option) {
+                match check_and_parse_macro_inline(&content, index, doc_data, render_option) {
                     Some((parsed, last_index)) => {
                         let mut result = vec![];
 
@@ -416,7 +416,7 @@ impl InlineNode {
                         result.push(Box::new(parsed));
 
                         if last_index + 1 < content.len() {
-                            result.push(Box::new(Self::from_md(&content[last_index + 1..content.len()], md_data, render_option)));
+                            result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                         }
 
                         return InlineNode::Complex(result).render_code_spans();

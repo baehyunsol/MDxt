@@ -10,8 +10,6 @@ use crate::color::COLOR_NAMES;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
-// print("\n".join([str((i, chr(i))) for i in range(128)]))
-
 lazy_static! {
     static ref MACROS: HashMap<Vec<u16>, Macro> = Macro::get_all_macros();
 }

@@ -3,7 +3,7 @@ use crate::inline::{InlineNode, DecorationType, InlineMacro};
 use crate::render::render_option::RenderOption;
 use crate::utils::to_int;
 use crate::escape::render_backslash_escapes;
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 
 impl Macro {
 
@@ -11,7 +11,7 @@ impl Macro {
         &self,
         arguments: &Vec<Vec<Vec<u16>>>,
         content: &[u16],
-        md_data: &mut MdData,
+        doc_data: &mut DocData,
         render_option: &RenderOption
     ) -> InlineNode {
 
@@ -34,27 +34,27 @@ impl Macro {
 
             MacroType::Color => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Color(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Size => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Size(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Highlight => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Highlight(arguments[0][1].clone())),
-                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Alignment => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Alignment(arguments[0][0].clone())),
-                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Box => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Box),
-                content: InlineNode::from_md(content, md_data, render_option).to_vec()
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Toc => InlineNode::Decoration {

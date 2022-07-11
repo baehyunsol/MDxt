@@ -406,7 +406,7 @@ mod tests {
         let rendered = from_v16(&translate_to_latex(&orig));
 
         // `render_to_html` will render `<` inside `[[math]]` to `\\lt`.
-        // but the escape is done by `InlineNode::from_md`, which is not used in this test
+        // but the escape is done by `InlineNode::from_mdxt`, which is not used in this test
         assert_eq!(rendered, "\\sum\\limits _{n=1}^{\\infty } \\frac{1}{n ^{2}} < 10".to_string());
     }
 

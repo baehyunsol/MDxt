@@ -167,7 +167,7 @@ impl InlineNode {
         }
     }
 
-    pub fn to_md(&self) -> Vec<u16> {
+    pub fn to_mdxt(&self) -> Vec<u16> {
         match self {
             InlineNode::Raw(content) => content.clone(),
 
@@ -192,11 +192,11 @@ impl InlineNode {
                 into_v16("]")
             ].concat(),
 
-            InlineNode::Complex(content) => content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+            InlineNode::Complex(content) => content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
                 into_v16("["),
-                text.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                text.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                 into_v16("]("),
                 destination.clone(),
                 into_v16(")")
@@ -213,32 +213,32 @@ impl InlineNode {
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
                     into_v16("*"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("*")
                 ].concat(),
                 DecorationType::Bold => vec![
                     into_v16("**"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("**")
                 ].concat(),
                 DecorationType::Underline => vec![
                     into_v16("~_"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("_~")
                 ].concat(),
                 DecorationType::Deletion => vec![
                     into_v16("~~"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("~~")
                 ].concat(),
                 DecorationType::Subscript => vec![
                     into_v16("~"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("~")
                 ].concat(),
                 DecorationType::Superscript => vec![
                     into_v16("^"),
-                    content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("^")
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
@@ -246,7 +246,7 @@ impl InlineNode {
                         into_v16("[["),
                         name.clone(),
                         into_v16("]]"),
-                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/"),
                         name.clone(),
                         into_v16("]]")
@@ -255,12 +255,12 @@ impl InlineNode {
                         into_v16("[[highlight="),
                         color.clone(),
                         into_v16("]]"),
-                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/highlight]]")
                     ].concat(),
                     InlineMacro::Box => vec![
                         into_v16("[[box]]"),
-                        content.iter().map(|node| node.to_md()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/box]]"),
                     ].concat(),
                     InlineMacro::Math(content) => vec![

@@ -6,7 +6,7 @@ mod testbench;
 
 use alignment::parse_alignments;
 use cell::{Cell, row_to_cells, get_colspan};
-use crate::ast::{MdData, line::Line};
+use crate::ast::{doc_data::DocData, line::Line};
 use crate::render::render_option::RenderOption;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
 use crate::inline::math::escape_inside_math_blocks;
@@ -34,12 +34,12 @@ impl Table {
         }
     }
 
-    pub fn parse_inlines(&mut self, md_data: &mut MdData, render_option: &RenderOption) {
+    pub fn parse_inlines(&mut self, doc_data: &mut DocData, render_option: &RenderOption) {
 
         self.header.iter_mut().for_each(
             |row| {
                 row.iter_mut().for_each(
-                    |cell| {cell.content.parse_raw(md_data, render_option);}
+                    |cell| {cell.content.parse_raw(doc_data, render_option);}
                 );
             }
         );
@@ -47,7 +47,7 @@ impl Table {
         self.cells.iter_mut().for_each(
             |row| {
                 row.iter_mut().for_each(
-                    |cell| {cell.content.parse_raw(md_data, render_option);}
+                    |cell| {cell.content.parse_raw(doc_data, render_option);}
                 );
             }
         );

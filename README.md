@@ -98,23 +98,9 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 tooltip, collapsible, button
 
-CRLF
-- chr(11), chr(12), chr(13)
+collapsible table을 만들 수 있게 하자!
+- 설정 복잡하게는 못하고 tbody 통째로 collapse
 
 ---
 
 mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물에는 svg만 넣으면 안되나?
-
----
-
-Header anchor
-
-알파벳 대소문자, 숫자, 한글, `-`, `_`은 살리고 ` `는 `-`로 바꿈
-
----
-
-code span
-
-n개의 `` ` ``로 열고, n개의 `` ` ``로 닫음. 시작과 끝이 둘 다 ` `일 경우 둘 다 제거 code span 안의 `\`는 escape 효과가 없음
-
-fenced code block도 동일하게, `\`의 escape 효과가 없음

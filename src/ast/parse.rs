@@ -1,4 +1,4 @@
-use super::{MdData, AST, line::Line, node::Node};
+use super::{doc_data::DocData, AST, line::Line, node::Node};
 use crate::inline::{
     InlineNode,
     link::{predicate::read_link_reference, normalize_link},
@@ -285,7 +285,7 @@ impl AST {
 
         AST {
             nodes: curr_nodes,
-            md_data: MdData::new(headers, link_references, footnote_references),
+            doc_data: DocData::new(headers, link_references, footnote_references),
             render_option: options.clone(),
             is_inline_parsed: false
         }

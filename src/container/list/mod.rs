@@ -5,7 +5,7 @@ mod testbench;
 
 use crate::inline::InlineNode;
 use crate::ast::line::{Line, add_br_if_needed};
-use crate::ast::MdData;
+use crate::ast::doc_data::DocData;
 use crate::render::render_option::RenderOption;
 use crate::utils::{is_numeric, to_int, into_v16};
 use tasklist::{parse_task_list, TaskMarker};
@@ -128,13 +128,13 @@ impl List {
         result.concat()
     }
 
-    pub fn parse_inlines(&mut self, md_data: &mut MdData, options: &RenderOption) {
+    pub fn parse_inlines(&mut self, doc_data: &mut DocData, options: &RenderOption) {
 
         for element in self.elements.iter_mut() {
 
             match element {
-                ElementOrSublist::Element{ content, .. } => {content.parse_raw(md_data, options);}
-                ElementOrSublist::Sublist(sublist) => {sublist.parse_inlines(md_data, options);}
+                ElementOrSublist::Element{ content, .. } => {content.parse_raw(doc_data, options);}
+                ElementOrSublist::Sublist(sublist) => {sublist.parse_inlines(doc_data, options);}
             }
 
         }
