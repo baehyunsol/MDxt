@@ -4,6 +4,7 @@ pub mod render_result;
 use render_option::RenderOption;
 use render_result::RenderResult;
 use crate::escape::{escape_backslashes, escape_htmls, remove_invalid_characters};
+use crate::container::metadata::parse_metadata;
 use crate::utils::{into_v16, from_v16};
 use crate::ast::{AST, line::code_to_lines};
 
@@ -18,7 +19,22 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     u16_content = escape_backslashes(&u16_content);
     u16_content = escape_htmls(&u16_content);
 
-    let lines = code_to_lines(&u16_content);
+    let mut metadata = None;
+
+    let mut lines = code_to_lines(&u16_content);
+
+    if options.has_metadata {
+
+        match parse_metadata(&lines) {
+            Some((parsed_metadata, end_index)) => {
+                metadata = Some(parsed_metadata);
+                lines = lines[end_index + 1..].to_vec();
+            },
+            _ => {}
+        }
+
+    }
+
     let mut ast = AST::from_lines(lines, &mut options);
 
     let html = ast.to_html();
@@ -33,7 +49,8 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     RenderResult {
         content: from_v16(&html),
-        has_math: ast.doc_data.has_math
+        has_math: ast.doc_data.has_math,
+        metadata
     }
 
 }

@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 lazy_static = "*"
 syntect = "5.0.0"
+yaml-rust = "0.4.5"

@@ -1,0 +1,45 @@
+#[cfg(test)]
+mod testbench;
+
+use yaml_rust::{Yaml, YamlLoader};
+use crate::ast::line::{Line, to_raw};
+use crate::utils::{into_v16, from_v16, strip_whitespaces};
+
+pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(metadata, end_index)>
+    
+    if lines.len() < 3 {
+        return None;
+    }
+
+    let yaml_delim = into_v16("---");
+
+    if strip_whitespaces(&lines[0].content) != yaml_delim {
+        return None;
+    }
+
+    let mut index = 1;
+
+    while index < lines.len() {
+
+        if strip_whitespaces(&lines[index].content) == yaml_delim {
+            break;
+        }
+
+        index += 1;
+    }
+
+    if index != lines.len() {
+        let yaml = lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]);
+
+        match YamlLoader::load_from_str(&from_v16(&yaml)) {
+            Ok(data) if data.len() > 0 => Some((data[0].clone(), index)),
+            _ => None
+        }
+
+    }
+
+    else {
+        None
+    }
+
+}
