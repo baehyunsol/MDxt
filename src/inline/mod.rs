@@ -171,11 +171,20 @@ impl InlineNode {
         match self {
             InlineNode::Raw(content) => content.clone(),
 
-            InlineNode::CodeSpan(content) => vec![
-                into_v16("`"),
-                content.clone(),
-                into_v16("`")
-            ].concat(),
+            InlineNode::CodeSpan(content) => {
+                let backtick_count = content.iter().filter(
+                    |c| **c == '`' as u16
+                ).collect::<Vec<&u16>>().len();
+                let backtick_string = vec!['`' as u16; backtick_count + 1];
+
+                vec![
+                    backtick_string.clone(),
+                    into_v16(" "),
+                    content.clone(),
+                    into_v16(" "),
+                    backtick_string
+                ].concat()
+            },
 
             InlineNode::Footnote((_, _, label)) => vec![
                 into_v16("["),
@@ -285,7 +294,7 @@ impl InlineNode {
 
 }
 
-const INLINE_CODESPAN_MARKER1: u16 = u16::MAX - 1999;
-const INLINE_CODESPAN_MARKER2: u16 = u16::MAX - 1998;
-const INLINE_CODESPAN_MARKER3: u16 = u16::MAX - 1997;
-const INLINE_CODESPAN_MARKER4: u16 = u16::MAX - 1996;
+const INLINE_CODE_SPAN_MARKER1: u16 = u16::MAX - 1999;
+const INLINE_CODE_SPAN_MARKER2: u16 = u16::MAX - 1998;
+const INLINE_CODE_SPAN_MARKER3: u16 = u16::MAX - 1997;
+const INLINE_CODE_SPAN_MARKER4: u16 = u16::MAX - 1996;

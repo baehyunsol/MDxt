@@ -1,5 +1,5 @@
 pub mod render_option;
-mod render_result;
+pub mod render_result;
 
 use render_option::RenderOption;
 use render_result::RenderResult;
@@ -20,7 +20,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     let lines = code_to_lines(&u16_content);
     let mut ast = AST::from_lines(lines, &mut options);
 
-    let mut html = ast.to_html();
+    let html = ast.to_html();
 
     #[cfg(test)]
     if html.iter().any(|c| *c > 60000) {

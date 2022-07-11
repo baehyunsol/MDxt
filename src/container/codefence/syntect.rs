@@ -53,6 +53,7 @@ fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
     // convert syntect's palette to its own
     let color = match color {
         Color { r: 211, g: 208, b: 200, .. } => "white",
+        Color { r: 45, g: 45, b: 45, .. } => "dark",
         Color { r: 242, g: 119, b: 122, .. } => "red",
         Color { r: 116, g: 115, b: 105, .. } => "gray",
         Color { r: 204, g: 153, b: 204, .. } => "violet",

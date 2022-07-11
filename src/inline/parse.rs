@@ -1,7 +1,7 @@
 use super::predicate::*;
 use super::{
     InlineNode, DecorationType,
-    INLINE_CODESPAN_MARKER1, INLINE_CODESPAN_MARKER2, INLINE_CODESPAN_MARKER3, INLINE_CODESPAN_MARKER4
+    INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4
 };
 use super::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
@@ -13,7 +13,7 @@ use super::macros::predicate::check_and_parse_macro_inline;
 use crate::ast::MdData;
 use crate::render::render_option::RenderOption;
 use crate::utils::get_bracket_end_index;
-use crate::escape::render_backslash_escapes;
+use crate::escape::{render_backslash_escapes, undo_backslash_escapes};
 
 impl InlineNode {
 
@@ -34,8 +34,8 @@ impl InlineNode {
 
     pub fn from_md(content: &[u16], md_data: &mut MdData, render_option: &RenderOption) -> Self {
 
-        // it prevents inline elements inside codespans from being rendered
-        // codespans are rendered later
+        // it prevents inline elements inside code spans from being rendered
+        // code spans are rendered later
         let mut content = escape_code_spans(content);
 
         // inline elements inside math blocks are not rendered
@@ -450,7 +450,14 @@ impl InlineNode {
                         }
 
                         if code_span_end_index > index + 2 {
-                            complex_contents.push(Box::new(InlineNode::CodeSpan(content[index + 2..code_span_end_index].to_vec())));
+                            let code_span_code = if code_span_end_index - index > 4 &&
+                            content[index + 2] == ' ' as u16 && content[code_span_end_index - 1] == ' ' as u16 {
+                                content[index + 3..code_span_end_index - 1].to_vec()
+                            } else {
+                                content[index + 2..code_span_end_index].to_vec()
+                            };
+
+                            complex_contents.push(Box::new(InlineNode::CodeSpan(code_span_code)));
                         }
 
                         last_index = code_span_end_index + 2;
@@ -458,7 +465,7 @@ impl InlineNode {
                         continue;
                     }
 
-                    // when `[[math]]` macros and codespans messed up really badly,
+                    // when `[[math]]` macros and code spans messed up really badly,
                     // a code_span_marker_begin dies and its corresponding code_span_marker_end survives
                     else if is_code_span_marker_end(&content, index) {
                         complex_contents.push(Box::new(InlineNode::Raw(undo_code_span_escapes(&content[last_index..index + 2]))));
@@ -511,18 +518,18 @@ pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
 
         match is_code_span(content, index) {
             Bool::True(end) => {
-                result.push(INLINE_CODESPAN_MARKER1);
-                result.push(INLINE_CODESPAN_MARKER2);
-                index += 1;
+                result.push(INLINE_CODE_SPAN_MARKER1);
+                result.push(INLINE_CODE_SPAN_MARKER2);
+                let code_span_code = undo_backslash_escapes(&content[index..end + 1]);
+                let backtick_string_size = count_code_span_start(content, index);
 
-                while index < end {
-                    result.push(content[index]);
-                    index += 1;
+                for c in code_span_code[backtick_string_size..code_span_code.len() - backtick_string_size].iter() {
+                    result.push(*c);
                 }
 
-                result.push(INLINE_CODESPAN_MARKER3);
-                result.push(INLINE_CODESPAN_MARKER4);
-                index += 1;
+                result.push(INLINE_CODE_SPAN_MARKER3);
+                result.push(INLINE_CODE_SPAN_MARKER4);
+                index = end + 1;
             },
             _ => {
                 result.push(content[index]);
@@ -558,16 +565,16 @@ pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
 }
 
 pub fn is_code_span_marker_begin(content: &[u16], index: usize) -> bool {
-    content[index] == INLINE_CODESPAN_MARKER1 && index + 1 < content.len() && content[index + 1] == INLINE_CODESPAN_MARKER2
+    content[index] == INLINE_CODE_SPAN_MARKER1 && index + 1 < content.len() && content[index + 1] == INLINE_CODE_SPAN_MARKER2
 }
 
 pub fn is_code_span_marker_end(content: &[u16], index: usize) -> bool {
-    content[index] == INLINE_CODESPAN_MARKER3 && index + 1 < content.len() && content[index + 1] == INLINE_CODESPAN_MARKER4
+    content[index] == INLINE_CODE_SPAN_MARKER3 && index + 1 < content.len() && content[index + 1] == INLINE_CODE_SPAN_MARKER4
 }
 
 pub fn get_code_span_marker_end_index(content: &[u16], mut index: usize) -> usize {
 
-    while content[index] != INLINE_CODESPAN_MARKER3 || content[index + 1] != INLINE_CODESPAN_MARKER4 {
+    while content[index] != INLINE_CODE_SPAN_MARKER3 || content[index + 1] != INLINE_CODE_SPAN_MARKER4 {
         index += 1;
     }
 
@@ -583,8 +590,8 @@ mod tests {
         use crate::utils::into_v16;
 
         let cases = vec![
-            "``", "`a`", "`codespan`",
-            "```", "`a`a", "codespan",
+            "``", "`a`", "`code span`",
+            "```", "`a`a", "code span",
             "*`*", "`*`*", "`*`*`", "",
             "*`*`*`", "*`*`*`*", "`*`*`*`*", "`*`*`*`*`"
         ];

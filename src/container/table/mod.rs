@@ -4,7 +4,7 @@ mod cell;
 #[cfg(test)]
 mod testbench;
 
-use alignment::{TableAlignment, parse_alignments};
+use alignment::parse_alignments;
 use cell::{Cell, row_to_cells, get_colspan};
 use crate::ast::{MdData, line::Line};
 use crate::render::render_option::RenderOption;
@@ -15,7 +15,6 @@ use crate::utils::into_v16;
 
 pub struct Table {
     header: Vec<Vec<Cell>>,
-    alignments: Vec<TableAlignment>,
     cells: Vec<Vec<Cell>>
 }
 
@@ -31,7 +30,7 @@ impl Table {
         let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
 
         Table {
-            header, alignments, cells
+            header, cells
         }
     }
 
@@ -104,7 +103,7 @@ pub fn count_delimiter_cells(delimiter: &[u16]) -> usize {
     count_cells(delimiter, true)
 }
 
-// it escapes `|` inside codespans and math macros
+// it escapes `|` inside code spans and math macros
 pub fn escape_pipes(content: &[u16]) -> Vec<u16> {
 
     let mut content = escape_code_spans(content);

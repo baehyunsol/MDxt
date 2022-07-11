@@ -6,8 +6,9 @@ mod syntect;
 mod testbench;
 
 use crate::ast::line::Line;
-use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase, to_int};
 use crate::ast::parse::ParseState;
+use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase, to_int};
+use crate::escape::undo_backslash_escapes;
 use predicate::{is_line_num, is_highlight, parse_arguments};
 
 pub struct FencedCode {
@@ -22,7 +23,7 @@ impl FencedCode {
     pub fn new(content: Vec<u16>, language: Vec<u16>, line_num: Option<usize>, highlights: Vec<usize>) -> Self {
         FencedCode {
             language,
-            content,
+            content: undo_backslash_escapes(&content),
             line_num,
             highlights
         }

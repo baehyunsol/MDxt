@@ -98,6 +98,7 @@ fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<us
     None
 }
 
+#[cfg(test)]
 pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
     line.iter().filter(
         |c| '0' as u16 <= **c && **c <= '9' as u16 ||

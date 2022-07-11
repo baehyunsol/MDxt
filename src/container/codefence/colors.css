@@ -1,5 +1,6 @@
 * {  /* actual colors used by syntect */
     color: rgb(116, 115, 105);  /* -> gray       */
+    color: rgb(45, 45, 45);     /* -> dark       */
     color: rgb(211, 208, 200);  /* -> white      */
     color: rgb(242, 119, 122);  /* -> red        */
     color: rgb(153, 204, 153);  /* -> green      */

@@ -133,7 +133,7 @@ impl List {
         for element in self.elements.iter_mut() {
 
             match element {
-                ElementOrSublist::Element{ content, task_list } => {content.parse_raw(md_data, options);}
+                ElementOrSublist::Element{ content, .. } => {content.parse_raw(md_data, options);}
                 ElementOrSublist::Sublist(sublist) => {sublist.parse_inlines(md_data, options);}
             }
 
@@ -262,24 +262,6 @@ fn remove_marker(line: &Line) -> Line {
 enum ListType {
     Unordered,
     Ordered(Marker)
-}
-
-impl ListType {
-
-    fn is_ordered(&self) -> bool {
-        match self {
-            ListType::Ordered(_) => true,
-            _ => false
-        }
-    }
-
-    fn is_unordered(&self) -> bool {
-        match self {
-            ListType::Ordered(_) => false,
-            _ => true
-        }
-    }
-
 }
 
 #[derive(Clone)]

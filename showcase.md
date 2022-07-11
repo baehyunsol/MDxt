@@ -100,3 +100,26 @@ pub const CONST: u32 = 1;
 `[[big]][[red]]Big red text.[[/red]][[/big]]` is rendered to [[big]][[red]]Big red text.[[/red]][[/big]].
 
 `[[math]]cfrac{-b pm sqrt{b sup{2} - 4 a c}}{2a}[[/math]]` is rendered to [[math]]cfrac{-b pm sqrt{b sup{2} - 4 a c}}{2a}[[/math]].
+
+`[[highlight=red]]This text is highlighted![[/highlight]]` is rendered to [[highlight=red]]This text is highlighted![[/highlight]].
+
+### Colors
+
+|    Name    |                    Color                    |
+|------------|---------------------------------------------|
+| Black      | [[Black]] Black [[/Black]]                  |
+| Dark       | [[Dark]] Dark [[/Dark]]                     |
+| Gray       | [[Gray]] Gray [[/Gray]]                     |
+| Lightgray  | [[Lightgray]] Lightgray [[/Lightgray]]      |
+| White      | [[White]] White [[/White]]                  |
+| Red        | [[Red]] Red [[/Red]]                        |
+| Green      | [[Green]] Green [[/Green]]                  |
+| Blue       | [[Blue]] Blue [[/Blue]]                     |
+| Aqua       | [[Aqua]] Aqua [[/Aqua]]                     |
+| Emerald    | [[Emerald]] Emerald [[/Emerald]]            |
+| Violet     | [[Violet]] Violet [[/Violet]]               |
+| Pink       | [[Pink]] Pink [[/Pink]]                     |
+| Grassgreen | [[Grassgreen]] Grassgreen [[/Grassgreen]]   |
+| Gold       | [[Gold]] Gold [[/Gold]]                     |
+
+Drag texts to see an invisible color!

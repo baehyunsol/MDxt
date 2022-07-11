@@ -11,7 +11,9 @@ mod testbench;
 
 pub use render::{
     render_to_html,
-    render_to_html_with_default_options
+    render_to_html_with_default_options,
+    render_option::RenderOption,
+    render_result::RenderResult
 };
 
 pub use color::{COLORS, Color};

@@ -1,83 +1,94 @@
+use super::predicate::*;
 use crate::inline::InlineNode;
 use crate::utils::{into_v16, from_v16};
-use crate::escape::{escape_backslashes, render_backslash_escapes};
+use crate::escape::escape_backslashes;
 use crate::render::render_option::RenderOption;
 use crate::ast::MdData;
 
-fn samples() -> Vec<(String, String, bool)> {  // (test_case, answer, invertible)
+fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
-        ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*", true),
-        ("`*italic in a codespan, which is not rendered*` *`codespan in an italic, which is rendered`*", "<code class=\"short\">*italic in a codespan, which is not rendered*</code> <em><code class=\"short\">codespan in an italic, which is rendered</code></em>", true),
-        ("^^super^^", "^<sup>super</sup>^", true),
-        ("^a", "^a", true),
-        ("", "", true), (" ", " ", true),
-        ("^^", "^^", true),
-        ("^ ^", "^ ^", true),
-        ("^^^", "^^^", true),
-        ("^\\^^", "<sup>&#94;</sup>", true),
-        ("^^^^", "^^^^", true),
-        ("~~", "~~", true),
-        ("~ ~", "~ ~", true),
-        ("~~~", "~~~", true),
-        ("~\\~~", "<sub>&#126;</sub>", true),
-        ("~~~~", "~~~~", true),
-        ("**", "**", true),
-        ("* *", "* *", true),
-        ("***", "***", true),
-        ("*\\**", "<em>&#42;</em>", true),
-        ("****", "****", true),
+        ("`*`*`*`, *`*`*`*", "<code class=\"short\">*</code><em><code class=\"short\">*</code>, *<code class=\"short\">*</code></em>`*"),
+        ("`*italic in a code span, which is not rendered*` *`code span in an italic, which is rendered`*", "<code class=\"short\">*italic in a code span, which is not rendered*</code> <em><code class=\"short\">code span in an italic, which is rendered</code></em>"),
+        ("^^super^^", "^<sup>super</sup>^"),
+        ("^a", "^a"),
+        ("", ""), (" ", " "),
+        ("^^", "^^"),
+        ("^ ^", "^ ^"),
+        ("^^^", "^^^"),
+        ("^\\^^", "<sup>&#94;</sup>"),
+        ("^^^^", "^^^^"),
+        ("~~", "~~"),
+        ("~ ~", "~ ~"),
+        ("~~~", "~~~"),
+        ("~\\~~", "<sub>&#126;</sub>"),
+        ("~~~~", "~~~~"),
+        ("**", "**"),
+        ("* *", "* *"),
+        ("***", "***"),
+        ("*\\**", "<em>&#42;</em>"),
+        ("****", "****"),
 
-        ("****abcde****", "*<em><strong>abcde</strong></em>*", true),
-        ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>", true),
-        ("*abc*", "<em>abc</em>", true),
-        ("*abc**", "*abc**", true),
-        ("***abc**", "*<strong>abc</strong>", true),
-        ("****abc***", "*<em><strong>abc</strong></em>", true),
-        ("**abc***", "<strong>abc</strong>*", true),
-        ("*abc *", "*abc *", true),
-        ("*abc**def**ghi*", "<em>abc<strong>def</strong>ghi</em>", true),
-        ("*abc **def** ghi*", "<em>abc <strong>def</strong> ghi</em>", true),
-        ("*abc ** def ** ghi*", "<em>abc ** def ** ghi</em>", true),
-        ("*abc*def*", "<em>abc</em>def*", true),
-        ("*abc * def*", "<em>abc * def</em>", true),
-        ("*abc ** def*", "<em>abc ** def</em>", true),
-        ("**abc*def*ghi**", "<strong>abc<em>def</em>ghi</strong>", true),
-        ("*abc**def*ghi**", "<em>abc**def</em>ghi**", true),
-        ("*abc~~abcd~~abc*", "<em>abc<del>abcd</del>abc</em>", true),
-        ("*abc~~abcd*abc~~", "<em>abc~~abcd</em>abc~~", true),
-        ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>", true),
-        ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>", true),
-        ("*abc\\*", "*abc&#42;", true),
+        ("****abcde****", "*<em><strong>abcde</strong></em>*"),
+        ("`a` `a`", "<code class=\"short\">a</code> <code class=\"short\">a</code>"),
+        ("*abc*", "<em>abc</em>"),
+        ("*abc**", "*abc**"),
+        ("***abc**", "*<strong>abc</strong>"),
+        ("****abc***", "*<em><strong>abc</strong></em>"),
+        ("**abc***", "<strong>abc</strong>*"),
+        ("*abc *", "*abc *"),
+        ("*abc**def**ghi*", "<em>abc<strong>def</strong>ghi</em>"),
+        ("*abc **def** ghi*", "<em>abc <strong>def</strong> ghi</em>"),
+        ("*abc ** def ** ghi*", "<em>abc ** def ** ghi</em>"),
+        ("*abc*def*", "<em>abc</em>def*"),
+        ("*abc * def*", "<em>abc * def</em>"),
+        ("*abc ** def*", "<em>abc ** def</em>"),
+        ("**abc*def*ghi**", "<strong>abc<em>def</em>ghi</strong>"),
+        ("*abc**def*ghi**", "<em>abc**def</em>ghi**"),
+        ("*abc~~abcd~~abc*", "<em>abc<del>abcd</del>abc</em>"),
+        ("*abc~~abcd*abc~~", "<em>abc~~abcd</em>abc~~"),
+        ("*abc`abcd`abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>"),
+        ("*abc``abcd``abc*", "<em>abc<code class=\"short\">abcd</code>abc</em>"),
+        ("*abc`abcd*abc`", "*abc<code class=\"short\">abcd*abc</code>"),
+        ("*abc``abcd*abc``", "*abc<code class=\"short\">abcd*abc</code>"),
+        ("*abc\\*", "*abc&#42;"),
 
-        ("`abc\\` \\`abc`", "<code class=\"short\">abc&#96; &#96;abc</code>", true),
-        ("`a``b`", "<code class=\"short\">a``b</code>", true),
-        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `codespan` ~~deletion~~", "<em>italic</em> <strong>bold</strong> <u>underline</u> <sub>subscript</sub> <sup>superscript</sup> <code class=\"short\">codespan</code> <del>deletion</del>", true),
-        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>", true),
-        ("~_~~del_and_underline~~_~", "<u><del>del_and_underline</del></u>", true),
-        ("~~~_del_and_underline_~~~", "<del><u>del_and_underline</u></del>", true),
-        ("~~~del_and_subscript~~~", "<del><sub>del_and_subscript</sub></del>", true),
-        ("~~_underline_~~", "~<u>underline</u>~", true),
-        ("~~_~underline_~~", "~<u>~underline</u>~", true),
-        ("~_no_underline _~", "<sub>_no_underline _</sub>", true),
+        ("`abc\\` \\`abc`", "<code class=\"short\">abc\\</code> &#96;abc`"),
+        ("`a``b`", "<code class=\"short\">a``b</code>"),
+        ("`\\`", "<code class=\"short\">\\</code>"),
+        ("`` ` `` `` ` ``", "<code class=\"short\">`</code> <code class=\"short\">`</code>"),
+        ("``` `` ```", "<code class=\"short\">``</code>"),
+        ("``` `code span?` ```", "<code class=\"short\">`code span?`</code>"),
+        ("`\\no escape`", "<code class=\"short\">\\no escape</code>"),
+        ("`no escape\\`", "<code class=\"short\">no escape\\</code>"),
+        ("``no escape\\``", "<code class=\"short\">no escape\\</code>"),
+        ("``not a code span`", "``not a code span`"),
+        ("*italic* **bold** ~_underline_~ ~subscript~ ^superscript^ `code span` ~~deletion~~", "<em>italic</em> <strong>bold</strong> <u>underline</u> <sub>subscript</sub> <sup>superscript</sup> <code class=\"short\">code span</code> <del>deletion</del>"),
+        ("~~deletion?~~~, ~~~deletion?~~", "<del>deletion?</del>~, <del>~deletion?</del>"),
+        ("~_~~del_and_underline~~_~", "<u><del>del_and_underline</del></u>"),
+        ("~~~_del_and_underline_~~~", "<del><u>del_and_underline</u></del>"),
+        ("~~~del_and_subscript~~~", "<del><sub>del_and_subscript</sub></del>"),
+        ("~~_underline_~~", "~<u>underline</u>~"),
+        ("~~_~underline_~~", "~<u>~underline</u>~"),
+        ("~_no_underline _~", "<sub>_no_underline _</sub>"),
 
-        ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros", true),
-        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>", true),
-        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]", true),
-        ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]", false),
-        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>", true),
-        ("`[[red]]red in a codespan[[/red]]`, [[red]]`a codespan in red`[[/red]]", "<code class=\"short\">[[red]]red in a codespan[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a codespan in red</code></div>", true),
-        ("[[math]] `a codespan inside a math` [[/math]] `[[math]] a math inside a codespan [[/math]]`", "\\( `a codespan inside a math` \\) <code class=\"short\">[[math]] a math inside a codespan [[/math]]</code>", true),
-        ("`[[math]] a codespan before a math`[[/math]] [[math]] `a codespan after a math [[/math]]`", "<code class=\"short\">[[math]] a codespan before a math</code>[[/math]] \\( `a codespan after a math \\)`", true),
-        ("[[math]] `a codespan after a math [[/math]]` `[[math]] a codespan before a math`[[/math]]", "\\( `a codespan after a math \\)` <code class=\"short\">[[math]] a codespan before a math</code>[[/math]]", true),
-        ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)", false),
-        ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)", false),
-        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>", false),
-        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)", false),
-        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]", false),
-        ("[[red]] [[big]] error [[/red]] [[/big]]", "<div class=\"color_red\"> [[big]] error </div> [[/big]]", true)
+        ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros"),
+        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>"),
+        ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
+        ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]"),
+        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>"),
+        ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a code span in red</code></div>"),
+        ("[[math]] `a code span inside a math` [[/math]] `[[math]] a math inside a code span [[/math]]`", "\\( `a code span inside a math` \\) <code class=\"short\">[[math]] a math inside a code span [[/math]]</code>"),
+        ("`[[math]] a code span before a math`[[/math]] [[math]] `a code span after a math [[/math]]`", "<code class=\"short\">[[math]] a code span before a math</code>[[/math]] \\( `a code span after a math \\)`"),
+        ("[[math]] `a code span after a math [[/math]]` `[[math]] a code span before a math`[[/math]]", "\\( `a code span after a math \\)` <code class=\"short\">[[math]] a code span before a math</code>[[/math]]"),
+        ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)"),
+        ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)"),
+        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>"),
+        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)"),
+        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]"),
+        ("[[red]] [[big]] error [[/red]] [[/big]]", "<div class=\"color_red\"> [[big]] error </div> [[/big]]")
     ];
 
-    result.iter().map(|(case, answer, invertible)| (case.to_string(), answer.to_string(), *invertible)).collect()
+    result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
 }
 
 #[test]
@@ -87,14 +98,12 @@ fn inline_render_test() {
     let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
-    for (case, answer, _) in test_cases.iter() {
-        let rendered = render_backslash_escapes(
-            &InlineNode::from_md(
-                &escape_backslashes(&into_v16(case)),
-                &mut md_data,
-                &mut render_option
-            ).to_html()
-        );
+    for (case, answer) in test_cases.iter() {
+        let rendered = InlineNode::from_md(
+            &escape_backslashes(&into_v16(case)),
+            &mut md_data,
+            &mut render_option
+        ).to_html();
 
         if rendered != into_v16(answer) {
             failures.push(format!(
@@ -125,23 +134,25 @@ fn inline_inversion_test() {
     let mut md_data = MdData::default();
     let mut render_option = RenderOption::default();
 
-    for (case, _, invertible) in samples().iter() {
+    for (case, html) in samples().iter() {
 
-        if !invertible {
-            continue;
-        }
-
-        let inverted = render_backslash_escapes(&InlineNode::from_md(
-            &into_v16(case),
+        let inverted = InlineNode::from_md(
+            &escape_backslashes(&into_v16(case)),
             &mut md_data,
             &mut render_option
-        ).to_md());
+        ).to_md();
 
-        if inverted != into_v16(case) {
+        let inverted_html = InlineNode::from_md(
+            &escape_backslashes(&inverted), &mut md_data, &mut render_option
+        ).to_html();
+
+        if into_v16(&html) != inverted_html {
             failures.push(format!(
-                "inline_test: failed!! given md:  {}\ninverted result:  {}",
+                "inline_test: failed!! given md:  {}\ninverted md:  {}\ngiven html:  {}\ninverted html:  {}",
                 case,
-                from_v16(&inverted)
+                from_v16(&inverted),
+                html,
+                from_v16(&inverted_html)
             ));
         }
 
@@ -156,4 +167,23 @@ fn inline_inversion_test() {
         );
     }
 
+}
+
+#[test]
+fn predicate_test() {
+    let code_span_samples = vec![
+        ("`a`", Bool::True(2)),
+        ("`*`*`", Bool::True(2)),
+        ("`` a ``", Bool::True(6)),
+        ("`a``b`", Bool::True(5))
+    ];
+
+    for (sample, answer) in code_span_samples.iter() {
+        let tested = is_code_span(&into_v16(sample), 0);
+
+        if &tested != answer {
+            panic!("{} {:?} {:?}", sample, tested, answer);
+        }
+
+    }
 }

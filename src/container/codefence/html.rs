@@ -2,17 +2,17 @@ use super::FencedCode;
 use super::syntect::{is_syntax_available, highlight_syntax};
 use crate::utils::into_v16;
 use crate::escape::render_backslash_escapes;
-use crate::escape::{undo_html_escapes, undo_backslash_escapes};
+use crate::escape::undo_html_escapes;
 
 // `<` in code, `\` in code
-// with/withoud syntax highlights
+// with/without syntax highlights
 
 impl FencedCode {
 
     pub fn to_html(&self) -> Vec<u16> {
 
         let rows = if is_syntax_available(&self.language) {
-            let lines = highlight_syntax(&undo_backslash_escapes(&undo_html_escapes(&self.content)), &self.language);
+            let lines = highlight_syntax(&undo_html_escapes(&self.content), &self.language);
 
             lines.iter().enumerate().map(
                 |(index, line)| render_line(line, index, &self.line_num, &self.highlights)

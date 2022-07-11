@@ -1,25 +1,35 @@
 use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin};
+use crate::escape::BACKSLASH_ESCAPE_MARKER;
 
 // it's always guaranteed that `index < content.len()`
 // if the decorator is multi characters long, start_index points the first character of the starting deco, and end_index points the last one. 
 
+#[derive(Debug, PartialEq)]
 pub enum Bool {
     False,
-    True(usize)
+    True(usize)  // end_index
 }
 
 pub fn is_code_span(content: &[u16], index: usize) -> Bool {
 
-    if !is_code_span_start_or_end(content, index) {
+    if content[index] != '`' as u16 {
         return Bool::False;
     }
 
-    let mut end_index = index + 1;
+    // it should not count a single span multiple times
+    // with out this branch, it would return true 5 times for '`````a`````'
+    else if index > 0 && content[index - 1] == '`' as u16 {
+        return Bool::False;
+    }
+
+    let backtick_string_size = count_code_span_start(content, index);
+    let mut end_index = index + backtick_string_size;
 
     while end_index < content.len() {
+        let (end_backtick_string_size, code_span_end_index) = count_code_span_end(content, end_index);
 
-        if is_code_span_start_or_end(content, end_index) {
-            return Bool::True(end_index);
+        if end_backtick_string_size == backtick_string_size {
+            return Bool::True(code_span_end_index)
         }
 
         end_index += 1;
@@ -28,8 +38,43 @@ pub fn is_code_span(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_code_span_start_or_end(content: &[u16], index: usize) -> bool {    
-    content[index] == '`' as u16 && (index == 0 || content[index - 1] != '`' as u16) && (index == content.len() - 1 || content[index + 1] != '`' as u16)
+pub fn count_code_span_start(content: &[u16], mut index: usize) -> usize {
+    let mut result = 0;
+
+    while index != content.len() && content[index] == '`' as u16 {
+        index += 1;
+        result += 1;
+    }
+
+    result
+}
+
+fn count_code_span_end(content: &[u16], mut index: usize) -> (usize, usize) {  // (backtick_string_size, end_index)
+
+    if index > 0 && content[index - 1] == '`' as u16 {
+        return (0, 0);
+    }
+
+    let mut result = 0;
+
+    loop {
+
+        if index == content.len() {
+            break;
+        }
+
+        if content[index] == u16::MAX - '`' as u16 && index > 0 && content[index - 1] == BACKSLASH_ESCAPE_MARKER {
+        }
+
+        else if content[index] != '`' as u16 {
+            break;
+        }
+
+        index += 1;
+        result += 1;
+    }
+
+    (result, index - 1)
 }
 
 pub fn is_italic(content: &[u16], index: usize) -> Bool {

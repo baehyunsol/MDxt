@@ -377,11 +377,11 @@ fn main() {
 ", "
 <h1 id=\"backslash-test\">Backslash test</h1>
 
-<p><code class=\"short\">&#92;</code></p>
+<p><code class=\"short\">\\\\</code></p>
 
 <pre><code><table><tbody>
     <tr>
-        <td>&#92;</td>
+        <td>\\\\</td>
     </tr>
 </tbody></table></code></pre>
 "), ("
@@ -398,7 +398,35 @@ fn main() {
 <pre><code><table><tbody>
     <tr><td></td></tr>
 </tbody></table></code></pre>
-")
+"), (
+"
+# Bracket tests
+
+```
+<>
+```
+
+```html
+<div> a </div>
+<
+```
+
+`<>`
+", "
+<h1 id=\"bracket-tests\">Bracket tests</h1>
+
+<pre><code><table><tbody>
+    <tr><td>&lt;></td></tr>
+</tbody></table></code></pre>
+
+<pre><code><table><tbody>
+    <tr><td><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> a </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span></td></tr>
+    <tr><td><span class=\"color_white\">&lt;</span></td></tr>
+</tbody></table></code></pre>
+
+<p><code class=\"short\">&lt;></code></p>
+"
+)
     ];
 
     result.into_iter().map(

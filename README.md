@@ -1,10 +1,14 @@
-# MDex
+***On github, some elements are not rendered properly. To read a properly rendered version, visit [my blog].***
 
-MDex is an extended markdown format. Though not a strict superset of [gfm], MDex supports most of its features. You can read more about it [here](#gfm-compatibility)
+# MDxt
+
+[[Giant]] MarkdDown eXTended [[/Giant]]
+
+MDxt is an extended markdown format. Though not a strict superset of [gfm], MDxt supports most of its features. You can read more about it [here](#gfm-compatibility)
 
 Some elements require proper CSS files to be rendered. You can either write your own, or use CSS files in this repo.
 
-If you wanna know more about MDex, see these articles.
+If you wanna know more about MDxt, see these articles.
 
 - [showcase]
 - [reference]
@@ -13,15 +17,19 @@ If you wanna know more about MDex, see these articles.
 
 [GFM] is a Github-flavored markdown format, which is one of the most widely used markdown extension.
 
-MDx can read most gfm documents, but the output is different. (ex: unlike gfm, fenced code blocks are rendered to tables.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
+MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, fenced code blocks are rendered to tables.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
 
 I'm planning to add more compatibility layers for gfm, but they're all WIP.
 
-- [ ] GFM <-> MDex converter.
-- [ ] Render MDex to GFM's output format.
+- [ ] GFM <-> MDxt converter.
+- [ ] Render MDxt to GFM's output format.
+- [^] Read GFM files
+  - MDxt supports most of GFM's syntaxes.
 
 [GFM]: https:github.github.com/gfm
 [showcase]: showcase.md
+[reference]: https://molla
+[my blog]: https://molla
 
 ---
 
@@ -102,3 +110,11 @@ mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물�
 Header anchor
 
 알파벳 대소문자, 숫자, 한글, `-`, `_`은 살리고 ` `는 `-`로 바꿈
+
+---
+
+code span
+
+n개의 `` ` ``로 열고, n개의 `` ` ``로 닫음. 시작과 끝이 둘 다 ` `일 경우 둘 다 제거 code span 안의 `\`는 escape 효과가 없음
+
+fenced code block도 동일하게, `\`의 escape 효과가 없음
