@@ -15,14 +15,16 @@ use crate::utils::into_v16;
 
 pub struct Table {
     header: Vec<Vec<Cell>>,
-    cells: Vec<Vec<Cell>>
+    cells: Vec<Vec<Cell>>,
+    collapsible: bool,
+    index: usize
 }
 
 impl Table {
 
     // it has at least two lines: header, and delimiter
     // it assumes all the lines are valid table rows
-    pub fn from_lines(headers: &Vec<Line>, rows: &Vec<Line>, alignments: &Line) -> Self {
+    pub fn from_lines(headers: &Vec<Line>, rows: &Vec<Line>, alignments: &Line, collapsible: bool, index: usize) -> Self {
         let alignments = parse_alignments(&alignments);
 
         let header = headers.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
@@ -30,7 +32,8 @@ impl Table {
         let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
 
         Table {
-            header, cells
+            header, cells,
+            collapsible, index
         }
     }
 
@@ -58,7 +61,13 @@ impl Table {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
         result.push(into_v16("<table>"));
 
-        result.push(into_v16("<thead>"));
+        let collapsible_head = if self.collapsible {
+            format!(" id=\"table-collapse-toggle-{}\" class=\"collapsible\" onclick =\"collapse_table('{}')\"", self.index, self.index)
+        } else {
+            String::new()
+        };
+
+        result.push(into_v16(&format!("<thead{}>", collapsible_head)));
         self.header.iter().for_each(
             |row| {
                 result.push(into_v16("<tr>"));
@@ -68,8 +77,14 @@ impl Table {
         );
         result.push(into_v16("</thead>"));
 
+        let collapsible_body = if self.collapsible {
+            format!(" id=\"collapsible-table-{}\"", self.index)
+        } else {
+            String::new()
+        };
+
         if self.cells.len() > 0 {
-            result.push(into_v16("<tbody>"));
+            result.push(into_v16(&format!("<tbody{}>", collapsible_body)));
             self.cells.iter().for_each(
                 |row| {
                     result.push(into_v16("<tr>"));

@@ -24,7 +24,8 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     },
     Table {
         header_lines: Vec<Line>,
-        alignments: Line
+        alignments: Line,
+        index: usize  // index is used when making collapsible tables
     },
     Blockquote,
     List,
@@ -40,6 +41,7 @@ impl AST {
         let mut link_references = HashMap::new();
         let mut footnote_references = HashMap::new();
         let mut headers = vec![];
+        let mut table_count = 0;
 
         let mut index = 0;
 
@@ -103,8 +105,9 @@ impl AST {
                             let header_lines = header_lines.into_iter().map(|line| (*line).clone()).collect::<Vec<Line>>();
                             let alignments = lines[header_end_index].clone();
 
-                            curr_parse_state = ParseState::Table { header_lines, alignments };
+                            curr_parse_state = ParseState::Table { header_lines, alignments, index: table_count };
                             index = header_end_index;
+                            table_count += 1;
                         }
 
                         // paragraph
@@ -240,8 +243,9 @@ impl AST {
                             let header_lines = header_lines.into_iter().map(|line| (*line).clone()).collect::<Vec<Line>>();
                             let alignments = lines[header_end_index].clone();
 
-                            curr_parse_state = ParseState::Table { header_lines, alignments };
+                            curr_parse_state = ParseState::Table { header_lines, alignments, index: table_count };
                             index = header_end_index;
+                            table_count += 1;
                         }
 
                         // paragraph
@@ -301,8 +305,8 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
-        ParseState::Table { header_lines, alignments } => {
-            curr_nodes.push(Node::new_table(header_lines, curr_lines, alignments));
+        ParseState::Table { header_lines, alignments, index } => {
+            curr_nodes.push(Node::new_table(header_lines, curr_lines, alignments, false, *index));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },

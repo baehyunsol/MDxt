@@ -7,7 +7,8 @@ pub struct DocData {
     pub has_math: bool,
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
-    footnote_reference_count: usize
+    footnote_reference_count: usize,
+    pub has_collapsible_table: bool
 }
 
 impl Default for DocData {
@@ -18,7 +19,8 @@ impl Default for DocData {
             has_math: false,
             link_references: HashMap::new(),
             footnote_references: HashMap::new(),
-            footnote_reference_count: 0
+            footnote_reference_count: 0,
+            has_collapsible_table: false
         }
     }
 
@@ -26,8 +28,12 @@ impl Default for DocData {
 
 impl DocData {
 
-    pub fn new(headers: Vec<(usize, Vec<u16>)>, link_references: HashMap<Vec<u16>, Vec<u16>>, footnote_references: HashMap<Vec<u16>, Footnote>) -> Self {
-        DocData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false }
+    pub fn new(
+        headers: Vec<(usize, Vec<u16>)>,
+        link_references: HashMap<Vec<u16>, Vec<u16>>,
+        footnote_references: HashMap<Vec<u16>, Footnote>
+    ) -> Self {
+        DocData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false, has_collapsible_table: false }
     }
 
     pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {

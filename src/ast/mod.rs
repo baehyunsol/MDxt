@@ -135,6 +135,19 @@ impl AST {
             result.push(footnotes_to_html(&mut self.doc_data.footnote_references));
         }
 
+        if self.doc_data.has_collapsible_table {
+            result.push(into_v16("<script>
+function collapse_table(n) {
+    var head = document.getElementById(\"table-collapse-toggle-\" + n);
+    head.classList.toggle(\"activated\");
+
+    var content = document.getElementById(\"collapsible-table-\" + n);
+    content.classList.toggle(\"invisible\");
+}
+</script>
+            "));
+        }
+
         result.concat()
     }
 

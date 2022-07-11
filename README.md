@@ -19,12 +19,7 @@ If you wanna know more about MDxt, see these articles.
 
 MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, fenced code blocks are rendered to tables.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
 
-I'm planning to add more compatibility layers for gfm, but they're all WIP.
-
-- [ ] GFM <-> MDxt converter.
-- [ ] Render MDxt to GFM's output format.
-- [^] Read GFM files
-  - MDxt supports most of GFM's syntaxes.
+I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Because some elements are impossible to convert to GFM formats. They require `<script>` tags in their output HTML, which are not supported in GFM and most other markdown extensions.
 
 [GFM]: https:github.github.com/gfm
 [showcase]: showcase.md

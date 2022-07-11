@@ -22,6 +22,20 @@ Tables with multiline-headers, colspans and column alingments!
 [Rust]: https://github.com/rust-lang/Rust
 [Python]: https://github.com/python/cpython
 
+### Collapsible Tables
+
+TODO: syntax
+
+```
+|  Click Me!  |
+|-------------|
+| Hi, there!  |
+```
+
+|  Click Me!  |
+|-------------|
+| Hi, there!  |
+
 ## Footnotes
 
 ```
