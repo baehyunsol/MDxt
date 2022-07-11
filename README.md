@@ -88,26 +88,17 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 ---
 
-만약에 누가 header에 `[[toc]]`를 넣으면 어떻게 되는 거임..??
-- 걍 header 안에 macro는 못 넣게 하자!
-
----
-
 tooltip, collapsible, button
-
----
-
-test cases
-
-empty or white cases
-
-header: `#`, `# `
-
----
 
 CRLF
 - chr(11), chr(12), chr(13)
 
 ---
 
-math 안에 `\n`, math 안에 `\`, mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물에는 svg만 넣으면 안되나?
+mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물에는 svg만 넣으면 안되나?
+
+---
+
+Header anchor
+
+알파벳 대소문자, 숫자, 한글, `-`, `_`은 살리고 ` `는 `-`로 바꿈

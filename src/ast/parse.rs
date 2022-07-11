@@ -4,10 +4,12 @@ use crate::inline::{
     link::{predicate::read_link_reference, normalize_link},
     footnote::{predicate::is_valid_footnote_label, Footnote}
 };
-use crate::container::table::{count_cells, count_delimiter_cells};
-use crate::utils::{drop_while, take_and_drop_while};
+use crate::container::{
+    table::{count_cells, count_delimiter_cells},
+    codefence::read_code_fence_info,
+    header::parse_header
+};
 use crate::render::render_option::RenderOption;
-use crate::container::codefence::read_code_fence_info;
 use std::collections::HashMap;
 
 #[derive(PartialEq, Debug)]
@@ -289,13 +291,6 @@ impl AST {
         }
     }
 
-}
-
-pub fn parse_header(line: &Line) -> (usize, Vec<u16>) {  // (level, content)
-    let (sharps, sharps_removed) = take_and_drop_while(&line.content, '#' as u16);
-    let indents_removed = drop_while(&sharps_removed, ' ' as u16);
-
-    (sharps.len(), indents_removed)
 }
 
 fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, curr_parse_state: &mut ParseState) {

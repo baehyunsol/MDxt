@@ -1,10 +1,13 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
-use crate::container::table::Table;
-use crate::container::codefence::FencedCode;
-use crate::container::blockquote::Blockquote;
-use crate::container::list::List;
+use crate::container::{
+    table::Table,
+    codefence::FencedCode,
+    blockquote::Blockquote,
+    list::List,
+    header::normalize_header
+};
 
 pub enum Node {
     Paragraph {
@@ -12,7 +15,8 @@ pub enum Node {
     },
     Header {
         level: usize,
-        content: InlineNode
+        content: InlineNode,
+        anchor: Vec<u16>
     },
     FencedCode(FencedCode),
     Table(Table),
@@ -25,7 +29,11 @@ pub enum Node {
 impl Node {
 
     pub fn new_header(level: usize, content: Vec<u16>) -> Node {
-        Node::Header { level, content: InlineNode::Raw(content) }
+        Node::Header {
+            level,
+            anchor: normalize_header(&content),
+            content: InlineNode::Raw(content)
+        }
     }
 
     pub fn new_paragraph(lines: &Vec<Line>) -> Node {

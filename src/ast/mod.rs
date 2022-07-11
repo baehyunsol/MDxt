@@ -139,10 +139,23 @@ impl AST {
                 Node::Blockquote(blockquote) => {
                     result.push(blockquote.to_html());
                 }
-                Node::Header { level, content } => {
+                Node::Header { level, content, anchor } => {
+
+                    let anchor = if self.render_option.header_anchor && anchor.len() > 0 {
+                        vec![
+                            into_v16(&format!(" id=\"")),
+                            anchor.to_vec(),
+                            into_v16("\"")
+                        ].concat()
+                    } else {
+                        into_v16("")
+                    };
+
                     result.push(
                         vec![
-                            into_v16(&format!("<h{}>", level)),
+                            into_v16(&format!("<h{}", level)),
+                            anchor,
+                            into_v16(">"),
                             content.to_html(),
                             into_v16(&format!("</h{}>", level)),
                         ].concat()

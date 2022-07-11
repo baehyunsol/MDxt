@@ -65,44 +65,14 @@ Don't forget to write `|` at the end and the start of each row.
 
 fn set2() -> (&'static str, &'static str) {
     ("
-# Valid header
-Valid header
-# Valid header
 
-# Valid header
-
-Valid header
-
-# Valid header
-
-# [[red]] Red header [[/red]]
-
-# `Code header`
-
-[&](&)  escape test
 ", "
 ")
 }
 
 fn set3() -> (&'static str, &'static str) {
     ("
-- 1
-  - 1.1
-1.1
-1.1
-- 2
 
-- 1
-  - 1.1
-- 2
-2
-- 3
-  - 3.1
-    - 3.1.1
-  - 3.2
-    - 3.2.1
-    - 3.2.2
-- 4
 
 > 1
   > 1.1

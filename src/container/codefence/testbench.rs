@@ -375,7 +375,7 @@ fn main() {
 \\\\
 ```
 ", "
-<h1>Backslash test</h1>
+<h1 id=\"backslash-test\">Backslash test</h1>
 
 <p><code class=\"short\">&#92;</code></p>
 

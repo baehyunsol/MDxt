@@ -324,7 +324,7 @@ cut
 |a|b|c|
 |-|-|-|
 ||||", "
-<h2>Table 1</h2>
+<h2 id=\"table-1\">Table 1</h2>
 
 <table>
     <thead>
@@ -336,7 +336,7 @@ cut
     </thead>
 </table>
 
-<h2>Table 2</h2>
+<h2 id=\"table-2\">Table 2</h2>
 
 <table>
     <thead>
@@ -347,7 +347,7 @@ cut
     </tbody>
 </table>
 
-<h2>Table 3</h2>
+<h2 id=\"table-3\">Table 3</h2>
 
 <table>
     <thead>

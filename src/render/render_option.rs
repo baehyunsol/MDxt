@@ -1,4 +1,6 @@
 use crate::inline::link::predicate::is_valid_link_destination;
+use crate::container::header::normalize_header;
+use crate::utils::into_v16;
 
 #[derive(Clone)]
 pub struct RenderOption {
@@ -23,7 +25,18 @@ impl Default for RenderOption {
 fn default_link_handler(link: &[u16]) -> Vec<u16> {
 
     if is_valid_link_destination(link) {
-        link.to_vec()
+
+        if link.len() > 0 && link[0] == '#' as u16 {
+            vec![
+                into_v16("#"),
+                normalize_header(&link[1..])
+            ].concat()
+        }
+
+        else {
+            link.to_vec()
+        }
+
     }
 
     else {
