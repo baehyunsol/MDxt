@@ -91,6 +91,14 @@ ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, no
 
 ---
 
+div, span macro
+
+`[[div, class=class1, id=id1]] foo [[/div]]`, `[[span, class=class1, id=id1]] foo [[/span]]`
+
+JS로 저거 제어하면 아주아주 확장성이 커질 듯?
+
+---
+
 tooltip, button
 
 ---

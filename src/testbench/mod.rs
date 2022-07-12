@@ -1,6 +1,3 @@
-mod samples;
-mod html;
-
 pub fn random(mut seed: usize) -> usize {
 
     for _ in 0..3 {

@@ -351,6 +351,11 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
 
 }
 
+/// <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+pub fn load_mathjax() -> String {
+    "<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>".to_string()
+}
+
 const LATEX_SYMBOLS_RAW: [&str;103] = ["lt", "gt", "leq", "geq", "ll", "gg", "equiv", "subset", "supset", "approx", "in", "ni", "subseteq", "supseteq", "cong", "simeq", "notin", "propto", "neq", "therefore", "because", "pm", "mp", "times", "div", "star", "cap", "cup", "vee", "wedge", "cdot", "diamond", "bullet", "oplus", "ominus", "otimes", "oslash", "odot", "circ", "exists", "nexists", "forall", "neg", "land", "lor", "rightarrow", "leftarrow", "iff", "top", "bot", "varnothing", "quad", "backslash", "leftcurlybrace", "rightcurlybrace", "alpha", "beta", "gamma", "Gamma", "delta", "Delta", "epsilon", "zeta", "eta", "theta", "Theta", "iota", "kappa", "lambda", "Lambda", "mu", "nu", "xi", "Xi", "pi", "Pi", "rho", "sigma", "Sigma", "tau", "upsilon", "Upsilon", "phi", "Phi", "chi", "psi", "Psi", "omega", "Omega", "partial", "nabla", "infty", "cos", "sin", "tan", "cosh", "sinh", "tanh", "angle", "leftrightarrow", "sqcap", "sqcup", "space"];
 const LATEX_1ARG_FUNCS_RAW: [&str;13] = ["sub", "sup", "hat", "bar", "dot", "tilde", "vec", "check", "overleftarrow", "overrightarrow", "underline", "text", "lim"];
 const LATEX_2ARG_FUNCS_RAW: [&str;9] = ["frac", "cfrac", "sqrt", "int", "oint", "iint", "iiint", "sum", "prod"];

@@ -1,5 +1,5 @@
 [package]
-name = "MDxt"
+name = "mdxt"
 version = "0.1.0"
 edition = "2021"
 authors = ["Baehyunsol <baehyunsol@naver.com>"]
