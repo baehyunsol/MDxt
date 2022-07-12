@@ -109,6 +109,12 @@ pub const CONST: u32 = 1;
 `~~del~~` is rendered to ~~del~~. [[br]]
 `~_underline_~` is rendered to ~_underline_~.
 
+## Task lists
+
+- [ ] Unchecked
+- [X] Checked
+- [^] Not yet
+
 ## Macros
 
 `[[big]][[red]]Big red text.[[/red]][[/big]]` is rendered to [[big]][[red]]Big red text.[[/red]][[/big]].

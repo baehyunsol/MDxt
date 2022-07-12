@@ -1,7 +1,12 @@
 [package]
-name = "hmd2"
+name = "MDxt"
 version = "0.1.0"
 edition = "2021"
+authors = ["Baehyunsol <baehyunsol@naver.com>"]
+description = "Custom Markdown Engine for my personal blog."
+license = "MIT"
+keywords = ["markdown", "md", "web", "ssg"]
+repository = "https://github.com/baehyunsol/MDxt"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
