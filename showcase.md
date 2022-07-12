@@ -10,6 +10,7 @@ Tables with multiline-headers, colspans and column alingments!
 |-----------|--------------|-------------|-----------------|
 | Repo      | [Rust]       | [Zig]       | [Python]        |
 | Stars     | 68.5k        | 14.9k       | 46.1k           |
+| License   | Apache       | MIT         | Python          |
 ```
 
 |           |   [[colspan=2]] Compiled   |   Interpreted   |
@@ -17,6 +18,7 @@ Tables with multiline-headers, colspans and column alingments!
 |-----------|--------------|-------------|-----------------|
 | Repo      | [Rust]       | [Zig]       | [Python]        |
 | Stars     | 68.5k        | 14.9k       | 46.1k           |
+| License   | Apache       | MIT         | Python          |
 
 [Zig]: https://github.com/ziglang/zig
 [Rust]: https://github.com/rust-lang/Rust
@@ -24,17 +26,26 @@ Tables with multiline-headers, colspans and column alingments!
 
 ### Collapsible Tables
 
-TODO: syntax, toggle open/close
-
 ```
-|  Click Me!  |
-|-------------|
-| Hi, there!  |
-```
+| Click Me! (Default shown)              |
+|----------------------------------------|
+|!![[collapsible, default=shown]]        |
+| Hi, there!                             |
 
-|  Click Me!  |
-|-------------|
-| Hi, there!  |
+| Click Me! (Default hidden)            |
+|---------------------------------------|
+|!![[collapsible, default=hidden]]      |
+| Hi, there!                            |
+```
+| Click Me! (Default shown)              |
+|----------------------------------------|
+|!![[collapsible, default=shown]]        |
+| Hi, there!                             |
+
+| Click Me! (Default hidden)            |
+|---------------------------------------|
+|!![[collapsible, default=hidden]]      |
+| Hi, there!                            |
 
 ## Footnotes
 

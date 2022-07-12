@@ -39,7 +39,7 @@ impl InlineNode {
         let mut content = escape_code_spans(content);
 
         // inline elements inside math blocks are not rendered
-        if render_option.is_macro_enabled {
+        if render_option.render_macro {
             content = escape_inside_math_blocks(content);
         }
 
@@ -403,7 +403,7 @@ impl InlineNode {
                 _ => {}
             }
 
-            if render_option.is_macro_enabled {
+            if render_option.render_macro {
 
                 match check_and_parse_macro_inline(&content, index, doc_data, render_option) {
                     Some((parsed, last_index)) => {

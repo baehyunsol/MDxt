@@ -306,7 +306,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_parse_state = ParseState::None;
         },
         ParseState::Table { header_lines, alignments, index } => {
-            curr_nodes.push(Node::new_table(header_lines, curr_lines, alignments, false, *index));
+            curr_nodes.push(Node::new_table(header_lines, curr_lines, alignments, *index));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },

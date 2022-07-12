@@ -52,8 +52,8 @@ impl Node {
         ))
     }
 
-    pub fn new_table(headers: &Vec<Line>, lines: &Vec<Line>, alignments: &Line, collapsible: bool, index: usize) -> Node {
-        Node::Table(Table::from_lines(headers, lines, alignments, collapsible, index))
+    pub fn new_table(headers: &Vec<Line>, lines: &Vec<Line>, alignments: &Line, index: usize) -> Node {
+        Node::Table(Table::from_lines(headers, lines, alignments, index))
     }
 
     pub fn new_list(lines: &Vec<Line>) -> Node {

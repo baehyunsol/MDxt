@@ -33,13 +33,13 @@ impl AST {
             |node| match node {
                 Node::Paragraph { content } => {content.parse_raw(&mut self.doc_data, &self.render_option);},
                 Node::Header { content, .. } => {
-                    let tmp = self.render_option.is_macro_enabled;
-                    self.render_option.is_macro_enabled = false;
+                    let tmp = self.render_option.render_macro;
+                    self.render_option.render_macro = false;
 
                     // macros in headers are not rendered
                     content.parse_raw(&mut self.doc_data, &self.render_option);
 
-                    self.render_option.is_macro_enabled = tmp;
+                    self.render_option.render_macro = tmp;
                 },
                 Node::Table(table) => {table.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::List(list) => {list.parse_inlines(&mut self.doc_data, &self.render_option);},
@@ -136,16 +136,14 @@ impl AST {
         }
 
         if self.doc_data.has_collapsible_table {
-            result.push(into_v16("<script>
-function collapse_table(n) {
-    var head = document.getElementById(\"table-collapse-toggle-\" + n);
-    head.classList.toggle(\"activated\");
 
-    var content = document.getElementById(\"collapsible-table-\" + n);
-    content.classList.toggle(\"invisible\");
-}
+            // it doesn't add javascript for collapsed tables
+            // instead, it sets render_result.has_collapsible_table to `true`, so that external engines can handle it
+
+            /*result.push(into_v16("<script>
+
 </script>
-            "));
+            "));*/
         }
 
         result.concat()

@@ -15,6 +15,7 @@ pub fn render_to_html_with_default_options(content: &String) -> String {
 pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResult {
 
     let mut u16_content = into_v16(content);
+
     u16_content = remove_invalid_characters(&u16_content);
     u16_content = escape_backslashes(&u16_content);
     u16_content = escape_htmls(&u16_content);
@@ -50,6 +51,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     RenderResult {
         content: from_v16(&html),
         has_math: ast.doc_data.has_math,
+        has_collapsible_table: ast.doc_data.has_collapsible_table,
         metadata
     }
 

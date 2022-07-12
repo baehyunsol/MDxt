@@ -100,7 +100,7 @@ pub fn check_and_parse_macro_inline(
 
 }
 
-fn is_valid_macro_character(chr: &u16) -> bool {
+pub fn is_valid_macro_character(chr: &u16) -> bool {
     '/' as u16 <= *chr && *chr <= '9' as u16 ||
     'a' as u16 <= *chr && *chr <= 'z' as u16 ||
     'A' as u16 <= *chr && *chr <= 'Z' as u16 ||

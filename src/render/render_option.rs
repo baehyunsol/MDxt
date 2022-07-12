@@ -6,7 +6,7 @@ use crate::utils::into_v16;
 pub struct RenderOption {
     pub link_handler: fn(&[u16]) -> Vec<u16>,
     pub header_anchor: bool,
-    pub is_macro_enabled: bool,
+    pub render_macro: bool,
     pub has_metadata: bool
 }
 
@@ -16,7 +16,7 @@ impl Default for RenderOption {
         RenderOption {
             link_handler: default_link_handler,
             header_anchor: true,
-            is_macro_enabled: true,
+            render_macro: true,
             has_metadata: true
         }
     }
