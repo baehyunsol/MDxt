@@ -1,7 +1,7 @@
 use super::{Macro, MacroType};
 use crate::inline::{InlineNode, DecorationType, InlineMacro};
 use crate::render::render_option::RenderOption;
-use crate::utils::to_int;
+use crate::utils::{to_int, into_v16};
 use crate::escape::render_backslash_escapes;
 use crate::ast::doc_data::DocData;
 
@@ -67,9 +67,42 @@ impl Macro {
                 content: vec![]
             },
 
+            MacroType::HTML => InlineNode::Decoration {
+                deco_type: DecorationType::Macro({
+                    let (tag, class, id) = parse_html_tag(arguments);
+
+                    InlineMacro::HTML { tag, class, id }
+                }),
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
+            },
+
             MacroType::Icon => todo!()
         }
 
     }
 
+}
+
+fn parse_html_tag(arguments: &Vec<Vec<Vec<u16>>>) -> (Vec<u16>, Vec<u16>, Vec<u16>) {  // (tag, class, id)
+    
+    let mut classes = vec![];
+    let mut ids = vec![];
+
+    for argument in arguments[1..].iter() {
+
+        if argument[0] == into_v16("class") {
+            classes.push(argument[1].clone());
+        }
+
+        else if argument[0] == into_v16("id") {
+            ids.push(argument[1].clone());
+        }
+
+        else {
+            panic!("Something's wrong with the engine itself. Please create an issue on github..");
+        }
+
+    }
+
+    (arguments[0][0].clone(), classes.join(&[' ' as u16][..]), ids.join(&[' ' as u16][..]))
 }

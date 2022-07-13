@@ -49,6 +49,11 @@ pub enum InlineMacro {
     Toc,
     Blank,
     Br,
+    HTML {
+        tag: Vec<u16>,
+        class: Vec<u16>,
+        id: Vec<u16>
+    },
     Icon {
         name: Vec<u16>,
         size: u16
@@ -125,38 +130,64 @@ impl InlineNode {
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
                     InlineMacro::Color(color) => vec![
-                        into_v16("<div class=\"color_"),
+                        into_v16("<span class=\"color_"),
                         color.clone(),
                         into_v16("\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
-                        into_v16("</div>")
+                        into_v16("</span>")
                     ].concat(),
                     InlineMacro::Size(size) => vec![
-                        into_v16("<div class=\"size_"),
+                        into_v16("<span class=\"size_"),
                         size.clone(),
                         into_v16("\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
-                        into_v16("</div>")
+                        into_v16("</span>")
                     ].concat(),
                     InlineMacro::Highlight(color) => vec![
-                        into_v16("<div class=\"highlight_"),
+                        into_v16("<span class=\"highlight_"),
                         color.clone(),
                         into_v16("\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
-                        into_v16("</div>")
+                        into_v16("</span>")
                     ].concat(),
                     InlineMacro::Alignment(alignment) => vec![
-                        into_v16("<div class=\"align_"),
+                        into_v16("<span class=\"align_"),
                         alignment.clone(),
                         into_v16("\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
-                        into_v16("</div>")
+                        into_v16("</span>")
                     ].concat(),
                     InlineMacro::Box => vec![
                         into_v16("<div class=\"box\">"),
                         content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</div>")
                     ].concat(),
+                    InlineMacro::HTML { tag, class, id } => {
+                        let mut result = vec![];
+
+                        result.push(into_v16("<"));
+                        result.push(tag.clone());
+
+                        if class.len() > 0 {
+                            result.push(into_v16(" class=\""));
+                            result.push(class.clone());
+                            result.push(into_v16("\""));
+                        }
+
+                        if id.len() > 0 {
+                            result.push(into_v16(" id=\""));
+                            result.push(id.clone());
+                            result.push(into_v16("\""));
+                        }
+
+                        result.push(into_v16(">"));
+                        result.push(content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat());
+                        result.push(into_v16("</"));
+                        result.push(tag.clone());
+                        result.push(into_v16(">"));
+
+                        result.concat()
+                    }
                     InlineMacro::Char(num) => into_v16(&format!("&#{};", num)),
                     InlineMacro::Br => into_v16("<br/>"),
                     InlineMacro::Blank => into_v16("&nbsp;"),
@@ -268,6 +299,39 @@ impl InlineNode {
                         content.clone(),
                         into_v16("[[/math]]"),
                     ].concat(),
+                    InlineMacro::HTML { tag, class, id } => {
+                        let mut result = vec![];
+                        result.push(into_v16("[["));
+                        result.push(tag.clone());
+
+                        let classes = class.split(
+                            |c| *c == ' ' as u16
+                        ).map(
+                            |class| vec![
+                                into_v16(",class="),
+                                class.to_vec()
+                            ].concat()
+                        ).collect::<Vec<Vec<u16>>>().concat();
+
+                        let ids = id.split(
+                            |c| *c == ' ' as u16
+                        ).map(
+                            |id| vec![
+                                into_v16(",id="),
+                                id.to_vec()
+                            ].concat()
+                        ).collect::<Vec<Vec<u16>>>().concat();
+
+                        result.push(classes);
+                        result.push(ids);
+                        result.push(into_v16("]]"));
+                        result.push(content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat());
+                        result.push(into_v16("[[/"));
+                        result.push(tag.clone());
+                        result.push(into_v16("]]"));
+
+                        result.concat()
+                    }
                     InlineMacro::Char(num) => into_v16(&format!("[[char={}]]", num)),
                     InlineMacro::Br => into_v16("[[br]]"),
                     InlineMacro::Blank => into_v16("[[blank]]"),

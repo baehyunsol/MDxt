@@ -72,20 +72,24 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("~_no_underline _~", "<sub>_no_underline _</sub>"),
 
         ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros"),
-        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<div class=\"color_red\">This text is red and <strong>bold</strong>.</div> <div class=\"align_center\"> Some whitespaces  </div>"),
+        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color_red\">This text is red and <strong>bold</strong>.</span> <span class=\"align_center\"> Some whitespaces  </span>"),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]"),
-        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<div class=\"color_red\"><div class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></div></div>"),
-        ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <div class=\"color_red\"><code class=\"short\">a code span in red</code></div>"),
+        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color_red\"><span class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
+        ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color_red\"><code class=\"short\">a code span in red</code></span>"),
         ("[[math]] `a code span inside a math` [[/math]] `[[math]] a math inside a code span [[/math]]`", "\\( `a code span inside a math` \\) <code class=\"short\">[[math]] a math inside a code span [[/math]]</code>"),
         ("`[[math]] a code span before a math`[[/math]] [[math]] `a code span after a math [[/math]]`", "<code class=\"short\">[[math]] a code span before a math</code>[[/math]] \\( `a code span after a math \\)`"),
         ("[[math]] `a code span after a math [[/math]]` `[[math]] a code span before a math`[[/math]]", "\\( `a code span after a math \\)` <code class=\"short\">[[math]] a code span before a math</code>[[/math]]"),
         ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)"),
         ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)"),
-        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<div class=\"highlight_red\"> This text is highlighted! </div>"),
+        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<span class=\"highlight_red\"> This text is highlighted! </span>"),
         ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)"),
-        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <div class=\"highlight_red\"> </div> [[highlight = invalid_color]] [[/highlight]]"),
-        ("[[red]] [[big]] error [[/red]] [[/big]]", "<div class=\"color_red\"> [[big]] error </div> [[/big]]")
+        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <span class=\"highlight_red\"> </span> [[highlight = invalid_color]] [[/highlight]]"),
+        ("[[red]] [[big]] error [[/red]] [[/big]]", "<span class=\"color_red\"> [[big]] error </span> [[/big]]"),
+        ("[[div, class = foo]] abc [[/div]]", "<div class=\"foo\"> abc </div>"),
+        ("[[div, class = foo, id = bar, class = baz]] abc [[/div]]", "<div class=\"foo baz\" id=\"bar\"> abc </div>"),
+        ("[[div, class = foo, onclick = malicious function]] abc [[/div]]", "[[div, class = foo, onclick = malicious function]] abc [[/div]]"),
+        ("[[div]][[/div]], [[span]][[/span]], [[anchor]][[/anchor]], [[button]][[/button]], [[script]][[/script]]", "<div></div>, <span></span>, <anchor></anchor>, <button></button>, [[script]][[/script]]"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

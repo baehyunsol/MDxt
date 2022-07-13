@@ -47,8 +47,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
         ("[[red]][link]", "[[red]]<a href=\"https://example\">link</a>"),
         ("[[red]][link](https://github.com)", "[[red]]<a href=\"https://github.com\">link</a>"),
-        ("[[red]][link][[/red]]", "<div class=\"color_red\"><a href=\"https://example\">link</a></div>"),
-        ("[[red]][link](https://github.com)[[/red]]", "<div class=\"color_red\"><a href=\"https://github.com\">link</a></div>"),
+        ("[[red]][link][[/red]]", "<span class=\"color_red\"><a href=\"https://example\">link</a></span>"),
+        ("[[red]][link](https://github.com)[[/red]]", "<span class=\"color_red\"><a href=\"https://github.com\">link</a></span>"),
 
         ("[link][link2][link][link2]", "<a href=\"https://example2\">link</a><a href=\"https://example2\">link</a>"),
 
@@ -89,8 +89,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
         ("[[red]]![link]", "[[red]]<img src=\"https://example\" alt=\"link\"/>"),
         ("[[red]]![link](https://github.com)", "[[red]]<img src=\"https://github.com\" alt=\"link\"/>"),
-        ("[[red]]![link][[/red]]", "<div class=\"color_red\"><img src=\"https://example\" alt=\"link\"/></div>"),
-        ("[[red]]![link](https://github.com)[[/red]]", "<div class=\"color_red\"><img src=\"https://github.com\" alt=\"link\"/></div>"),
+        ("[[red]]![link][[/red]]", "<span class=\"color_red\"><img src=\"https://example\" alt=\"link\"/></span>"),
+        ("[[red]]![link](https://github.com)[[/red]]", "<span class=\"color_red\"><img src=\"https://github.com\" alt=\"link\"/></span>"),
 
         ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
     ];

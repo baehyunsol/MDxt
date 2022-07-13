@@ -18,4 +18,4 @@ pub use render::{
 
 pub use color::{COLORS, Color};
 pub use container::table::macros::collapsible_table_javascript;
-pub use inline::math::load_mathjax;
+pub use inline::math::mathjax_javascript;

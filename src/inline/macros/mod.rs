@@ -24,7 +24,8 @@ pub struct Macro {
 #[derive(Debug)]
 enum MacroType {
     Color, Size, Alignment, Highlight,
-    Box, Toc, Blank, Br, Char, Icon, Math
+    Box, Toc, Blank, Br, Char, Icon, Math,
+    HTML
 }
 
 impl Macro {
@@ -46,7 +47,11 @@ impl Macro {
             Self::new("br", MacroType::Br, true),
             Self::new("char", MacroType::Char, true),
             Self::new("math", MacroType::Math, false),
-            Self::new("icon", MacroType::Icon, true)
+            Self::new("icon", MacroType::Icon, true),
+            Self::new("div", MacroType::HTML, false),
+            Self::new("span", MacroType::HTML, false),
+            Self::new("anchor", MacroType::HTML, false),
+            Self::new("button", MacroType::HTML, false),
         ];
 
         for color in COLOR_NAMES.iter() {

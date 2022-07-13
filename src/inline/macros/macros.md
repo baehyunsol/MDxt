@@ -62,19 +62,22 @@ header 안에 link가 있으면? nested link가 생겨버리는데?
 
 Math macros are special. Every inline element inside a `[[math]]` block is not rendered. Not even code spans!
 
+## HTML
+
+`[[div, class = foo, id = bar]] baz [[/div]]` is rendered to `<div class="foo" id = "bar"> baz </div>`.
+
+All the whitespaces are ignored inside macros. That means `[[div, class = foo bar]] [[/div]]` is rendered to `<div class="foobar"> </div>`. For multiple classes, the correct syntax would be `[[div, class = foo, class = bar]] [[/div]]`.
+
+It supports 4 types of tags and 2 attributes.
+
+- `[[div]] [[/div]]`
+- `[[span]] [[/span]]`
+- `[[button]] [[/button]]`
+- `[[anchor]] [[/anchor]]`
+  - `<a>` tag
+
+Make your own plugins with those macros, CSS and JS.
+
 ## Incubator
-
-### Table Configs
-
-```
-[[theme = default, border_color = red]]
-|a|b|c|
-|-|-|-|
-|d|e|f|
-```
-
-### Anchors
-
-`[[anchor = test]]` -> `<a id="test"></a>`
 
 ### Line Height

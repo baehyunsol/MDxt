@@ -3,6 +3,7 @@
 use lazy_static::lazy_static;
 use crate::utils::{into_v16, from_v16};
 
+#[derive(Clone, Debug)]
 pub struct Color {
     pub name: String,
     pub r: u8,

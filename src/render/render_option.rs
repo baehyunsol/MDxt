@@ -7,7 +7,7 @@ pub struct RenderOption {
     pub link_handler: fn(&[u16]) -> Vec<u16>,
     pub header_anchor: bool,
     pub render_macro: bool,
-    pub has_metadata: bool
+    pub parse_metadata: bool
 }
 
 impl Default for RenderOption {
@@ -17,7 +17,7 @@ impl Default for RenderOption {
             link_handler: default_link_handler,
             header_anchor: true,
             render_macro: true,
-            has_metadata: true
+            parse_metadata: true
         }
     }
 

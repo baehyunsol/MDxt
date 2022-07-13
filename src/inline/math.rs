@@ -352,7 +352,7 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
 }
 
 /// <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-pub fn load_mathjax() -> String {
+pub fn mathjax_javascript() -> String {
     "<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>".to_string()
 }
 

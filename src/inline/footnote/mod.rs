@@ -31,7 +31,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>) -> Vec<u16
 
         let inverse_indexes = inverse_index.iter().map(
             |ind|
-            into_v16(&format!("<a href=\"#footnote_ref{}\"> [{}] </a>", ind, ind))
+            into_v16(&format!("<a href=\"#footnote_ref{}\"> [{}]</a> ", ind, ind))
         ).collect::<Vec<Vec<u16>>>().concat();
 
         result.push(

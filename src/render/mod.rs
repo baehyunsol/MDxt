@@ -24,7 +24,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     let mut lines = code_to_lines(&u16_content);
 
-    if options.has_metadata {
+    if options.parse_metadata {
 
         match parse_metadata(&lines) {
             Some((parsed_metadata, end_index)) => {
