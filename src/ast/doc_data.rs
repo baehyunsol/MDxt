@@ -3,11 +3,12 @@ use crate::inline::footnote::Footnote;
 
 #[derive(Clone)]
 pub struct DocData {
-    headers: Vec<(usize, Vec<u16>)>,  // (level, content)
+    pub headers: Vec<(usize, Vec<u16>)>,  // (level, content)
     pub has_math: bool,
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize,
+    pub has_toc: bool,
     pub has_collapsible_table: bool
 }
 
@@ -20,6 +21,7 @@ impl Default for DocData {
             link_references: HashMap::new(),
             footnote_references: HashMap::new(),
             footnote_reference_count: 0,
+            has_toc: false,
             has_collapsible_table: false
         }
     }
@@ -33,7 +35,7 @@ impl DocData {
         link_references: HashMap<Vec<u16>, Vec<u16>>,
         footnote_references: HashMap<Vec<u16>, Footnote>
     ) -> Self {
-        DocData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false, has_collapsible_table: false }
+        DocData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false, has_toc: false, has_collapsible_table: false }
     }
 
     pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {

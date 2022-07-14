@@ -119,7 +119,7 @@ fn link_render_test() {
                 &escape_backslashes(&into_v16(case)),
                 &mut doc_data,
                 &mut render_option
-            ).to_html()
+            ).to_html(&[])
         );
 
         if rendered != into_v16(answer) {

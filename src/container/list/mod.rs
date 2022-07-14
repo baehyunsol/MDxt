@@ -45,7 +45,7 @@ impl List {
         list
     }
 
-    pub fn to_html(&self) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
 
         let start_index = if self.start_index != 1 {
             format!(" start=\"{}\"", self.start_index)
@@ -111,12 +111,12 @@ impl List {
                         _ => {}
                     }
 
-                    result.push(content.to_html());
+                    result.push(content.to_html(toc_rendered));
                     result.push(into_v16("</li>"));
                 }
                 ElementOrSublist::Sublist(sublist) => {
                     result.pop().unwrap();  // </li>  // the first element is `ElementOrSublist::Element`
-                    result.push(sublist.to_html());
+                    result.push(sublist.to_html(toc_rendered));
                     result.push(into_v16("</li>"));
                 }
             }

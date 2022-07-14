@@ -107,7 +107,7 @@ fn inline_render_test() {
             &escape_backslashes(&into_v16(case)),
             &mut doc_data,
             &mut render_option
-        ).to_html();
+        ).to_html(&[]);
 
         if rendered != into_v16(answer) {
             failures.push(format!(
@@ -148,7 +148,7 @@ fn inline_inversion_test() {
 
         let inverted_html = InlineNode::from_mdxt(
             &escape_backslashes(&inverted), &mut doc_data, &mut render_option
-        ).to_html();
+        ).to_html(&[]);
 
         if into_v16(&html) != inverted_html {
             failures.push(format!(

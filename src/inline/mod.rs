@@ -62,7 +62,7 @@ pub enum InlineMacro {
 
 impl InlineNode {
 
-    pub fn to_html(&self) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
         match self {
             InlineNode::Raw(content) => content.clone(),
 
@@ -79,13 +79,13 @@ impl InlineNode {
                 inverse_index
             )),
 
-            InlineNode::Complex(content) => content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+            InlineNode::Complex(content) => content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
                 into_v16("<a href=\""),
                 destination.clone(),
                 into_v16("\">"),
-                text.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                text.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                 into_v16("</a>")
             ].concat(),
 
@@ -100,32 +100,32 @@ impl InlineNode {
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
                     into_v16("<em>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</em>")
                 ].concat(),
                 DecorationType::Bold => vec![
                     into_v16("<strong>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</strong>")
                 ].concat(),
                 DecorationType::Underline => vec![
                     into_v16("<u>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</u>")
                 ].concat(),
                 DecorationType::Deletion => vec![
                     into_v16("<del>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</del>")
                 ].concat(),
                 DecorationType::Subscript => vec![
                     into_v16("<sub>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sub>")
                 ].concat(),
                 DecorationType::Superscript => vec![
                     into_v16("<sup>"),
-                    content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sup>")
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
@@ -133,33 +133,33 @@ impl InlineNode {
                         into_v16("<span class=\"color_"),
                         color.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Size(size) => vec![
                         into_v16("<span class=\"size_"),
                         size.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Highlight(color) => vec![
                         into_v16("<span class=\"highlight_"),
                         color.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Alignment(alignment) => vec![
                         into_v16("<span class=\"align_"),
                         alignment.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Box => vec![
                         into_v16("<div class=\"box\">"),
-                        content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</div>")
                     ].concat(),
                     InlineMacro::HTML { tag, class, id } => {
@@ -181,7 +181,7 @@ impl InlineNode {
                         }
 
                         result.push(into_v16(">"));
-                        result.push(content.iter().map(|node| node.to_html()).collect::<Vec<Vec<u16>>>().concat());
+                        result.push(content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
                         result.push(into_v16("</"));
                         result.push(tag.clone());
                         result.push(into_v16(">"));
@@ -192,7 +192,8 @@ impl InlineNode {
                     InlineMacro::Br => into_v16("<br/>"),
                     InlineMacro::Blank => into_v16("&nbsp;"),
                     InlineMacro::Math (content) => render_math(content),
-                    InlineMacro::Toc | InlineMacro::Icon { .. } => todo!()
+                    InlineMacro::Toc => toc_rendered.to_vec(),
+                    InlineMacro::Icon { .. } => todo!()
                 }
             }
         }

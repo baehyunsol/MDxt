@@ -50,6 +50,8 @@ fn table_samples() -> Vec<(String, String)> {
         </tr>
     </tbody>
 </table>
+
+<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>
 "), ("
 |Left aligned Column |Centered Column |Right aligned Column |
 |:-------------------|:--------------:|--------------------:|
@@ -418,6 +420,14 @@ cut
         <tr><td> Hi, there! </td></tr>
     </tbody>
 </table>
+
+<script>function collapse_table(n) {
+    var head = document.getElementById(\"table-collapse-toggle-\" + n);
+    head.classList.toggle(\"collapsed\");
+
+    var content = document.getElementById(\"collapsible-table-\" + n);
+    content.classList.toggle(\"invisible\");
+}</script>
 ")
     ];
 

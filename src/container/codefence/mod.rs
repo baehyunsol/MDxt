@@ -11,6 +11,7 @@ use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase,
 use crate::escape::undo_backslash_escapes;
 use predicate::{is_line_num, is_highlight, parse_arguments};
 
+#[derive(Clone)]
 pub struct FencedCode {
     language: Vec<u16>,
     content: Vec<u16>,

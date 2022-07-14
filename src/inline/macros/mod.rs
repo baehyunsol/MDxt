@@ -1,4 +1,5 @@
 pub mod predicate;
+pub mod toc;
 mod parse;
 mod validate;
 

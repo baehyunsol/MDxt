@@ -14,7 +14,7 @@ pub struct Footnote {
     pub content: InlineNode
 }
 
-pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>) -> Vec<u16> {
+pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_rendered: &[u16]) -> Vec<u16> {
 
     let mut notes = footnotes.values().map(|x| x.clone()).collect::<Vec<Footnote>>();
     notes.sort_unstable_by_key(|Footnote { index, .. }| *index);
@@ -39,7 +39,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>) -> Vec<u16
                 into_v16(&format!("<a id=\"footnote_cite{}\"></a>", index)),
                 into_v16(&format!("{}. ", index)),
                 inverse_indexes,
-                content.to_html(),
+                content.to_html(toc_rendered),
                 into_v16("<br/>")
             ].concat()
         );

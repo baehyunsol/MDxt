@@ -1,23 +1,29 @@
 pub mod line;
 pub mod parse;
 pub mod doc_data;
+pub mod node;
 mod predicate;
-mod node;
 
 #[cfg(test)]
 mod testbench;
 
-use crate::inline::InlineNode;
-use crate::inline::footnote::{footnotes_to_html, Footnote};
+use crate::inline::{
+    InlineNode,
+    footnote::{footnotes_to_html, Footnote}
+};
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
+use crate::{mathjax_javascript, collapsible_table_javascript};
+use std::collections::HashMap;
 use node::Node;
 use doc_data::DocData;
 
+#[derive(Clone)]
 pub struct AST {
-    render_option: RenderOption,
+    pub render_option: RenderOption,
     pub doc_data: DocData,
-    nodes: Vec<Node>,
+    pub nodes: Vec<Node>,
+    pub toc: Vec<Node>,
     is_inline_parsed: bool
 }
 
@@ -31,16 +37,7 @@ impl AST {
 
         self.nodes.iter_mut().for_each(
             |node| match node {
-                Node::Paragraph { content } => {content.parse_raw(&mut self.doc_data, &self.render_option);},
-                Node::Header { content, .. } => {
-                    let tmp = self.render_option.render_macro;
-                    self.render_option.render_macro = false;
-
-                    // macros in headers are not rendered
-                    content.parse_raw(&mut self.doc_data, &self.render_option);
-
-                    self.render_option.render_macro = tmp;
-                },
+                Node::Paragraph { content } | Node::Header { content, .. } => {content.parse_raw(&mut self.doc_data, &self.render_option);},
                 Node::Table(table) => {table.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::List(list) => {list.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::Blockquote(blockquote) => {blockquote.parse_inlines(&mut self.doc_data, &self.render_option);},
@@ -69,11 +66,26 @@ impl AST {
         }
 
         self.is_inline_parsed = true;
+
+        if self.doc_data.has_toc {
+            self.render_toc();
+        }
+
     }
 
     pub fn to_html(&mut self) -> Vec<u16> {
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
+
+        let toc_rendered = if self.doc_data.has_toc {
+            let mut tmp_ast_for_toc = self.clone();
+            tmp_ast_for_toc.nodes = tmp_ast_for_toc.toc.clone();
+            tmp_ast_for_toc.doc_data.has_toc = false;  // to prevent infinite recursion
+            tmp_ast_for_toc.doc_data.footnote_references = HashMap::new();  // not to render it multiple times
+            tmp_ast_for_toc.to_html()
+        } else {
+            vec![]
+        };
 
         for node in self.nodes.iter() {
 
@@ -82,7 +94,7 @@ impl AST {
                     result.push(
                         vec![
                             into_v16("<p>"),
-                            content.to_html(),
+                            content.to_html(&toc_rendered),
                             into_v16("</p>")
                         ].concat()
                     );
@@ -93,13 +105,13 @@ impl AST {
                     );
                 },
                 Node::Table(table) => {
-                    result.push(table.to_html());
+                    result.push(table.to_html(&toc_rendered));
                 }
                 Node::List(list) => {
-                    result.push(list.to_html());
+                    result.push(list.to_html(&toc_rendered));
                 }
                 Node::Blockquote(blockquote) => {
-                    result.push(blockquote.to_html());
+                    result.push(blockquote.to_html(&toc_rendered));
                 }
                 Node::Header { level, content, anchor } => {
 
@@ -118,7 +130,7 @@ impl AST {
                             into_v16(&format!("<h{}", level)),
                             anchor,
                             into_v16(">"),
-                            content.to_html(),
+                            content.to_html(&toc_rendered),
                             into_v16(&format!("</h{}>", level)),
                         ].concat()
                     );
@@ -132,18 +144,17 @@ impl AST {
         }
 
         if self.doc_data.footnote_references.len() > 0 {
-            result.push(footnotes_to_html(&mut self.doc_data.footnote_references));
+            result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered));
         }
 
-        if self.doc_data.has_collapsible_table {
+        if self.doc_data.has_collapsible_table && self.render_option.javascript {
+            result.push(into_v16("<script>"));
+            result.push(into_v16(&collapsible_table_javascript()));
+            result.push(into_v16("</script>"));
+        }
 
-            // it doesn't add javascript for collapsed tables
-            // instead, it sets render_result.has_collapsible_table to `true`, so that external engines can handle it
-
-            /*result.push(into_v16("<script>
-
-</script>
-            "));*/
+        if self.doc_data.has_math && self.render_option.javascript {
+            result.push(into_v16(&mathjax_javascript()));
         }
 
         result.concat()

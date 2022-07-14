@@ -1,13 +1,25 @@
 use crate::inline::link::predicate::is_valid_link_destination;
 use crate::container::header::normalize_header;
-use crate::utils::into_v16;
+use crate::utils::{into_v16, from_v16};
+use std::collections::HashSet;
 
 #[derive(Clone)]
 pub struct RenderOption {
-    pub link_handler: fn(&[u16]) -> Vec<u16>,
+
+    /// when rendering `[Lable](Link)` to html, `Link` goes through this function
+    pub link_handler: fn(&str) -> String,
+
+    /// give `id` attributes to header tags
     pub header_anchor: bool,
     pub render_macro: bool,
-    pub parse_metadata: bool
+    pub parse_metadata: bool,
+
+    pub disabled_macros: HashSet<Vec<u16>>,
+
+    /// Javascript is required to render collapsible tables and math formulas.
+    /// If this option is true, the engine will add javascript codes when needed.
+    /// If you want to use your own script, turn this option off.
+    pub javascript: bool
 }
 
 impl Default for RenderOption {
@@ -17,32 +29,70 @@ impl Default for RenderOption {
             link_handler: default_link_handler,
             header_anchor: true,
             render_macro: true,
-            parse_metadata: true
+            parse_metadata: true,
+            disabled_macros: HashSet::new(),
+            javascript: true
         }
     }
 
 }
 
+impl RenderOption {
+
+    pub fn set_link_handler(&mut self, link_handler: fn(&str) -> String) -> &mut Self {
+        self.link_handler = link_handler;
+        self
+    }
+
+    pub fn set_header_anchor(&mut self, header_anchor: bool) -> &mut Self {
+        self.header_anchor = header_anchor;
+        self
+    }
+
+    pub fn enable_macro(&mut self, enable_macro: bool) -> &mut Self {
+        self.render_macro = enable_macro;
+        self
+    }
+
+    pub fn enable_metadata(&mut self, parse_metadata: bool) -> &mut Self {
+        self.parse_metadata = parse_metadata;
+        self
+    }
+
+    pub fn disable_macro(&mut self, macro_: &str) -> &mut Self {
+        self.disabled_macros.insert(into_v16(macro_));
+        self
+    }
+
+    pub fn enable_javascript(&mut self, javascript: bool) -> &mut Self {
+        self.javascript = javascript;
+        self
+    }
+
+}
+
 // TODO: block javascript execution
-fn default_link_handler(link: &[u16]) -> Vec<u16> {
+fn default_link_handler(link: &str) -> String {
 
-    if is_valid_link_destination(link) {
+    let link_v16 = into_v16(link);
 
-        if link.len() > 0 && link[0] == '#' as u16 {
-            vec![
+    if is_valid_link_destination(&link_v16) {
+
+        if link_v16.len() > 0 && link_v16[0] == '#' as u16 {
+            from_v16(&vec![
                 into_v16("#"),
-                normalize_header(&link[1..])
-            ].concat()
+                normalize_header(&link_v16[1..])
+            ].concat())
         }
 
         else {
-            link.to_vec()
+            link.to_string()
         }
 
     }
 
     else {
-        vec![]
+        String::new()
     }
 
 }

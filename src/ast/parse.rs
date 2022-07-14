@@ -9,6 +9,7 @@ use crate::container::{
     codefence::read_code_fence_info,
     header::parse_header
 };
+use crate::utils::{into_v16, from_v16};
 use crate::render::render_option::RenderOption;
 use std::collections::HashMap;
 
@@ -219,7 +220,7 @@ impl AST {
                         }
 
                         else {
-                            link_references.insert(normalize_link(&link_label), (options.link_handler)(&link_destination));
+                            link_references.insert(normalize_link(&link_label), into_v16(&(options.link_handler)(&from_v16(&link_destination))));
                         }
 
                     }
@@ -290,6 +291,7 @@ impl AST {
         AST {
             nodes: curr_nodes,
             doc_data: DocData::new(headers, link_references, footnote_references),
+            toc: vec![],  // if needed, will be rendered later
             render_option: options.clone(),
             is_inline_parsed: false
         }

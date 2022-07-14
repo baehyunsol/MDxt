@@ -13,7 +13,7 @@ pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
             Some(end_index1) => match get_bracket_end_index(content, index + 1) {
                 Some(end_index2) if end_index2 + 1 == end_index1 && content[index + 2..end_index2].iter().all(is_valid_macro_character) => {
                     let macro_content = normalize_macro(&content[index + 2..end_index2]);
-                    
+
                     if macro_content.len() > 0 {
                         Some(macro_content)
                     }
@@ -48,10 +48,19 @@ pub fn check_and_parse_macro_inline(
             let macro_name = get_macro_name(&macro_arguments);
             let macro_end_index = get_bracket_end_index(content, index).unwrap();
 
+            if render_option.disabled_macros.contains(&macro_name) {
+                return None
+            }
+
             match MACROS.get(&macro_name) {
                 Some(macro_) if macro_.is_valid(&macro_arguments) => {
 
                     if macro_.no_closing {
+
+                        if macro_name == into_v16("toc") {
+                            doc_data.has_toc = true;
+                        }
+
                         Some((macro_.parse(&macro_arguments, &vec![], doc_data, render_option), macro_end_index))
                     }
 

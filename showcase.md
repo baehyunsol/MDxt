@@ -1,4 +1,9 @@
-# MDex Showcase
+# MDxt Showcase
+
+| Table of Contents   |
+|---------------------|
+|!![[collapsible]]    |
+| [[toc]]             |
 
 ## Tables
 
@@ -11,6 +16,12 @@ Tables with multiline-headers, colspans and column alingments!
 | Repo      | [Rust]       | [Zig]       | [Python]        |
 | Stars     | 68.5k        | 14.9k       | 46.1k           |
 | License   | Apache       | MIT         | Python          |
+
+|             | Column 1     | Column 2    | Column 3     |
+|-------------|:------------:|:------------|-------------:|
+| Alignment   | Center       | Left        | Right        |
+| Colspan     | [[colspan=2]] 2            | 1            |
+| Colspan     | 1            | [[colspan=2]] 2            |
 ```
 
 |           |   [[colspan=2]] Compiled   |   Interpreted   |
@@ -19,6 +30,12 @@ Tables with multiline-headers, colspans and column alingments!
 | Repo      | [Rust]       | [Zig]       | [Python]        |
 | Stars     | 68.5k        | 14.9k       | 46.1k           |
 | License   | Apache       | MIT         | Python          |
+
+|             | Column 1     | Column 2    | Column 3     |
+|-------------|:------------:|:------------|-------------:|
+| Alignment   | Center       | Left        | Right        |
+| Colspan     | [[colspan=2]] 2            | 1            |
+| Colspan     | 1            | [[colspan=2]] 2            |
 
 [Zig]: https://github.com/ziglang/zig
 [Rust]: https://github.com/rust-lang/Rust
@@ -52,12 +69,18 @@ Tables with multiline-headers, colspans and column alingments!
 ```
 This is a footnote.[^A]
 
+This is another footnote.[^B]
+
 [^A]: Hi, there!
+[^B]: Hello!
 ```
 
 This is a footnote.[^A]
 
+This is another footnote.[^B]
+
 [^A]: Hi, there!
+[^B]: Hello!
 
 ## Fenced Code blocks
 
@@ -153,4 +176,4 @@ pub const CONST: u32 = 1;
 | Grassgreen | [[Grassgreen]] Grassgreen [[/Grassgreen]]   |
 | Gold       | [[Gold]] Gold [[/Gold]]                     |
 
-Drag texts to see an invisible color!
+Drag texts to see highlighted colors!

@@ -29,7 +29,7 @@ impl Cell {
         }
     }
 
-    pub fn to_html(&self, is_header: bool) -> Vec<u16> {
+    pub fn to_html(&self, is_header: bool, toc_rendered: &[u16]) -> Vec<u16> {
 
         let colspan_attr = if self.colspan > 1 {
             format!(" colspan=\"{}\"", self.colspan)
@@ -43,7 +43,7 @@ impl Cell {
             vec![
                 into_v16(&format!("<th{}>", colspan_attr)),
                 self.alignment.opening_tag(),
-                self.content.to_html(),
+                self.content.to_html(toc_rendered),
                 self.alignment.closing_tag(),
                 into_v16("</th>")
             ].concat()
@@ -53,7 +53,7 @@ impl Cell {
             vec![
                 into_v16(&format!("<td{}>", colspan_attr)),
                 self.alignment.opening_tag(),
-                self.content.to_html(),
+                self.content.to_html(toc_rendered),
                 self.alignment.closing_tag(),
                 into_v16("</td>")
             ].concat()

@@ -9,6 +9,7 @@ use crate::container::{
     header::normalize_header
 };
 
+#[derive(Clone)]
 pub enum Node {
     Paragraph {
         content: InlineNode

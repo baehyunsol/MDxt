@@ -15,6 +15,7 @@ use crate::inline::math::escape_inside_math_blocks;
 use crate::escape::BACKSLASH_ESCAPE_MARKER;
 use crate::utils::into_v16;
 
+#[derive(Clone)]
 pub struct Table {
     header: Vec<Vec<Cell>>,
     cells: Vec<Vec<Cell>>,
@@ -77,7 +78,7 @@ impl Table {
 
     }
 
-    pub fn to_html(&self) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
         result.push(into_v16("<table>"));
 
@@ -97,7 +98,7 @@ impl Table {
         self.header.iter().for_each(
             |row| {
                 result.push(into_v16("<tr>"));
-                result.push(row.iter().map(|c| c.to_html(true)).collect::<Vec<Vec<u16>>>().concat());
+                result.push(row.iter().map(|c| c.to_html(true, toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
                 result.push(into_v16("</tr>"));
             }
         );
@@ -120,7 +121,7 @@ impl Table {
             self.cells.iter().for_each(
                 |row| {
                     result.push(into_v16("<tr>"));
-                    result.push(row.iter().map(|c| c.to_html(false)).collect::<Vec<Vec<u16>>>().concat());
+                    result.push(row.iter().map(|c| c.to_html(false, toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
                     result.push(into_v16("</tr>"));
                 }
             );
