@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use crate::inline::footnote::Footnote;
+use crate::container::codefence::FencedCode;
 
 #[derive(Clone)]
 pub struct DocData {
@@ -9,7 +10,8 @@ pub struct DocData {
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize,
     pub has_toc: bool,
-    pub has_collapsible_table: bool
+    pub has_collapsible_table: bool,
+    pub fenced_code_contents: HashMap<usize, Vec<u16>>  // HashMap<index, content>
 }
 
 impl Default for DocData {
@@ -22,7 +24,8 @@ impl Default for DocData {
             footnote_references: HashMap::new(),
             footnote_reference_count: 0,
             has_toc: false,
-            has_collapsible_table: false
+            has_collapsible_table: false,
+            fenced_code_contents: HashMap::new()
         }
     }
 
@@ -35,7 +38,7 @@ impl DocData {
         link_references: HashMap<Vec<u16>, Vec<u16>>,
         footnote_references: HashMap<Vec<u16>, Footnote>
     ) -> Self {
-        DocData { headers, link_references, footnote_references, footnote_reference_count: 0, has_math: false, has_toc: false, has_collapsible_table: false }
+        DocData { headers, link_references, footnote_references, .. Self::default() }
     }
 
     pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {
@@ -44,6 +47,14 @@ impl DocData {
         self.footnote_reference_count += 1;
 
         self.footnote_reference_count - 1
+    }
+
+    pub fn add_fenced_code_content(&mut self, fenced_code: &FencedCode) {
+
+        if fenced_code.copy_button {
+            self.fenced_code_contents.insert(fenced_code.index, fenced_code.get_raw_content());
+        }
+
     }
 
 }

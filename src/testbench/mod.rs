@@ -9,29 +9,10 @@ pub fn random(mut seed: usize) -> usize {
 
 #[test]
 fn renderer() {
-    use crate::render_to_html_with_default_options;
+    use crate::render_showcase;
     use std::fs::File;
-    use std::io::{Write, Read};
+    use std::io::Write;
 
-    let mut s = String::new();
-
-    let md = match File::open("showcase.md") {
-        Err(_) => Err(()),
-        Ok(mut f) => match f.read_to_string(&mut s) {
-            Err(_) => Err(()),
-            Ok(_) => Ok(s)
-        }
-    };
-
-    let html = render_to_html_with_default_options(&md.unwrap());
-
-    let result = match File::create("showcase.html") {
-        Err(_) => Err(()),
-        Ok(mut f) => match f.write_all(html.as_bytes()) {
-            Err(_) => Err(()),
-            Ok(_) => Ok(())
-        }
-    };
-
-    result.unwrap();
+    let mut f = File::create("showcase.html").unwrap();
+    f.write_all(render_showcase().as_bytes()).unwrap();
 }

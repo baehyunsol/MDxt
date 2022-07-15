@@ -21,7 +21,9 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         line_num: Option<usize>,
         highlights: Vec<usize>,
         code_fence_size: usize,
-        is_tilde_fence: bool
+        copy_button: bool,
+        is_tilde_fence: bool,
+        index: usize  // index is used when making `copy to clipboard` buttons
     },
     Table {
         header_lines: Vec<Line>,
@@ -43,6 +45,7 @@ impl AST {
         let mut footnote_references = HashMap::new();
         let mut headers = vec![];
         let mut table_count = 0;
+        let mut fenced_code_count = 0;
 
         let mut index = 0;
 
@@ -52,7 +55,7 @@ impl AST {
                 ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => {
 
                     if lines[index].is_code_fence_end() {
-                        let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index]) {
+                        let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index], fenced_code_count) {
                             ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => (code_fence_size, is_tilde_fence),
                             _ => panic!("unreachable code")
                         };
@@ -60,6 +63,7 @@ impl AST {
                         if end_code_fence_size >= *code_fence_size && is_tilde_end_fence == *is_tilde_fence {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                             curr_parse_state = ParseState::None;
+                            fenced_code_count += 1;
                             index += 1;
                             continue;
                         }
@@ -72,7 +76,7 @@ impl AST {
 
                     if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                        curr_parse_state = read_code_fence_info(&lines[index]);
+                        curr_parse_state = read_code_fence_info(&lines[index], fenced_code_count);
                     }
 
                     else if lines[index].is_header() {
@@ -108,7 +112,6 @@ impl AST {
 
                             curr_parse_state = ParseState::Table { header_lines, alignments, index: table_count };
                             index = header_end_index;
-                            table_count += 1;
                         }
 
                         // paragraph
@@ -147,6 +150,7 @@ impl AST {
 
                     else {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        table_count += 1;
                         continue;
                     }
 
@@ -184,7 +188,7 @@ impl AST {
 
                     if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                        curr_parse_state = read_code_fence_info(&lines[index]);
+                        curr_parse_state = read_code_fence_info(&lines[index], fenced_code_count);
                     }
 
                     else if lines[index].is_header() {
@@ -246,7 +250,6 @@ impl AST {
 
                             curr_parse_state = ParseState::Table { header_lines, alignments, index: table_count };
                             index = header_end_index;
-                            table_count += 1;
                         }
 
                         // paragraph
@@ -322,8 +325,8 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
-        ParseState::CodeFence { language, line_num, highlights, .. } => {
-            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights));
+        ParseState::CodeFence { language, line_num, highlights, copy_button, index, .. } => {
+            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights, *copy_button, *index));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },

@@ -19,3 +19,36 @@ pub use render::{
 pub use color::{COLORS, Color};
 pub use container::table::macros::collapsible_table_javascript;
 pub use inline::math::mathjax_javascript;
+
+/// `Showcase.md` is an example mdxt file.
+/// See how it works.
+pub fn render_showcase() -> String {
+    use std::fs::File;
+    use std::io::Read;
+
+    let mut s = String::new();
+
+    let mut f = File::open("showcase.md").unwrap();
+    f.read_to_string(&mut s).unwrap();
+
+    let raw_html = render_to_html_with_default_options(&s);
+
+    let mut f = File::open("./styles/markdown.css").unwrap();
+    let mut css = String::new();
+    f.read_to_string(&mut css).unwrap();
+
+    format!(
+"
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <style>{}</style>
+    <article class=\"markdown\">{}</article>
+</body>
+</html>
+",
+        css,
+        raw_html
+    )
+}

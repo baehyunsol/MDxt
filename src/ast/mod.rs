@@ -41,7 +41,13 @@ impl AST {
                 Node::Table(table) => {table.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::List(list) => {list.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::Blockquote(blockquote) => {blockquote.parse_inlines(&mut self.doc_data, &self.render_option);},
-                Node::Empty | Node::FencedCode {..} | Node::ThematicBreak => {}
+                Node::Empty | Node::ThematicBreak => {},
+
+                // this branch is ugly...
+                // it doesn't `parse_inline` inside the `parse_inlines` function
+                // but this is the only point where the `FencedCode` instances and `doc_data` meet
+                // I should call this function when the fenced_codes are initialized, but `doc_data` doesn't exist at that timing
+                Node::FencedCode(fenced_code) => {self.doc_data.add_fenced_code_content(fenced_code);},
             }
         );
 
@@ -149,14 +155,24 @@ impl AST {
             result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered));
         }
 
-        if self.doc_data.has_collapsible_table && self.render_option.javascript {
-            result.push(into_v16("<script>"));
-            result.push(into_v16(&collapsible_table_javascript()));
-            result.push(into_v16("</script>"));
-        }
+        if self.render_option.javascript {
 
-        if self.doc_data.has_math && self.render_option.javascript {
-            result.push(into_v16(&mathjax_javascript()));
+            if self.doc_data.has_collapsible_table {
+                result.push(into_v16("<script>"));
+                result.push(into_v16(&collapsible_table_javascript()));
+                result.push(into_v16("</script>"));
+            }
+
+            if self.doc_data.fenced_code_contents.len() > 0 {
+                result.push(into_v16("<script>"));
+                todo!();
+                result.push(into_v16("</script>"));
+            }
+
+            if self.doc_data.has_math {
+                result.push(into_v16(&mathjax_javascript()));
+            }
+        
         }
 
         result.concat()

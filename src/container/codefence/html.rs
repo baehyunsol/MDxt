@@ -11,7 +11,7 @@ impl FencedCode {
 
     pub fn to_html(&self) -> Vec<u16> {
 
-        let rows = if is_syntax_available(&self.language) {
+        let mut rows = if is_syntax_available(&self.language) {
             let lines = highlight_syntax(&undo_html_escapes(&self.content), &self.language);
 
             lines.iter().enumerate().map(
@@ -24,6 +24,18 @@ impl FencedCode {
         };
 
         let opening = into_v16("<pre><code><table><tbody>");
+
+        if self.copy_button {
+            rows.push(
+                into_v16(
+                    &format!(
+                        "<tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button></td></tr>",
+                        self.index
+                    )
+                )
+            );
+        }
+
         let closing = into_v16("</tbody></table></code></pre>");
 
         vec![

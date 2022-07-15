@@ -43,13 +43,15 @@ impl Node {
         }
     }
 
-    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>, highlights: &Vec<usize>) -> Node {
+    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>, highlights: &Vec<usize>, copy_button: bool, index: usize) -> Node {
 
         Node::FencedCode(FencedCode::new(
             lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
             language.to_vec(),
             line_num.clone(),
-            highlights.clone()
+            highlights.clone(),
+            copy_button,
+            index
         ))
     }
 

@@ -37,6 +37,10 @@ pub fn is_highlight(content: &[u16]) -> bool {
     content[10..content.len() - 1].iter().all(|c| is_numeric(c) || *c == ',' as u16)
 }
 
+pub fn is_copy_button(content: &[u16]) -> bool {
+    content == into_v16("copy_button") || content == into_v16("copy_button(true)") || content == into_v16("copy_button(false)")
+}
+
 // `rust, line_num` -> [`rust`, `line_num`]
 // `rust, highlight(2, 3)` -> [`rust`, `highlight(2, 3)`]
 pub fn parse_arguments(content: &[u16]) -> Vec<Vec<u16>> {

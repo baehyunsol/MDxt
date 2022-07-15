@@ -47,6 +47,8 @@ showcase를 정식 API에 편입시키자. showcase를 html로 렌더링한 다�
 
 ---
 
+fenced code block -> 아무리 생각해도 table로 하면 안된다... span으로 하자
+
 fenced code block의 hover effect on/off 가능하게 하자!
 
 ---

@@ -1,0 +1,440 @@
+body .markdown {
+  background-color: #404040;
+  color: #ffffff;
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+body .markdown ::selection {
+  background-color: #bfbfbf;
+  color: #000000;
+}
+body .markdown hr.footnote_hr {
+  margin-top: 60px;
+}
+
+/* Blockquote */
+.markdown blockquote {
+  background-color: #00000080;
+  width: 75%;
+  border-left: 5px solid #808080;
+  padding: 12px;
+}
+
+/* Colors */
+.markdown .color_black {
+  color: #000000;
+}
+.markdown .color_black::selection {
+  color: #ffffff;
+}
+.markdown .highlight_black {
+  background-color: #000000;
+}
+.markdown .highlight_black::selection {
+  background-color: #ffffff;
+}
+.markdown .color_dark {
+  color: #404040;
+}
+.markdown .color_dark::selection {
+  color: #bfbfbf;
+}
+.markdown .highlight_dark {
+  background-color: #404040;
+}
+.markdown .highlight_dark::selection {
+  background-color: #bfbfbf;
+}
+.markdown .color_gray {
+  color: #808080;
+}
+.markdown .color_gray::selection {
+  color: #7f7f7f;
+}
+.markdown .highlight_gray {
+  background-color: #808080;
+}
+.markdown .highlight_gray::selection {
+  background-color: #7f7f7f;
+}
+.markdown .color_lightgray {
+  color: #c0c0c0;
+}
+.markdown .color_lightgray::selection {
+  color: #3f3f3f;
+}
+.markdown .highlight_lightgray {
+  background-color: #c0c0c0;
+}
+.markdown .highlight_lightgray::selection {
+  background-color: #3f3f3f;
+}
+.markdown .color_white {
+  color: #ffffff;
+}
+.markdown .color_white::selection {
+  color: #000000;
+}
+.markdown .highlight_white {
+  background-color: #ffffff;
+}
+.markdown .highlight_white::selection {
+  background-color: #000000;
+}
+.markdown .color_red {
+  color: #c04040;
+}
+.markdown .color_red::selection {
+  color: #3fbfbf;
+}
+.markdown .highlight_red {
+  background-color: #c04040;
+}
+.markdown .highlight_red::selection {
+  background-color: #3fbfbf;
+}
+.markdown .color_green {
+  color: #40c040;
+}
+.markdown .color_green::selection {
+  color: #bf3fbf;
+}
+.markdown .highlight_green {
+  background-color: #40c040;
+}
+.markdown .highlight_green::selection {
+  background-color: #bf3fbf;
+}
+.markdown .color_blue {
+  color: #4040c0;
+}
+.markdown .color_blue::selection {
+  color: #bfbf3f;
+}
+.markdown .highlight_blue {
+  background-color: #4040c0;
+}
+.markdown .highlight_blue::selection {
+  background-color: #bfbf3f;
+}
+.markdown .color_aqua {
+  color: #40c0ff;
+}
+.markdown .color_aqua::selection {
+  color: #bf3f00;
+}
+.markdown .highlight_aqua {
+  background-color: #40c0ff;
+}
+.markdown .highlight_aqua::selection {
+  background-color: #bf3f00;
+}
+.markdown .color_emerald {
+  color: #40ffc0;
+}
+.markdown .color_emerald::selection {
+  color: #bf003f;
+}
+.markdown .highlight_emerald {
+  background-color: #40ffc0;
+}
+.markdown .highlight_emerald::selection {
+  background-color: #bf003f;
+}
+.markdown .color_violet {
+  color: #c040ff;
+}
+.markdown .color_violet::selection {
+  color: #3fbf00;
+}
+.markdown .highlight_violet {
+  background-color: #c040ff;
+}
+.markdown .highlight_violet::selection {
+  background-color: #3fbf00;
+}
+.markdown .color_pink {
+  color: #ff40c0;
+}
+.markdown .color_pink::selection {
+  color: #00bf3f;
+}
+.markdown .highlight_pink {
+  background-color: #ff40c0;
+}
+.markdown .highlight_pink::selection {
+  background-color: #00bf3f;
+}
+.markdown .color_grassgreen {
+  color: #c0ff40;
+}
+.markdown .color_grassgreen::selection {
+  color: #3f00bf;
+}
+.markdown .highlight_grassgreen {
+  background-color: #c0ff40;
+}
+.markdown .highlight_grassgreen::selection {
+  background-color: #3f00bf;
+}
+.markdown .color_gold {
+  color: #ffc040;
+}
+.markdown .color_gold::selection {
+  color: #003fbf;
+}
+.markdown .highlight_gold {
+  background-color: #ffc040;
+}
+.markdown .highlight_gold::selection {
+  background-color: #003fbf;
+}
+
+/* Sizes */
+.markdown .size_tiny {
+  font-size: 13px;
+}
+.markdown .size_small {
+  font-size: 16px;
+}
+.markdown .size_medium {
+  font-size: 21px;
+}
+.markdown .size_big {
+  font-size: 25px;
+}
+.markdown .size_giant {
+  font-size: 33px;
+}
+
+/* Headers */
+.markdown h1 {
+  font-size: 66px;
+  margin-top: 60px;
+  margin-bottom: 30px;
+  transition: color 0.3s;
+}
+.markdown h1:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h2 {
+  font-size: 54px;
+  margin-top: 54px;
+  margin-bottom: 27px;
+  transition: color 0.3s;
+}
+.markdown h2:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h3 {
+  font-size: 45px;
+  margin-top: 45px;
+  margin-bottom: 22.5px;
+  transition: color 0.3s;
+}
+.markdown h3:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h4 {
+  font-size: 33px;
+  margin-top: 39px;
+  margin-bottom: 19.5px;
+  transition: color 0.3s;
+}
+.markdown h4:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h5 {
+  font-size: 27px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  transition: color 0.3s;
+}
+.markdown h5:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h1, .markdown h2 {
+  border-bottom: 3px solid #808080;
+}
+
+/* Links */
+.markdown a:link {
+  border-bottom: 3px solid #40c0ff80;
+  color: #40c0ff;
+  text-decoration: none;
+  transition: border 0.3s;
+}
+.markdown a:visited {
+  color: #40c0ff;
+  text-decoration: none;
+}
+.markdown a:hover {
+  text-decoration: none;
+  border-bottom: 3px solid #40c0ff;
+}
+.markdown a::selection {
+  color: #bf3f00;
+}
+
+/* Fenced Code Block */
+.markdown pre {
+  padding: 6px;
+  background-color: #000000;
+  width: 90%;
+  overflow: auto;
+}
+.markdown pre table {
+  width: 90%;
+}
+.markdown pre td {
+  line-height: 1.2;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  background-color: #000000;
+  height: 25.2px;
+  /* So that it renders empty lines */
+  white-space: pre;
+}
+.markdown pre td.index {
+  border-right: 3px solid #40ffc0;
+  text-align: right;
+  width: 24px;
+}
+.markdown pre tr:hover td {
+  background-color: #404040;
+}
+.markdown pre tr.highlight td {
+  background-color: #ffffff;
+  color: #000000;
+}
+.markdown pre tr.highlight td .color_black {
+  color: #ffffff;
+}
+.markdown pre tr.highlight td .color_dark {
+  color: #bfbfbf;
+}
+.markdown pre tr.highlight td .color_gray {
+  color: #7f7f7f;
+}
+.markdown pre tr.highlight td .color_lightgray {
+  color: #3f3f3f;
+}
+.markdown pre tr.highlight td .color_white {
+  color: #000000;
+}
+.markdown pre tr.highlight td .color_red {
+  color: #3fbfbf;
+}
+.markdown pre tr.highlight td .color_green {
+  color: #bf3fbf;
+}
+.markdown pre tr.highlight td .color_blue {
+  color: #bfbf3f;
+}
+.markdown pre tr.highlight td .color_aqua {
+  color: #bf3f00;
+}
+.markdown pre tr.highlight td .color_emerald {
+  color: #bf003f;
+}
+.markdown pre tr.highlight td .color_violet {
+  color: #3fbf00;
+}
+.markdown pre tr.highlight td .color_pink {
+  color: #00bf3f;
+}
+.markdown pre tr.highlight td .color_grassgreen {
+  color: #3f00bf;
+}
+.markdown pre tr.highlight td .color_gold {
+  color: #003fbf;
+}
+
+/* Code Spans */
+.markdown code.short {
+  color: #ffc040;
+  background-color: #000000;
+  border-radius: 3px;
+  padding: 3px 6px 3px;
+}
+
+/* Table */
+.markdown table {
+  border-collapse: collapse;
+  margin: 12px;
+}
+.markdown th {
+  background-color: #808080;
+  transition: padding 0.5s ease-out;
+}
+.markdown td, .markdown th {
+  padding: 18px;
+}
+.markdown tr:nth-last-child(odd) {
+  background-color: #000000;
+}
+.markdown tr:nth-last-child(even) {
+  background-color: #404040;
+}
+.markdown thead.collapsible {
+  cursor: pointer;
+}
+.markdown thead.collapsed th {
+  padding: 6px;
+  transition: padding 0.5s ease-out;
+}
+.markdown .invisible th, .markdown .invisible td {
+  display: none;
+}
+
+/*
+----- Checkbox for task lists -----
+*/
+div.unchecked_box, div.checked_box {
+  position: relative;
+  top: 5.25px;
+  display: inline-block;
+  border-radius: 4px;
+  width: 21px;
+  height: 21px;
+}
+
+div.unchecked_box {
+  background-color: #808080;
+  margin-right: 12px;
+}
+
+div.checked_box {
+  background-color: #000000;
+  margin-right: 12px;
+}
+
+span.checkmark {
+  display: block;
+  position: relative;
+  left: 5.25px;
+  top: 2.625px;
+  width: 7px;
+  height: 10.5px;
+  border-bottom: 3px solid #ffffff;
+  border-right: 3px solid #ffffff;
+  transform: rotate(45deg);
+}
+
+span.triangle {
+  display: block;
+  position: relative;
+  width: 0;
+  height: 0;
+  left: 3.5px;
+  top: 7px;
+  border-left: 7px solid #0000;
+  border-right: 7px solid #0000;
+  border-bottom: 7px solid #ffffff;
+}

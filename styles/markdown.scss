@@ -1,0 +1,619 @@
+@import "colors";
+@import "units";
+
+body .markdown {
+    background-color: $dark;
+    color: $white;
+    font-size: $font_medium;
+    line-height: 1.5;
+    letter-spacing: 1px;
+
+    ::selection {
+        background-color: $dark_compl;
+        color: $white_compl;
+    }
+
+    hr.footnote_hr {
+        margin-top: $h1_margin;
+    }
+
+}
+
+/* Blockquote */
+.markdown {
+
+    blockquote {
+        background-color: $black_trans;
+        width: 75%;
+        border-left: $border_big solid $gray;
+        padding: $padding_medium;
+    }
+
+}
+
+/* Colors */
+.markdown {
+
+    
+    .color_black {
+        color: $black;
+    }
+
+    .color_black::selection {
+        color: $black_compl;
+    }
+
+    .highlight_black {
+        background-color: $black;
+    }
+
+    .highlight_black::selection {
+        background-color: $black_compl;
+    }
+
+    
+    .color_dark {
+        color: $dark;
+    }
+
+    .color_dark::selection {
+        color: $dark_compl;
+    }
+
+    .highlight_dark {
+        background-color: $dark;
+    }
+
+    .highlight_dark::selection {
+        background-color: $dark_compl;
+    }
+
+    
+    .color_gray {
+        color: $gray;
+    }
+
+    .color_gray::selection {
+        color: $gray_compl;
+    }
+
+    .highlight_gray {
+        background-color: $gray;
+    }
+
+    .highlight_gray::selection {
+        background-color: $gray_compl;
+    }
+
+    
+    .color_lightgray {
+        color: $lightgray;
+    }
+
+    .color_lightgray::selection {
+        color: $lightgray_compl;
+    }
+
+    .highlight_lightgray {
+        background-color: $lightgray;
+    }
+
+    .highlight_lightgray::selection {
+        background-color: $lightgray_compl;
+    }
+
+    
+    .color_white {
+        color: $white;
+    }
+
+    .color_white::selection {
+        color: $white_compl;
+    }
+
+    .highlight_white {
+        background-color: $white;
+    }
+
+    .highlight_white::selection {
+        background-color: $white_compl;
+    }
+
+    
+    .color_red {
+        color: $red;
+    }
+
+    .color_red::selection {
+        color: $red_compl;
+    }
+
+    .highlight_red {
+        background-color: $red;
+    }
+
+    .highlight_red::selection {
+        background-color: $red_compl;
+    }
+
+    
+    .color_green {
+        color: $green;
+    }
+
+    .color_green::selection {
+        color: $green_compl;
+    }
+
+    .highlight_green {
+        background-color: $green;
+    }
+
+    .highlight_green::selection {
+        background-color: $green_compl;
+    }
+
+    
+    .color_blue {
+        color: $blue;
+    }
+
+    .color_blue::selection {
+        color: $blue_compl;
+    }
+
+    .highlight_blue {
+        background-color: $blue;
+    }
+
+    .highlight_blue::selection {
+        background-color: $blue_compl;
+    }
+
+    
+    .color_aqua {
+        color: $aqua;
+    }
+
+    .color_aqua::selection {
+        color: $aqua_compl;
+    }
+
+    .highlight_aqua {
+        background-color: $aqua;
+    }
+
+    .highlight_aqua::selection {
+        background-color: $aqua_compl;
+    }
+
+    
+    .color_emerald {
+        color: $emerald;
+    }
+
+    .color_emerald::selection {
+        color: $emerald_compl;
+    }
+
+    .highlight_emerald {
+        background-color: $emerald;
+    }
+
+    .highlight_emerald::selection {
+        background-color: $emerald_compl;
+    }
+
+    
+    .color_violet {
+        color: $violet;
+    }
+
+    .color_violet::selection {
+        color: $violet_compl;
+    }
+
+    .highlight_violet {
+        background-color: $violet;
+    }
+
+    .highlight_violet::selection {
+        background-color: $violet_compl;
+    }
+
+    
+    .color_pink {
+        color: $pink;
+    }
+
+    .color_pink::selection {
+        color: $pink_compl;
+    }
+
+    .highlight_pink {
+        background-color: $pink;
+    }
+
+    .highlight_pink::selection {
+        background-color: $pink_compl;
+    }
+
+    
+    .color_grassgreen {
+        color: $grassgreen;
+    }
+
+    .color_grassgreen::selection {
+        color: $grassgreen_compl;
+    }
+
+    .highlight_grassgreen {
+        background-color: $grassgreen;
+    }
+
+    .highlight_grassgreen::selection {
+        background-color: $grassgreen_compl;
+    }
+
+    
+    .color_gold {
+        color: $gold;
+    }
+
+    .color_gold::selection {
+        color: $gold_compl;
+    }
+
+    .highlight_gold {
+        background-color: $gold;
+    }
+
+    .highlight_gold::selection {
+        background-color: $gold_compl;
+    }
+
+    
+
+}
+
+/* Sizes */
+.markdown {
+
+    .size_tiny {
+        font-size: $font_tiny;
+    }
+
+    .size_small {
+        font-size: $font_small;
+    }
+
+    .size_medium {
+        font-size: $font_medium;
+    }
+
+    .size_big {
+        font-size: $font_big;
+    }
+
+    .size_giant {
+        font-size: $font_giant;
+    }
+
+}
+
+/* Headers */
+.markdown {
+
+    
+    h1 {
+        font-size: $h1_font_size;
+        margin-top: $h1_margin;
+        margin-bottom: $h1_margin / 2;
+        transition: color 0.3s;
+    }
+
+    h1:hover {
+        color: $white_trans;
+        transition: color 0.3s;
+    }
+    
+    h2 {
+        font-size: $h2_font_size;
+        margin-top: $h2_margin;
+        margin-bottom: $h2_margin / 2;
+        transition: color 0.3s;
+    }
+
+    h2:hover {
+        color: $white_trans;
+        transition: color 0.3s;
+    }
+    
+    h3 {
+        font-size: $h3_font_size;
+        margin-top: $h3_margin;
+        margin-bottom: $h3_margin / 2;
+        transition: color 0.3s;
+    }
+
+    h3:hover {
+        color: $white_trans;
+        transition: color 0.3s;
+    }
+    
+    h4 {
+        font-size: $h4_font_size;
+        margin-top: $h4_margin;
+        margin-bottom: $h4_margin / 2;
+        transition: color 0.3s;
+    }
+
+    h4:hover {
+        color: $white_trans;
+        transition: color 0.3s;
+    }
+    
+    h5 {
+        font-size: $h5_font_size;
+        margin-top: $h5_margin;
+        margin-bottom: $h5_margin / 2;
+        transition: color 0.3s;
+    }
+
+    h5:hover {
+        color: $white_trans;
+        transition: color 0.3s;
+    }
+    
+
+    h1, h2 {
+        border-bottom: $border_medium solid $gray;
+    }
+
+}
+
+/* Links */
+.markdown {
+
+    a:link {
+        border-bottom: $border_medium solid $aqua_trans;
+        color: $aqua;
+        text-decoration: none;
+        transition: border 0.3s;
+    }
+
+    a:visited {
+        color: $aqua;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+        border-bottom: $border_medium solid $aqua;
+    }
+
+    a::selection {
+        color: $aqua_compl;
+    }
+
+}
+
+/* Fenced Code Block */
+.markdown {
+
+    pre {
+        padding: $padding_small;
+        background-color: $black;
+        width: 90%;
+        overflow: auto;
+
+        table {
+            width: 90%;
+        }
+
+        td {
+            line-height: 1.2;
+            padding: {
+                top: 0px;
+                bottom: 0px;
+            }
+            background-color: $black;
+            height: $font_medium * 1.2;  /* So that it renders empty lines */
+            white-space: pre;
+        }
+
+        td.index {
+            border-right: $border_medium solid $emerald;
+            text-align: right;
+            width: 24px;
+        }
+
+        tr:hover td {
+            background-color: $dark;
+        }
+
+        tr.highlight td {
+            background-color: $black_compl;
+            color: $white_compl;
+        }
+
+        
+        tr.highlight td .color_black {
+            color: $black_compl;
+        }
+
+        
+        tr.highlight td .color_dark {
+            color: $dark_compl;
+        }
+
+        
+        tr.highlight td .color_gray {
+            color: $gray_compl;
+        }
+
+        
+        tr.highlight td .color_lightgray {
+            color: $lightgray_compl;
+        }
+
+        
+        tr.highlight td .color_white {
+            color: $white_compl;
+        }
+
+        
+        tr.highlight td .color_red {
+            color: $red_compl;
+        }
+
+        
+        tr.highlight td .color_green {
+            color: $green_compl;
+        }
+
+        
+        tr.highlight td .color_blue {
+            color: $blue_compl;
+        }
+
+        
+        tr.highlight td .color_aqua {
+            color: $aqua_compl;
+        }
+
+        
+        tr.highlight td .color_emerald {
+            color: $emerald_compl;
+        }
+
+        
+        tr.highlight td .color_violet {
+            color: $violet_compl;
+        }
+
+        
+        tr.highlight td .color_pink {
+            color: $pink_compl;
+        }
+
+        
+        tr.highlight td .color_grassgreen {
+            color: $grassgreen_compl;
+        }
+
+        
+        tr.highlight td .color_gold {
+            color: $gold_compl;
+        }
+
+        
+
+    }
+
+}
+
+/* Code Spans */
+.markdown {
+
+    code.short {
+        color: $gold;
+        background-color: $black;
+        border-radius: 3px;
+        padding: $padding_tiny $padding_small $padding_tiny;
+    }
+
+}
+
+/* Table */
+.markdown {
+
+    table {
+        border-collapse: collapse;
+        margin: 12px;
+    }
+
+    th {
+        background-color: $gray;
+        transition: padding 0.5s ease-out;
+    }
+
+    td, th {
+        padding: $padding_medium + $padding_small;
+    }
+
+    tr:nth-last-child(odd) {
+        background-color: $black;
+    }
+
+    tr:nth-last-child(even) {
+        background-color: $dark;
+    }
+
+    thead.collapsible {
+        cursor: pointer;
+    }
+
+    thead.collapsed th {
+        padding: $padding_small;
+        transition: padding 0.5s ease-out;
+    }
+
+    .invisible {
+
+        th, td {
+            display: none;
+        }
+
+    }
+
+}
+
+/*
+----- Checkbox for task lists -----
+*/
+
+div.unchecked_box, div.checked_box {
+    position: relative;
+    top: $font_medium / 4;
+    display: inline-block;
+    border-radius: 4px;
+    width: $font_medium;
+    height: $font_medium;
+}
+
+div.unchecked_box {
+    background-color: $gray;
+    margin-right: $padding_medium;
+}
+
+div.checked_box {
+    background-color: $black;
+    margin-right: $padding_medium;
+}
+
+span.checkmark {
+    display: block;
+    position: relative;
+    left: $font_medium / 4;
+    top: $font_medium / 8;
+    width: $font_medium / 3;
+    height: $font_medium / 2;
+    border: {
+        bottom: $border_medium solid $white;
+        right: $border_medium solid $white;
+    }
+    transform: rotate(45deg);
+}
+
+span.triangle {
+    display: block;
+    position: relative;
+    width: 0;
+    height: 0;
+    left: $font_medium / 6;
+    top: $font_medium / 3;
+    border-left: $font_medium / 3 solid #0000;
+    border-right: $font_medium / 3 solid #0000;
+    border-bottom: $font_medium / 3 solid $white;
+}

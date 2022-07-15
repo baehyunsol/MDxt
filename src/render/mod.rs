@@ -40,6 +40,10 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     let html = ast.to_html();
 
+    let fenced_code_contents = ast.doc_data.fenced_code_contents.iter().map(
+        |(index, content)| (*index, from_v16(content))
+    ).collect();
+
     #[cfg(test)]
     if html.iter().any(|c| *c > 60000) {
         panic!(
@@ -52,7 +56,8 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
         content: from_v16(&html),
         has_math: ast.doc_data.has_math,
         has_collapsible_table: ast.doc_data.has_collapsible_table,
-        metadata
+        metadata,
+        fenced_code_contents
     }
 
 }
