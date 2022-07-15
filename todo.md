@@ -43,15 +43,14 @@ enum MultilineMacro {
 
 ---
 
-toc
-
-`doc_data.has_toc`를 만들고, 저게 참일 때만 `AST.toc: Vec<Node>`를 생성하는 거임! `.to_html()`하면서 저 toc를 그대로 rendering해서 던져주는 거지!
-- 그럼 toc가 여러개 있으면 to_html도 여러번 함? 그건 너무 비효율적이지 않나... 일단은 cache를 할까?
-
----
-
 showcase를 정식 API에 편입시키자. showcase를 html로 렌더링한 다음에 공식 css 파일까지 붙여서 반환
 
 ---
 
 fenced code block의 hover effect on/off 가능하게 하자!
+
+---
+
+pretty output
+- output으로 나오는 html 좀 예쁘게 indent도 하고 그러자
+- 이거 만드는 과정에서 html-validator도 나올 듯...

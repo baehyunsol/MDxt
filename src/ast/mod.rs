@@ -77,11 +77,13 @@ impl AST {
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
 
+        // TODO: this block is to ugly
         let toc_rendered = if self.doc_data.has_toc {
             let mut tmp_ast_for_toc = self.clone();
             tmp_ast_for_toc.nodes = tmp_ast_for_toc.toc.clone();
             tmp_ast_for_toc.doc_data.has_toc = false;  // to prevent infinite recursion
             tmp_ast_for_toc.doc_data.footnote_references = HashMap::new();  // not to render it multiple times
+            tmp_ast_for_toc.render_option.javascript = false;  // not to render it multiple times
             tmp_ast_for_toc.to_html()
         } else {
             vec![]
