@@ -177,9 +177,9 @@ Another <ol type=\"1\">
 </ol>
 </p>
 
-<hr/>
+<hr class=\"footnote_hr\"/>
 
-<a id=\"footnote_cite0\"></a>0. <a href=\"#footnote_ref0\"> [0]</a> This is a footnote.<br/>
+<p><a id=\"footnote_cite0\"></a>0. <a href=\"#footnote_ref0\"> [0]</a> This is a footnote.<br/></p>
 ")
     ];
 

@@ -54,3 +54,7 @@ fenced code block의 hover effect on/off 가능하게 하자!
 pretty output
 - output으로 나오는 html 좀 예쁘게 indent도 하고 그러자
 - 이거 만드는 과정에서 html-validator도 나올 듯...
+
+---
+
+link에 그냥 `index.md`라고 적으면 `https://blog.com/index.md`처럼 앞에다가 prefix 주소 붙여주기! prefix도 정할 수 있게 하자!

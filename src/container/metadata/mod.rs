@@ -7,7 +7,7 @@ use crate::escape::{undo_backslash_escapes, undo_html_escapes};
 use crate::utils::{into_v16, from_v16, strip_whitespaces};
 
 pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(metadata, end_index)>
-    
+
     if lines.len() < 3 {
         return None;
     }
@@ -30,7 +30,7 @@ pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(
     }
 
     if index != lines.len() {
-        let mut yaml = lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]);
+        let mut yaml = lines[0..index].iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]);
         yaml = undo_backslash_escapes(&undo_html_escapes(&yaml));
 
         match YamlLoader::load_from_str(&from_v16(&yaml)) {

@@ -2,7 +2,10 @@
 
 MDxt is an extended version of Markdown.
 
-[[toc]]
+| Table of Contents |
+|-------------------|
+|!![[collapsible]]   |
+| [[toc]]           |
 
 ## Inline Elements
 
@@ -30,6 +33,12 @@ MDxt is an extended version of Markdown.
 
 `^abc^` is rendered to `<sup>abc</sup>`. The inner text may not start/end with whitespace(s).
 
+### Links
+
+### Images
+
+### Footnotes
+
 ## Containers
 
 ### Headers
@@ -40,9 +49,14 @@ MDxt is an extended version of Markdown.
 
 ### Lists
 
+#### Task list
+
 ### Fenced Code Blocks
 
 ### Blockquotes
+
+> This is a blockquote.
+>> This is another blockquote.
 
 ### Unlike GFM...
 

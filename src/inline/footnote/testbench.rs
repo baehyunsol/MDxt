@@ -78,27 +78,28 @@ d[^b][^d]
     <a href=\"\"><sup>ff</sup></a>
 </p>
 
-<hr/>
-
-<a id=\"footnote_cite0\"></a>
-    0.
-        <a href=\"#footnote_ref0\"> [0] </a>
-        <a href=\"#footnote_ref1\"> [1] </a>
-        <a href=\"#footnote_ref4\"> [4] </a>
-        This is a <strong>Sample</strong> <em>Footnote</em>.<br/>
-<a id=\"footnote_cite1\"></a>
-    1.
-        <a href=\"#footnote_ref2\"> [2] </a>
-        <a href=\"#footnote_ref5\"> [5] </a>
-        This is another <sup>sample</sup>!!<br/>
-<a id=\"footnote_cite2\"></a>
-    2.
-        <a href=\"#footnote_ref3\"> [3] </a>
-        This is another footnote.<br/><br/>
-<a id=\"footnote_cite3\"></a>
-    3.
-        <a href=\"#footnote_ref6\"> [6] </a>
-        Another one, that&apos;s not shadowed.<br/>
+<hr class=\"footnote_hr\"/>
+<p>
+    <a id=\"footnote_cite0\"></a>
+        0.
+            <a href=\"#footnote_ref0\"> [0] </a>
+            <a href=\"#footnote_ref1\"> [1] </a>
+            <a href=\"#footnote_ref4\"> [4] </a>
+            This is a <strong>Sample</strong> <em>Footnote</em>.<br/>
+    <a id=\"footnote_cite1\"></a>
+        1.
+            <a href=\"#footnote_ref2\"> [2] </a>
+            <a href=\"#footnote_ref5\"> [5] </a>
+            This is another <sup>sample</sup>!!<br/>
+    <a id=\"footnote_cite2\"></a>
+        2.
+            <a href=\"#footnote_ref3\"> [3] </a>
+            This is another footnote.<br/><br/>
+    <a id=\"footnote_cite3\"></a>
+        3.
+            <a href=\"#footnote_ref6\"> [6] </a>
+            Another one, that&apos;s not shadowed.<br/>
+</p>
 ".to_string()),
     ]
 }
