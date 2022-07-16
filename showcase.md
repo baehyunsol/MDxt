@@ -7,7 +7,7 @@
 
 ## Tables
 
-Tables with multiline-headers, colspans and column alingments!
+Tables with multiline-headers, colspans and column alignments!
 
 ```
 |           |   [[colspan=2]] Compiled   |   Interpreted   |

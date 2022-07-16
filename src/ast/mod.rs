@@ -12,6 +12,7 @@ use crate::inline::{
     footnote::{footnotes_to_html, Footnote}
 };
 use crate::render::render_option::RenderOption;
+use crate::container::codefence::html::copy_button_javascript;
 use crate::utils::into_v16;
 use crate::{mathjax_javascript, collapsible_table_javascript};
 use std::collections::HashMap;
@@ -165,7 +166,7 @@ impl AST {
 
             if self.doc_data.fenced_code_contents.len() > 0 {
                 result.push(into_v16("<script>"));
-                todo!();
+                result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
                 result.push(into_v16("</script>"));
             }
 

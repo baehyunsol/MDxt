@@ -60,3 +60,12 @@ pretty output
 ---
 
 link에 그냥 `index.md`라고 적으면 `https://blog.com/index.md`처럼 앞에다가 prefix 주소 붙여주기! prefix도 정할 수 있게 하자!
+
+---
+
+multiline macro
+
+`[[red]]`를 보면 partner가 있는지 확인. 있으면 걔네를 각각 `MultiLineMacro::Color("red")`로 지정. 나중에 걔네만 `<div class="color_red">`로 바꾸면 깔끔. 매크로 내부의 내용은 전혀 신경 쓸 필요가 없음!!
+- color, size, alignment, highlight, box, html
+
+`[[br]]` 같은 애들은 건들지 말고 걍 놔두면 알아서 `<p>` 안에 들어감!

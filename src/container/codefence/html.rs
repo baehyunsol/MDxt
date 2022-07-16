@@ -1,8 +1,8 @@
 use super::FencedCode;
 use super::syntect::{is_syntax_available, highlight_syntax};
-use crate::utils::into_v16;
-use crate::escape::render_backslash_escapes;
-use crate::escape::undo_html_escapes;
+use crate::utils::{into_v16, from_v16};
+use crate::escape::{render_backslash_escapes, undo_html_escapes};
+use std::collections::HashMap;
 
 // `<` in code, `\` in code
 // with/without syntax highlights
@@ -72,4 +72,41 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
         render_backslash_escapes(line),
         into_v16("</td></tr>")
     ].concat()
+}
+
+pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u16>>) -> String {
+
+    #[cfg(test)]
+    assert!(codes.len() > 0);
+
+    let mut codes = codes.iter().map(
+        |(index, code)| (*index, from_v16(code))
+    ).collect::<Vec<(usize, String)>>();
+
+    let max_index = match codes.iter().map(|(index, _)| index).max() {
+        None => 0,
+        Some(n) => *n
+    };
+
+    let mut codes_array = vec![String::new(); max_index + 1];
+
+    for (index, code) in codes.into_iter() {
+        codes_array[index] = code;
+    }
+
+    let codes_array_formatted = format!(
+        "[{}]",
+        codes_array.iter().map(|c| format!("{:?}", c)).collect::<Vec<String>>().join(", ")
+    );
+
+    let result = format!("
+const fenced_code_block_contents = {};
+
+function copy_code_to_clipboard(index) {}
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+{}",
+    codes_array_formatted, "{", "}"
+    );
+
+    result
 }

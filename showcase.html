@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <style>body .markdown {
+  background-color: #404040;
+  color: #ffffff;
+  font-size: 21px;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+body .markdown ::selection {
+  background-color: #bfbfbf;
+  color: #000000;
+}
+body .markdown hr.footnote_hr {
+  margin-top: 60px;
+}
+
+/* Blockquote */
+.markdown blockquote {
+  background-color: #00000080;
+  width: 75%;
+  border-left: 5px solid #808080;
+  padding: 12px;
+}
+
+/* Colors */
+.markdown .color_black {
+  color: #000000;
+}
+.markdown .color_black::selection {
+  color: #ffffff;
+}
+.markdown .highlight_black {
+  background-color: #000000;
+}
+.markdown .highlight_black::selection {
+  background-color: #ffffff;
+}
+.markdown .color_dark {
+  color: #404040;
+}
+.markdown .color_dark::selection {
+  color: #bfbfbf;
+}
+.markdown .highlight_dark {
+  background-color: #404040;
+}
+.markdown .highlight_dark::selection {
+  background-color: #bfbfbf;
+}
+.markdown .color_gray {
+  color: #808080;
+}
+.markdown .color_gray::selection {
+  color: #7f7f7f;
+}
+.markdown .highlight_gray {
+  background-color: #808080;
+}
+.markdown .highlight_gray::selection {
+  background-color: #7f7f7f;
+}
+.markdown .color_lightgray {
+  color: #c0c0c0;
+}
+.markdown .color_lightgray::selection {
+  color: #3f3f3f;
+}
+.markdown .highlight_lightgray {
+  background-color: #c0c0c0;
+}
+.markdown .highlight_lightgray::selection {
+  background-color: #3f3f3f;
+}
+.markdown .color_white {
+  color: #ffffff;
+}
+.markdown .color_white::selection {
+  color: #000000;
+}
+.markdown .highlight_white {
+  background-color: #ffffff;
+}
+.markdown .highlight_white::selection {
+  background-color: #000000;
+}
+.markdown .color_red {
+  color: #c04040;
+}
+.markdown .color_red::selection {
+  color: #3fbfbf;
+}
+.markdown .highlight_red {
+  background-color: #c04040;
+}
+.markdown .highlight_red::selection {
+  background-color: #3fbfbf;
+}
+.markdown .color_green {
+  color: #40c040;
+}
+.markdown .color_green::selection {
+  color: #bf3fbf;
+}
+.markdown .highlight_green {
+  background-color: #40c040;
+}
+.markdown .highlight_green::selection {
+  background-color: #bf3fbf;
+}
+.markdown .color_blue {
+  color: #4040c0;
+}
+.markdown .color_blue::selection {
+  color: #bfbf3f;
+}
+.markdown .highlight_blue {
+  background-color: #4040c0;
+}
+.markdown .highlight_blue::selection {
+  background-color: #bfbf3f;
+}
+.markdown .color_aqua {
+  color: #40c0ff;
+}
+.markdown .color_aqua::selection {
+  color: #bf3f00;
+}
+.markdown .highlight_aqua {
+  background-color: #40c0ff;
+}
+.markdown .highlight_aqua::selection {
+  background-color: #bf3f00;
+}
+.markdown .color_emerald {
+  color: #40ffc0;
+}
+.markdown .color_emerald::selection {
+  color: #bf003f;
+}
+.markdown .highlight_emerald {
+  background-color: #40ffc0;
+}
+.markdown .highlight_emerald::selection {
+  background-color: #bf003f;
+}
+.markdown .color_violet {
+  color: #c040ff;
+}
+.markdown .color_violet::selection {
+  color: #3fbf00;
+}
+.markdown .highlight_violet {
+  background-color: #c040ff;
+}
+.markdown .highlight_violet::selection {
+  background-color: #3fbf00;
+}
+.markdown .color_pink {
+  color: #ff40c0;
+}
+.markdown .color_pink::selection {
+  color: #00bf3f;
+}
+.markdown .highlight_pink {
+  background-color: #ff40c0;
+}
+.markdown .highlight_pink::selection {
+  background-color: #00bf3f;
+}
+.markdown .color_grassgreen {
+  color: #c0ff40;
+}
+.markdown .color_grassgreen::selection {
+  color: #3f00bf;
+}
+.markdown .highlight_grassgreen {
+  background-color: #c0ff40;
+}
+.markdown .highlight_grassgreen::selection {
+  background-color: #3f00bf;
+}
+.markdown .color_gold {
+  color: #ffc040;
+}
+.markdown .color_gold::selection {
+  color: #003fbf;
+}
+.markdown .highlight_gold {
+  background-color: #ffc040;
+}
+.markdown .highlight_gold::selection {
+  background-color: #003fbf;
+}
+
+/* Sizes */
+.markdown .size_tiny {
+  font-size: 13px;
+}
+.markdown .size_small {
+  font-size: 16px;
+}
+.markdown .size_medium {
+  font-size: 21px;
+}
+.markdown .size_big {
+  font-size: 25px;
+}
+.markdown .size_giant {
+  font-size: 33px;
+}
+
+/* Headers */
+.markdown h1 {
+  font-size: 66px;
+  margin-top: 60px;
+  margin-bottom: 30px;
+  transition: color 0.3s;
+}
+.markdown h1:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h2 {
+  font-size: 54px;
+  margin-top: 54px;
+  margin-bottom: 27px;
+  transition: color 0.3s;
+}
+.markdown h2:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h3 {
+  font-size: 45px;
+  margin-top: 45px;
+  margin-bottom: 22.5px;
+  transition: color 0.3s;
+}
+.markdown h3:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h4 {
+  font-size: 33px;
+  margin-top: 39px;
+  margin-bottom: 19.5px;
+  transition: color 0.3s;
+}
+.markdown h4:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h5 {
+  font-size: 27px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  transition: color 0.3s;
+}
+.markdown h5:hover {
+  color: #ffffff80;
+  transition: color 0.3s;
+}
+.markdown h1, .markdown h2 {
+  border-bottom: 3px solid #808080;
+}
+
+/* Links */
+.markdown a:link {
+  border-bottom: 3px solid #40c0ff80;
+  color: #40c0ff;
+  text-decoration: none;
+  transition: border 0.3s;
+}
+.markdown a:visited {
+  color: #40c0ff;
+  text-decoration: none;
+}
+.markdown a:hover {
+  text-decoration: none;
+  border-bottom: 3px solid #40c0ff;
+}
+.markdown a::selection {
+  color: #bf3f00;
+}
+
+/* Fenced Code Block */
+.markdown pre {
+  padding: 6px;
+  background-color: #000000;
+  width: 90%;
+  overflow: auto;
+}
+.markdown pre table {
+  width: 90%;
+}
+.markdown pre td {
+  line-height: 1.2;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  background-color: #000000;
+  height: 25.2px;
+  /* So that it renders empty lines */
+  white-space: pre;
+}
+.markdown pre td.index {
+  border-right: 3px solid #40ffc0;
+  text-align: right;
+  width: 24px;
+}
+.markdown pre tr:hover td {
+  background-color: #404040;
+}
+.markdown pre tr.highlight td {
+  background-color: #ffffff;
+  color: #000000;
+}
+.markdown pre tr.highlight td .color_black {
+  color: #ffffff;
+}
+.markdown pre tr.highlight td .color_dark {
+  color: #bfbfbf;
+}
+.markdown pre tr.highlight td .color_gray {
+  color: #7f7f7f;
+}
+.markdown pre tr.highlight td .color_lightgray {
+  color: #3f3f3f;
+}
+.markdown pre tr.highlight td .color_white {
+  color: #000000;
+}
+.markdown pre tr.highlight td .color_red {
+  color: #3fbfbf;
+}
+.markdown pre tr.highlight td .color_green {
+  color: #bf3fbf;
+}
+.markdown pre tr.highlight td .color_blue {
+  color: #bfbf3f;
+}
+.markdown pre tr.highlight td .color_aqua {
+  color: #bf3f00;
+}
+.markdown pre tr.highlight td .color_emerald {
+  color: #bf003f;
+}
+.markdown pre tr.highlight td .color_violet {
+  color: #3fbf00;
+}
+.markdown pre tr.highlight td .color_pink {
+  color: #00bf3f;
+}
+.markdown pre tr.highlight td .color_grassgreen {
+  color: #3f00bf;
+}
+.markdown pre tr.highlight td .color_gold {
+  color: #003fbf;
+}
+
+/* Code Spans */
+.markdown code.short {
+  color: #ffc040;
+  background-color: #000000;
+  border-radius: 3px;
+  padding: 3px 6px 3px;
+}
+
+/* Table */
+.markdown table {
+  border-collapse: collapse;
+  margin: 12px;
+}
+.markdown th {
+  background-color: #808080;
+  transition: padding 0.5s ease-out;
+}
+.markdown td, .markdown th {
+  padding: 18px;
+}
+.markdown tr:nth-last-child(odd) {
+  background-color: #000000;
+}
+.markdown tr:nth-last-child(even) {
+  background-color: #404040;
+}
+.markdown thead.collapsible {
+  cursor: pointer;
+}
+.markdown thead.collapsed th {
+  padding: 6px;
+  transition: padding 0.5s ease-out;
+}
+.markdown .invisible th, .markdown .invisible td {
+  display: none;
+}
+
+/*
+----- Checkbox for task lists -----
+*/
+div.unchecked_box, div.checked_box {
+  position: relative;
+  top: 5.25px;
+  display: inline-block;
+  border-radius: 4px;
+  width: 21px;
+  height: 21px;
+}
+
+div.unchecked_box {
+  background-color: #808080;
+  margin-right: 12px;
+}
+
+div.checked_box {
+  background-color: #000000;
+  margin-right: 12px;
+}
+
+span.checkmark {
+  display: block;
+  position: relative;
+  left: 5.25px;
+  top: 2.625px;
+  width: 7px;
+  height: 10.5px;
+  border-bottom: 3px solid #ffffff;
+  border-right: 3px solid #ffffff;
+  transform: rotate(45deg);
+}
+
+span.triangle {
+  display: block;
+  position: relative;
+  width: 0;
+  height: 0;
+  left: 3.5px;
+  top: 7px;
+  border-left: 7px solid #0000;
+  border-right: 7px solid #0000;
+  border-bottom: 7px solid #ffffff;
+}
+</style>
+    <article class="markdown"><h1 id="mdxt-showcase">MDxt Showcase</h1><table><thead id="table-collapse-toggle-0" class="collapsible" onclick ="collapse_table('0')"><tr><th> Table of Contents   </th></tr></thead><tbody id="collapsible-table-0"><tr><td> <ol type="1"><li><a href="#mdxt-showcase">MDxt Showcase</a><ol type="1"><li><a href="#tables">Tables</a><ol type="1"><li><a href="#collapsible-tables">Collapsible Tables</a></li></ol></li><li><a href="#footnotes">Footnotes</a></li><li><a href="#fenced-code-blocks">Fenced Code blocks</a></li><li><a href="#inline-elements">Inline elements</a></li><li><a href="#task-lists">Task lists</a></li><li><a href="#macros">Macros</a><ol type="1"><li><a href="#colors">Colors</a></li></ol></li></ol></li></ol>             </td></tr></tbody></table><h2 id="tables">Tables</h2><p>Tables with multiline-headers, colspans and column alignments!</p><pre><code><table><tbody><tr><td>|           |   [[colspan=2]] Compiled   |   Interpreted   |</td></tr><tr><td>|           |     Rust     |     Zig     |     Python      |</td></tr><tr><td>|-----------|--------------|-------------|-----------------|</td></tr><tr><td>| Repo      | [Rust]       | [Zig]       | [Python]        |</td></tr><tr><td>| Stars     | 68.5k        | 14.9k       | 46.1k           |</td></tr><tr><td>| License   | Apache       | MIT         | Python          |</td></tr><tr><td></td></tr><tr><td>|             | Column 1     | Column 2    | Column 3     |</td></tr><tr><td>|-------------|:------------:|:------------|-------------:|</td></tr><tr><td>| Alignment   | Center       | Left        | Right        |</td></tr><tr><td>| Colspan     | [[colspan=2]] 2            | 1            |</td></tr><tr><td>| Colspan     | 1            | [[colspan=2]] 2            |</td></tr></tbody></table></code></pre><table><thead><tr><th>           </th><th colspan="2"> Compiled   </th><th>   Interpreted   </th></tr><tr><th>           </th><th>     Rust     </th><th>     Zig     </th><th>     Python      </th></tr></thead><tbody><tr><td> Repo      </td><td> <a href="https://github.com/rust-lang/Rust">Rust</a>       </td><td> <a href="https://github.com/ziglang/zig">Zig</a>       </td><td> <a href="https://github.com/python/cpython">Python</a>        </td></tr><tr><td> Stars     </td><td> 68.5k        </td><td> 14.9k       </td><td> 46.1k           </td></tr><tr><td> License   </td><td> Apache       </td><td> MIT         </td><td> Python          </td></tr></tbody></table><table><thead><tr><th>             </th><th><div class="align_center"> Column 1     </div></th><th><div class="align_left"> Column 2    </div></th><th><div class="align_right"> Column 3     </div></th></tr></thead><tbody><tr><td> Alignment   </td><td><div class="align_center"> Center       </div></td><td><div class="align_left"> Left        </div></td><td><div class="align_right"> Right        </div></td></tr><tr><td> Colspan     </td><td colspan="2"><div class="align_center"> 2            </div></td><td><div class="align_right"> 1            </div></td></tr><tr><td> Colspan     </td><td><div class="align_center"> 1            </div></td><td colspan="2"><div class="align_left"> 2            </div></td></tr></tbody></table><h3 id="collapsible-tables">Collapsible Tables</h3><pre><code><table><tbody><tr><td>| Click Me! (Default shown)              |</td></tr><tr><td>|----------------------------------------|</td></tr><tr><td>|!![[collapsible, default=shown]]        |</td></tr><tr><td>| Hi, there!                             |</td></tr><tr><td></td></tr><tr><td>| Click Me! (Default hidden)            |</td></tr><tr><td>|---------------------------------------|</td></tr><tr><td>|!![[collapsible, default=hidden]]      |</td></tr><tr><td>| Hi, there!                            |</td></tr></tbody></table></code></pre><table><thead id="table-collapse-toggle-3" class="collapsible" onclick ="collapse_table('3')"><tr><th> Click Me! (Default shown)              </th></tr></thead><tbody id="collapsible-table-3"><tr><td> Hi, there!                             </td></tr></tbody></table><table><thead id="table-collapse-toggle-4" class="collapsible collapsed" onclick ="collapse_table('4')"><tr><th> Click Me! (Default hidden)            </th></tr></thead><tbody id="collapsible-table-4" class="invisible"><tr><td> Hi, there!                            </td></tr></tbody></table><h2 id="footnotes">Footnotes</h2><pre><code><table><tbody><tr><td>This is a footnote.[^A]</td></tr><tr><td></td></tr><tr><td>This is another footnote.[^B]</td></tr><tr><td></td></tr><tr><td>[^A]: Hi, there!</td></tr><tr><td>[^B]: Hello!</td></tr></tbody></table></code></pre><p>This is a footnote.<sup id="footnote_ref0"><a href="#footnote_cite0">[0]</a></sup></p><p>This is another footnote.<sup id="footnote_ref1"><a href="#footnote_cite1">[1]</a></sup></p><h2 id="fenced-code-blocks">Fenced Code blocks</h2><pre><code><table><tbody><tr><td>```rust, line_num, highlight(6, 17, 22)</td></tr><tr><td>/*</td></tr><tr><td>    multiline</td></tr><tr><td>    comment</td></tr><tr><td>*/</td></tr><tr><td>// single line comment</td></tr><tr><td>fn main() {</td></tr><tr><td>    let mut x = 3;</td></tr><tr><td>    let mut y = if x == 3 {</td></tr><tr><td>        4</td></tr><tr><td>    } else {</td></tr><tr><td>        5</td></tr><tr><td>    };</td></tr><tr><td>    println!(&quot;Hello World!\n&quot;);</td></tr><tr><td>    println!(&quot;{:?}&quot;, 3 + 4);</td></tr><tr><td>}</td></tr><tr><td></td></tr><tr><td>pub struct Point {</td></tr><tr><td>    x: f32,</td></tr><tr><td>    y: f32</td></tr><tr><td>}</td></tr><tr><td></td></tr><tr><td>pub const CONST: u32 = 1;</td></tr><tr><td>```</td></tr></tbody></table></code></pre><pre><code><table><tbody><tr><td class="index">1</td><td><span class="color_gray">/*</span></td></tr><tr><td class="index">2</td><td><span class="color_gray">    multiline</span></td></tr><tr><td class="index">3</td><td><span class="color_gray">    comment</span></td></tr><tr><td class="index">4</td><td><span class="color_gray">*/</span></td></tr><tr><td class="index">5</td><td><span class="color_gray">//</span><span class="color_gray"> single line comment</span></td></tr><tr class="highlight"><td class="index">6</td><td><span class="color_violet">fn</span><span class="color_white"> </span><span class="color_aqua">main</span><span class="color_white">(</span><span class="color_white">)</span><span class="color_white"> </span><span class="color_white">{</span></td></tr><tr><td class="index">7</td><td><span class="color_white">    </span><span class="color_violet">let</span><span class="color_white"> </span><span class="color_violet">mut</span><span class="color_white"> x </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white">;</span></td></tr><tr><td class="index">8</td><td><span class="color_white">    </span><span class="color_violet">let</span><span class="color_white"> </span><span class="color_violet">mut</span><span class="color_white"> y </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_violet">if</span><span class="color_white"> x </span><span class="color_white">=</span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white"> </span><span class="color_white">{</span></td></tr><tr><td class="index">9</td><td><span class="color_white">        </span><span class="color_gold">4</span></td></tr><tr><td class="index">10</td><td><span class="color_white">    </span><span class="color_white">}</span><span class="color_white"> </span><span class="color_violet">else</span><span class="color_white"> </span><span class="color_white">{</span></td></tr><tr><td class="index">11</td><td><span class="color_white">        </span><span class="color_gold">5</span></td></tr><tr><td class="index">12</td><td><span class="color_white">    </span><span class="color_white">}</span><span class="color_white">;</span></td></tr><tr><td class="index">13</td><td><span class="color_white">    </span><span class="color_white">println!</span><span class="color_white">(</span><span class="color_white">&quot;</span><span class="color_green">Hello World!</span><span class="color_emerald">\n</span><span class="color_white">&quot;</span><span class="color_white">)</span><span class="color_white">;</span></td></tr><tr><td class="index">14</td><td><span class="color_white">    </span><span class="color_white">println!</span><span class="color_white">(</span><span class="color_white">&quot;</span><span class="color_gold">{:?}</span><span class="color_white">&quot;</span><span class="color_white">,</span><span class="color_white"> </span><span class="color_gold">3</span><span class="color_white"> </span><span class="color_white">+</span><span class="color_white"> </span><span class="color_gold">4</span><span class="color_white">)</span><span class="color_white">;</span></td></tr><tr><td class="index">15</td><td><span class="color_white">}</span></td></tr><tr><td class="index">16</td><td></td></tr><tr class="highlight"><td class="index">17</td><td><span class="color_violet">pub</span><span class="color_white"> </span><span class="color_violet">struct</span><span class="color_white"> </span><span class="color_white">Point</span><span class="color_white"> </span><span class="color_white">{</span></td></tr><tr><td class="index">18</td><td><span class="color_white">    </span><span class="color_red">x</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">f32</span><span class="color_white">,</span></td></tr><tr><td class="index">19</td><td><span class="color_white">    </span><span class="color_red">y</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">f32</span></td></tr><tr><td class="index">20</td><td><span class="color_white">}</span></td></tr><tr><td class="index">21</td><td></td></tr><tr class="highlight"><td class="index">22</td><td><span class="color_violet">pub</span><span class="color_white"> </span><span class="color_violet">const</span><span class="color_white"> </span><span class="color_gold">CONST</span><span class="color_white">:</span><span class="color_white"> </span><span class="color_violet">u32</span><span class="color_white"> </span><span class="color_white">=</span><span class="color_white"> </span><span class="color_gold">1</span><span class="color_white">;</span></td></tr><tr><td><button class="copy-fenced-code" onclick="copy_code_to_clipboard(4)">Copy</button></td></tr></tbody></table></code></pre><h2 id="inline-elements">Inline elements</h2><p><code class="short">CO~2~</code> is rendered to CO<sub>2</sub>. <br/> <code class="short">E = mc^2^</code> is rendered to E = mc<sup>2</sup>. <br/> <code class="short">~~del~~</code> is rendered to <del>del</del>. <br/> <code class="short">~_underline_~</code> is rendered to <u>underline</u>.</p><h2 id="task-lists">Task lists</h2><ul><li><div class="unchecked_box"></div>Unchecked</li><li><div class="checked_box"><span class="checkmark"></span></div>Checked</li><li><div class="checked_box"><span class="triangle"></span></div>Not yet</li></ul><h2 id="macros">Macros</h2><p><code class="short">[[big]][[red]]Big red text.[[/red]][[/big]]</code> is rendered to <span class="size_big"><span class="color_red">Big red text.</span></span>.</p><p><code class="short">[[math]]cfrac{-b pm sqrt{b sup{2} - 4 a c}}{2a}[[/math]]</code> is rendered to \(\cfrac{-b \pm  \sqrt{b ^{2} - 4 a c}}{2a}\).</p><p><code class="short">[[highlight=red]]This text is highlighted![[/highlight]]</code> is rendered to <span class="highlight_red">This text is highlighted!</span>.</p><h3 id="colors">Colors</h3><table><thead><tr><th>    Name    </th><th>                    Color                    </th></tr></thead><tbody><tr><td> Black      </td><td> <span class="color_black"> Black </span>                  </td></tr><tr><td> Dark       </td><td> <span class="color_dark"> Dark </span>                     </td></tr><tr><td> Gray       </td><td> <span class="color_gray"> Gray </span>                     </td></tr><tr><td> Lightgray  </td><td> <span class="color_lightgray"> Lightgray </span>      </td></tr><tr><td> White      </td><td> <span class="color_white"> White </span>                  </td></tr><tr><td> Red        </td><td> <span class="color_red"> Red </span>                        </td></tr><tr><td> Green      </td><td> <span class="color_green"> Green </span>                  </td></tr><tr><td> Blue       </td><td> <span class="color_blue"> Blue </span>                     </td></tr><tr><td> Aqua       </td><td> <span class="color_aqua"> Aqua </span>                     </td></tr><tr><td> Emerald    </td><td> <span class="color_emerald"> Emerald </span>            </td></tr><tr><td> Violet     </td><td> <span class="color_violet"> Violet </span>               </td></tr><tr><td> Pink       </td><td> <span class="color_pink"> Pink </span>                     </td></tr><tr><td> Grassgreen </td><td> <span class="color_grassgreen"> Grassgreen </span>   </td></tr><tr><td> Gold       </td><td> <span class="color_gold"> Gold </span>                     </td></tr></tbody></table><p>Drag texts to see highlighted colors!</p><hr class="footnote_hr"/><p><a id="footnote_cite0"></a>0. <a href="#footnote_ref0"> [0]</a> Hi, there!<br/><a id="footnote_cite1"></a>1. <a href="#footnote_ref1"> [1]</a> Hello!<br/></p><script>function collapse_table(n) {
+    var head = document.getElementById("table-collapse-toggle-" + n);
+    head.classList.toggle("collapsed");
+
+    var content = document.getElementById("collapsible-table-" + n);
+    content.classList.toggle("invisible");
+}</script><script>
+const fenced_code_block_contents = ["", "", "", "", "/*\n    multiline\n    comment\n*/\n// single line comment\nfn main() {\n    let mut x = 3;\n    let mut y = if x == 3 {\n        4\n    } else {\n        5\n    };\n    println!(\"Hello World!\\n\");\n    println!(\"{:?}\", 3 + 4);\n}\n\npub struct Point {\n    x: f32,\n    y: f32\n}\n\npub const CONST: u32 = 1;"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}</script><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></article>
+</body>
+</html>

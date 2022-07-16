@@ -340,6 +340,13 @@ fn main() {
     </tr>
     <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
+<script>
+const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}
+</script>
 "), ("
 ```rust, line_num(5)
 fn main() {
@@ -362,6 +369,13 @@ fn main() {
     </tr>
     <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
+<script>
+const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}
+</script>
 "), ("
 ``` html
 <p> <div class=\"box\"> box </div> </p>
@@ -377,6 +391,14 @@ fn main() {
     <tr><td class=\"index\">1</td><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr>
     <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
+
+<script>
+const fenced_code_block_contents = [\"<p> <div class=\\\"box\\\"> box </div> </p>\"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}
+</script>
 "), ("
 ```invalid_language_name
 <p> <div class=\"box\"> box </div> </p>
@@ -472,6 +494,14 @@ Nothing
     <tr><td>Nothing</td></tr>
     <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button></td></tr>
 </tbody></table></code></pre>
+
+<script>
+const fenced_code_block_contents = [\"Nothing\", \"Nothing\"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}
+</script>
 ")
     ];
 
