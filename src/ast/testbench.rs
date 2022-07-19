@@ -104,6 +104,22 @@ Macros are not properly closed, but they're still rendered. Don't do this.
 [[/center]]
 ", "
 <div class=\"size_giant\"><div class=\"align_center\"><p>Macros are not properly closed, but they&apos;re still rendered. Don&apos;t do this.</p></div></div>
+"), ("
+[[highlight = red]]
+
+[[span, class = foo, id = bar]]
+
+Red Span
+
+[[/span]]
+
+[[/highlight]]
+", "
+<div class=\"highlight_red\">
+    <span class=\"foo\" id=\"bar\">
+        <p>Red Span</p>
+    </span>
+</div>
 ")
     ];
 

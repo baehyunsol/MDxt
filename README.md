@@ -1,8 +1,6 @@
-***On github, some elements are not rendered properly. To read a properly rendered version, visit [my blog].***
-
 # MDxt
 
-[[Giant]] MarkdDown eXTended [[/Giant]]
+MarkdDown eXTended
 
 MDxt is an extended markdown format. Though not a strict superset of [gfm], MDxt supports most of its features. You can read more about it [here](#gfm-compatibility)
 
@@ -22,7 +20,7 @@ MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, 
 
 I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Because some elements are impossible to convert to GFM formats. They require `<script>` tags in their output HTML, which are not supported in GFM and most other markdown extensions.
 
-[GFM]: https:github.github.com/gfm
+[GFM]: https://github.github.com/gfm
 [Showcase]: showcase.md
 [Reference]: https://molla
 [my blog]: https://molla

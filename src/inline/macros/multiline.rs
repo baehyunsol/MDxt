@@ -64,11 +64,27 @@ impl MultiLineMacro {
                 is_closing
             },
             MacroType::Highlight => MultiLineMacro {
-                macro_type: MultiLineMacroType::Highlight(macro_arguments[0][1].clone()),
+                macro_type: MultiLineMacroType::Highlight(
+
+                    if is_closing {
+                        vec![]
+                    }
+
+                    else {
+                        macro_arguments[0][1].clone()
+                    }
+
+                ),
                 is_closing
             },
             MacroType::HTML => {
-                let (tag, class, id) = parse_html_tag(&macro_arguments);
+                let (tag, class, id) = if is_closing {
+                    (macro_name.clone(), vec![], vec![])
+                }
+                
+                else {
+                    parse_html_tag(&macro_arguments)
+                };
 
                 MultiLineMacro {
                     macro_type: MultiLineMacroType::HTML { tag, class, id },
@@ -88,7 +104,7 @@ impl MultiLineMacro {
 
             match &self.macro_type {
                 MultiLineMacroType::HTML { tag, .. } => vec![
-                    into_v16("<"),
+                    into_v16("</"),
                     tag.clone(),
                     into_v16(">")
                 ].concat(),
