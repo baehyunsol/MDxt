@@ -98,18 +98,6 @@ fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<us
     None
 }
 
-#[cfg(test)]
-pub fn remove_special_characters(line: &[u16]) -> Vec<u16> {
-    line.iter().filter(
-        |c| '0' as u16 <= **c && **c <= '9' as u16 ||
-        'a' as u16 <= **c && **c <= 'z' as u16 ||
-        'A' as u16 <= **c && **c <= 'Z' as u16 ||
-        '가' as u16 <= **c && **c <= '힣' as u16 ||  // korean
-        'ㄱ' as u16 <= **c && **c <= 'ㅣ' as u16 ||  // korean
-        'ぁ' as u16 <= **c && **c <= 'ヺ' as u16  // japanese
-    ).map(|c| *c).collect()
-}
-
 pub fn lowercase(c: &u16) -> u16 {
 
     if 'A' as u16 <= *c && *c <= 'Z' as u16 {
@@ -262,19 +250,6 @@ mod tests {
 
         assert_eq!(collapse_whitespaces(&sample3), into_v16(" "));
         assert_eq!(strip_whitespaces(&sample3), into_v16(""));
-    }
-
-    #[test]
-    fn misc_test2() {
-        use crate::utils::{into_v16, remove_special_characters};
-
-        let sample1 = into_v16("THIS IS BIG and this is small!");
-        let sample2 = into_v16("If you find any bug, please report: XXX-XXXX, 한글입력\nnewline\ttab");
-        //assert_eq!(lowercase_and_remove_spaces(&sample1), into_v16("thisisbigandthisissmall!"));
-        //assert_eq!(lowercase_and_remove_spaces(&sample2), into_v16("ifyoufindanybug,pleasereport:xxx-xxxx,한글입력\nnewline\ttab"));
-
-        assert_eq!(remove_special_characters(&sample1), into_v16("THISISBIGandthisissmall"));
-        assert_eq!(remove_special_characters(&sample2), into_v16("IfyoufindanybugpleasereportXXXXXXX한글입력newlinetab"));
     }
 
     #[test]

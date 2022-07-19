@@ -42,7 +42,7 @@ impl AST {
                 Node::Table(table) => {table.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::List(list) => {list.parse_inlines(&mut self.doc_data, &self.render_option);},
                 Node::Blockquote(blockquote) => {blockquote.parse_inlines(&mut self.doc_data, &self.render_option);},
-                Node::Empty | Node::ThematicBreak => {},
+                Node::Empty | Node::ThematicBreak | Node::MultiLineMacro(_) => {},
 
                 // this branch is ugly...
                 // it doesn't `parse_inline` inside the `parse_inlines` function
@@ -121,6 +121,9 @@ impl AST {
                 }
                 Node::Blockquote(blockquote) => {
                     result.push(blockquote.to_html(&toc_rendered));
+                }
+                Node::MultiLineMacro(multiline_macro) => {
+                    result.push(multiline_macro.to_html());
                 }
                 Node::Header { level, content, anchor } => {
 

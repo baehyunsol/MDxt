@@ -2,7 +2,8 @@ use super::{doc_data::DocData, AST, line::Line, node::Node};
 use crate::inline::{
     InlineNode,
     link::{predicate::read_link_reference, normalize_link},
-    footnote::{predicate::is_valid_footnote_label, Footnote}
+    footnote::{predicate::is_valid_footnote_label, Footnote},
+    macros::{predicate::read_macro, parse_arguments, get_macro_name, MACROS}
 };
 use crate::container::{
     table::{count_cells, count_delimiter_cells},
@@ -47,9 +48,18 @@ impl AST {
         let mut table_count = 0;
         let mut fenced_code_count = 0;
 
+        let mut macro_closing_indexes = vec![];
+
         let mut index = 0;
 
-        while index < lines.len() {
+        'outer_loop: while index < lines.len() {
+
+            if macro_closing_indexes.len() > 0 && macro_closing_indexes[macro_closing_indexes.len() - 1] == index {
+                add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                curr_nodes.push(Node::new_macro(&lines[index]));
+                index += 1;
+                continue;
+            }
 
             match &curr_parse_state {
                 ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => {
@@ -227,6 +237,41 @@ impl AST {
                             link_references.insert(normalize_link(&link_label), into_v16(&(options.link_handler)(&from_v16(&link_destination))));
                         }
 
+                    }
+
+                    // All the closing macros are handled up there
+                    else if lines[index].is_multiline_macro() {
+                        let macro_content = read_macro(&lines[index].content, 0).unwrap();
+                        let macro_arguments = parse_arguments(&macro_content);
+                        let macro_name = get_macro_name(&macro_arguments);
+
+                        match MACROS.get(&macro_name) {
+                            // if it has a closing, find its partner
+                            Some(macro_) if macro_.has_closing && macro_.is_valid(&macro_arguments) => {
+                                let closing_macro = macro_.get_closing_macro();
+                                let mut macro_closing_index = index + 1;
+
+                                while macro_closing_index < lines.len() {
+
+                                    if lines[macro_closing_index].is_multiline_macro() &&
+                                    read_macro(&lines[macro_closing_index].content, 0).unwrap() == closing_macro {
+                                        curr_nodes.push(Node::new_macro(&lines[index]));
+                                        macro_closing_indexes.push(macro_closing_index);
+                                        index += 1;
+                                        continue 'outer_loop;
+                                    }
+
+                                    macro_closing_index += 1;
+                                }
+
+                            },
+
+                            // otherwise it's just a paragraph
+                            _ => {}
+                        }
+
+                        curr_lines.push(lines[index].clone());
+                        curr_parse_state = ParseState::Paragraph;
                     }
 
                     else if lines[index].is_thematic_break() {

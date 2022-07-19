@@ -5,7 +5,7 @@ use crate::color::COLOR_NAMES;
 impl Macro {
 
     pub fn is_valid(&self, arguments: &Vec<Vec<Vec<u16>>>) -> bool {
-        
+
         match self.macro_type {
 
             // no args, only a name

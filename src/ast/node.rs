@@ -1,6 +1,7 @@
 use super::line::{add_br_if_needed, to_raw};
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
+use crate::inline::macros::multiline::MultiLineMacro;
 use crate::container::{
     table::Table,
     codefence::FencedCode,
@@ -24,6 +25,7 @@ pub enum Node {
     List(List),
     Blockquote(Blockquote),
     ThematicBreak,
+    MultiLineMacro(MultiLineMacro),
     Empty
 }
 
@@ -65,6 +67,10 @@ impl Node {
 
     pub fn new_blockquote(lines: &Vec<Line>) -> Node {
         Node::Blockquote(Blockquote::from_lines(lines))
+    }
+
+    pub fn new_macro(line: &Line) -> Node {
+        Node::MultiLineMacro(MultiLineMacro::from_line(line))
     }
 
 }

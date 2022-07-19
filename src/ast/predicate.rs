@@ -1,5 +1,8 @@
-use crate::inline::footnote::predicate::is_valid_footnote_label;
-use crate::inline::link::predicate::is_valid_link_label;
+use crate::inline::{
+    macros::predicate::read_macro,
+    link::predicate::is_valid_link_label,
+    footnote::predicate::is_valid_footnote_label
+};
 use crate::container::codefence::predicate::is_valid_info_string;
 use crate::ast::line::Line;
 use crate::utils::*;
@@ -145,4 +148,25 @@ impl Line {
         }
 
     }
+
+    #[inline]
+    pub fn is_multiline_macro(&self) -> bool {
+        self.indent < 4 && read_macro(&self.content, 0).is_some() && {
+
+            // trailing whitespaces are okay, but the other characters are not allowed
+            let mut curr_index = get_bracket_end_index(&self.content, 0).unwrap() + 1;
+
+            while curr_index < self.content.len() {
+
+                if self.content[curr_index] != ' ' as u16 {
+                    return false;
+                }
+
+            }
+
+            true
+        }
+
+    }
+
 }

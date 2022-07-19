@@ -37,11 +37,7 @@ impl InlineNode {
         // it prevents inline elements inside code spans from being rendered
         // code spans are rendered later
         let mut content = escape_code_spans(content);
-
-        // inline elements inside math blocks are not rendered
-        if render_option.render_macro {
-            content = escape_inside_math_blocks(content);
-        }
+        content = escape_inside_math_blocks(content);
 
         let mut index = 0;
 
@@ -403,27 +399,23 @@ impl InlineNode {
                 _ => {}
             }
 
-            if render_option.render_macro {
+            match check_and_parse_macro_inline(&content, index, doc_data, render_option) {
+                Some((parsed, last_index)) => {
+                    let mut result = vec![];
 
-                match check_and_parse_macro_inline(&content, index, doc_data, render_option) {
-                    Some((parsed, last_index)) => {
-                        let mut result = vec![];
-
-                        if index > 0 {
-                            result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                        }
-
-                        result.push(Box::new(parsed));
-
-                        if last_index + 1 < content.len() {
-                            result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
-                        }
-
-                        return InlineNode::Complex(result).render_code_spans();
+                    if index > 0 {
+                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
-                    _ => {}
-                }
 
+                    result.push(Box::new(parsed));
+
+                    if last_index + 1 < content.len() {
+                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                    }
+
+                    return InlineNode::Complex(result).render_code_spans();
+                }
+                _ => {}
             }
 
             index += 1;

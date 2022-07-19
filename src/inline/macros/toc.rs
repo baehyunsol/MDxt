@@ -33,10 +33,7 @@ impl AST {
         let toc_mdxt = toc_mdxt.join(&['\n' as u16][..]);
         let lines = code_to_lines(&toc_mdxt);
 
-        let mut render_option = self.render_option.clone();
-        render_option.enable_macro(false);
-
-        let mut result = AST::from_lines(lines, &render_option);
+        let mut result = AST::from_lines(lines, &self.render_option);
         result.doc_data = self.doc_data.clone();
         result.doc_data.has_toc = false;  // to prevent infinite recursion
         result.parse_inlines();

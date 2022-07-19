@@ -1,5 +1,6 @@
 pub mod predicate;
 pub mod toc;
+pub mod multiline;
 mod parse;
 mod validate;
 
@@ -12,14 +13,14 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
-    static ref MACROS: HashMap<Vec<u16>, Macro> = Macro::get_all_macros();
+    pub static ref MACROS: HashMap<Vec<u16>, Macro> = Macro::get_all_macros();
 }
 
 #[derive(Debug)]
 pub struct Macro {
     pub name: Vec<u16>,
     macro_type: MacroType,
-    no_closing: bool
+    pub has_closing: bool
 }
 
 #[derive(Debug)]
@@ -41,18 +42,18 @@ impl Macro {
             Self::new_alignment("center"),
             Self::new_alignment("left"),
             Self::new_alignment("right"),
-            Self::new("highlight", MacroType::Highlight, false),
-            Self::new("box", MacroType::Box, false),
-            Self::new("toc", MacroType::Toc, true),
-            Self::new("blank", MacroType::Blank, true),
-            Self::new("br", MacroType::Br, true),
-            Self::new("char", MacroType::Char, true),
-            Self::new("math", MacroType::Math, false),
-            Self::new("icon", MacroType::Icon, true),
-            Self::new("div", MacroType::HTML, false),
-            Self::new("span", MacroType::HTML, false),
-            Self::new("anchor", MacroType::HTML, false),
-            Self::new("button", MacroType::HTML, false),
+            Self::new("highlight", MacroType::Highlight, true),
+            Self::new("box", MacroType::Box, true),
+            Self::new("toc", MacroType::Toc, false),
+            Self::new("blank", MacroType::Blank, false),
+            Self::new("br", MacroType::Br, false),
+            Self::new("char", MacroType::Char, false),
+            Self::new("math", MacroType::Math, true),
+            Self::new("icon", MacroType::Icon, false),
+            Self::new("div", MacroType::HTML, true),
+            Self::new("span", MacroType::HTML, true),
+            Self::new("anchor", MacroType::HTML, true),
+            Self::new("button", MacroType::HTML, true),
         ];
 
         for color in COLOR_NAMES.iter() {
@@ -68,9 +69,9 @@ impl Macro {
         result
     }
 
-    fn new(name: &str, macro_type: MacroType, no_closing: bool) -> Self {
+    fn new(name: &str, macro_type: MacroType, has_closing: bool) -> Self {
         Macro {
-            name: into_v16(name), macro_type, no_closing
+            name: into_v16(name), macro_type, has_closing
         }
     }
 
@@ -78,7 +79,7 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Color,
-            no_closing: false
+            has_closing: true
         }
     }
 
@@ -86,7 +87,7 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Size,
-            no_closing: false
+            has_closing: true
         }
     }
 
@@ -94,11 +95,11 @@ impl Macro {
         Macro {
             name: into_v16(name),
             macro_type: MacroType::Alignment,
-            no_closing: false
+            has_closing: true
         }
     }
 
-    fn get_closing_macro(&self) -> Vec<u16> {
+    pub fn get_closing_macro(&self) -> Vec<u16> {
         vec![
             into_v16("/"),
             self.name.clone()

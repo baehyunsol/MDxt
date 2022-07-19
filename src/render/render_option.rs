@@ -1,7 +1,6 @@
 use crate::inline::link::predicate::is_valid_link_destination;
 use crate::container::header::normalize_header;
 use crate::utils::{into_v16, from_v16};
-use std::collections::HashSet;
 
 #[derive(Clone)]
 pub struct RenderOption {
@@ -11,10 +10,7 @@ pub struct RenderOption {
 
     /// give `id` attributes to header tags
     pub header_anchor: bool,
-    pub render_macro: bool,
     pub parse_metadata: bool,
-
-    pub disabled_macros: HashSet<Vec<u16>>,
 
     /// Javascript is required to render collapsible tables and math formulas.
     /// If this option is true, the engine will add javascript codes when needed.
@@ -28,9 +24,7 @@ impl Default for RenderOption {
         RenderOption {
             link_handler: default_link_handler,
             header_anchor: true,
-            render_macro: true,
             parse_metadata: true,
-            disabled_macros: HashSet::new(),
             javascript: true
         }
     }
@@ -49,18 +43,8 @@ impl RenderOption {
         self
     }
 
-    pub fn enable_macro(&mut self, enable_macro: bool) -> &mut Self {
-        self.render_macro = enable_macro;
-        self
-    }
-
     pub fn enable_metadata(&mut self, parse_metadata: bool) -> &mut Self {
         self.parse_metadata = parse_metadata;
-        self
-    }
-
-    pub fn disable_macro(&mut self, macro_: &str) -> &mut Self {
-        self.disabled_macros.insert(into_v16(macro_));
         self
     }
 
