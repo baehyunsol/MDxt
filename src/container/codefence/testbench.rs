@@ -338,7 +338,7 @@ fn main() {
         <td class=\"index\">3</td>
         <td><span class=\"color_white\">}</span></td>
     </tr>
-    <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
+    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
 <script>
 const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
@@ -367,7 +367,7 @@ fn main() {
         <td class=\"index\">7</td>
         <td><span class=\"color_white\">}</span></td>
     </tr>
-    <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
+    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
 <script>
 const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
@@ -389,7 +389,7 @@ function copy_code_to_clipboard(index) {
 ", "
 <pre><code><table><tbody>
     <tr><td class=\"index\">1</td><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr>
-    <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
+    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
 
 <script>
@@ -476,27 +476,27 @@ function copy_code_to_clipboard(index) {
 # Copy Button test
 
 ```copy_button
-Nothing
+Nothing1
 ```
 
 ```copy_button
-Nothing
+Nothing2
 ```
 ", "
 <h1 id=\"copy-button-test\">Copy Button test</h1>
 
 <pre><code><table><tbody>
-    <tr><td>Nothing</td></tr>
-    <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
+    <tr><td>Nothing1</td></tr>
+    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
 </tbody></table></code></pre>
 
 <pre><code><table><tbody>
-    <tr><td>Nothing</td></tr>
-    <tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button></td></tr>
+    <tr><td>Nothing2</td></tr>
+    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button></td></tr>
 </tbody></table></code></pre>
 
 <script>
-const fenced_code_block_contents = [\"Nothing\", \"Nothing\"];
+const fenced_code_block_contents = [\"Nothing1\", \"Nothing2\"];
 
 function copy_code_to_clipboard(index) {
     navigator.clipboard.writeText(fenced_code_block_contents[index]);

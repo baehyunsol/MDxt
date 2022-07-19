@@ -301,6 +301,40 @@ body .markdown {
 
 }
 
+/* Alignments */
+.markdown {
+
+    .align_center {
+        text-align: center;
+
+        table, img, .box, blockquote, svg {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    }
+
+    .align_right {
+        text-align: right;
+
+        table, img, .box, blockquote, svg {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+    }
+
+    .align_left {
+        text-align: left;
+
+        table, img, .box, blockquote, svg {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+    }
+}
+
 /* Headers */
 .markdown {
 
@@ -432,6 +466,10 @@ body .markdown {
             background-color: $dark;
         }
 
+        tr.copy-button-row:hover td {
+            background-color: $black;
+        }
+
         tr.highlight td {
             background-color: $black_compl;
             color: $white_compl;
@@ -509,6 +547,21 @@ body .markdown {
 
         
 
+    }
+
+    button.copy-fenced-code {
+        background-color: #0000;
+        border: none;
+        color: $white;
+        font-size: $font_medium;
+        padding: $padding_small;
+        border-radius: 6px;
+        transition: background-color 0.5s ease-out;
+    }
+
+    button.copy-fenced-code:hover {
+        background-color: $white_trans;
+        transition: background-color 0.5s ease-out;
     }
 
 }

@@ -208,6 +208,29 @@ body .markdown hr.footnote_hr {
   font-size: 33px;
 }
 
+/* Alignments */
+.markdown .align_center {
+  text-align: center;
+}
+.markdown .align_center table, .markdown .align_center img, .markdown .align_center .box, .markdown .align_center blockquote, .markdown .align_center svg {
+  margin-left: auto;
+  margin-right: auto;
+}
+.markdown .align_right {
+  text-align: right;
+}
+.markdown .align_right table, .markdown .align_right img, .markdown .align_right .box, .markdown .align_right blockquote, .markdown .align_right svg {
+  margin-left: auto;
+  margin-right: 0;
+}
+.markdown .align_left {
+  text-align: left;
+}
+.markdown .align_left table, .markdown .align_left img, .markdown .align_left .box, .markdown .align_left blockquote, .markdown .align_left svg {
+  margin-left: 0;
+  margin-right: auto;
+}
+
 /* Headers */
 .markdown h1 {
   font-size: 66px;
@@ -309,6 +332,9 @@ body .markdown hr.footnote_hr {
 .markdown pre tr:hover td {
   background-color: #404040;
 }
+.markdown pre tr.copy-button-row:hover td {
+  background-color: #000000;
+}
 .markdown pre tr.highlight td {
   background-color: #ffffff;
   color: #000000;
@@ -354,6 +380,19 @@ body .markdown hr.footnote_hr {
 }
 .markdown pre tr.highlight td .color_gold {
   color: #003fbf;
+}
+.markdown button.copy-fenced-code {
+  background-color: #0000;
+  border: none;
+  color: #ffffff;
+  font-size: 21px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color 0.5s ease-out;
+}
+.markdown button.copy-fenced-code:hover {
+  background-color: #ffffff80;
+  transition: background-color 0.5s ease-out;
 }
 
 /* Code Spans */

@@ -80,7 +80,31 @@ foo class
 ", "
 <p><br/></p><p>&nbsp;</p><p><br/></p>
 "
-)
+), ("
+[[giant]]
+
+[[center]]
+
+Giant and Center
+
+[[/center]]
+
+[[/giant]]
+", "
+<div class=\"size_giant\"><div class=\"align_center\"><p>Giant and Center</p></div></div>
+"), ("
+[[giant]]
+
+[[center]]
+
+Macros are not properly closed, but they're still rendered. Don't do this.
+
+[[/giant]]
+
+[[/center]]
+", "
+<div class=\"size_giant\"><div class=\"align_center\"><p>Macros are not properly closed, but they&apos;re still rendered. Don&apos;t do this.</p></div></div>
+")
     ];
 
     result.into_iter().map(

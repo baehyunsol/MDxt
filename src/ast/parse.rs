@@ -54,13 +54,6 @@ impl AST {
 
         'outer_loop: while index < lines.len() {
 
-            if macro_closing_indexes.len() > 0 && macro_closing_indexes[macro_closing_indexes.len() - 1] == index {
-                add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                curr_nodes.push(Node::new_macro(&lines[index]));
-                index += 1;
-                continue;
-            }
-
             match &curr_parse_state {
                 ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => {
 
@@ -84,7 +77,15 @@ impl AST {
                 },
                 ParseState::Paragraph => {
 
-                    if lines[index].is_code_fence_begin() {
+                    if macro_closing_indexes.contains(&index) {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        curr_nodes.push(Node::new_macro(&lines[index]));
+                        macro_closing_indexes = macro_closing_indexes.into_iter().filter(|i| *i != index).collect();
+                        index += 1;
+                        continue;
+                    }
+
+                    else if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_parse_state = read_code_fence_info(&lines[index], fenced_code_count);
                     }
@@ -196,7 +197,15 @@ impl AST {
                 },
                 ParseState::None => {
 
-                    if lines[index].is_code_fence_begin() {
+                    if macro_closing_indexes.contains(&index) {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        curr_nodes.push(Node::new_macro(&lines[index]));
+                        macro_closing_indexes = macro_closing_indexes.into_iter().filter(|i| *i != index).collect();
+                        index += 1;
+                        continue;
+                    }
+
+                    else if lines[index].is_code_fence_begin() {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_parse_state = read_code_fence_info(&lines[index], fenced_code_count);
                     }
