@@ -35,3 +35,7 @@ pretty output
 ---
 
 link에 그냥 `index.md`라고 적으면 `https://blog.com/index.md`처럼 앞에다가 prefix 주소 붙여주기! prefix도 정할 수 있게 하자!
+
+---
+
+link 안에 square bracket 들어간다고 무작정 자르지 말고, macro랑 형태가 동일할 때만 자르자!

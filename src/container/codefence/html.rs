@@ -29,7 +29,7 @@ impl FencedCode {
             rows.push(
                 into_v16(
                     &format!(
-                        "<tr><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button></td></tr>",
+                        "<tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button></td></tr>",
                         self.index
                     )
                 )
