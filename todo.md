@@ -34,12 +34,14 @@ pretty output
 
 ---
 
-link에 그냥 `index.md`라고 적으면 `https://blog.com/index.md`처럼 앞에다가 prefix 주소 붙여주기! prefix도 정할 수 있게 하자!
-
----
-
 link 안에 square bracket 들어간다고 무작정 자르지 말고, macro랑 형태가 동일할 때만 자르자!
 
 ---
 
 list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으로 들어가버림. 아마 blockquote도 동일할 듯. table도 실험해보셈. 저게 맞는 동작인지 아닌지는 고민을 좀 해보자
+
+---
+
+`[[blank = 3]]` -> `&nbsp;&nbsp;&nbsp;`
+
+`[[br = 2]]` -> `<br/><br/>`

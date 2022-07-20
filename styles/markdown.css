@@ -12,6 +12,10 @@ body .markdown ::selection {
 body .markdown hr.footnote_hr {
   margin-top: 60px;
 }
+body .markdown img {
+  max-width: 450px;
+  max-height: 450px;
+}
 
 /* Blockquote */
 .markdown blockquote {
@@ -195,17 +199,37 @@ body .markdown hr.footnote_hr {
 .markdown .size_tiny {
   font-size: 13px;
 }
+.markdown .size_tiny img {
+  max-width: 250px;
+  max-height: 250px;
+}
 .markdown .size_small {
   font-size: 16px;
+}
+.markdown .size_small img {
+  max-width: 350px;
+  max-height: 350px;
 }
 .markdown .size_medium {
   font-size: 21px;
 }
+.markdown .size_medium img {
+  max-width: 450px;
+  max-height: 450px;
+}
 .markdown .size_big {
   font-size: 25px;
 }
+.markdown .size_big img {
+  max-width: 600px;
+  max-height: 600px;
+}
 .markdown .size_giant {
   font-size: 33px;
+}
+.markdown .size_giant img {
+  max-width: 720px;
+  max-height: 720px;
 }
 
 /* Alignments */

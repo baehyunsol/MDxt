@@ -5,7 +5,14 @@ use crate::utils::{into_v16, from_v16};
 #[derive(Clone)]
 pub struct RenderOption {
 
-    /// when rendering `[Lable](Link)` to html, `Link` goes through this function
+    /// when rendering `[Lable](Link)` to html, `Link` goes through this function.
+    /// The link first goes through the default handler then the given function.
+    /// If you don't give any function, it'll only go through the default handler.
+    /// The default handler does two things
+    /// - reject links with invalid characters
+    /// - normalize anchors
+    ///  - make alphabets lowercase
+    ///  - replace whitespaces with dashes
     pub link_handler: fn(&str) -> String,
 
     /// give `id` attributes to header tags
@@ -22,7 +29,7 @@ impl Default for RenderOption {
 
     fn default() -> Self {
         RenderOption {
-            link_handler: default_link_handler,
+            link_handler: |s| s.to_string(),
             header_anchor: true,
             parse_metadata: true,
             javascript: true
@@ -51,6 +58,11 @@ impl RenderOption {
     pub fn enable_javascript(&mut self, javascript: bool) -> &mut Self {
         self.javascript = javascript;
         self
+    }
+
+    /// it's used internally by the engine
+    pub fn handle_link(&self, link: &str) -> String {
+        (self.link_handler)(&default_link_handler(link))
     }
 
 }

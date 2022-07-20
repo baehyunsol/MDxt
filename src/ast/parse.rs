@@ -243,7 +243,7 @@ impl AST {
                         }
 
                         else {
-                            link_references.insert(normalize_link(&link_label), into_v16(&(options.link_handler)(&from_v16(&link_destination))));
+                            link_references.insert(normalize_link(&link_label), into_v16(&options.handle_link(&from_v16(&link_destination))));
                         }
 
                     }

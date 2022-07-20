@@ -274,14 +274,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 
@@ -315,14 +315,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 
@@ -379,14 +379,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&(render_option.link_handler)(&from_v16(&link_destination)))
+                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
                         }));
                     }
 

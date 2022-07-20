@@ -17,6 +17,11 @@ body .markdown {
         margin-top: $h1_margin;
     }
 
+    img {
+        max-width: $image_medium;
+        max-height: $image_medium;
+    }
+
 }
 
 /* Blockquote */
@@ -279,25 +284,52 @@ body .markdown {
 /* Sizes */
 .markdown {
 
+    
     .size_tiny {
         font-size: $font_tiny;
-    }
 
+        img {
+            max-width: $image_tiny;
+            max-height: $image_tiny;
+        }
+    }
+    
     .size_small {
         font-size: $font_small;
-    }
 
+        img {
+            max-width: $image_small;
+            max-height: $image_small;
+        }
+    }
+    
     .size_medium {
         font-size: $font_medium;
-    }
 
+        img {
+            max-width: $image_medium;
+            max-height: $image_medium;
+        }
+    }
+    
     .size_big {
         font-size: $font_big;
-    }
 
+        img {
+            max-width: $image_big;
+            max-height: $image_big;
+        }
+    }
+    
     .size_giant {
         font-size: $font_giant;
+
+        img {
+            max-width: $image_giant;
+            max-height: $image_giant;
+        }
     }
+    
 
 }
 
