@@ -10,7 +10,7 @@ pub struct MultiLineMacro {
 
 #[derive(Clone)]
 enum MultiLineMacroType {
-    Box,
+    Box { border: bool },
     Color(Vec<u16>),
     Size(Vec<u16>),
     Alignment(Vec<u16>),
@@ -48,7 +48,10 @@ impl MultiLineMacro {
 
         match macro_type {
             MacroType::Box => MultiLineMacro {
-                macro_type: MultiLineMacroType::Box,
+
+                // for now, `no border` is the only valid argument for the `Box` macro
+                // so a valid `Box` macro with more than 1 argument has no border
+                macro_type: MultiLineMacroType::Box { border: macro_arguments.len() == 1 },
                 is_closing
             },
             MacroType::Color => MultiLineMacro {
@@ -116,7 +119,11 @@ impl MultiLineMacro {
         else {
 
             match &self.macro_type {
-                MultiLineMacroType::Box => into_v16("<div class=\"box\">"),
+                MultiLineMacroType::Box { border } => if *border {
+                    into_v16("<div class=\"box\">")
+                } else {
+                    into_v16("<div class=\"box no-border\">")
+                },
                 MultiLineMacroType::Color(color) => vec![
                     into_v16("<div class=\"color_"),
                     color.clone(),

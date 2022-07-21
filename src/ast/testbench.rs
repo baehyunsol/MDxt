@@ -139,12 +139,21 @@ A paragraph in a box in a box.
 
 [[/box]]
 
+[[box, no border]]
+
+A paragraph in a borderless box in a box.
+
+[[/box]]
+
 [[/box]]
 ", "
 <div class=\"box\">
     <p>A paragraph in a box.</p>
     <div class=\"box\">
         <p>A paragraph in a box in a box.</p>
+    </div>
+    <div class=\"box no-border\">
+        <p>A paragraph in a borderless box in a box.</p>
     </div>
 </div>
 ")
