@@ -53,7 +53,10 @@ impl Macro {
             },
 
             MacroType::Box => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Box),
+
+                // for now, `no border` is the only valid argument for the `Box` macro
+                // so a valid `Box` macro with more than 1 argument has no border
+                deco_type: DecorationType::Macro(InlineMacro::Box { border: arguments.len() == 1 }),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 

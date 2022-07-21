@@ -91,19 +91,27 @@ Giant and Center
 
 [[/giant]]
 ", "
-<div class=\"size_giant\"><div class=\"align_center\"><p>Giant and Center</p></div></div>
+<div class=\"size_giant\">
+    <div class=\"align_center\">
+        <p>Giant and Center</p>
+    </div>
+</div>
 "), ("
 [[giant]]
 
 [[center]]
 
-Macros are not properly closed, but they're still rendered. Don't do this.
+Macros are not properly closed.
 
 [[/giant]]
 
 [[/center]]
 ", "
-<div class=\"size_giant\"><div class=\"align_center\"><p>Macros are not properly closed, but they&apos;re still rendered. Don&apos;t do this.</p></div></div>
+<p>[[giant]]</p>
+<p>[[center]]</p>
+<p>Macros are not properly closed.</p>
+<p>[[/giant]]</p>
+<p>[[/center]]</p>
 "), ("
 [[highlight = red]]
 
@@ -119,6 +127,25 @@ Red Span
     <span class=\"foo\" id=\"bar\">
         <p>Red Span</p>
     </span>
+</div>
+"), ("
+[[box]]
+
+A paragraph in a box.
+
+[[box]]
+
+A paragraph in a box in a box.
+
+[[/box]]
+
+[[/box]]
+", "
+<div class=\"box\">
+    <p>A paragraph in a box.</p>
+    <div class=\"box\">
+        <p>A paragraph in a box in a box.</p>
+    </div>
 </div>
 ")
     ];

@@ -79,7 +79,7 @@ pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u16>>) -> String {
     #[cfg(test)]
     assert!(codes.len() > 0);
 
-    let mut codes = codes.iter().map(
+    let codes = codes.iter().map(
         |(index, code)| (*index, from_v16(code))
     ).collect::<Vec<(usize, String)>>();
 

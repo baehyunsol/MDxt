@@ -45,7 +45,7 @@ pub enum InlineMacro {
     Highlight(Vec<u16>),
     Char(u16),
     Math(Vec<u16>),
-    Box,
+    Box { border: bool },
     Toc,
     Blank,
     Br,
@@ -157,8 +157,12 @@ impl InlineNode {
                         content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
-                    InlineMacro::Box => vec![
-                        into_v16("<div class=\"box\">"),
+                    InlineMacro::Box { border } => vec![
+                        if *border {
+                            into_v16("<div class=\"box\">")
+                        } else {
+                            into_v16("<div class=\"box no-border\">")
+                        },
                         content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</div>")
                     ].concat(),
@@ -290,8 +294,12 @@ impl InlineNode {
                         content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/highlight]]")
                     ].concat(),
-                    InlineMacro::Box => vec![
-                        into_v16("[[box]]"),
+                    InlineMacro::Box { border } => vec![
+                        if *border {
+                            into_v16("[[box]]")
+                        } else {
+                            into_v16("[[box, no border]]")
+                        },
                         content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/box]]"),
                     ].concat(),

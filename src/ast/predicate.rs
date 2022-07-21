@@ -162,6 +162,7 @@ impl Line {
                     return false;
                 }
 
+                curr_index += 1;
             }
 
             true

@@ -257,17 +257,61 @@ impl AST {
                         match MACROS.get(&macro_name) {
                             // if it has a closing, find its partner
                             Some(macro_) if macro_.has_closing && macro_.is_valid(&macro_arguments) => {
-                                let closing_macro = macro_.get_closing_macro();
                                 let mut macro_closing_index = index + 1;
+
+                                let mut inner_macro_stack = vec![macro_.clone()];
+                                let mut curr_closing_macro = macro_.get_closing_macro();
 
                                 while macro_closing_index < lines.len() {
 
-                                    if lines[macro_closing_index].is_multiline_macro() &&
-                                    read_macro(&lines[macro_closing_index].content, 0).unwrap() == closing_macro {
-                                        curr_nodes.push(Node::new_macro(&lines[index]));
-                                        macro_closing_indexes.push(macro_closing_index);
-                                        index += 1;
-                                        continue 'outer_loop;
+                                    if lines[macro_closing_index].is_multiline_macro() {
+                                        let curr_macro = read_macro(&lines[macro_closing_index].content, 0).unwrap();
+
+                                        if curr_macro == curr_closing_macro {
+                                            inner_macro_stack.pop().unwrap();
+
+                                            if inner_macro_stack.len() == 0 {
+                                                curr_nodes.push(Node::new_macro(&lines[index]));
+                                                macro_closing_indexes.push(macro_closing_index);
+                                                index += 1;
+                                                continue 'outer_loop;
+                                            }
+
+                                            else {
+                                                curr_closing_macro = inner_macro_stack[inner_macro_stack.len() - 1].get_closing_macro();
+                                                macro_closing_index += 1;
+                                                continue;
+                                            }
+
+                                        }
+
+                                        let curr_macro_arguments = parse_arguments(&curr_macro);
+                                        let curr_macro_name = get_macro_name(&curr_macro_arguments);
+
+                                        match MACROS.get(&curr_macro_name) {
+                                            Some(inner_macro) if inner_macro.has_closing && inner_macro.is_valid(&curr_macro_arguments) => {
+                                                inner_macro_stack.push(inner_macro.clone());
+                                                curr_closing_macro = inner_macro.get_closing_macro();
+                                            },
+                                            _ => {
+                                                if curr_macro[0] == '/' as u16 {
+                                                    let possibly_another_macro = curr_macro[1..].to_vec();
+
+                                                    // it assumes that all the closing macros have the same form: `'/' + macro_name`
+                                                    match MACROS.get(&possibly_another_macro) {
+                                                        // it's always valid because I checked `MACROS.get(macro)`, not `MACROS.get(macro_name)`
+                                                        // if a valid macro is found here, that means the very first macro is not properly closed
+                                                        Some(another_macro) if another_macro.has_closing => {
+                                                            break;
+                                                        }
+                                                        _ => {}
+                                                    }
+
+                                                }
+
+                                            }
+                                        }
+
                                     }
 
                                     macro_closing_index += 1;

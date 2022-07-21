@@ -11,7 +11,10 @@ impl Macro {
             // no args, only a name
             MacroType::Br | MacroType::Blank | MacroType::Color |
             MacroType::Size | MacroType::Alignment | MacroType::Toc |
-            MacroType::Box | MacroType::Math => arguments.len() == 1 && arguments[0].len() == 1,
+            MacroType::Math => arguments.len() == 1 && arguments[0].len() == 1,
+
+            MacroType::Box => (arguments.len() == 1 && arguments[0].len() == 1) ||
+            (arguments.len() == 2 && arguments[1].len() == 1 && arguments[1][0] == into_v16("noborder")),
 
             MacroType::Char => arguments.len() == 1 && arguments[0].len() == 2 && match to_int(&arguments[0][1]) {
                 Some(n) => n < u16::MAX as u32,
