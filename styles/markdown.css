@@ -195,6 +195,17 @@ body .markdown img {
   background-color: #003fbf;
 }
 
+/* Box */
+.markdown div.box {
+  width: 80%;
+  padding: 12px;
+  margin: 12px;
+  border: 3px solid #808080;
+}
+.markdown div.box.no-border {
+  border: none;
+}
+
 /* Sizes */
 .markdown .size_tiny {
   font-size: 13px;

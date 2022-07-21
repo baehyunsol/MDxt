@@ -9,10 +9,10 @@ pub fn random(mut seed: usize) -> usize {
 
 #[test]
 fn renderer() {
-    use crate::render_showcase;
+    use crate::render_reference;
     use std::fs::File;
     use std::io::Write;
 
-    let mut f = File::create("showcase.html").unwrap();
-    f.write_all(render_showcase().as_bytes()).unwrap();
+    let mut f = File::create("reference.html").unwrap();
+    f.write_all(render_reference().as_bytes()).unwrap();
 }

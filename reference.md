@@ -1,3 +1,8 @@
+---
+date: [2022, 7, 15]
+tags: [mdxt]
+---
+
 # MDxt Reference
 
 MDxt is an extended version of Markdown.
@@ -37,21 +42,106 @@ MDxt is an extended version of Markdown.
 
 ### Images
 
+A valid link after a bang(!) character is rendered to an `img` tag.
+
+`![abc](def)` is rendered to `<img src="def" alt="abc">`.
+
 ### Footnotes
 
 ## Containers
 
 ### Headers
 
-***Inline macros don't work in headers!***
+`### Headers` is rendered to `<h3>Headers</h3>`.
 
 ### Tables
+
+#### Column Alignments
+
+#### Multiline Table Head
+
+#### Colspan
+
+#### Collapsible Tables
+
+```
+| Click Me! (Default shown)              |
+|----------------------------------------|
+|!![[collapsible, default=shown]]        |
+| Hi, there!                             |
+
+| Click Me! (Default hidden)            |
+|---------------------------------------|
+|!![[collapsible, default=hidden]]      |
+| Hi, there!                            |
+```
+| Click Me! (Default shown)              |
+|----------------------------------------|
+|!![[collapsible, default=shown]]        |
+| Hi, there!                             |
+
+| Click Me! (Default hidden)            |
+|---------------------------------------|
+|!![[collapsible, default=hidden]]      |
+| Hi, there!                            |
 
 ### Lists
 
 #### Task list
 
 ### Fenced Code Blocks
+
+````
+```rust, line_num, highlight(6, 17, 22)
+/*
+    multiline
+    comment
+*/
+// single line comment
+fn main() {
+    let mut x = 3;
+    let mut y = if x == 3 {
+        4
+    } else {
+        5
+    };
+    println!("Hello World!\n");
+    println!("{:?}", 3 + 4);
+}
+
+pub struct Point {
+    x: f32,
+    y: f32
+}
+
+pub const CONST: u32 = 1;
+```
+````
+
+```rust, line_num, highlight(6, 17, 22)
+/*
+    multiline
+    comment
+*/
+// single line comment
+fn main() {
+    let mut x = 3;
+    let mut y = if x == 3 {
+        4
+    } else {
+        5
+    };
+    println!("Hello World!\n");
+    println!("{:?}", 3 + 4);
+}
+
+pub struct Point {
+    x: f32,
+    y: f32
+}
+
+pub const CONST: u32 = 1;
+```
 
 ### Blockquotes
 
@@ -66,19 +156,94 @@ MDxt doesn't support setext headers and indented code blocks.
 
 Macros are inline elements. Which means an opening macro and the closing one has to be in the same paragraph. But there are many cases where you want to apply macros to multiple paragraphs. Read [multiline macro] section for that.
 
+A valid macro consists of `A-Z`, `a-z`, `0-9`, `=`, `,`, `_`, and ` `. If a double square bracket contains invalid characters, that won't be parsed as a macro. Whitespaces and `_`s inside macros are ignored, and all the alphabet characters are lowered. That means `[[box, no_border]]` and `[[box, n o border]]` are exactly the same macro.
+
 ### Colors
 
-It has 14 colors.
+It has 14 colors: black, dark, gray, lightgray, white, red, green, blue, aqua, emerald, violet, pink, grassgreen, and gold.
 
 `[[red]] abc [[/red]]` is rendered to `<span class="color_red"> abc </span>`. The same rule is applied to the other colors.
 
+| MDxt                                 | html                                              | output                              |
+|--------------------------------------|---------------------------------------------------|-------------------------------------|
+|\[[black]] black [[/black]]           | <span class="color_black"> black </span>          | [[black]] black [[/black]]          |
+|\[[dark]] dark [[/dark]]               | <span class="color_dark"> dark </span>             | [[dark]] dark [[/dark]]              |
+|\[[gray]] gray [[/gray]]               | <span class="color_gray"> gray </span>             | [[gray]] gray [[/gray]]              |
+|\[[lightgray]] lightgray [[/lightgray]]     | <span class="color_lightgray"> lightgray </span>        | [[lightgray]] lightgray [[/lightgray]]    |
+|\[[white]] white [[/white]]             | <span class="color_white"> white </span>            | [[white]] white [[/white]]            |
+|\[[red]] red [[/red]]                 | <span class="color_red"> red </span>              | [[red]] red [[/red]]                |
+|\[[green]] green [[/green]]             | <span class="color_green"> green </span>            | [[green]] green [[/green]]            |
+|\[[blue]] blue [[/blue]]               | <span class="color_blue"> blue </span>             | [[blue]] blue [[/blue]]              |
+|\[[aqua]] aqua [[/aqua]]               | <span class="color_aqua"> aqua </span>             | [[aqua]] aqua [[/aqua]]              |
+|\[[emerald]] emerald [[/emerald]]         | <span class="color_emerald"> emerald </span>          | [[emerald]] emerald [[/emerald]]        |
+|\[[violet]] violet [[/violet]]           | <span class="color_violet"> violet </span>           | [[violet]] violet [[/violet]]          |
+|\[[pink]] pink [[/pink]]               | <span class="color_pink"> pink </span>             | [[pink]] pink [[/pink]]              |
+|\[[grassgreen]] grassgreen [[/grassgreen]]   | <span class="color_grassgreen"> grassgreen </span>       | [[grassgreen]] grassgreen [[/grassgreen]]  |
+|\[[gold]] gold [[/gold]]               | <span class="color_gold"> gold </span>             | [[gold]] gold [[/gold]]              |
+
 ### Sizes
+
+It has 5 sizes: tiny, small, medium, big, and giant.
+
+`[[tiny]] tiny [[/tiny]]` is rendered to `<span class="size_tiny"> tiny </span>`. The same rule is applied to the other sizes.
 
 ### Alignments
 
+It has 3 alignments: left, right, and center.
+
+`[[center]] center [[/center]]` is rendered to `<span class="align_center"> center </span>`. The same rule is applied to the other alignments.
+
+Inline alignments are rendered to `span` tags and multi-lines are rendered to `div`. In most cases, `span` tags don't work with alignments.
+
 ### Highlights
 
+`[[highlight = red]] This text is highlighted! [[/highlight]]` is rendered to `<span class="highlight_red"> This text is highlighted! </span>`. The same rule is applied to the other colors.
+
+To see available colors, read [Colors](#colors) section.
+
 ### Box
+
+`[[box]]A text in a box.[[/box]]` is rendered to `<div class="box">A text in a box.</div>`.
+
+`[[box, no border]]A text in a box.[[/box]]` is rendered to `<div class="box no-border">A text in a box.</div>`.
+
+```
+[[box]]
+
+A paragraph in a box.
+
+[[box]]
+
+A paragraph in a box in a box.
+
+[[/box]]
+
+[[box, no border]]
+
+A paragraph in a borderless box in a box.
+
+[[/box]]
+
+[[/box]]
+```
+
+[[box]]
+
+A paragraph in a box.
+
+[[box]]
+
+A paragraph in a box in a box.
+
+[[/box]]
+
+[[box, no border]]
+
+A paragraph in a borderless box in a box.
+
+[[/box]]
+
+[[/box]]
 
 ### Table of Contents
 
@@ -91,6 +256,22 @@ WIP
 ### Math
 
 ### Multiline Macro
+
+If a paragraph has a macro and no other contents at all, the paragraph is rendered to a multiline macro.
+
+```
+[[red]]
+
+These 3 paragraphs are
+
+rendered to
+
+red texts.
+
+[[/red]]
+```
+
+As you see above, the first and the last paragraph only consist of a macro. The macro will be rendered to `<div class="color_red">`.
 
 [multiline macro]: #multiline-macro
 

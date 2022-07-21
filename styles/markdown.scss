@@ -55,7 +55,6 @@ body .markdown {
     .highlight_black::selection {
         background-color: $black_compl;
     }
-
     
     .color_dark {
         color: $dark;
@@ -72,7 +71,6 @@ body .markdown {
     .highlight_dark::selection {
         background-color: $dark_compl;
     }
-
     
     .color_gray {
         color: $gray;
@@ -89,7 +87,6 @@ body .markdown {
     .highlight_gray::selection {
         background-color: $gray_compl;
     }
-
     
     .color_lightgray {
         color: $lightgray;
@@ -106,7 +103,6 @@ body .markdown {
     .highlight_lightgray::selection {
         background-color: $lightgray_compl;
     }
-
     
     .color_white {
         color: $white;
@@ -123,7 +119,6 @@ body .markdown {
     .highlight_white::selection {
         background-color: $white_compl;
     }
-
     
     .color_red {
         color: $red;
@@ -140,7 +135,6 @@ body .markdown {
     .highlight_red::selection {
         background-color: $red_compl;
     }
-
     
     .color_green {
         color: $green;
@@ -157,7 +151,6 @@ body .markdown {
     .highlight_green::selection {
         background-color: $green_compl;
     }
-
     
     .color_blue {
         color: $blue;
@@ -174,7 +167,6 @@ body .markdown {
     .highlight_blue::selection {
         background-color: $blue_compl;
     }
-
     
     .color_aqua {
         color: $aqua;
@@ -191,7 +183,6 @@ body .markdown {
     .highlight_aqua::selection {
         background-color: $aqua_compl;
     }
-
     
     .color_emerald {
         color: $emerald;
@@ -208,7 +199,6 @@ body .markdown {
     .highlight_emerald::selection {
         background-color: $emerald_compl;
     }
-
     
     .color_violet {
         color: $violet;
@@ -225,7 +215,6 @@ body .markdown {
     .highlight_violet::selection {
         background-color: $violet_compl;
     }
-
     
     .color_pink {
         color: $pink;
@@ -242,7 +231,6 @@ body .markdown {
     .highlight_pink::selection {
         background-color: $pink_compl;
     }
-
     
     .color_grassgreen {
         color: $grassgreen;
@@ -259,7 +247,6 @@ body .markdown {
     .highlight_grassgreen::selection {
         background-color: $grassgreen_compl;
     }
-
     
     .color_gold {
         color: $gold;
@@ -276,8 +263,23 @@ body .markdown {
     .highlight_gold::selection {
         background-color: $gold_compl;
     }
-
     
+
+}
+
+/* Box */
+.markdown {
+
+    div.box {
+        width: 80%;
+        padding: $padding_medium;
+        margin: $padding_medium;
+        border: $border_medium solid $gray;
+    }
+
+    div.box.no-border {
+        border: none;
+    }
 
 }
 
@@ -511,72 +513,58 @@ body .markdown {
         tr.highlight td .color_black {
             color: $black_compl;
         }
-
         
         tr.highlight td .color_dark {
             color: $dark_compl;
         }
-
         
         tr.highlight td .color_gray {
             color: $gray_compl;
         }
-
         
         tr.highlight td .color_lightgray {
             color: $lightgray_compl;
         }
-
         
         tr.highlight td .color_white {
             color: $white_compl;
         }
-
         
         tr.highlight td .color_red {
             color: $red_compl;
         }
-
         
         tr.highlight td .color_green {
             color: $green_compl;
         }
-
         
         tr.highlight td .color_blue {
             color: $blue_compl;
         }
-
         
         tr.highlight td .color_aqua {
             color: $aqua_compl;
         }
-
         
         tr.highlight td .color_emerald {
             color: $emerald_compl;
         }
-
         
         tr.highlight td .color_violet {
             color: $violet_compl;
         }
-
         
         tr.highlight td .color_pink {
             color: $pink_compl;
         }
-
         
         tr.highlight td .color_grassgreen {
             color: $grassgreen_compl;
         }
-
         
         tr.highlight td .color_gold {
             color: $gold_compl;
         }
-
         
 
     }
