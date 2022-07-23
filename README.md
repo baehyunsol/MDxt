@@ -8,9 +8,9 @@ Some elements require proper CSS files to be rendered. You can either write your
 
 If you wanna know more about MDxt, see these articles.
 
-- [Showcase]
 - [Reference]
 - [API Doc]
+  - Not yet
 
 ## GFM compatibility
 
@@ -21,10 +21,8 @@ MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, 
 I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Because some elements are impossible to convert to GFM formats. They require `<script>` tags in their output HTML, which are not supported in GFM and most other markdown extensions.
 
 [GFM]: https://github.github.com/gfm
-[Showcase]: showcase.md
-[Reference]: https://molla
-[my blog]: https://molla
-[API Doc]: https://molla
+[Reference]: https://blog.baehyunsol.repl.co/MDxt-Reference.html
+[my blog]: https://blog.baehyunsol.repl.co/
 
 ## Contributing
 

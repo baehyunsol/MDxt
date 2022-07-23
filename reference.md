@@ -1,18 +1,24 @@
 ---
-date: [2022, 7, 15]
-tags: [mdxt]
+date: [2022, 7, 23]
+tags: [mdxt, reference, documentation]
 ---
 
 # MDxt Reference
 
 MDxt is an extended version of Markdown.
 
+[[anchor, id = toc sample]][[/anchor]]
+
 | Table of Contents |
 |-------------------|
-|!![[collapsible]]   |
+|!![[collapsible]]  |
 | [[toc]]           |
 
 ## Inline Elements
+
+### `Code spans`
+
+`` `abc` `` is rendered to `<code class="short">abc</code>`. If the first and the last character of the code span is a whitespace, both are ignored. If a code span opens with n `` ` ``s, it has to be closed with the same number n of `` ` ``s.
 
 ### *Italic*
 
@@ -47,6 +53,22 @@ A valid link after a bang(!) character is rendered to an `img` tag.
 `![abc](def)` is rendered to `<img src="def" alt="abc">`.
 
 ### Footnotes
+
+```
+This is a footnote.[^A]
+
+This is another footnote.[^B]
+
+[^A]: Hi, there!
+[^B]: Hello!
+```
+
+This is a footnote.[^A]
+
+This is another footnote.[^B]
+
+[^A]: Hi, there!
+[^B]: Hello!
 
 ## Containers
 
@@ -89,7 +111,19 @@ A valid link after a bang(!) character is rendered to an `img` tag.
 
 #### Task list
 
+```
+- [ ] Unchecked
+- [X] Checked
+- [^] Not yet
+```
+
+- [ ] Unchecked
+- [X] Checked
+- [^] Not yet
+
 ### Fenced Code Blocks
+
+Fenced code blocks are rendered to `<table>` tags in html. Be aware if you're writing custom css files for mdxt.
 
 ````
 ```rust, line_num, highlight(6, 17, 22)
@@ -162,30 +196,36 @@ A valid macro consists of `A-Z`, `a-z`, `0-9`, `=`, `,`, `_`, and ` `. If a doub
 
 It has 14 colors: black, dark, gray, lightgray, white, red, green, blue, aqua, emerald, violet, pink, grassgreen, and gold.
 
-`[[red]] abc [[/red]]` is rendered to `<span class="color_red"> abc </span>`. The same rule is applied to the other colors.
-
 | MDxt                                 | html                                              | output                              |
 |--------------------------------------|---------------------------------------------------|-------------------------------------|
-|\[[black]] black [[/black]]           | <span class="color_black"> black </span>          | [[black]] black [[/black]]          |
-|\[[dark]] dark [[/dark]]               | <span class="color_dark"> dark </span>             | [[dark]] dark [[/dark]]              |
-|\[[gray]] gray [[/gray]]               | <span class="color_gray"> gray </span>             | [[gray]] gray [[/gray]]              |
-|\[[lightgray]] lightgray [[/lightgray]]     | <span class="color_lightgray"> lightgray </span>        | [[lightgray]] lightgray [[/lightgray]]    |
-|\[[white]] white [[/white]]             | <span class="color_white"> white </span>            | [[white]] white [[/white]]            |
-|\[[red]] red [[/red]]                 | <span class="color_red"> red </span>              | [[red]] red [[/red]]                |
-|\[[green]] green [[/green]]             | <span class="color_green"> green </span>            | [[green]] green [[/green]]            |
-|\[[blue]] blue [[/blue]]               | <span class="color_blue"> blue </span>             | [[blue]] blue [[/blue]]              |
-|\[[aqua]] aqua [[/aqua]]               | <span class="color_aqua"> aqua </span>             | [[aqua]] aqua [[/aqua]]              |
-|\[[emerald]] emerald [[/emerald]]         | <span class="color_emerald"> emerald </span>          | [[emerald]] emerald [[/emerald]]        |
-|\[[violet]] violet [[/violet]]           | <span class="color_violet"> violet </span>           | [[violet]] violet [[/violet]]          |
-|\[[pink]] pink [[/pink]]               | <span class="color_pink"> pink </span>             | [[pink]] pink [[/pink]]              |
-|\[[grassgreen]] grassgreen [[/grassgreen]]   | <span class="color_grassgreen"> grassgreen </span>       | [[grassgreen]] grassgreen [[/grassgreen]]  |
-|\[[gold]] gold [[/gold]]               | <span class="color_gold"> gold </span>             | [[gold]] gold [[/gold]]              |
+|\[[black]]black[[/black]]          | <span class="color_black">black</span>          | [[black]]black[[/black]]         |
+|\[[dark]]dark[[/dark]]              | <span class="color_dark">dark</span>             | [[dark]]dark[[/dark]]             |
+|\[[gray]]gray[[/gray]]              | <span class="color_gray">gray</span>             | [[gray]]gray[[/gray]]             |
+|\[[lightgray]]lightgray[[/lightgray]]    | <span class="color_lightgray">lightgray</span>        | [[lightgray]]lightgray[[/lightgray]]   |
+|\[[white]]white[[/white]]            | <span class="color_white">white</span>            | [[white]]white[[/white]]           |
+|\[[red]]red[[/red]]                | <span class="color_red">red</span>              | [[red]]red[[/red]]               |
+|\[[green]]green[[/green]]            | <span class="color_green">green</span>            | [[green]]green[[/green]]           |
+|\[[blue]]blue[[/blue]]              | <span class="color_blue">blue</span>             | [[blue]]blue[[/blue]]             |
+|\[[aqua]]aqua[[/aqua]]              | <span class="color_aqua">aqua</span>             | [[aqua]]aqua[[/aqua]]             |
+|\[[emerald]]emerald[[/emerald]]        | <span class="color_emerald">emerald</span>          | [[emerald]]emerald[[/emerald]]       |
+|\[[violet]]violet[[/violet]]          | <span class="color_violet">violet</span>           | [[violet]]violet[[/violet]]         |
+|\[[pink]]pink[[/pink]]              | <span class="color_pink">pink</span>             | [[pink]]pink[[/pink]]             |
+|\[[grassgreen]]grassgreen[[/grassgreen]]  | <span class="color_grassgreen">grassgreen</span>       | [[grassgreen]]grassgreen[[/grassgreen]] |
+|\[[gold]]gold[[/gold]]              | <span class="color_gold">gold</span>             | [[gold]]gold [[/gold]]              |
 
 ### Sizes
 
 It has 5 sizes: tiny, small, medium, big, and giant.
 
 `[[tiny]] tiny [[/tiny]]` is rendered to `<span class="size_tiny"> tiny </span>`. The same rule is applied to the other sizes.
+
+| MDxt                            | html                                             | output                       |
+|---------------------------------|--------------------------------------------------|------------------------------|
+|\[[tiny]]tiny[[/tiny]]           | <span class="size_tiny">tiny</span>              | [[tiny]]tiny[[/tiny]]        |
+|\[[small]]small[[/small]]        | <span class="size_small">small</span>            | [[small]]small[[/small]]     |
+|\[[medium]]medium[[/medium]]     | <span class="size_medium">medium</span>          | [[medium]]medium[[/medium]]  |
+|\[[big]]big[[/big]]           | <span class="size_big">big</span>              | [[big]]big[[/big]]    |
+|\[[giant]]giant[[/giant]]           | <span class="size_giant">giant</span>              | [[giant]]giant[[/giant]]    |
 
 ### Alignments
 
@@ -247,7 +287,18 @@ A paragraph in a borderless box in a box.
 
 ### Table of Contents
 
+```
+| Table of Contents |
+|-------------------|
+|!![[collapsible]]  |
+| [[toc]]           |
+```
+
+See how that's rendered [here](#tocsample)
+
 ### Special Characters
+
+`[[char = 44032]]` is rendered to `&#44032;`, which is [[char = 44032]].
 
 ### Icons
 
@@ -278,3 +329,13 @@ As you see above, the first and the last paragraph only consist of a macro. The 
 ## Plugins
 
 WIP
+
+## Characters
+
+### Escapes
+
+Backslashes (`\`) inside code spans and fenced code blocks are not escaped. All the other backslash characters are escape characters.
+
+### Tabs
+
+All the tab characters (`\t`) are converted to 4 whitespaces. All the newline characters except `\n` are ignored.
