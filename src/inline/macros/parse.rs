@@ -1,7 +1,7 @@
-use super::{Macro, MacroType};
+use super::{Macro, MacroType, character::{DIRECT, INDIRECT_MAPS}};
 use crate::inline::{InlineNode, DecorationType, InlineMacro};
 use crate::render::render_option::RenderOption;
-use crate::utils::{to_int, into_v16};
+use crate::utils::into_v16;
 use crate::escape::render_backslash_escapes;
 use crate::ast::doc_data::DocData;
 
@@ -28,7 +28,18 @@ impl Macro {
             },
 
             MacroType::Char => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Char(to_int(&arguments[0][1]).unwrap() as u16)),
+                deco_type: DecorationType::Macro(InlineMacro::Char(
+
+                    // number or direct_name
+                    // &#32; or &infin; 
+                    if arguments[0][1][0] < 'A' as u16 || DIRECT.contains(&arguments[0][1]) {
+                        arguments[0][1].clone()
+                    }
+
+                    else {
+                        INDIRECT_MAPS.get(&arguments[0][1]).unwrap().to_vec()
+                    }
+                )),
                 content: vec![]
             },
 

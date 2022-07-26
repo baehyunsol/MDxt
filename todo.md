@@ -45,3 +45,7 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 `[[blank = 3]]` -> `&nbsp;&nbsp;&nbsp;`
 
 `[[br = 2]]` -> `<br/><br/>`
+
+---
+
+math reference, char reference

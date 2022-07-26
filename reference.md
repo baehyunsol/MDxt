@@ -306,6 +306,10 @@ WIP
 
 ### Math
 
+`[[math]] sqrt{a sup{2} + b sup{2}} [[/math]]` is rendered to [[math]] sqrt {a sup{2} + b sup{2}} [[/math]]. It uses the [mathjax] library to render math formula.
+
+[mathjax]: https://www.mathjax.org/
+
 ### Multiline Macro
 
 If a paragraph has a macro and no other contents at all, the paragraph is rendered to a multiline macro.

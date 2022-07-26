@@ -43,7 +43,11 @@ pub enum InlineMacro {
     Color(Vec<u16>),
     Size(Vec<u16>),
     Highlight(Vec<u16>),
-    Char(u16),
+
+    // `[[char = 32]]` -> `32` -> `&#32;`
+    // `[[char = therefore]]` -> `there4` -> `&there4;`
+    Char(Vec<u16>),
+
     Math(Vec<u16>),
     Box { border: bool },
     Toc,
@@ -192,7 +196,19 @@ impl InlineNode {
 
                         result.concat()
                     }
-                    InlineMacro::Char(num) => into_v16(&format!("&#{};", num)),
+                    InlineMacro::Char(character) => if character[0] < 'A' as u16 {
+                        vec![
+                            into_v16("&#"),
+                            character.clone(),
+                            into_v16(";")
+                        ].concat()
+                    } else {
+                        vec![
+                            into_v16("&"),
+                            character.clone(),
+                            into_v16(";")
+                        ].concat()
+                    },
                     InlineMacro::Br => into_v16("<br/>"),
                     InlineMacro::Blank => into_v16("&nbsp;"),
                     InlineMacro::Math (content) => render_math(content),
@@ -341,7 +357,11 @@ impl InlineNode {
 
                         result.concat()
                     }
-                    InlineMacro::Char(num) => into_v16(&format!("[[char={}]]", num)),
+                    InlineMacro::Char(character) => vec![
+                        into_v16("[[char="),
+                        character.clone(),
+                        into_v16("]]")
+                    ].concat(),
                     InlineMacro::Br => into_v16("[[br]]"),
                     InlineMacro::Blank => into_v16("[[blank]]"),
                     InlineMacro::Toc => into_v16("[[toc]]"),

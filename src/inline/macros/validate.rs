@@ -1,4 +1,4 @@
-use super::{Macro, MacroType};
+use super::{Macro, MacroType, character::CHAR_NAMES};
 use crate::utils::{to_int, into_v16};
 use crate::color::COLOR_NAMES;
 
@@ -16,10 +16,9 @@ impl Macro {
             MacroType::Box => (arguments.len() == 1 && arguments[0].len() == 1) ||
             (arguments.len() == 2 && arguments[1].len() == 1 && arguments[1][0] == into_v16("noborder")),
 
-            MacroType::Char => arguments.len() == 1 && arguments[0].len() == 2 && match to_int(&arguments[0][1]) {
-                Some(n) => n < u16::MAX as u32,
-                _ => false
-            },
+            MacroType::Char => arguments.len() == 1 && arguments[0].len() == 2 && (
+                to_int(&arguments[0][1]).is_some() || CHAR_NAMES.contains(&arguments[0][1])
+            ),
 
             MacroType::HTML => {
                 let mut result = true;

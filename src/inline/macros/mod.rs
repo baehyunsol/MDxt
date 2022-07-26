@@ -3,6 +3,7 @@ pub mod toc;
 pub mod multiline;
 mod parse;
 mod validate;
+mod character;
 
 #[cfg(test)]
 mod testbench;

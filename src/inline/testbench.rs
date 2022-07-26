@@ -75,6 +75,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color_red\">This text is red and <strong>bold</strong>.</span> <span class=\"align_center\"> Some whitespaces  </span>"),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]"),
+        ("[[char = won]], [[char = euro]], [[char = therefore]], [[char = cry]]", "&#8361;, &euro;, &there4;, &#128546;"),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color_red\"><span class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
         ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color_red\"><code class=\"short\">a code span in red</code></span>"),
         ("[[math]] `a code span inside a math` [[/math]] `[[math]] a math inside a code span [[/math]]`", "\\( `a code span inside a math` \\) <code class=\"short\">[[math]] a math inside a code span [[/math]]</code>"),
