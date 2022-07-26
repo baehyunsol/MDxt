@@ -1,5 +1,5 @@
 ---
-date: [2022, 7, 23]
+date: [2022, 7, 26]
 tags: [mdxt, reference, documentation]
 ---
 
@@ -300,6 +300,10 @@ See how that's rendered [here](#tocsample)
 
 `[[char = 44032]]` is rendered to `&#44032;`, which is [[char = 44032]].
 
+`[[char = copy]]` is rendered to `&copy;`, which is [[char = copy]].
+
+To see the complete list of available characters, visit [here](MDxt-Character-Reference.html).
+
 ### Icons
 
 WIP
@@ -309,6 +313,8 @@ WIP
 `[[math]] sqrt{a sup{2} + b sup{2}} [[/math]]` is rendered to [[math]] sqrt {a sup{2} + b sup{2}} [[/math]]. It uses the [mathjax] library to render math formula.
 
 [mathjax]: https://www.mathjax.org/
+
+To see available math elements, visit [here](MDxt-Math-Reference.html).
 
 ### Multiline Macro
 
