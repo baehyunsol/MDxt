@@ -161,8 +161,15 @@ fn is_valid_link_text(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u
     // it makes sure that the links are not nested
     !contains_link(content, link_references)
 
-    // the syntax below is for macros, not links
-    && (content.len() == 0 || (content[0] != '[' as u16 || content[content.len() - 1] != ']' as u16))
+    && (content.len() == 0 || if content[0] == '[' as u16 && content[content.len() - 1] == ']' as u16 {
+
+        // [...] -> link
+        // [[...]] -> macro
+        // [[[...]]] -> macro in a link
+        content.len() > 4 && content[1] == '[' as u16 && content[content.len() - 2] == ']' as u16
+    } else {
+        true
+    })
 }
 
 pub fn is_valid_link_label(content: &[u16]) -> bool {

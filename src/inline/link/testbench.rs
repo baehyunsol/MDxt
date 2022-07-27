@@ -93,6 +93,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[red]]![link](https://github.com)[[/red]]", "<span class=\"color_red\"><img src=\"https://github.com\" alt=\"link\"/></span>"),
 
         ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
+        ("[[[char=9650]]](#top)[[[char=9660]]](#bottom)", "<a href=\"#top\">&#9650;</a><a href=\"#bottom\">&#9660;</a>")
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

@@ -93,16 +93,3 @@ lazy_static! {
     pub static ref CHAR_NAMES: HashSet<Vec<u16>> = DIRECT.union(&INDIRECT_NAMES).map(|name| name.clone()).collect();
 
 }
-
-#[test]
-fn t123() {
-    use crate::utils::from_v16;
-
-    let mut ddd = vec![];
-
-    for name in CHAR_NAMES.iter() {
-        ddd.push(format!("[[char={}]]", from_v16(name)));
-    }
-
-    panic!("{}", ddd.join("\n\n"));
-}
