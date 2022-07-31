@@ -16,7 +16,7 @@ If you wanna know more about MDxt, see these articles.
 
 [GFM] is a Github-flavored markdown format, which is one of the most widely used markdown extension.
 
-MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, fenced code blocks are rendered to tables.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
+MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, code spans are rendered to `<code class="short">`.) It doesn't support some of gfm's syntaxes. (ex: indented code blocks, setext headings, and a few more)
 
 I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Because some elements are impossible to convert to GFM formats. They require `<script>` tags in their output HTML, which are not supported in GFM and most other markdown extensions.
 

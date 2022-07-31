@@ -215,6 +215,30 @@ pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
     ).map(|c| *c).collect()
 }
 
+pub fn log10(n: usize) -> usize {
+
+    if n < 10 {
+        0
+    }
+
+    else if n < 100 {
+        1
+    }
+
+    else if n < 1_000 {
+        2
+    }
+
+    else if n < 10_000 {
+        3
+    }
+
+    else {
+        4
+    }
+
+}
+
 #[cfg(test)]
 mod tests {
 

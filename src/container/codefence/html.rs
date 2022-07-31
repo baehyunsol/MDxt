@@ -1,6 +1,6 @@
 use super::FencedCode;
 use super::syntect::{is_syntax_available, highlight_syntax};
-use crate::utils::{into_v16, from_v16};
+use crate::utils::{into_v16, from_v16, log10};
 use crate::escape::{render_backslash_escapes, undo_html_escapes};
 use std::collections::HashMap;
 
@@ -34,8 +34,14 @@ impl FencedCode {
             vec![]
         };
 
+        // so that each index has the same width
+        let line_num_width = match self.line_num {
+            None => String::new(),
+            Some(n) => format!(" class=\"line-num-width-{}\"", log10(n + rows.len()))
+        };
+
         vec![
-            into_v16("<pre><code>"),
+            into_v16(&format!("<pre{}><code>", line_num_width)),
             rows.concat(),
             into_v16("</code>"),
             copy_button,
@@ -50,18 +56,18 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
     let line_num = match line_num {
         None => {
             curr_line += 1;  // markdown index starts with 1, and Rust starts with 0.
-            into_v16("<span class=\"code_fence_code\">")
+            into_v16("<span class=\"code-fence-code\">")
         },
         Some(n) => {
             curr_line += n;
-            into_v16(&format!("<span class=\"code_fence_index\">{}</span><span class=\"code_fence_code\">", curr_line))
+            into_v16(&format!("<span class=\"code-fence-index\">{}</span><span class=\"code-fence-code\">", curr_line))
         }
     };
 
     let highlight_or_not = if highlights.contains(&curr_line) {
-        " class=\"highlight code_fence_row\""
+        " class=\"highlight code-fence-row\""
     } else {
-        " class=\"code_fence_row\""
+        " class=\"code-fence-row\""
     };
 
     vec![

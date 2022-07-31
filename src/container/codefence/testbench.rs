@@ -233,89 +233,89 @@ fn main() {
 ````
 ", "
 <pre><code>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_gray\">/*</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_gray\">/*</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_gray\">    multiline</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_gray\">    multiline</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_gray\">    comment</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_gray\">    comment</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_gray\">*/</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_gray\">*/</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_gray\">//</span><span class=\"color_gray\"> single line comment</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_gray\">//</span><span class=\"color_gray\"> single line comment</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> y </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_violet\">if</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> y </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_violet\">if</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">        </span><span class=\"color_gold\">4</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">        </span><span class=\"color_gold\">4</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\"> </span><span class=\"color_violet\">else</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\"> </span><span class=\"color_violet\">else</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">        </span><span class=\"color_gold\">5</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">        </span><span class=\"color_gold\">5</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_gold\">{:?}</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">,</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">+</span><span class=\"color_white\"> </span><span class=\"color_gold\">4</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_gold\">{:?}</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">,</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">+</span><span class=\"color_white\"> </span><span class=\"color_gold\">4</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">}</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">struct</span><span class=\"color_white\"> </span><span class=\"color_white\">Point</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">struct</span><span class=\"color_white\"> </span><span class=\"color_white\">Point</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_red\">x</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span><span class=\"color_white\">,</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_red\">x</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span><span class=\"color_white\">,</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_red\">y</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_red\">y</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_white\">}</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">const</span><span class=\"color_white\"> </span><span class=\"color_gold\">CONST</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">u32</span><span class=\"color_white\"> </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">1</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">const</span><span class=\"color_white\"> </span><span class=\"color_gold\">CONST</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">u32</span><span class=\"color_white\"> </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">1</span><span class=\"color_white\">;</span></span>
     </span>
 </code></pre>
 
 <pre><code>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">```rust</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">```rust</span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">fn main() {</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">fn main() {</span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">    println!(&quot;Hello World!&quot;);</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">    println!(&quot;Hello World!&quot;);</span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">}</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">}</span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">```</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">```</span>
     </span>
 </code></pre>
 "), ("
@@ -325,18 +325,18 @@ fn main() {
 }
 ```
 ", "
-<pre><code>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_index\">1</span>
-        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+<pre class=\"line-num-width-0\"><code>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-index\">1</span>
+        <span class=\"code-fence-code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"highlight code_fence_row\">
-        <span class=\"code_fence_index\">2</span>
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    <span class=\"highlight code-fence-row\">
+        <span class=\"code-fence-index\">2</span>
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"highlight code_fence_row\">
-        <span class=\"code_fence_index\">3</span>
-        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    <span class=\"highlight code-fence-row\">
+        <span class=\"code-fence-index\">3</span>
+        <span class=\"code-fence-code\"><span class=\"color_white\">}</span></span>
     </span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
@@ -355,18 +355,18 @@ fn main() {
 }
 ```
 ", "
-<pre><code>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_index\">5</span>
-        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+<pre class=\"line-num-width-0\"><code>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-index\">5</span>
+        <span class=\"code-fence-code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_index\">6</span>
-        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-index\">6</span>
+        <span class=\"code-fence-code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
     </span>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_index\">7</span>
-        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-index\">7</span>
+        <span class=\"code-fence-code\"><span class=\"color_white\">}</span></span>
     </span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
@@ -384,15 +384,15 @@ function copy_code_to_clipboard(index) {
 ```
 ", "
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">p</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\"> </span><span class=\"color_gold\">class</span><span class=\"color_white\">=</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">box</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">></span><span class=\"color_white\"> box </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">p</span><span class=\"color_white\">></span></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">p</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\"> </span><span class=\"color_gold\">class</span><span class=\"color_white\">=</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">box</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">></span><span class=\"color_white\"> box </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">p</span><span class=\"color_white\">></span></span></span>
 </code></pre>
 "), ("
 ```line_num
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_index\">1</span><span class=\"code_fence_code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+<pre class=\"line-num-width-0\"><code>
+    <span class=\"code-fence-row\"><span class=\"code-fence-index\">1</span><span class=\"code-fence-code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
 </pre>
@@ -410,14 +410,14 @@ function copy_code_to_clipboard(index) {
 ```
 ", "
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
 </code></pre>
 "), ("
 ```
 ```
 ", "
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\"></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
 </code></pre>
 "), ("
 # Backslash test
@@ -433,8 +433,8 @@ function copy_code_to_clipboard(index) {
 <p><code class=\"short\">\\\\</code></p>
 
 <pre><code>
-    <span class=\"code_fence_row\">
-        <span class=\"code_fence_code\">\\\\</span>
+    <span class=\"code-fence-row\">
+        <span class=\"code-fence-code\">\\\\</span>
     </span>
 </code></pre>
 "), ("
@@ -445,11 +445,11 @@ function copy_code_to_clipboard(index) {
 ``````
 ", "
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\">````</span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">````</span></span>
 </code></pre>
 
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\"></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
 </code></pre>
 "), (
 "
@@ -469,12 +469,12 @@ function copy_code_to_clipboard(index) {
 <h1 id=\"bracket-tests\">Bracket tests</h1>
 
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\">&lt;></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;></span></span>
 </code></pre>
 
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> a </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span></span></span>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> a </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color_white\">&lt;</span></span></span>
 </code></pre>
 
 <p><code class=\"short\">&lt;></code></p>
@@ -493,13 +493,13 @@ Nothing2
 <h1 id=\"copy-button-test\">Copy Button test</h1>
 
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\">Nothing1</span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">Nothing1</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
 </pre>
 
 <pre><code>
-    <span class=\"code_fence_row\"><span class=\"code_fence_code\">Nothing2</span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">Nothing2</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button>
 </pre>
