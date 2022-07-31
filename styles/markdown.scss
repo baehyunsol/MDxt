@@ -469,100 +469,150 @@ body .markdown {
 /* Fenced Code Block */
 .markdown {
 
+    
+    pre.line-num-width-0 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (0 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-1 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (1 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-2 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (2 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-3 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (3 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-4 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (4 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-5 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (5 + 1) / 2;
+        }
+    }
+    
+    pre.line-num-width-6 {
+        span.code-fence-index {
+            min-width: $padding_medium + $font_medium * (6 + 1) / 2;
+        }
+    }
+    
+
     pre {
-        padding: $padding_small;
+        padding: $padding_medium;
         background-color: $black;
         width: 90%;
         overflow: auto;
+        line-height: 1.0;
 
-        table {
-            width: 90%;
-        }
-
-        td {
-            line-height: 1.2;
-            padding: {
-                top: 0px;
-                bottom: 0px;
-            }
-            background-color: $black;
-            height: $font_medium * 1.2;  /* So that it renders empty lines */
-            white-space: pre;
-        }
-
-        td.index {
+        span.code-fence-index {
+            display: inline-block;
             border-right: $border_medium solid $emerald;
             text-align: right;
-            width: 24px;
+            padding-right: $padding_medium;
+            margin-right: $padding_medium;
+            padding-top: $padding_tiny;
+            padding-bottom: $padding_tiny;
         }
 
-        tr:hover td {
+        span.code-fence-row {
+            display: inline-block;
+            width: 100%;
+        }
+
+        span.code-fence-row:hover {
             background-color: $dark;
         }
 
-        tr.copy-button-row:hover td {
-            background-color: $black;
+        span.code-fence-code {
+            display: inline-block;
+            padding-top: $padding_tiny;
+            padding-bottom: $padding_tiny;
         }
 
-        tr.highlight td {
+        span.highlight.code-fence-row {
             background-color: $black_compl;
             color: $white_compl;
+
+            span.code-fence-index {
+                border-right: $border_medium solid $emerald_compl;
+            }
+
+        }
+
+        span.highlight.code-fence-row:hover {
+            background-color: $black_compl_trans;
         }
 
         
-        tr.highlight td .color_black {
+        span.highlight span .color_black {
             color: $black_compl;
         }
         
-        tr.highlight td .color_dark {
+        span.highlight span .color_dark {
             color: $dark_compl;
         }
         
-        tr.highlight td .color_gray {
+        span.highlight span .color_gray {
             color: $gray_compl;
         }
         
-        tr.highlight td .color_lightgray {
+        span.highlight span .color_lightgray {
             color: $lightgray_compl;
         }
         
-        tr.highlight td .color_white {
+        span.highlight span .color_white {
             color: $white_compl;
         }
         
-        tr.highlight td .color_red {
+        span.highlight span .color_red {
             color: $red_compl;
         }
         
-        tr.highlight td .color_green {
+        span.highlight span .color_green {
             color: $green_compl;
         }
         
-        tr.highlight td .color_blue {
+        span.highlight span .color_blue {
             color: $blue_compl;
         }
         
-        tr.highlight td .color_aqua {
+        span.highlight span .color_aqua {
             color: $aqua_compl;
         }
         
-        tr.highlight td .color_emerald {
+        span.highlight span .color_emerald {
             color: $emerald_compl;
         }
         
-        tr.highlight td .color_violet {
+        span.highlight span .color_violet {
             color: $violet_compl;
         }
         
-        tr.highlight td .color_pink {
+        span.highlight span .color_pink {
             color: $pink_compl;
         }
         
-        tr.highlight td .color_grassgreen {
+        span.highlight span .color_grassgreen {
             color: $grassgreen_compl;
         }
         
-        tr.highlight td .color_gold {
+        span.highlight span .color_gold {
             color: $gold_compl;
         }
         
@@ -570,12 +620,13 @@ body .markdown {
     }
 
     button.copy-fenced-code {
-        background-color: #0000;
+        background-color: $dark;
         border: none;
         color: $white;
         font-size: $font_medium;
         padding: $padding_small;
         border-radius: 6px;
+        cursor: pointer;
         transition: background-color 0.5s ease-out;
     }
 

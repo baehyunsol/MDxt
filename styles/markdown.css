@@ -268,7 +268,7 @@ body .markdown img {
 
 /* Headers */
 .markdown h1 {
-  font-size: 66px;
+  font-size: 56px;
   margin-top: 60px;
   margin-bottom: 30px;
   transition: color 0.3s;
@@ -278,7 +278,7 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h2 {
-  font-size: 54px;
+  font-size: 48px;
   margin-top: 54px;
   margin-bottom: 27px;
   transition: color 0.3s;
@@ -288,7 +288,7 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h3 {
-  font-size: 45px;
+  font-size: 42px;
   margin-top: 45px;
   margin-bottom: 22.5px;
   transition: color 0.3s;
@@ -298,7 +298,7 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h4 {
-  font-size: 33px;
+  font-size: 36px;
   margin-top: 39px;
   margin-bottom: 19.5px;
   transition: color 0.3s;
@@ -341,88 +341,115 @@ body .markdown img {
 }
 
 /* Fenced Code Block */
+.markdown pre.line-num-width-0 span.code-fence-index {
+  min-width: 22.5px;
+}
+.markdown pre.line-num-width-1 span.code-fence-index {
+  min-width: 33px;
+}
+.markdown pre.line-num-width-2 span.code-fence-index {
+  min-width: 43.5px;
+}
+.markdown pre.line-num-width-3 span.code-fence-index {
+  min-width: 54px;
+}
+.markdown pre.line-num-width-4 span.code-fence-index {
+  min-width: 64.5px;
+}
+.markdown pre.line-num-width-5 span.code-fence-index {
+  min-width: 75px;
+}
+.markdown pre.line-num-width-6 span.code-fence-index {
+  min-width: 85.5px;
+}
 .markdown pre {
-  padding: 6px;
+  padding: 12px;
   background-color: #000000;
   width: 90%;
   overflow: auto;
+  line-height: 1;
 }
-.markdown pre table {
-  width: 90%;
-}
-.markdown pre td {
-  line-height: 1.2;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  background-color: #000000;
-  height: 25.2px;
-  /* So that it renders empty lines */
-  white-space: pre;
-}
-.markdown pre td.index {
+.markdown pre span.code-fence-index {
+  display: inline-block;
   border-right: 3px solid #40ffc0;
   text-align: right;
-  width: 24px;
+  padding-right: 12px;
+  margin-right: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
-.markdown pre tr:hover td {
+.markdown pre span.code-fence-row {
+  display: inline-block;
+  width: 100%;
+}
+.markdown pre span.code-fence-row:hover {
   background-color: #404040;
 }
-.markdown pre tr.copy-button-row:hover td {
-  background-color: #000000;
+.markdown pre span.code-fence-code {
+  display: inline-block;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
-.markdown pre tr.highlight td {
+.markdown pre span.highlight.code-fence-row {
   background-color: #ffffff;
   color: #000000;
 }
-.markdown pre tr.highlight td .color_black {
+.markdown pre span.highlight.code-fence-row span.code-fence-index {
+  border-right: 3px solid #bf003f;
+}
+.markdown pre span.highlight.code-fence-row:hover {
+  background-color: #ffffff80;
+}
+.markdown pre span.highlight span .color_black {
   color: #ffffff;
 }
-.markdown pre tr.highlight td .color_dark {
+.markdown pre span.highlight span .color_dark {
   color: #bfbfbf;
 }
-.markdown pre tr.highlight td .color_gray {
+.markdown pre span.highlight span .color_gray {
   color: #7f7f7f;
 }
-.markdown pre tr.highlight td .color_lightgray {
+.markdown pre span.highlight span .color_lightgray {
   color: #3f3f3f;
 }
-.markdown pre tr.highlight td .color_white {
+.markdown pre span.highlight span .color_white {
   color: #000000;
 }
-.markdown pre tr.highlight td .color_red {
+.markdown pre span.highlight span .color_red {
   color: #3fbfbf;
 }
-.markdown pre tr.highlight td .color_green {
+.markdown pre span.highlight span .color_green {
   color: #bf3fbf;
 }
-.markdown pre tr.highlight td .color_blue {
+.markdown pre span.highlight span .color_blue {
   color: #bfbf3f;
 }
-.markdown pre tr.highlight td .color_aqua {
+.markdown pre span.highlight span .color_aqua {
   color: #bf3f00;
 }
-.markdown pre tr.highlight td .color_emerald {
+.markdown pre span.highlight span .color_emerald {
   color: #bf003f;
 }
-.markdown pre tr.highlight td .color_violet {
+.markdown pre span.highlight span .color_violet {
   color: #3fbf00;
 }
-.markdown pre tr.highlight td .color_pink {
+.markdown pre span.highlight span .color_pink {
   color: #00bf3f;
 }
-.markdown pre tr.highlight td .color_grassgreen {
+.markdown pre span.highlight span .color_grassgreen {
   color: #3f00bf;
 }
-.markdown pre tr.highlight td .color_gold {
+.markdown pre span.highlight span .color_gold {
   color: #003fbf;
 }
 .markdown button.copy-fenced-code {
-  background-color: #0000;
+  background-color: #404040;
   border: none;
   color: #ffffff;
   font-size: 21px;
   padding: 6px;
   border-radius: 6px;
+  cursor: pointer;
   transition: background-color 0.5s ease-out;
 }
 .markdown button.copy-fenced-code:hover {
