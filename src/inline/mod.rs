@@ -174,7 +174,14 @@ impl InlineNode {
                         let mut result = vec![];
 
                         result.push(into_v16("<"));
-                        result.push(tag.clone());
+
+                        if tag == &into_v16("anchor") {
+                            result.push(into_v16("a"));
+                        }
+
+                        else {
+                            result.push(tag.clone());
+                        }
 
                         if class.len() > 0 {
                             result.push(into_v16(" class=\""));
@@ -191,7 +198,15 @@ impl InlineNode {
                         result.push(into_v16(">"));
                         result.push(content.iter().map(|node| node.to_html(toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
                         result.push(into_v16("</"));
-                        result.push(tag.clone());
+
+                        if tag == &into_v16("anchor") {
+                            result.push(into_v16("a"));
+                        }
+
+                        else {
+                            result.push(tag.clone());
+                        }
+
                         result.push(into_v16(">"));
 
                         result.concat()
