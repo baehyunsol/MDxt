@@ -23,54 +23,52 @@ impl FencedCode {
             ).collect::<Vec<Vec<u16>>>()
         };
 
-        let opening = into_v16("<pre><code><table><tbody>");
-
-        if self.copy_button {
-            rows.push(
-                into_v16(
-                    &format!(
-                        "<tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button></td></tr>",
-                        self.index
-                    )
+        let copy_button = if self.copy_button {
+            into_v16(
+                &format!(
+                    "<button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
+                    self.index
                 )
-            );
-        }
-
-        let closing = into_v16("</tbody></table></code></pre>");
+            )
+        } else {
+            vec![]
+        };
 
         vec![
-            opening,
+            into_v16("<pre><code>"),
             rows.concat(),
-            closing
+            into_v16("</code>"),
+            copy_button,
+            into_v16("</pre>"),
         ].concat()
     }
 
 }
 
-fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, highlight: &Vec<usize>) -> Vec<u16> {
+fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, highlights: &Vec<usize>) -> Vec<u16> {
 
     let line_num = match line_num {
         None => {
             curr_line += 1;  // markdown index starts with 1, and Rust starts with 0.
-            into_v16("<td>")
+            into_v16("<span class=\"code_fence_code\">")
         },
         Some(n) => {
             curr_line += n;
-            into_v16(&format!("<td class=\"index\">{}</td><td>", curr_line))
+            into_v16(&format!("<span class=\"code_fence_index\">{}</span><span class=\"code_fence_code\">", curr_line))
         }
     };
 
-    let highlight = if highlight.contains(&curr_line) {
-        " class=\"highlight\""
+    let highlight_or_not = if highlights.contains(&curr_line) {
+        " class=\"highlight code_fence_row\""
     } else {
-        ""
+        " class=\"code_fence_row\""
     };
 
     vec![
-        into_v16(&format!("<tr{}>", highlight)),
+        into_v16(&format!("<span{}>", highlight_or_not)),
         line_num,
         render_backslash_escapes(line),
-        into_v16("</td></tr>")
+        into_v16("</span></span>\n")
     ].concat()
 }
 

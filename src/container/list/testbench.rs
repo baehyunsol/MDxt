@@ -375,11 +375,9 @@ nothing
     <li>1</li>
 </ul>
 
-<pre><code><table><tbody>
-    <tr>
-        <td>nothing</td>
-    </tr>
-</tbody></table></code></pre>
+<pre><code>
+<span class=\"code_fence_row\"><span class=\"code_fence_code\">nothing</span></span>
+</code></pre>
 "), ("
 interrupt
 paragraph

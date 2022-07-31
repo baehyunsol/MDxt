@@ -232,92 +232,92 @@ fn main() {
 ```
 ````
 ", "
-<pre><code><table><tbody>
-    <tr>
-        <td><span class=\"color_gray\">/*</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_gray\">    multiline</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_gray\">    comment</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_gray\">*/</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_gray\">//</span><span class=\"color_gray\"> single line comment</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> y </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_violet\">if</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">        </span><span class=\"color_gold\">4</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\"> </span><span class=\"color_violet\">else</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">        </span><span class=\"color_gold\">5</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_gold\">{:?}</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">,</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">+</span><span class=\"color_white\"> </span><span class=\"color_gold\">4</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">}</span></td>
-    </tr>
-    <tr>
-        <td></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">struct</span><span class=\"color_white\"> </span><span class=\"color_white\">Point</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_red\">x</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span><span class=\"color_white\">,</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">    </span><span class=\"color_red\">y</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_white\">}</span></td>
-    </tr>
-    <tr>
-        <td></td>
-    </tr>
-    <tr>
-        <td><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">const</span><span class=\"color_white\"> </span><span class=\"color_gold\">CONST</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">u32</span><span class=\"color_white\"> </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">1</span><span class=\"color_white\">;</span></td>
-    </tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_gray\">/*</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_gray\">    multiline</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_gray\">    comment</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_gray\">*/</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_gray\">//</span><span class=\"color_gray\"> single line comment</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_violet\">let</span><span class=\"color_white\"> </span><span class=\"color_violet\">mut</span><span class=\"color_white\"> y </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_violet\">if</span><span class=\"color_white\"> x </span><span class=\"color_white\">=</span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">        </span><span class=\"color_gold\">4</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\"> </span><span class=\"color_violet\">else</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">        </span><span class=\"color_gold\">5</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">}</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_gold\">{:?}</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">,</span><span class=\"color_white\"> </span><span class=\"color_gold\">3</span><span class=\"color_white\"> </span><span class=\"color_white\">+</span><span class=\"color_white\"> </span><span class=\"color_gold\">4</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">struct</span><span class=\"color_white\"> </span><span class=\"color_white\">Point</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_red\">x</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span><span class=\"color_white\">,</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_red\">y</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">f32</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\"><span class=\"color_violet\">pub</span><span class=\"color_white\"> </span><span class=\"color_violet\">const</span><span class=\"color_white\"> </span><span class=\"color_gold\">CONST</span><span class=\"color_white\">:</span><span class=\"color_white\"> </span><span class=\"color_violet\">u32</span><span class=\"color_white\"> </span><span class=\"color_white\">=</span><span class=\"color_white\"> </span><span class=\"color_gold\">1</span><span class=\"color_white\">;</span></span>
+    </span>
+</code></pre>
 
-<pre><code><table><tbody>
-    <tr>
-        <td>```rust</td>
-    </tr>
-    <tr>
-        <td>fn main() {</td>
-    </tr>
-    <tr>
-        <td>    println!(&quot;Hello World!&quot;);</td>
-    </tr>
-    <tr>
-        <td>}</td>
-    </tr>
-    <tr>
-        <td>```</td>
-    </tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">```rust</span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">fn main() {</span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">    println!(&quot;Hello World!&quot;);</span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">}</span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">```</span>
+    </span>
+</code></pre>
 "), ("
 ```rust, line_num, highlight(2, 3)
 fn main() {
@@ -325,21 +325,22 @@ fn main() {
 }
 ```
 ", "
-<pre><code><table><tbody>
-    <tr>
-        <td class=\"index\">1</td>
-        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr class=\"highlight\">
-        <td class=\"index\">2</td>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr class=\"highlight\">
-        <td class=\"index\">3</td>
-        <td><span class=\"color_white\">}</span></td>
-    </tr>
-    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_index\">1</span>
+        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"highlight code_fence_row\">
+        <span class=\"code_fence_index\">2</span>
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"highlight code_fence_row\">
+        <span class=\"code_fence_index\">3</span>
+        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    </span>
+</code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
+</pre>
 <script>
 const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
 
@@ -354,21 +355,22 @@ fn main() {
 }
 ```
 ", "
-<pre><code><table><tbody>
-    <tr>
-        <td class=\"index\">5</td>
-        <td><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></td>
-    </tr>
-    <tr>
-        <td class=\"index\">6</td>
-        <td><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></td>
-    </tr>
-    <tr>
-        <td class=\"index\">7</td>
-        <td><span class=\"color_white\">}</span></td>
-    </tr>
-    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_index\">5</span>
+        <span class=\"code_fence_code\"><span class=\"color_violet\">fn</span><span class=\"color_white\"> </span><span class=\"color_aqua\">main</span><span class=\"color_white\">(</span><span class=\"color_white\">)</span><span class=\"color_white\"> </span><span class=\"color_white\">{</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_index\">6</span>
+        <span class=\"code_fence_code\"><span class=\"color_white\">    </span><span class=\"color_white\">println!</span><span class=\"color_white\">(</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">Hello World!</span><span class=\"color_emerald\">\\n</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">)</span><span class=\"color_white\">;</span></span>
+    </span>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_index\">7</span>
+        <span class=\"code_fence_code\"><span class=\"color_white\">}</span></span>
+    </span>
+</code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
+</pre>
 <script>
 const fenced_code_block_contents = [\"fn main() {\\n    println!(\\\"Hello World!\\\\n\\\");\\n}\"];
 
@@ -381,16 +383,19 @@ function copy_code_to_clipboard(index) {
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code><table><tbody><tr><td><span class=\"color_white\">&lt;</span><span class=\"color_red\">p</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\"> </span><span class=\"color_gold\">class</span><span class=\"color_white\">=</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">box</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">></span><span class=\"color_white\"> box </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">p</span><span class=\"color_white\">></span></td></tr></tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">p</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\"> </span><span class=\"color_gold\">class</span><span class=\"color_white\">=</span><span class=\"color_white\">&quot;</span><span class=\"color_green\">box</span><span class=\"color_white\">&quot;</span><span class=\"color_white\">></span><span class=\"color_white\"> box </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">p</span><span class=\"color_white\">></span></span></span>
+</code></pre>
 "), ("
 ```line_num
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code><table><tbody>
-    <tr><td class=\"index\">1</td><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr>
-    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_index\">1</span><span class=\"code_fence_code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+</code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
+</pre>
 
 <script>
 const fenced_code_block_contents = [\"<p> <div class=\\\"box\\\"> box </div> </p>\"];
@@ -404,14 +409,16 @@ function copy_code_to_clipboard(index) {
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code><table><tbody>
-    <tr><td>&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+</code></pre>
 "), ("
 ```
 ```
 ", "
-<pre><code><table><tbody><tr><td></td></tr></tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\"></span></span>
+</code></pre>
 "), ("
 # Backslash test
 
@@ -425,11 +432,11 @@ function copy_code_to_clipboard(index) {
 
 <p><code class=\"short\">\\\\</code></p>
 
-<pre><code><table><tbody>
-    <tr>
-        <td>\\\\</td>
-    </tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\">
+        <span class=\"code_fence_code\">\\\\</span>
+    </span>
+</code></pre>
 "), ("
 `````
 ````
@@ -437,13 +444,13 @@ function copy_code_to_clipboard(index) {
 ````
 ``````
 ", "
-<pre><code><table><tbody>
-    <tr><td>````</td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\">````</span></span>
+</code></pre>
 
-<pre><code><table><tbody>
-    <tr><td></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\"></span></span>
+</code></pre>
 "), (
 "
 # Bracket tests
@@ -461,14 +468,14 @@ function copy_code_to_clipboard(index) {
 ", "
 <h1 id=\"bracket-tests\">Bracket tests</h1>
 
-<pre><code><table><tbody>
-    <tr><td>&lt;></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\">&lt;></span></span>
+</code></pre>
 
-<pre><code><table><tbody>
-    <tr><td><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> a </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span></td></tr>
-    <tr><td><span class=\"color_white\">&lt;</span></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span><span class=\"color_red\">div</span><span class=\"color_white\">></span><span class=\"color_white\"> a </span><span class=\"color_white\">&lt;/</span><span class=\"color_red\">div</span><span class=\"color_white\">></span></span></span>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\"><span class=\"color_white\">&lt;</span></span></span>
+</code></pre>
 
 <p><code class=\"short\">&lt;></code></p>
 "
@@ -485,15 +492,17 @@ Nothing2
 ", "
 <h1 id=\"copy-button-test\">Copy Button test</h1>
 
-<pre><code><table><tbody>
-    <tr><td>Nothing1</td></tr>
-    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\">Nothing1</span></span>
+</code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
+</pre>
 
-<pre><code><table><tbody>
-    <tr><td>Nothing2</td></tr>
-    <tr class=\"copy-button-row\"><td><button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button></td></tr>
-</tbody></table></code></pre>
+<pre><code>
+    <span class=\"code_fence_row\"><span class=\"code_fence_code\">Nothing2</span></span>
+</code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button>
+</pre>
 
 <script>
 const fenced_code_block_contents = [\"Nothing1\", \"Nothing2\"];
