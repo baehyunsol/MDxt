@@ -1,5 +1,5 @@
 use super::Footnote;
-use crate::inline::link::normalize_link;
+use crate::inline::link::normalize_link_label;
 use crate::utils::get_bracket_end_index;
 use std::collections::HashMap;
 
@@ -13,7 +13,7 @@ pub fn read_footnote(content: &[u16], index: usize, footnote_references: &HashMa
 
         match get_bracket_end_index(content, index) {
             Some(bracket_end_index) => {
-                let footnote_label = normalize_link(&content[index + 1..bracket_end_index]);
+                let footnote_label = normalize_link_label(&content[index + 1..bracket_end_index]);
 
                 match footnote_references.get(&footnote_label) {
                     Some(Footnote {index, ..}) => Some(*index),

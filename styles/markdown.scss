@@ -4,22 +4,22 @@
 body .markdown {
     background-color: $dark;
     color: $white;
-    font-size: $font_medium;
+    font-size: $font-medium;
     line-height: 1.5;
     letter-spacing: 1px;
 
     ::selection {
-        background-color: $dark_compl;
-        color: $white_compl;
+        background-color: $dark-compl;
+        color: $white-compl;
     }
 
-    hr.footnote_hr {
-        margin-top: $h1_margin;
+    hr.footnote-hr {
+        margin-top: $h1-margin;
     }
 
     img {
-        max-width: $image_medium;
-        max-height: $image_medium;
+        max-width: $image-medium;
+        max-height: $image-medium;
     }
 
 }
@@ -28,10 +28,10 @@ body .markdown {
 .markdown {
 
     blockquote {
-        background-color: $black_trans;
+        background-color: $black-trans;
         width: 75%;
-        border-left: $border_big solid $gray;
-        padding: $padding_medium;
+        border-left: $border-big solid $gray;
+        padding: $padding-medium;
     }
 
 }
@@ -40,228 +40,228 @@ body .markdown {
 .markdown {
 
     
-    .color_black {
+    .color-black {
         color: $black;
     }
 
-    .color_black::selection {
-        color: $black_compl;
+    .color-black::selection {
+        color: $black-compl;
     }
 
-    .highlight_black {
+    .highlight-black {
         background-color: $black;
     }
 
-    .highlight_black::selection {
-        background-color: $black_compl;
+    .highlight-black::selection {
+        background-color: $black-compl;
     }
     
-    .color_dark {
+    .color-dark {
         color: $dark;
     }
 
-    .color_dark::selection {
-        color: $dark_compl;
+    .color-dark::selection {
+        color: $dark-compl;
     }
 
-    .highlight_dark {
+    .highlight-dark {
         background-color: $dark;
     }
 
-    .highlight_dark::selection {
-        background-color: $dark_compl;
+    .highlight-dark::selection {
+        background-color: $dark-compl;
     }
     
-    .color_gray {
+    .color-gray {
         color: $gray;
     }
 
-    .color_gray::selection {
-        color: $gray_compl;
+    .color-gray::selection {
+        color: $gray-compl;
     }
 
-    .highlight_gray {
+    .highlight-gray {
         background-color: $gray;
     }
 
-    .highlight_gray::selection {
-        background-color: $gray_compl;
+    .highlight-gray::selection {
+        background-color: $gray-compl;
     }
     
-    .color_lightgray {
+    .color-lightgray {
         color: $lightgray;
     }
 
-    .color_lightgray::selection {
-        color: $lightgray_compl;
+    .color-lightgray::selection {
+        color: $lightgray-compl;
     }
 
-    .highlight_lightgray {
+    .highlight-lightgray {
         background-color: $lightgray;
     }
 
-    .highlight_lightgray::selection {
-        background-color: $lightgray_compl;
+    .highlight-lightgray::selection {
+        background-color: $lightgray-compl;
     }
     
-    .color_white {
+    .color-white {
         color: $white;
     }
 
-    .color_white::selection {
-        color: $white_compl;
+    .color-white::selection {
+        color: $white-compl;
     }
 
-    .highlight_white {
+    .highlight-white {
         background-color: $white;
     }
 
-    .highlight_white::selection {
-        background-color: $white_compl;
+    .highlight-white::selection {
+        background-color: $white-compl;
     }
     
-    .color_red {
+    .color-red {
         color: $red;
     }
 
-    .color_red::selection {
-        color: $red_compl;
+    .color-red::selection {
+        color: $red-compl;
     }
 
-    .highlight_red {
+    .highlight-red {
         background-color: $red;
     }
 
-    .highlight_red::selection {
-        background-color: $red_compl;
+    .highlight-red::selection {
+        background-color: $red-compl;
     }
     
-    .color_green {
+    .color-green {
         color: $green;
     }
 
-    .color_green::selection {
-        color: $green_compl;
+    .color-green::selection {
+        color: $green-compl;
     }
 
-    .highlight_green {
+    .highlight-green {
         background-color: $green;
     }
 
-    .highlight_green::selection {
-        background-color: $green_compl;
+    .highlight-green::selection {
+        background-color: $green-compl;
     }
     
-    .color_blue {
+    .color-blue {
         color: $blue;
     }
 
-    .color_blue::selection {
-        color: $blue_compl;
+    .color-blue::selection {
+        color: $blue-compl;
     }
 
-    .highlight_blue {
+    .highlight-blue {
         background-color: $blue;
     }
 
-    .highlight_blue::selection {
-        background-color: $blue_compl;
+    .highlight-blue::selection {
+        background-color: $blue-compl;
     }
     
-    .color_aqua {
+    .color-aqua {
         color: $aqua;
     }
 
-    .color_aqua::selection {
-        color: $aqua_compl;
+    .color-aqua::selection {
+        color: $aqua-compl;
     }
 
-    .highlight_aqua {
+    .highlight-aqua {
         background-color: $aqua;
     }
 
-    .highlight_aqua::selection {
-        background-color: $aqua_compl;
+    .highlight-aqua::selection {
+        background-color: $aqua-compl;
     }
     
-    .color_emerald {
+    .color-emerald {
         color: $emerald;
     }
 
-    .color_emerald::selection {
-        color: $emerald_compl;
+    .color-emerald::selection {
+        color: $emerald-compl;
     }
 
-    .highlight_emerald {
+    .highlight-emerald {
         background-color: $emerald;
     }
 
-    .highlight_emerald::selection {
-        background-color: $emerald_compl;
+    .highlight-emerald::selection {
+        background-color: $emerald-compl;
     }
     
-    .color_violet {
+    .color-violet {
         color: $violet;
     }
 
-    .color_violet::selection {
-        color: $violet_compl;
+    .color-violet::selection {
+        color: $violet-compl;
     }
 
-    .highlight_violet {
+    .highlight-violet {
         background-color: $violet;
     }
 
-    .highlight_violet::selection {
-        background-color: $violet_compl;
+    .highlight-violet::selection {
+        background-color: $violet-compl;
     }
     
-    .color_pink {
+    .color-pink {
         color: $pink;
     }
 
-    .color_pink::selection {
-        color: $pink_compl;
+    .color-pink::selection {
+        color: $pink-compl;
     }
 
-    .highlight_pink {
+    .highlight-pink {
         background-color: $pink;
     }
 
-    .highlight_pink::selection {
-        background-color: $pink_compl;
+    .highlight-pink::selection {
+        background-color: $pink-compl;
     }
     
-    .color_grassgreen {
+    .color-grassgreen {
         color: $grassgreen;
     }
 
-    .color_grassgreen::selection {
-        color: $grassgreen_compl;
+    .color-grassgreen::selection {
+        color: $grassgreen-compl;
     }
 
-    .highlight_grassgreen {
+    .highlight-grassgreen {
         background-color: $grassgreen;
     }
 
-    .highlight_grassgreen::selection {
-        background-color: $grassgreen_compl;
+    .highlight-grassgreen::selection {
+        background-color: $grassgreen-compl;
     }
     
-    .color_gold {
+    .color-gold {
         color: $gold;
     }
 
-    .color_gold::selection {
-        color: $gold_compl;
+    .color-gold::selection {
+        color: $gold-compl;
     }
 
-    .highlight_gold {
+    .highlight-gold {
         background-color: $gold;
     }
 
-    .highlight_gold::selection {
-        background-color: $gold_compl;
+    .highlight-gold::selection {
+        background-color: $gold-compl;
     }
     
 
@@ -272,9 +272,9 @@ body .markdown {
 
     div.box {
         width: 80%;
-        padding: $padding_medium;
-        margin: $padding_medium;
-        border: $border_medium solid $gray;
+        padding: $padding-medium;
+        margin: $padding-medium;
+        border: $border-medium solid $gray;
     }
 
     div.box.no-border {
@@ -287,48 +287,48 @@ body .markdown {
 .markdown {
 
     
-    .size_tiny {
-        font-size: $font_tiny;
+    .size-tiny {
+        font-size: $font-tiny;
 
         img {
-            max-width: $image_tiny;
-            max-height: $image_tiny;
+            max-width: $image-tiny;
+            max-height: $image-tiny;
         }
     }
     
-    .size_small {
-        font-size: $font_small;
+    .size-small {
+        font-size: $font-small;
 
         img {
-            max-width: $image_small;
-            max-height: $image_small;
+            max-width: $image-small;
+            max-height: $image-small;
         }
     }
     
-    .size_medium {
-        font-size: $font_medium;
+    .size-medium {
+        font-size: $font-medium;
 
         img {
-            max-width: $image_medium;
-            max-height: $image_medium;
+            max-width: $image-medium;
+            max-height: $image-medium;
         }
     }
     
-    .size_big {
-        font-size: $font_big;
+    .size-big {
+        font-size: $font-big;
 
         img {
-            max-width: $image_big;
-            max-height: $image_big;
+            max-width: $image-big;
+            max-height: $image-big;
         }
     }
     
-    .size_giant {
-        font-size: $font_giant;
+    .size-giant {
+        font-size: $font-giant;
 
         img {
-            max-width: $image_giant;
-            max-height: $image_giant;
+            max-width: $image-giant;
+            max-height: $image-giant;
         }
     }
     
@@ -338,7 +338,7 @@ body .markdown {
 /* Alignments */
 .markdown {
 
-    .align_center {
+    .align-center {
         text-align: center;
 
         table, img, .box, blockquote, svg {
@@ -348,7 +348,7 @@ body .markdown {
 
     }
 
-    .align_right {
+    .align-right {
         text-align: right;
 
         table, img, .box, blockquote, svg {
@@ -358,7 +358,7 @@ body .markdown {
 
     }
 
-    .align_left {
+    .align-left {
         text-align: left;
 
         table, img, .box, blockquote, svg {
@@ -374,68 +374,68 @@ body .markdown {
 
     
     h1 {
-        font-size: $h1_font_size;
-        margin-top: $h1_margin;
-        margin-bottom: $h1_margin / 2;
+        font-size: $h1-font-size;
+        margin-top: $h1-margin;
+        margin-bottom: $h1-margin / 2;
         transition: color 0.3s;
     }
 
     h1:hover {
-        color: $white_trans;
+        color: $white-trans;
         transition: color 0.3s;
     }
     
     h2 {
-        font-size: $h2_font_size;
-        margin-top: $h2_margin;
-        margin-bottom: $h2_margin / 2;
+        font-size: $h2-font-size;
+        margin-top: $h2-margin;
+        margin-bottom: $h2-margin / 2;
         transition: color 0.3s;
     }
 
     h2:hover {
-        color: $white_trans;
+        color: $white-trans;
         transition: color 0.3s;
     }
     
     h3 {
-        font-size: $h3_font_size;
-        margin-top: $h3_margin;
-        margin-bottom: $h3_margin / 2;
+        font-size: $h3-font-size;
+        margin-top: $h3-margin;
+        margin-bottom: $h3-margin / 2;
         transition: color 0.3s;
     }
 
     h3:hover {
-        color: $white_trans;
+        color: $white-trans;
         transition: color 0.3s;
     }
     
     h4 {
-        font-size: $h4_font_size;
-        margin-top: $h4_margin;
-        margin-bottom: $h4_margin / 2;
+        font-size: $h4-font-size;
+        margin-top: $h4-margin;
+        margin-bottom: $h4-margin / 2;
         transition: color 0.3s;
     }
 
     h4:hover {
-        color: $white_trans;
+        color: $white-trans;
         transition: color 0.3s;
     }
     
     h5 {
-        font-size: $h5_font_size;
-        margin-top: $h5_margin;
-        margin-bottom: $h5_margin / 2;
+        font-size: $h5-font-size;
+        margin-top: $h5-margin;
+        margin-bottom: $h5-margin / 2;
         transition: color 0.3s;
     }
 
     h5:hover {
-        color: $white_trans;
+        color: $white-trans;
         transition: color 0.3s;
     }
     
 
     h1, h2 {
-        border-bottom: $border_medium solid $gray;
+        border-bottom: $border-medium solid $gray;
     }
 
 }
@@ -444,7 +444,7 @@ body .markdown {
 .markdown {
 
     a:link {
-        border-bottom: $border_medium solid $aqua_trans;
+        border-bottom: $border-medium solid $aqua-trans;
         color: $aqua;
         text-decoration: none;
         transition: border 0.3s;
@@ -457,11 +457,11 @@ body .markdown {
 
     a:hover {
         text-decoration: none;
-        border-bottom: $border_medium solid $aqua;
+        border-bottom: $border-medium solid $aqua;
     }
 
     a::selection {
-        color: $aqua_compl;
+        color: $aqua-compl;
     }
 
 }
@@ -472,49 +472,49 @@ body .markdown {
     
     pre.line-num-width-0 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (0 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (0 + 1) / 2;
         }
     }
     
     pre.line-num-width-1 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (1 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (1 + 1) / 2;
         }
     }
     
     pre.line-num-width-2 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (2 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (2 + 1) / 2;
         }
     }
     
     pre.line-num-width-3 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (3 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (3 + 1) / 2;
         }
     }
     
     pre.line-num-width-4 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (4 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (4 + 1) / 2;
         }
     }
     
     pre.line-num-width-5 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (5 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (5 + 1) / 2;
         }
     }
     
     pre.line-num-width-6 {
         span.code-fence-index {
-            min-width: $padding_medium + $font_medium * (6 + 1) / 2;
+            min-width: $padding-medium + $font-medium * (6 + 1) / 2;
         }
     }
     
 
     pre {
-        padding: $padding_medium;
+        padding: $padding-medium;
         background-color: $black;
         width: 90%;
         overflow: auto;
@@ -522,12 +522,12 @@ body .markdown {
 
         span.code-fence-index {
             display: inline-block;
-            border-right: $border_medium solid $emerald;
+            border-right: $border-medium solid $emerald;
             text-align: right;
-            padding-right: $padding_medium;
-            margin-right: $padding_medium;
-            padding-top: $padding_tiny;
-            padding-bottom: $padding_tiny;
+            padding-right: $padding-medium;
+            margin-right: $padding-medium;
+            padding-top: $padding-tiny;
+            padding-bottom: $padding-tiny;
         }
 
         span.code-fence-row {
@@ -541,79 +541,79 @@ body .markdown {
 
         span.code-fence-code {
             display: inline-block;
-            padding-top: $padding_tiny;
-            padding-bottom: $padding_tiny;
+            padding-top: $padding-tiny;
+            padding-bottom: $padding-tiny;
         }
 
         span.highlight.code-fence-row {
-            background-color: $black_compl;
-            color: $white_compl;
+            background-color: $black-compl;
+            color: $white-compl;
 
             span.code-fence-index {
-                border-right: $border_medium solid $emerald_compl;
+                border-right: $border-medium solid $emerald-compl;
             }
 
         }
 
         span.highlight.code-fence-row:hover {
-            background-color: $black_compl_trans;
+            background-color: $black-compl-trans;
         }
 
         
-        span.highlight span .color_black {
-            color: $black_compl;
+        span.highlight span .color-black {
+            color: $black-compl;
         }
         
-        span.highlight span .color_dark {
-            color: $dark_compl;
+        span.highlight span .color-dark {
+            color: $dark-compl;
         }
         
-        span.highlight span .color_gray {
-            color: $gray_compl;
+        span.highlight span .color-gray {
+            color: $gray-compl;
         }
         
-        span.highlight span .color_lightgray {
-            color: $lightgray_compl;
+        span.highlight span .color-lightgray {
+            color: $lightgray-compl;
         }
         
-        span.highlight span .color_white {
-            color: $white_compl;
+        span.highlight span .color-white {
+            color: $white-compl;
         }
         
-        span.highlight span .color_red {
-            color: $red_compl;
+        span.highlight span .color-red {
+            color: $red-compl;
         }
         
-        span.highlight span .color_green {
-            color: $green_compl;
+        span.highlight span .color-green {
+            color: $green-compl;
         }
         
-        span.highlight span .color_blue {
-            color: $blue_compl;
+        span.highlight span .color-blue {
+            color: $blue-compl;
         }
         
-        span.highlight span .color_aqua {
-            color: $aqua_compl;
+        span.highlight span .color-aqua {
+            color: $aqua-compl;
         }
         
-        span.highlight span .color_emerald {
-            color: $emerald_compl;
+        span.highlight span .color-emerald {
+            color: $emerald-compl;
         }
         
-        span.highlight span .color_violet {
-            color: $violet_compl;
+        span.highlight span .color-violet {
+            color: $violet-compl;
         }
         
-        span.highlight span .color_pink {
-            color: $pink_compl;
+        span.highlight span .color-pink {
+            color: $pink-compl;
         }
         
-        span.highlight span .color_grassgreen {
-            color: $grassgreen_compl;
+        span.highlight span .color-grassgreen {
+            color: $grassgreen-compl;
         }
         
-        span.highlight span .color_gold {
-            color: $gold_compl;
+        span.highlight span .color-gold {
+            color: $gold-compl;
         }
         
 
@@ -623,15 +623,15 @@ body .markdown {
         background-color: $dark;
         border: none;
         color: $white;
-        font-size: $font_medium;
-        padding: $padding_small;
+        font-size: $font-medium;
+        padding: $padding-small;
         border-radius: 6px;
         cursor: pointer;
         transition: background-color 0.5s ease-out;
     }
 
     button.copy-fenced-code:hover {
-        background-color: $white_trans;
+        background-color: $white-trans;
         transition: background-color 0.5s ease-out;
     }
 
@@ -644,7 +644,7 @@ body .markdown {
         color: $gold;
         background-color: $black;
         border-radius: 3px;
-        padding: $padding_tiny $padding_small $padding_tiny;
+        padding: $padding-tiny $padding-small $padding-tiny;
     }
 
 }
@@ -663,7 +663,7 @@ body .markdown {
     }
 
     td, th {
-        padding: $padding_medium + $padding_small;
+        padding: $padding-medium + $padding-small;
     }
 
     tr:nth-last-child(odd) {
@@ -679,7 +679,7 @@ body .markdown {
     }
 
     thead.collapsed th {
-        padding: $padding_small;
+        padding: $padding-small;
         transition: padding 0.5s ease-out;
     }
 
@@ -697,35 +697,35 @@ body .markdown {
 ----- Checkbox for task lists -----
 */
 
-div.unchecked_box, div.checked_box {
+div.unchecked-box, div.checked-box {
     position: relative;
-    top: $font_medium / 4;
+    top: $font-medium / 4;
     display: inline-block;
     border-radius: 4px;
-    width: $font_medium;
-    height: $font_medium;
+    width: $font-medium;
+    height: $font-medium;
 }
 
-div.unchecked_box {
+div.unchecked-box {
     background-color: $gray;
-    margin-right: $padding_medium;
+    margin-right: $padding-medium;
 }
 
-div.checked_box {
+div.checked-box {
     background-color: $black;
-    margin-right: $padding_medium;
+    margin-right: $padding-medium;
 }
 
 span.checkmark {
     display: block;
     position: relative;
-    left: $font_medium / 4;
-    top: $font_medium / 8;
-    width: $font_medium / 3;
-    height: $font_medium / 2;
+    left: $font-medium / 4;
+    top: $font-medium / 8;
+    width: $font-medium / 3;
+    height: $font-medium / 2;
     border: {
-        bottom: $border_medium solid $white;
-        right: $border_medium solid $white;
+        bottom: $border-medium solid $white;
+        right: $border-medium solid $white;
     }
     transform: rotate(45deg);
 }
@@ -735,9 +735,9 @@ span.triangle {
     position: relative;
     width: 0;
     height: 0;
-    left: $font_medium / 6;
-    top: $font_medium / 3;
-    border-left: $font_medium / 3 solid #0000;
-    border-right: $font_medium / 3 solid #0000;
-    border-bottom: $font_medium / 3 solid $white;
+    left: $font-medium / 6;
+    top: $font-medium / 3;
+    border-left: $font-medium / 3 solid #0000;
+    border-right: $font-medium / 3 solid #0000;
+    border-bottom: $font-medium / 3 solid $white;
 }

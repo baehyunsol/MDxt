@@ -78,7 +78,7 @@ impl Table {
 
     }
 
-    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
         result.push(into_v16("<table>"));
 
@@ -89,7 +89,7 @@ impl Table {
                 ""
             };
 
-            format!(" id=\"table-collapse-toggle-{}\" class=\"collapsible{}\" onclick =\"collapse_table('{}')\"", self.index, default_value, self.index)
+            format!(" id=\"table-collapse-toggle-{}\" class=\"{}collapsible{}\" onclick =\"collapse-table('{}')\"", self.index, class_prefix, default_value, self.index)
         } else {
             String::new()
         };
@@ -98,7 +98,7 @@ impl Table {
         self.header.iter().for_each(
             |row| {
                 result.push(into_v16("<tr>"));
-                result.push(row.iter().map(|c| c.to_html(true, toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
+                result.push(row.iter().map(|c| c.to_html(true, toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat());
                 result.push(into_v16("</tr>"));
             }
         );
@@ -106,9 +106,9 @@ impl Table {
 
         let collapsible_body = if self.collapsible {
             let default_value = if self.default_hidden {
-                " class=\"invisible\""
+                format!(" class=\"{}invisible\"", class_prefix)
             } else {
-                ""
+                String::new()
             };
 
             format!(" id=\"collapsible-table-{}\"{}", self.index, default_value)
@@ -121,7 +121,7 @@ impl Table {
             self.cells.iter().for_each(
                 |row| {
                     result.push(into_v16("<tr>"));
-                    result.push(row.iter().map(|c| c.to_html(false, toc_rendered)).collect::<Vec<Vec<u16>>>().concat());
+                    result.push(row.iter().map(|c| c.to_html(false, toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat());
                     result.push(into_v16("</tr>"));
                 }
             );

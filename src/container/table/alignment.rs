@@ -8,11 +8,11 @@ pub enum TableAlignment {
 
 impl TableAlignment {
 
-    pub fn opening_tag(&self) -> Vec<u16> {
+    pub fn opening_tag(&self, class_prefix: &str) -> Vec<u16> {
         match self {
-            TableAlignment::Left => into_v16("<div class=\"align_left\">"),
-            TableAlignment::Center => into_v16("<div class=\"align_center\">"),
-            TableAlignment::Right => into_v16("<div class=\"align_right\">"),
+            TableAlignment::Left => into_v16(&format!("<div class=\"{}align-left\">", class_prefix)),
+            TableAlignment::Center => into_v16(&format!("<div class=\"{}align-center\">", class_prefix)),
+            TableAlignment::Right => into_v16(&format!("<div class=\"{}align-right\">", class_prefix)),
             TableAlignment::None => vec![]
         }
     }

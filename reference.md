@@ -198,46 +198,46 @@ It has 14 colors: black, dark, gray, lightgray, white, red, green, blue, aqua, e
 
 | MDxt                                 | html                                              | output                              |
 |--------------------------------------|---------------------------------------------------|-------------------------------------|
-|\[[black]]black[[/black]]          | <span class="color_black">black</span>          | [[black]]black[[/black]]         |
-|\[[dark]]dark[[/dark]]              | <span class="color_dark">dark</span>             | [[dark]]dark[[/dark]]             |
-|\[[gray]]gray[[/gray]]              | <span class="color_gray">gray</span>             | [[gray]]gray[[/gray]]             |
-|\[[lightgray]]lightgray[[/lightgray]]    | <span class="color_lightgray">lightgray</span>        | [[lightgray]]lightgray[[/lightgray]]   |
-|\[[white]]white[[/white]]            | <span class="color_white">white</span>            | [[white]]white[[/white]]           |
-|\[[red]]red[[/red]]                | <span class="color_red">red</span>              | [[red]]red[[/red]]               |
-|\[[green]]green[[/green]]            | <span class="color_green">green</span>            | [[green]]green[[/green]]           |
-|\[[blue]]blue[[/blue]]              | <span class="color_blue">blue</span>             | [[blue]]blue[[/blue]]             |
-|\[[aqua]]aqua[[/aqua]]              | <span class="color_aqua">aqua</span>             | [[aqua]]aqua[[/aqua]]             |
-|\[[emerald]]emerald[[/emerald]]        | <span class="color_emerald">emerald</span>          | [[emerald]]emerald[[/emerald]]       |
-|\[[violet]]violet[[/violet]]          | <span class="color_violet">violet</span>           | [[violet]]violet[[/violet]]         |
-|\[[pink]]pink[[/pink]]              | <span class="color_pink">pink</span>             | [[pink]]pink[[/pink]]             |
-|\[[grassgreen]]grassgreen[[/grassgreen]]  | <span class="color_grassgreen">grassgreen</span>       | [[grassgreen]]grassgreen[[/grassgreen]] |
-|\[[gold]]gold[[/gold]]              | <span class="color_gold">gold</span>             | [[gold]]gold [[/gold]]              |
+|\[[black]]black[[/black]]          | <span class="color-black">black</span>          | [[black]]black[[/black]]         |
+|\[[dark]]dark[[/dark]]              | <span class="color-dark">dark</span>             | [[dark]]dark[[/dark]]             |
+|\[[gray]]gray[[/gray]]              | <span class="color-gray">gray</span>             | [[gray]]gray[[/gray]]             |
+|\[[lightgray]]lightgray[[/lightgray]]    | <span class="color-lightgray">lightgray</span>        | [[lightgray]]lightgray[[/lightgray]]   |
+|\[[white]]white[[/white]]            | <span class="color-white">white</span>            | [[white]]white[[/white]]           |
+|\[[red]]red[[/red]]                | <span class="color-red">red</span>              | [[red]]red[[/red]]               |
+|\[[green]]green[[/green]]            | <span class="color-green">green</span>            | [[green]]green[[/green]]           |
+|\[[blue]]blue[[/blue]]              | <span class="color-blue">blue</span>             | [[blue]]blue[[/blue]]             |
+|\[[aqua]]aqua[[/aqua]]              | <span class="color-aqua">aqua</span>             | [[aqua]]aqua[[/aqua]]             |
+|\[[emerald]]emerald[[/emerald]]        | <span class="color-emerald">emerald</span>          | [[emerald]]emerald[[/emerald]]       |
+|\[[violet]]violet[[/violet]]          | <span class="color-violet">violet</span>           | [[violet]]violet[[/violet]]         |
+|\[[pink]]pink[[/pink]]              | <span class="color-pink">pink</span>             | [[pink]]pink[[/pink]]             |
+|\[[grassgreen]]grassgreen[[/grassgreen]]  | <span class="color-grassgreen">grassgreen</span>       | [[grassgreen]]grassgreen[[/grassgreen]] |
+|\[[gold]]gold[[/gold]]              | <span class="color-gold">gold</span>             | [[gold]]gold [[/gold]]              |
 
 ### Sizes
 
 It has 5 sizes: tiny, small, medium, big, and giant.
 
-`[[tiny]] tiny [[/tiny]]` is rendered to `<span class="size_tiny"> tiny </span>`. The same rule is applied to the other sizes.
+`[[tiny]] tiny [[/tiny]]` is rendered to `<span class="size-tiny"> tiny </span>`. The same rule is applied to the other sizes.
 
 | MDxt                            | html                                             | output                       |
 |---------------------------------|--------------------------------------------------|------------------------------|
-|\[[tiny]]tiny[[/tiny]]           | <span class="size_tiny">tiny</span>              | [[tiny]]tiny[[/tiny]]        |
-|\[[small]]small[[/small]]        | <span class="size_small">small</span>            | [[small]]small[[/small]]     |
-|\[[medium]]medium[[/medium]]     | <span class="size_medium">medium</span>          | [[medium]]medium[[/medium]]  |
-|\[[big]]big[[/big]]           | <span class="size_big">big</span>              | [[big]]big[[/big]]    |
-|\[[giant]]giant[[/giant]]           | <span class="size_giant">giant</span>              | [[giant]]giant[[/giant]]    |
+|\[[tiny]]tiny[[/tiny]]           | <span class="size-tiny">tiny</span>              | [[tiny]]tiny[[/tiny]]        |
+|\[[small]]small[[/small]]        | <span class="size-small">small</span>            | [[small]]small[[/small]]     |
+|\[[medium]]medium[[/medium]]     | <span class="size-medium">medium</span>          | [[medium]]medium[[/medium]]  |
+|\[[big]]big[[/big]]           | <span class="size-big">big</span>              | [[big]]big[[/big]]    |
+|\[[giant]]giant[[/giant]]           | <span class="size-giant">giant</span>              | [[giant]]giant[[/giant]]    |
 
 ### Alignments
 
 It has 3 alignments: left, right, and center.
 
-`[[center]] center [[/center]]` is rendered to `<span class="align_center"> center </span>`. The same rule is applied to the other alignments.
+`[[center]] center [[/center]]` is rendered to `<span class="align-center"> center </span>`. The same rule is applied to the other alignments.
 
 Inline alignments are rendered to `span` tags and multi-lines are rendered to `div`. In most cases, `span` tags don't work with alignments.
 
 ### Highlights
 
-`[[highlight = red]] This text is highlighted! [[/highlight]]` is rendered to `<span class="highlight_red"> This text is highlighted! </span>`. The same rule is applied to the other colors.
+`[[highlight = red]] This text is highlighted! [[/highlight]]` is rendered to `<span class="highlight-red"> This text is highlighted! </span>`. The same rule is applied to the other colors.
 
 To see available colors, read [Colors](#colors) section.
 
@@ -332,7 +332,7 @@ red texts.
 [[/red]]
 ```
 
-As you see above, the first and the last paragraph only consist of a macro. The macro will be rendered to `<div class="color_red">`.
+As you see above, the first and the last paragraph only consist of a macro. The macro will be rendered to `<div class="color-red">`.
 
 [multiline macro]: #multiline-macro
 

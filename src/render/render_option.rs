@@ -22,7 +22,10 @@ pub struct RenderOption {
     /// Javascript is required to render collapsible tables and math formulas.
     /// If this option is true, the engine will add javascript codes when needed.
     /// If you want to use your own script, turn this option off.
-    pub javascript: bool
+    pub javascript: bool,
+
+    /// It prefixes all the html classes.
+    pub class_prefix: String
 }
 
 impl Default for RenderOption {
@@ -32,7 +35,8 @@ impl Default for RenderOption {
             link_handler: |s| s.to_string(),
             header_anchor: true,
             parse_metadata: true,
-            javascript: true
+            javascript: true,
+            class_prefix: String::new()
         }
     }
 
@@ -47,6 +51,11 @@ impl RenderOption {
 
     pub fn set_header_anchor(&mut self, header_anchor: bool) -> &mut Self {
         self.header_anchor = header_anchor;
+        self
+    }
+
+    pub fn set_class_prefix(&mut self, class_prefix: String) -> &mut Self {
+        self.class_prefix = class_prefix;
         self
     }
 

@@ -14,7 +14,7 @@ pub struct Blockquote {
 
 impl Blockquote {
 
-    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
         let mut level = 0;
         let mut result = Vec::with_capacity(self.elements.len() * 2);
 
@@ -26,7 +26,7 @@ impl Blockquote {
                     level += *n;
                 },
                 ElementOrIndent::Element(element) => {
-                    result.push(element.to_html(toc_rendered));
+                    result.push(element.to_html(toc_rendered, class_prefix));
                     result.push(into_v16(" "));  // `\n` is converted to ` `
                 }
             }

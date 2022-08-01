@@ -45,7 +45,7 @@ impl List {
         list
     }
 
-    pub fn to_html(&self, toc_rendered: &[u16]) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
 
         let start_index = if self.start_index != 1 {
             format!(" start=\"{}\"", self.start_index)
@@ -99,24 +99,24 @@ impl List {
                     match task_list {
                         Some(marker) => match marker {
                             TaskMarker::Unchecked => {
-                                result.push(into_v16("<div class=\"unchecked_box\"></div>"));
+                                result.push(into_v16(&format!("<div class=\"{}unchecked-box\"></div>", class_prefix)));
                             },
                             TaskMarker::Checked => {
-                                result.push(into_v16("<div class=\"checked_box\"><span class=\"checkmark\"></span></div>"));
+                                result.push(into_v16(&format!("<div class=\"{}checked-box\"><span class=\"{}checkmark\"></span></div>", class_prefix, class_prefix)));
                             },
                             TaskMarker::Triangle => {
-                                result.push(into_v16("<div class=\"checked_box\"><span class=\"triangle\"></span></div>"));
+                                result.push(into_v16(&format!("<div class=\"{}checked-box\"><span class=\"{}triangle\"></span></div>", class_prefix, class_prefix)));
                             },
                         },
                         _ => {}
                     }
 
-                    result.push(content.to_html(toc_rendered));
+                    result.push(content.to_html(toc_rendered, class_prefix));
                     result.push(into_v16("</li>"));
                 }
                 ElementOrSublist::Sublist(sublist) => {
                     result.pop().unwrap();  // </li>  // the first element is `ElementOrSublist::Element`
-                    result.push(sublist.to_html(toc_rendered));
+                    result.push(sublist.to_html(toc_rendered, class_prefix));
                     result.push(into_v16("</li>"));
                 }
             }

@@ -8,7 +8,7 @@ use super::link::predicate::{
 };
 use super::math::escape_inside_math_blocks;
 use super::footnote::predicate::read_footnote;
-use super::link::normalize_link;
+use super::link::normalize_link_label;
 use super::macros::predicate::check_and_parse_macro_inline;
 use crate::ast::doc_data::DocData;
 use crate::render::render_option::RenderOption;
@@ -301,7 +301,7 @@ impl InlineNode {
 
                     // the existence of the link reference was tested by the `read_reference_link` function
                     // it clones to result in order to avoid the borrow checker
-                    let link_destination = doc_data.link_references.get(&normalize_link(&link_label)).unwrap().clone();
+                    let link_destination = doc_data.link_references.get(&normalize_link_label(&link_label)).unwrap().clone();
 
                     if index > 0 && content[index - 1] == '!' as u16 {
                         is_image = true;
@@ -338,7 +338,7 @@ impl InlineNode {
             match read_footnote(&content, index, &doc_data.footnote_references) {
                 Some(footnote_index) => {
                     let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
-                    let footnote_label = normalize_link(&content[index + 1..bracket_end_index]);
+                    let footnote_label = normalize_link_label(&content[index + 1..bracket_end_index]);
                     let mut result = vec![];
 
                     let inverse_index = doc_data.add_footnote_inverse_index(&footnote_label);
@@ -365,7 +365,7 @@ impl InlineNode {
 
                     // the existence of the link reference was tested by the `read_reference_link` function
                     // it clones to result in order to avoid the borrow checker
-                    let link_destination = doc_data.link_references.get(&normalize_link(&link_text)).unwrap().clone();
+                    let link_destination = doc_data.link_references.get(&normalize_link_label(&link_text)).unwrap().clone();
 
                     if index > 0 && content[index - 1] == '!' as u16 {
                         is_image = true;

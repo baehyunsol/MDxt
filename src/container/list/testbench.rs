@@ -453,14 +453,14 @@ paragraph
 - [^] 8 (valid)
 ", "
 <ul>
-    <li><div class=\"unchecked_box\"></div>1 (valid)</li>
+    <li><div class=\"unchecked-box\"></div>1 (valid)</li>
     <li>[ ]</li>
     <li>[ ]3</li>
-    <li><div class=\"checked_box\"><span class=\"checkmark\"></span></div>4 (valid)</li>
+    <li><div class=\"checked-box\"><span class=\"checkmark\"></span></div>4 (valid)</li>
     <li>[  ] 5</li>
     <li>[] 6</li>
-    <li><div class=\"unchecked_box\"></div>7 (valid)</li>
-    <li><div class=\"checked_box\"><span class=\"triangle\"></span></div>8 (valid)</li>
+    <li><div class=\"unchecked-box\"></div>7 (valid)</li>
+    <li><div class=\"checked-box\"><span class=\"triangle\"></span></div>8 (valid)</li>
 </ul>
 ")
     ];

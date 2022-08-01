@@ -9,24 +9,25 @@ use std::collections::HashMap;
 
 impl FencedCode {
 
-    pub fn to_html(&self) -> Vec<u16> {
+    pub fn to_html(&self, class_prefix: &str) -> Vec<u16> {
 
         let mut rows = if is_syntax_available(&self.language) {
-            let lines = highlight_syntax(&undo_html_escapes(&self.content), &self.language);
+            let lines = highlight_syntax(&undo_html_escapes(&self.content), &self.language, class_prefix);
 
             lines.iter().enumerate().map(
-                |(index, line)| render_line(line, index, &self.line_num, &self.highlights)
+                |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
             ).collect::<Vec<Vec<u16>>>()
         } else {
             self.content.split(|c| *c == '\n' as u16).enumerate().map(
-                |(index, line)| render_line(line, index, &self.line_num, &self.highlights)
+                |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
             ).collect::<Vec<Vec<u16>>>()
         };
 
         let copy_button = if self.copy_button {
             into_v16(
                 &format!(
-                    "<button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
+                    "<button class=\"{}copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
+                    class_prefix,
                     self.index
                 )
             )
@@ -37,7 +38,7 @@ impl FencedCode {
         // so that each index has the same width
         let line_num_width = match self.line_num {
             None => String::new(),
-            Some(n) => format!(" class=\"line-num-width-{}\"", log10(n + rows.len()))
+            Some(n) => format!(" class=\"{}line-num-width-{}\"", class_prefix, log10(n + rows.len()))
         };
 
         vec![
@@ -51,23 +52,23 @@ impl FencedCode {
 
 }
 
-fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, highlights: &Vec<usize>) -> Vec<u16> {
+fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, highlights: &Vec<usize>, class_prefix: &str) -> Vec<u16> {
 
     let line_num = match line_num {
         None => {
             curr_line += 1;  // markdown index starts with 1, and Rust starts with 0.
-            into_v16("<span class=\"code-fence-code\">")
+            into_v16(&format!("<span class=\"{}code-fence-code\">", class_prefix))
         },
         Some(n) => {
             curr_line += n;
-            into_v16(&format!("<span class=\"code-fence-index\">{}</span><span class=\"code-fence-code\">", curr_line))
+            into_v16(&format!("<span class=\"{}code-fence-index\">{}</span><span class=\"{}code-fence-code\">", class_prefix, curr_line, class_prefix))
         }
     };
 
     let highlight_or_not = if highlights.contains(&curr_line) {
-        " class=\"highlight code-fence-row\""
+        format!(" class=\"{}highlight code-fence-row\"", class_prefix)
     } else {
-        " class=\"code-fence-row\""
+        format!(" class=\"{}code-fence-row\"", class_prefix)
     };
 
     vec![

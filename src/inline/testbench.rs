@@ -52,6 +52,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*abc``abcd*abc``", "*abc<code class=\"short\">abcd*abc</code>"),
         ("*abc\\*", "*abc&#42;"),
 
+        ("``", "``"),
+        ("` `", "<code class=\"short\"> </code>"),
         ("`abc\\` \\`abc`", "<code class=\"short\">abc\\</code> &#96;abc`"),
         ("`a``b`", "<code class=\"short\">a``b</code>"),
         ("`\\`", "<code class=\"short\">\\</code>"),
@@ -72,21 +74,21 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("~_no_underline _~", "<sub>_no_underline _</sub>"),
 
         ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros"),
-        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color_red\">This text is red and <strong>bold</strong>.</span> <span class=\"align_center\"> Some whitespaces  </span>"),
+        ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color-red\">This text is red and <strong>bold</strong>.</span> <span class=\"align-center\"> Some whitespaces  </span>"),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]"),
         ("[[char = won]], [[char = euro]], [[char = therefore]], [[char = cry]]", "&#8361;, &euro;, &there4;, &#128546;"),
-        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color_red\"><span class=\"align_center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
-        ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color_red\"><code class=\"short\">a code span in red</code></span>"),
+        ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color-red\"><span class=\"align-center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
+        ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color-red\"><code class=\"short\">a code span in red</code></span>"),
         ("[[math]] `a code span inside a math` [[/math]] `[[math]] a math inside a code span [[/math]]`", "\\( `a code span inside a math` \\) <code class=\"short\">[[math]] a math inside a code span [[/math]]</code>"),
         ("`[[math]] a code span before a math`[[/math]] [[math]] `a code span after a math [[/math]]`", "<code class=\"short\">[[math]] a code span before a math</code>[[/math]] \\( `a code span after a math \\)`"),
         ("[[math]] `a code span after a math [[/math]]` `[[math]] a code span before a math`[[/math]]", "\\( `a code span after a math \\)` <code class=\"short\">[[math]] a code span before a math</code>[[/math]]"),
         ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)"),
         ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)"),
-        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<span class=\"highlight_red\"> This text is highlighted! </span>"),
+        ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<span class=\"highlight-red\"> This text is highlighted! </span>"),
         ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)"),
-        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <span class=\"highlight_red\"> </span> [[highlight = invalid_color]] [[/highlight]]"),
-        ("[[red]] [[big]] error [[/red]] [[/big]]", "<span class=\"color_red\"> [[big]] error </span> [[/big]]"),
+        ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <span class=\"highlight-red\"> </span> [[highlight = invalid_color]] [[/highlight]]"),
+        ("[[red]] [[big]] error [[/red]] [[/big]]", "<span class=\"color-red\"> [[big]] error </span> [[/big]]"),
         ("[[div, class = foo]] abc [[/div]]", "<div class=\"foo\"> abc </div>"),
         ("[[div, class = foo, id = bar, class = baz]] abc [[/div]]", "<div class=\"foo baz\" id=\"bar\"> abc </div>"),
         ("[[div, class = foo, onclick = malicious function]] abc [[/div]]", "[[div, class = foo, onclick = malicious function]] abc [[/div]]"),
@@ -109,7 +111,7 @@ fn inline_render_test() {
             &escape_backslashes(&into_v16(case)),
             &mut doc_data,
             &mut render_option
-        ).to_html(&[]);
+        ).to_html(&[], "");
 
         if rendered != into_v16(answer) {
             failures.push(format!(
@@ -150,7 +152,7 @@ fn inline_inversion_test() {
 
         let inverted_html = InlineNode::from_mdxt(
             &escape_backslashes(&inverted), &mut doc_data, &mut render_option
-        ).to_html(&[]);
+        ).to_html(&[], "");
 
         if into_v16(&html) != inverted_html {
             failures.push(format!(

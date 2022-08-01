@@ -8,7 +8,7 @@ fn mdxt_samples() -> Vec<(String, String)> {
 Red
 [[/red]]
 ", "
-<div class=\"color_red\">
+<div class=\"color-red\">
 <p>Red</p>
 </div>
 "
@@ -19,7 +19,7 @@ Red
 
 [[/red]]
 ", "
-<div class=\"color_red\">
+<div class=\"color-red\">
 <p>Red</p>
 </div>
 "
@@ -39,7 +39,7 @@ Red
 [[/red]]
 ", "
 <p>
-Interrupt Paragraph <span class=\"color_red\"> Red </span>
+Interrupt Paragraph <span class=\"color-red\"> Red </span>
 </p>
 "
 ), ("
@@ -91,8 +91,8 @@ Giant and Center
 
 [[/giant]]
 ", "
-<div class=\"size_giant\">
-    <div class=\"align_center\">
+<div class=\"size-giant\">
+    <div class=\"align-center\">
         <p>Giant and Center</p>
     </div>
 </div>
@@ -123,7 +123,7 @@ Red Span
 
 [[/highlight]]
 ", "
-<div class=\"highlight_red\">
+<div class=\"highlight-red\">
     <span class=\"foo\" id=\"bar\">
         <p>Red Span</p>
     </span>
@@ -156,6 +156,14 @@ A paragraph in a borderless box in a box.
         <p>A paragraph in a borderless box in a box.</p>
     </div>
 </div>
+"), ("
+# Link Escape Test
+
+[escape test &](&)
+", "
+<h1 id=\"link-escape-test\">Link Escape Test</h1>
+
+<p><a href=\"&amp;\">escape test &amp;</a></p>
 ")
     ];
 

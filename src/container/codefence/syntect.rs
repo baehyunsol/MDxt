@@ -14,7 +14,7 @@ lazy_static! {
     };
 }
 
-pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
+pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -> Vec<Vec<u16>> {
 
     #[cfg(test)]
     assert!(is_syntax_available(language));
@@ -31,11 +31,11 @@ pub fn highlight_syntax(content: &[u16], language: &[u16]) -> Vec<Vec<u16>> {
         match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
             Ok(styled_line) => {
                 result.push(styled_line.iter().map(
-                    |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content)
+                    |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content, class_prefix)
                 ).collect::<Vec<Vec<u16>>>().concat());
             }
             Err(_) => {
-                result.push(classify_style_to_css(&Color::WHITE, curr_line));
+                result.push(classify_style_to_css(&Color::WHITE, curr_line, class_prefix));
             }
         }
 
@@ -48,7 +48,7 @@ pub fn is_syntax_available(language: &[u16]) -> bool {
     SYNTAX_SET.find_syntax_by_token(&from_v16(language)).is_some()
 }
 
-fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
+fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Vec<u16> {
 
     // convert syntect's palette to its own
     let color = match color {
@@ -71,7 +71,7 @@ fn classify_style_to_css(color: &Color, content: &str) -> Vec<u16> {
     };
 
     vec![
-        into_v16(&format!("<span class=\"color_{}\">", color)),
+        into_v16(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
         escape_htmls(&into_v16(content)),
         into_v16("</span>")
     ].concat()

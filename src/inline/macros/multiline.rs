@@ -101,7 +101,7 @@ impl MultiLineMacro {
 
     }
 
-    pub fn to_html(&self) -> Vec<u16> {
+    pub fn to_html(&self, class_prefix: &str) -> Vec<u16> {
         
         if self.is_closing {
 
@@ -120,27 +120,27 @@ impl MultiLineMacro {
 
             match &self.macro_type {
                 MultiLineMacroType::Box { border } => if *border {
-                    into_v16("<div class=\"box\">")
+                    into_v16(&format!("<div class=\"{}box\">", class_prefix))
                 } else {
-                    into_v16("<div class=\"box no-border\">")
+                    into_v16(&format!("<div class=\"{}box no-border\">", class_prefix))
                 },
                 MultiLineMacroType::Color(color) => vec![
-                    into_v16("<div class=\"color_"),
+                    into_v16(&format!("<div class=\"{}color-", class_prefix)),
                     color.clone(),
                     into_v16("\">")
                 ].concat(),
                 MultiLineMacroType::Size(size) => vec![
-                    into_v16("<div class=\"size_"),
+                    into_v16(&format!("<div class=\"{}size-", class_prefix)),
                     size.clone(),
                     into_v16("\">")
                 ].concat(),
                 MultiLineMacroType::Alignment(align) => vec![
-                    into_v16("<div class=\"align_"),
+                    into_v16(&format!("<div class=\"{}align-", class_prefix)),
                     align.clone(),
                     into_v16("\">")
                 ].concat(),
                 MultiLineMacroType::Highlight(highlight) => vec![
-                    into_v16("<div class=\"highlight_"),
+                    into_v16(&format!("<div class=\"{}highlight-", class_prefix)),
                     highlight.clone(),
                     into_v16("\">")
                 ].concat(),
@@ -151,7 +151,7 @@ impl MultiLineMacro {
                     result.push(tag.clone());
 
                     if class.len() > 0 {
-                        result.push(into_v16(" class=\""));
+                        result.push(into_v16(&format!(" class=\"{}", class_prefix)));
                         result.push(class.clone());
                         result.push(into_v16("\""));
                     }

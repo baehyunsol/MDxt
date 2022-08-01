@@ -66,31 +66,31 @@ cut
 <table>
     <thead>
         <tr>
-            <th> <div class=\"align_left\">Left aligned Column</div> </th>
-            <th> <div class=\"align_center\">Centered Column </div> </th>
-            <th> <div class=\"align_right\">Right aligned Column </div> </th>
+            <th> <div class=\"align-left\">Left aligned Column</div> </th>
+            <th> <div class=\"align-center\">Centered Column </div> </th>
+            <th> <div class=\"align-right\">Right aligned Column </div> </th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td> <div class=\"align_left\"> Left </div> </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
-            <td> <div class=\"align_right\"> Right </div> </td>
+            <td> <div class=\"align-left\"> Left </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
+            <td> <div class=\"align-right\"> Right </div> </td>
         </tr>
         <tr>
-            <td> <div class=\"align_left\"> Left </div> </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
-            <td> <div class=\"align_right\"> Right </div> </td>
+            <td> <div class=\"align-left\"> Left </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
+            <td> <div class=\"align-right\"> Right </div> </td>
         </tr>
         <tr>
-            <td> <div class=\"align_left\"> Left </div> </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
-            <td> <div class=\"align_right\"> Right </div> </td>
+            <td> <div class=\"align-left\"> Left </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
+            <td> <div class=\"align-right\"> Right </div> </td>
         </tr>
         <tr>
-            <td> <div class=\"align_left\"> Left </div> </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
-            <td> <div class=\"align_right\"> Right </div> </td>
+            <td> <div class=\"align-left\"> Left </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
+            <td> <div class=\"align-right\"> Right </div> </td>
         </tr>
     </tbody>
 </table>
@@ -222,29 +222,29 @@ cut
         </tr>
         <tr>
             <th colspan=\"3\"> Food </th>
-            <th colspan=\"3\"> <div class=\"align_center\"> Drink </div> </th>
+            <th colspan=\"3\"> <div class=\"align-center\"> Drink </div> </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td> Bread </td>
-            <td> <div class=\"align_center\"> Cake </div> </td>
+            <td> <div class=\"align-center\"> Cake </div> </td>
             <td> Pie </td>
-            <td> <div class=\"align_center\"> Beer </div> </td>
+            <td> <div class=\"align-center\"> Beer </div> </td>
             <td> Water </td>
             <td> Coffee </td>
         </tr>
         <tr>
             <td> None </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
             <td> None </td>
-            <td> <div class=\"align_center\"> Center </div> </td>
+            <td> <div class=\"align-center\"> Center </div> </td>
             <td> None </td>
             <td> None </td>
         </tr>
         <tr>
             <td> Foo </td>
-            <td colspan=\"4\"> <div class=\"align_center\"> <em> Bar </em> </div> </td>
+            <td colspan=\"4\"> <div class=\"align-center\"> <em> Bar </em> </div> </td>
             <td> </td>
         </tr>
     </tbody>
@@ -405,7 +405,7 @@ cut
 | Hi, there!                            |
 ", "
 <table>
-    <thead id=\"table-collapse-toggle-0\" class=\"collapsible\" onclick =\"collapse_table('0')\">
+    <thead id=\"table-collapse-toggle-0\" class=\"collapsible\" onclick =\"collapse-table('0')\">
         <tr><th> Click Me! (Default shown) </th></tr>
     </thead>
     <tbody id=\"collapsible-table-0\">
@@ -413,7 +413,7 @@ cut
     </tbody>
 </table>
 <table>
-    <thead id=\"table-collapse-toggle-1\" class=\"collapsible collapsed\" onclick =\"collapse_table('1')\">
+    <thead id=\"table-collapse-toggle-1\" class=\"collapsible collapsed\" onclick =\"collapse-table('1')\">
         <tr><th> Click Me! (Default hidden) </th></tr>
     </thead>
     <tbody id=\"collapsible-table-1\" class=\"invisible\">

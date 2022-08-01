@@ -1,7 +1,7 @@
 use super::{doc_data::DocData, AST, line::Line, node::Node};
 use crate::inline::{
     InlineNode,
-    link::{predicate::read_link_reference, normalize_link},
+    link::{predicate::read_link_reference, normalize_link_label},
     footnote::{predicate::is_valid_footnote_label, Footnote},
     macros::{predicate::read_macro, parse_arguments, get_macro_name, MACROS}
 };
@@ -223,7 +223,7 @@ impl AST {
                         let (link_label, link_destination) = read_link_reference(&lines[index].content);
 
                         if is_valid_footnote_label(&link_label) {
-                            let footnote_label = normalize_link(&link_label);
+                            let footnote_label = normalize_link_label(&link_label);
                             let footnote_index = if footnote_references.contains_key(&footnote_label) {
                                 footnote_references.len() - 1
                             }
@@ -243,7 +243,7 @@ impl AST {
                         }
 
                         else {
-                            link_references.insert(normalize_link(&link_label), into_v16(&options.handle_link(&from_v16(&link_destination))));
+                            link_references.insert(normalize_link_label(&link_label), into_v16(&options.handle_link(&from_v16(&link_destination))));
                         }
 
                     }

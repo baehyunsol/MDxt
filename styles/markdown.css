@@ -9,7 +9,7 @@ body .markdown ::selection {
   background-color: #bfbfbf;
   color: #000000;
 }
-body .markdown hr.footnote_hr {
+body .markdown hr.footnote-hr {
   margin-top: 60px;
 }
 body .markdown img {
@@ -26,172 +26,172 @@ body .markdown img {
 }
 
 /* Colors */
-.markdown .color_black {
+.markdown .color-black {
   color: #000000;
 }
-.markdown .color_black::selection {
+.markdown .color-black::selection {
   color: #ffffff;
 }
-.markdown .highlight_black {
+.markdown .highlight-black {
   background-color: #000000;
 }
-.markdown .highlight_black::selection {
+.markdown .highlight-black::selection {
   background-color: #ffffff;
 }
-.markdown .color_dark {
+.markdown .color-dark {
   color: #404040;
 }
-.markdown .color_dark::selection {
+.markdown .color-dark::selection {
   color: #bfbfbf;
 }
-.markdown .highlight_dark {
+.markdown .highlight-dark {
   background-color: #404040;
 }
-.markdown .highlight_dark::selection {
+.markdown .highlight-dark::selection {
   background-color: #bfbfbf;
 }
-.markdown .color_gray {
+.markdown .color-gray {
   color: #808080;
 }
-.markdown .color_gray::selection {
+.markdown .color-gray::selection {
   color: #7f7f7f;
 }
-.markdown .highlight_gray {
+.markdown .highlight-gray {
   background-color: #808080;
 }
-.markdown .highlight_gray::selection {
+.markdown .highlight-gray::selection {
   background-color: #7f7f7f;
 }
-.markdown .color_lightgray {
+.markdown .color-lightgray {
   color: #c0c0c0;
 }
-.markdown .color_lightgray::selection {
+.markdown .color-lightgray::selection {
   color: #3f3f3f;
 }
-.markdown .highlight_lightgray {
+.markdown .highlight-lightgray {
   background-color: #c0c0c0;
 }
-.markdown .highlight_lightgray::selection {
+.markdown .highlight-lightgray::selection {
   background-color: #3f3f3f;
 }
-.markdown .color_white {
+.markdown .color-white {
   color: #ffffff;
 }
-.markdown .color_white::selection {
+.markdown .color-white::selection {
   color: #000000;
 }
-.markdown .highlight_white {
+.markdown .highlight-white {
   background-color: #ffffff;
 }
-.markdown .highlight_white::selection {
+.markdown .highlight-white::selection {
   background-color: #000000;
 }
-.markdown .color_red {
+.markdown .color-red {
   color: #c04040;
 }
-.markdown .color_red::selection {
+.markdown .color-red::selection {
   color: #3fbfbf;
 }
-.markdown .highlight_red {
+.markdown .highlight-red {
   background-color: #c04040;
 }
-.markdown .highlight_red::selection {
+.markdown .highlight-red::selection {
   background-color: #3fbfbf;
 }
-.markdown .color_green {
+.markdown .color-green {
   color: #40c040;
 }
-.markdown .color_green::selection {
+.markdown .color-green::selection {
   color: #bf3fbf;
 }
-.markdown .highlight_green {
+.markdown .highlight-green {
   background-color: #40c040;
 }
-.markdown .highlight_green::selection {
+.markdown .highlight-green::selection {
   background-color: #bf3fbf;
 }
-.markdown .color_blue {
+.markdown .color-blue {
   color: #4040c0;
 }
-.markdown .color_blue::selection {
+.markdown .color-blue::selection {
   color: #bfbf3f;
 }
-.markdown .highlight_blue {
+.markdown .highlight-blue {
   background-color: #4040c0;
 }
-.markdown .highlight_blue::selection {
+.markdown .highlight-blue::selection {
   background-color: #bfbf3f;
 }
-.markdown .color_aqua {
+.markdown .color-aqua {
   color: #40c0ff;
 }
-.markdown .color_aqua::selection {
+.markdown .color-aqua::selection {
   color: #bf3f00;
 }
-.markdown .highlight_aqua {
+.markdown .highlight-aqua {
   background-color: #40c0ff;
 }
-.markdown .highlight_aqua::selection {
+.markdown .highlight-aqua::selection {
   background-color: #bf3f00;
 }
-.markdown .color_emerald {
+.markdown .color-emerald {
   color: #40ffc0;
 }
-.markdown .color_emerald::selection {
+.markdown .color-emerald::selection {
   color: #bf003f;
 }
-.markdown .highlight_emerald {
+.markdown .highlight-emerald {
   background-color: #40ffc0;
 }
-.markdown .highlight_emerald::selection {
+.markdown .highlight-emerald::selection {
   background-color: #bf003f;
 }
-.markdown .color_violet {
+.markdown .color-violet {
   color: #c040ff;
 }
-.markdown .color_violet::selection {
+.markdown .color-violet::selection {
   color: #3fbf00;
 }
-.markdown .highlight_violet {
+.markdown .highlight-violet {
   background-color: #c040ff;
 }
-.markdown .highlight_violet::selection {
+.markdown .highlight-violet::selection {
   background-color: #3fbf00;
 }
-.markdown .color_pink {
+.markdown .color-pink {
   color: #ff40c0;
 }
-.markdown .color_pink::selection {
+.markdown .color-pink::selection {
   color: #00bf3f;
 }
-.markdown .highlight_pink {
+.markdown .highlight-pink {
   background-color: #ff40c0;
 }
-.markdown .highlight_pink::selection {
+.markdown .highlight-pink::selection {
   background-color: #00bf3f;
 }
-.markdown .color_grassgreen {
+.markdown .color-grassgreen {
   color: #c0ff40;
 }
-.markdown .color_grassgreen::selection {
+.markdown .color-grassgreen::selection {
   color: #3f00bf;
 }
-.markdown .highlight_grassgreen {
+.markdown .highlight-grassgreen {
   background-color: #c0ff40;
 }
-.markdown .highlight_grassgreen::selection {
+.markdown .highlight-grassgreen::selection {
   background-color: #3f00bf;
 }
-.markdown .color_gold {
+.markdown .color-gold {
   color: #ffc040;
 }
-.markdown .color_gold::selection {
+.markdown .color-gold::selection {
   color: #003fbf;
 }
-.markdown .highlight_gold {
+.markdown .highlight-gold {
   background-color: #ffc040;
 }
-.markdown .highlight_gold::selection {
+.markdown .highlight-gold::selection {
   background-color: #003fbf;
 }
 
@@ -207,61 +207,61 @@ body .markdown img {
 }
 
 /* Sizes */
-.markdown .size_tiny {
+.markdown .size-tiny {
   font-size: 13px;
 }
-.markdown .size_tiny img {
+.markdown .size-tiny img {
   max-width: 250px;
   max-height: 250px;
 }
-.markdown .size_small {
+.markdown .size-small {
   font-size: 16px;
 }
-.markdown .size_small img {
+.markdown .size-small img {
   max-width: 350px;
   max-height: 350px;
 }
-.markdown .size_medium {
+.markdown .size-medium {
   font-size: 21px;
 }
-.markdown .size_medium img {
+.markdown .size-medium img {
   max-width: 450px;
   max-height: 450px;
 }
-.markdown .size_big {
+.markdown .size-big {
   font-size: 25px;
 }
-.markdown .size_big img {
+.markdown .size-big img {
   max-width: 600px;
   max-height: 600px;
 }
-.markdown .size_giant {
+.markdown .size-giant {
   font-size: 33px;
 }
-.markdown .size_giant img {
+.markdown .size-giant img {
   max-width: 720px;
   max-height: 720px;
 }
 
 /* Alignments */
-.markdown .align_center {
+.markdown .align-center {
   text-align: center;
 }
-.markdown .align_center table, .markdown .align_center img, .markdown .align_center .box, .markdown .align_center blockquote, .markdown .align_center svg {
+.markdown .align-center table, .markdown .align-center img, .markdown .align-center .box, .markdown .align-center blockquote, .markdown .align-center svg {
   margin-left: auto;
   margin-right: auto;
 }
-.markdown .align_right {
+.markdown .align-right {
   text-align: right;
 }
-.markdown .align_right table, .markdown .align_right img, .markdown .align_right .box, .markdown .align_right blockquote, .markdown .align_right svg {
+.markdown .align-right table, .markdown .align-right img, .markdown .align-right .box, .markdown .align-right blockquote, .markdown .align-right svg {
   margin-left: auto;
   margin-right: 0;
 }
-.markdown .align_left {
+.markdown .align-left {
   text-align: left;
 }
-.markdown .align_left table, .markdown .align_left img, .markdown .align_left .box, .markdown .align_left blockquote, .markdown .align_left svg {
+.markdown .align-left table, .markdown .align-left img, .markdown .align-left .box, .markdown .align-left blockquote, .markdown .align-left svg {
   margin-left: 0;
   margin-right: auto;
 }
@@ -400,46 +400,46 @@ body .markdown img {
 .markdown pre span.highlight.code-fence-row:hover {
   background-color: #ffffff80;
 }
-.markdown pre span.highlight span .color_black {
+.markdown pre span.highlight span .color-black {
   color: #ffffff;
 }
-.markdown pre span.highlight span .color_dark {
+.markdown pre span.highlight span .color-dark {
   color: #bfbfbf;
 }
-.markdown pre span.highlight span .color_gray {
+.markdown pre span.highlight span .color-gray {
   color: #7f7f7f;
 }
-.markdown pre span.highlight span .color_lightgray {
+.markdown pre span.highlight span .color-lightgray {
   color: #3f3f3f;
 }
-.markdown pre span.highlight span .color_white {
+.markdown pre span.highlight span .color-white {
   color: #000000;
 }
-.markdown pre span.highlight span .color_red {
+.markdown pre span.highlight span .color-red {
   color: #3fbfbf;
 }
-.markdown pre span.highlight span .color_green {
+.markdown pre span.highlight span .color-green {
   color: #bf3fbf;
 }
-.markdown pre span.highlight span .color_blue {
+.markdown pre span.highlight span .color-blue {
   color: #bfbf3f;
 }
-.markdown pre span.highlight span .color_aqua {
+.markdown pre span.highlight span .color-aqua {
   color: #bf3f00;
 }
-.markdown pre span.highlight span .color_emerald {
+.markdown pre span.highlight span .color-emerald {
   color: #bf003f;
 }
-.markdown pre span.highlight span .color_violet {
+.markdown pre span.highlight span .color-violet {
   color: #3fbf00;
 }
-.markdown pre span.highlight span .color_pink {
+.markdown pre span.highlight span .color-pink {
   color: #00bf3f;
 }
-.markdown pre span.highlight span .color_grassgreen {
+.markdown pre span.highlight span .color-grassgreen {
   color: #3f00bf;
 }
-.markdown pre span.highlight span .color_gold {
+.markdown pre span.highlight span .color-gold {
   color: #003fbf;
 }
 .markdown button.copy-fenced-code {
@@ -497,7 +497,7 @@ body .markdown img {
 /*
 ----- Checkbox for task lists -----
 */
-div.unchecked_box, div.checked_box {
+div.unchecked-box, div.checked-box {
   position: relative;
   top: 5.25px;
   display: inline-block;
@@ -506,12 +506,12 @@ div.unchecked_box, div.checked_box {
   height: 21px;
 }
 
-div.unchecked_box {
+div.unchecked-box {
   background-color: #808080;
   margin-right: 12px;
 }
 
-div.checked_box {
+div.checked-box {
   background-color: #000000;
   margin-right: 12px;
 }

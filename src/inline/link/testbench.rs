@@ -1,4 +1,4 @@
-use super::normalize_link;
+use super::normalize_link_label;
 use crate::inline::InlineNode;
 use crate::utils::{into_v16, from_v16};
 use crate::escape::{escape_backslashes, render_backslash_escapes};
@@ -47,8 +47,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
         ("[[red]][link]", "[[red]]<a href=\"https://example\">link</a>"),
         ("[[red]][link](https://github.com)", "[[red]]<a href=\"https://github.com\">link</a>"),
-        ("[[red]][link][[/red]]", "<span class=\"color_red\"><a href=\"https://example\">link</a></span>"),
-        ("[[red]][link](https://github.com)[[/red]]", "<span class=\"color_red\"><a href=\"https://github.com\">link</a></span>"),
+        ("[[red]][link][[/red]]", "<span class=\"color-red\"><a href=\"https://example\">link</a></span>"),
+        ("[[red]][link](https://github.com)[[/red]]", "<span class=\"color-red\"><a href=\"https://github.com\">link</a></span>"),
 
         ("[link][link2][link][link2]", "<a href=\"https://example2\">link</a><a href=\"https://example2\">link</a>"),
 
@@ -89,8 +89,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
         ("[[red]]![link]", "[[red]]<img src=\"https://example\" alt=\"link\"/>"),
         ("[[red]]![link](https://github.com)", "[[red]]<img src=\"https://github.com\" alt=\"link\"/>"),
-        ("[[red]]![link][[/red]]", "<span class=\"color_red\"><img src=\"https://example\" alt=\"link\"/></span>"),
-        ("[[red]]![link](https://github.com)[[/red]]", "<span class=\"color_red\"><img src=\"https://github.com\" alt=\"link\"/></span>"),
+        ("[[red]]![link][[/red]]", "<span class=\"color-red\"><img src=\"https://example\" alt=\"link\"/></span>"),
+        ("[[red]]![link](https://github.com)[[/red]]", "<span class=\"color-red\"><img src=\"https://github.com\" alt=\"link\"/></span>"),
 
         ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
         ("[[[char=9650]]](#top)[[[char=9660]]](#bottom)", "<a href=\"#top\">&#9650;</a><a href=\"#bottom\">&#9660;</a>")
@@ -120,7 +120,7 @@ fn link_render_test() {
                 &escape_backslashes(&into_v16(case)),
                 &mut doc_data,
                 &mut render_option
-            ).to_html(&[])
+            ).to_html(&[], "")
         );
 
         if rendered != into_v16(answer) {
@@ -153,7 +153,7 @@ fn normalize_link_test() {
     ];
 
     for (case, answer) in cases_and_answers.into_iter() {
-        assert_eq!(normalize_link(&case), answer);
+        assert_eq!(normalize_link_label(&case), answer);
     }
 
 }

@@ -72,7 +72,7 @@ Valid header
 
 <h1 id=\"valid-header\">Valid header</h1>
 
-<h1 id=\"red-red-red\"><span class=\"color_red\"> Red </span></h1>
+<h1 id=\"red-red-red\"><span class=\"color-red\"> Red </span></h1>
 <h1 id=\"bold-and-del\"><strong>Bold</strong> and <del>Del</del>..!!</h1>
 <h1 id=\"code-header\"><code class=\"short\">Code header</code></h1>
 "), ("
@@ -134,9 +134,9 @@ Another [[toc]]
 <h2 id=\"header-1-2\">Header 1-2</h2>
 <h5 id=\"header-1-2-1\">Header 1-2-1</h5>
 <h2 id=\"header-1-3\">Header 1-3</h2>
-<h2 id=\"italic-and-red-red-red\"><em>Italic</em> and <span class=\"color_red\"> red </span></h2>
+<h2 id=\"italic-and-red-red-red\"><em>Italic</em> and <span class=\"color-red\"> red </span></h2>
 <h2 id=\"-lt--valid-link\">] &lt;- valid link?</h2>
-<h2 id=\"footnotes-a\">Footnotes <sup id=\"footnote_ref0\"><a href=\"#footnote_cite0\">[0]</a></sup></h2>
+<h2 id=\"footnotes-a\">Footnotes <sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup></h2>
 <h2 id=\"recursive-toc\">Recursive
     <ol type=\"1\">
         <li><a href=\"#toc-test\">TOC test</a>
@@ -177,9 +177,9 @@ Another <ol type=\"1\">
 </ol>
 </p>
 
-<hr class=\"footnote_hr\"/>
+<hr class=\"footnote-hr\"/>
 
-<p><a id=\"footnote_cite0\"></a>0. <a href=\"#footnote_ref0\"> [0]</a> This is a footnote.<br/></p>
+<p><a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.<br/></p>
 ")
     ];
 

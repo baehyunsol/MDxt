@@ -2,7 +2,7 @@
 
 // a valid link following a `!` is a valid image
 
-use super::normalize_link;
+use super::normalize_link_label;
 use crate::utils::{get_bracket_end_index, get_parenthesis_end_index, drop_while};
 use std::collections::HashMap;
 
@@ -65,7 +65,7 @@ pub fn read_reference_link(content: &[u16], index: usize, link_references: &Hash
                             link_label = link_text;
                         }
 
-                        if is_valid_link_text(link_text, link_references) && link_references.contains_key(&normalize_link(link_label)) && is_valid_link_label(link_label) {
+                        if is_valid_link_text(link_text, link_references) && link_references.contains_key(&normalize_link_label(link_label)) && is_valid_link_label(link_label) {
                             Some((link_text.to_vec(), link_label.to_vec(), second_bracket_end_index))
                         }
 
@@ -125,7 +125,7 @@ pub fn read_shortcut_reference_link(content: &[u16], index: usize, link_referenc
 
                 let link_text = &content[index + 1..bracket_end_index];
 
-                if link_references.contains_key(&normalize_link(link_text)) && is_valid_link_label(link_text) && is_valid_link_text(link_text, link_references) {
+                if link_references.contains_key(&normalize_link_label(link_text)) && is_valid_link_label(link_text) && is_valid_link_text(link_text, link_references) {
                     Some((link_text.to_vec(), bracket_end_index))
                 }
 
@@ -158,9 +158,8 @@ pub fn read_link_reference(content: &[u16]) -> (Vec<u16>, Vec<u16>) {  // (link_
 }
 
 fn is_valid_link_text(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>) -> bool {
-    // it makes sure that the links are not nested
-    !contains_link(content, link_references)
 
+    !contains_link(content, link_references)  // it makes sure that the links are not nested
     && (content.len() == 0 || if content[0] == '[' as u16 && content[content.len() - 1] == ']' as u16 {
 
         // [...] -> link
@@ -195,7 +194,7 @@ fn contains_link(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>)
 }
 
 fn is_valid_url_character(character: &u16) -> bool {
-    '-' as u16 <= *character && *character <= ':' as u16 ||
+    '-' as u16 <= *character && *character <= ';' as u16 ||
     'a' as u16 <= *character && *character <= 'z' as u16 ||
     '?' as u16 <= *character && *character <= 'Z' as u16 ||
     '가' as u16 <= *character && *character <= '힣' as u16 ||  // korean
@@ -204,5 +203,6 @@ fn is_valid_url_character(character: &u16) -> bool {
     '!' as u16 == *character || '=' as u16 == *character ||
     '+' as u16 == *character || '&' as u16 == *character ||
     '%' as u16 == *character || '_' as u16 == *character ||
-    '#' as u16 == *character || '$' as u16 == *character || '+' as u16 == *character
+    '#' as u16 == *character || '$' as u16 == *character ||
+    '+' as u16 == *character
 }

@@ -8,6 +8,6 @@ mod testbench;
 use crate::utils::{collapse_whitespaces, strip_whitespaces, lowercase};
 
 // [  F  OO ] -> [f oo]
-pub fn normalize_link(original: &[u16]) -> Vec<u16> {
+pub fn normalize_link_label(original: &[u16]) -> Vec<u16> {
     strip_whitespaces(&collapse_whitespaces(original)).iter().map(lowercase).collect()
 }

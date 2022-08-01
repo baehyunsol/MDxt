@@ -22,12 +22,6 @@ mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물�
 
 ---
 
-prefix
-
-html로 변환할 때 class랑 id 앞에다가 일괄적으로 prefix 붙이기
-
----
-
 pretty output
 - output으로 나오는 html 좀 예쁘게 indent도 하고 그러자
 - 이거 만드는 과정에서 html-validator도 나올 듯...

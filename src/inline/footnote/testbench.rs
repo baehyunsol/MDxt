@@ -27,21 +27,21 @@ d[^b][^d]
         ".to_string(), "
 <p>
     a
-        <sup id=\"footnote_ref0\">
-            <a href=\"#footnote_cite0\">
+        <sup id=\"footnote-ref-0\">
+            <a href=\"#footnote-cite-0\">
                 [0]
             </a>
         </sup>
 </p>
 <p>
     b
-        <sup id=\"footnote_ref1\">
-            <a href=\"#footnote_cite0\">
+        <sup id=\"footnote-ref-1\">
+            <a href=\"#footnote-cite-0\">
                 [1]
             </a>
         </sup>
-        <sup id=\"footnote_ref2\">
-            <a href=\"#footnote_cite1\">
+        <sup id=\"footnote-ref-2\">
+            <a href=\"#footnote-cite-1\">
                 [2]
             </a>
         </sup>
@@ -49,26 +49,26 @@ d[^b][^d]
 </p>
 <p>
     c
-        <sup id=\"footnote_ref3\">
-            <a href=\"#footnote_cite2\">
+        <sup id=\"footnote-ref-3\">
+            <a href=\"#footnote-cite-2\">
                 [3]
             </a>
         </sup>
-        <sup id=\"footnote_ref4\">
-            <a href=\"#footnote_cite0\">
+        <sup id=\"footnote-ref-4\">
+            <a href=\"#footnote-cite-0\">
                 [4]
             </a>
         </sup>
 </p>
 <p>
     d
-        <sup id=\"footnote_ref5\">
-            <a href=\"#footnote_cite1\">
+        <sup id=\"footnote-ref-5\">
+            <a href=\"#footnote-cite-1\">
                 [5]
             </a>
         </sup>
-        <sup id=\"footnote_ref6\">
-            <a href=\"#footnote_cite3\">
+        <sup id=\"footnote-ref-6\">
+            <a href=\"#footnote-cite-3\">
                 [6]
             </a>
         </sup>
@@ -78,26 +78,26 @@ d[^b][^d]
     <a href=\"\"><sup>ff</sup></a>
 </p>
 
-<hr class=\"footnote_hr\"/>
+<hr class=\"footnote-hr\"/>
 <p>
-    <a id=\"footnote_cite0\"></a>
+    <a id=\"footnote-cite-0\"></a>
         0.
-            <a href=\"#footnote_ref0\"> [0] </a>
-            <a href=\"#footnote_ref1\"> [1] </a>
-            <a href=\"#footnote_ref4\"> [4] </a>
+            <a href=\"#footnote-ref-0\"> [0] </a>
+            <a href=\"#footnote-ref-1\"> [1] </a>
+            <a href=\"#footnote-ref-4\"> [4] </a>
             This is a <strong>Sample</strong> <em>Footnote</em>.<br/>
-    <a id=\"footnote_cite1\"></a>
+    <a id=\"footnote-cite-1\"></a>
         1.
-            <a href=\"#footnote_ref2\"> [2] </a>
-            <a href=\"#footnote_ref5\"> [5] </a>
+            <a href=\"#footnote-ref-2\"> [2] </a>
+            <a href=\"#footnote-ref-5\"> [5] </a>
             This is another <sup>sample</sup>!!<br/>
-    <a id=\"footnote_cite2\"></a>
+    <a id=\"footnote-cite-2\"></a>
         2.
-            <a href=\"#footnote_ref3\"> [3] </a>
+            <a href=\"#footnote-ref-3\"> [3] </a>
             This is another footnote.<br/><br/>
-    <a id=\"footnote_cite3\"></a>
+    <a id=\"footnote-cite-3\"></a>
         3.
-            <a href=\"#footnote_ref6\"> [6] </a>
+            <a href=\"#footnote-ref-6\"> [6] </a>
             Another one, that&apos;s not shadowed.<br/>
 </p>
 ".to_string()),

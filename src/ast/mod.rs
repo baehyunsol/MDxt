@@ -83,6 +83,7 @@ impl AST {
     pub fn to_html(&mut self) -> Vec<u16> {
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
+        let class_prefix = &self.render_option.class_prefix;
 
         // TODO: this block is to ugly
         let toc_rendered = if self.doc_data.has_toc {
@@ -103,7 +104,7 @@ impl AST {
                     result.push(
                         vec![
                             into_v16("<p>"),
-                            content.to_html(&toc_rendered),
+                            content.to_html(&toc_rendered, class_prefix),
                             into_v16("</p>")
                         ].concat()
                     );
@@ -114,16 +115,16 @@ impl AST {
                     );
                 },
                 Node::Table(table) => {
-                    result.push(table.to_html(&toc_rendered));
+                    result.push(table.to_html(&toc_rendered, class_prefix));
                 }
                 Node::List(list) => {
-                    result.push(list.to_html(&toc_rendered));
+                    result.push(list.to_html(&toc_rendered, class_prefix));
                 }
                 Node::Blockquote(blockquote) => {
-                    result.push(blockquote.to_html(&toc_rendered));
+                    result.push(blockquote.to_html(&toc_rendered, class_prefix));
                 }
                 Node::MultiLineMacro(multiline_macro) => {
-                    result.push(multiline_macro.to_html());
+                    result.push(multiline_macro.to_html(class_prefix));
                 }
                 Node::Header { level, content, anchor } => {
 
@@ -142,13 +143,13 @@ impl AST {
                             into_v16(&format!("<h{}", level)),
                             anchor,
                             into_v16(">"),
-                            content.to_html(&toc_rendered),
+                            content.to_html(&toc_rendered, class_prefix),
                             into_v16(&format!("</h{}>", level)),
                         ].concat()
                     );
                 },
                 Node::FencedCode(fenced_code) => {
-                    result.push(fenced_code.to_html());
+                    result.push(fenced_code.to_html(class_prefix));
                 }
                 Node::Empty => {}
             }
@@ -156,7 +157,7 @@ impl AST {
         }
 
         if self.doc_data.footnote_references.len() > 0 {
-            result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered));
+            result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
 
         if self.render_option.javascript {
