@@ -51,11 +51,11 @@ fn blockquote_samples() -> Vec<(String, String)> {
 "), ("
 > >>  >>>   >>>>    >>>>> 10
 ", "
-<blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote> >>>>> 10</blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
+<blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote><blockquote> &gt;&gt;&gt;&gt;&gt; 10</blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
 "), ("
 >     > 1
 ", "
-<blockquote>  > 1</blockquote>
+<blockquote>  &gt; 1</blockquote>
 "), ("
    >> 2
 ", "

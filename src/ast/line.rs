@@ -48,8 +48,7 @@ impl Line {
 pub fn code_to_lines(code: &[u16]) -> Vec<Line> {
 
     code.split(
-        |c|
-        *c == '\n' as u16
+        |c| *c == '\n' as u16
     ).map(
         |ln| Line::from_raw(&ln.to_vec())
     ).collect::<Vec<Line>>()
@@ -63,15 +62,15 @@ pub fn add_br_if_needed(line: &Line) -> Vec<u16> {
 
     if line.content.len() > 1 && line.content[line.content.len() - 1] == '\\' as u16 {
         vec![
-            line.content[0..line.content.len() - 1].to_vec(),
-            into_v16("[[br]]")  // will later be converted to `<br />`
+            line.content[0..(line.content.len() - 1)].to_vec(),
+            into_v16("[[br]]")  // will later be converted to `<br/>`
         ].concat()
     }
 
     else if line.content.len() > 2 && line.content[line.content.len() - 1] == ' ' as u16 && line.content[line.content.len() - 2] == ' ' as u16 {
         vec![
-            line.content[0..line.content.len() - 2].to_vec(),
-            into_v16("[[br]]")  // will later be converted to `<br />`
+            line.content[0..(line.content.len() - 2)].to_vec(),
+            into_v16("[[br]]")  // will later be converted to `<br/>`
         ].concat()
     }
 

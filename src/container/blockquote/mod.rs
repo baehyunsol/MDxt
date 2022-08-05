@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod testbench;
 
-use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
+use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
 
 #[derive(Clone)]
@@ -82,27 +82,31 @@ fn count_level_and_end_index(content: &[u16]) -> (usize, usize) {  // (level, en
 
     let mut level = 0;
     let mut conseq_space = 0;
+    let mut index = 0;
 
-    for (ind, c) in content.iter().enumerate() {
+    while index < content.len() {
 
-        if *c == '>' as u16 {
+        // &gt;
+        if content[index] == '&' as u16 {
             level += 1;
             conseq_space = 0;
+            index += 3;
         }
 
-        else if *c == ' ' as u16 {
+        else if content[index] == ' ' as u16 {
             conseq_space += 1;
 
             if conseq_space == 4 {
-                return (level, ind);
+                return (level, index);
             }
 
         }
 
         else {
-            return (level, ind);
+            return (level, index);
         }
 
+        index += 1;
     }
 
     (level, content.len())

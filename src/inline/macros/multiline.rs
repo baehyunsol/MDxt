@@ -1,6 +1,10 @@
+use super::{
+    get_macro_name, parse_arguments,
+    Macro, MACROS, MacroType,
+    predicate::read_macro, parse::parse_html_tag,
+};
 use crate::ast::line::Line;
 use crate::utils::into_v16;
-use super::{get_macro_name, parse_arguments, predicate::read_macro, parse::parse_html_tag, MACROS, Macro, MacroType};
 
 #[derive(Clone)]
 pub struct MultiLineMacro {

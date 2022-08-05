@@ -384,7 +384,7 @@ function copy_code_to_clipboard(index) {
 ```
 ", "
 <pre><code>
-    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">p</span><span class=\"color-white\">></span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\"> </span><span class=\"color-gold\">class</span><span class=\"color-white\">=</span><span class=\"color-white\">&quot;</span><span class=\"color-green\">box</span><span class=\"color-white\">&quot;</span><span class=\"color-white\">></span><span class=\"color-white\"> box </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">></span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">p</span><span class=\"color-white\">></span></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">p</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\"> </span><span class=\"color-gold\">class</span><span class=\"color-white\">=</span><span class=\"color-white\">&quot;</span><span class=\"color-green\">box</span><span class=\"color-white\">&quot;</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> box </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">p</span><span class=\"color-white\">&gt;</span></span></span>
 </code></pre>
 "), ("
 ```line_num
@@ -392,7 +392,7 @@ function copy_code_to_clipboard(index) {
 ```
 ", "
 <pre class=\"line-num-width-0\"><code>
-    <span class=\"code-fence-row\"><span class=\"code-fence-index\">1</span><span class=\"code-fence-code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-index\">1</span><span class=\"code-fence-code\">&lt;p&gt; &lt;div class=&quot;box&quot;&gt; box &lt;/div&gt; &lt;/p&gt;</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
 </pre>
@@ -410,7 +410,7 @@ function copy_code_to_clipboard(index) {
 ```
 ", "
 <pre><code>
-    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;p> &lt;div class=&quot;box&quot;> box &lt;/div> &lt;/p></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;p&gt; &lt;div class=&quot;box&quot;&gt; box &lt;/div&gt; &lt;/p&gt;</span></span>
 </code></pre>
 "), ("
 ```
@@ -469,15 +469,15 @@ function copy_code_to_clipboard(index) {
 <h1 id=\"bracket-tests\">Bracket tests</h1>
 
 <pre><code>
-    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;&gt;</span></span>
 </code></pre>
 
 <pre><code>
-    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\">></span><span class=\"color-white\"> a </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">></span></span></span>
+    <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> a </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span></span></span>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span></span></span>
 </code></pre>
 
-<p><code class=\"short\">&lt;></code></p>
+<p><code class=\"short\">&lt;&gt;</code></p>
 "
 ), ("
 # Copy Button test

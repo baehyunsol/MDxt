@@ -110,8 +110,8 @@ pub fn lowercase(c: &u16) -> u16 {
 
 }
 
-pub fn is_alphabet(c: u16) -> bool {
-    'A' as u16 <= c && c <= 'Z' as u16 || 'a' as u16 <= c && c <= 'z' as u16
+pub fn is_alphabet(c: &u16) -> bool {
+    'A' as u16 <= *c && *c <= 'Z' as u16 || 'a' as u16 <= *c && *c <= 'z' as u16
 }
 
 pub fn is_numeric(c: &u16) -> bool {

@@ -3,8 +3,8 @@ pub mod predicate;
 #[cfg(test)]
 mod testbench;
 
-use crate::utils::into_v16;
 use super::InlineNode;
+use crate::utils::into_v16;
 use std::collections::HashMap;
 
 #[derive(Clone)]

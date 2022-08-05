@@ -1,5 +1,5 @@
-use crate::utils::into_v16;
 pub use crate::inline::parse::{escape_code_spans, undo_code_span_escapes};
+use crate::utils::into_v16;
 
 /*
 `<`s are converted to `&lt` and `&gt`, always!
@@ -23,6 +23,12 @@ pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
             60 => {  // <
                 result.push('&' as u16);
                 result.push('l' as u16);
+                result.push('t' as u16);
+                result.push(';' as u16);
+            },
+            62 => {  // >
+                result.push('&' as u16);
+                result.push('g' as u16);
                 result.push('t' as u16);
                 result.push(';' as u16);
             },
@@ -51,7 +57,6 @@ pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
     result
 }
 
-// `&` of `[](https://www.google.com/search?channel=fs&client=ubuntu&q=rust)` may not be escaped
 // characters in syntax highlighted texts may not be escaped
 pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
 
@@ -83,21 +88,46 @@ fn is_html_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
 
         if content[index + 1] == 'a' as u16 {
 
-            if index + 4 < content.len() && content[index + 2] == 'm' as u16 && content[index + 3] == 'p' as u16 && content[index + 4] == ';' as u16 {
+            if index + 4 < content.len()
+                && content[index + 2] == 'm' as u16
+                && content[index + 3] == 'p' as u16
+                && content[index + 4] == ';' as u16
+            {
                 return Some(('&' as u16, index + 4));
             }
 
-            if content[index + 2] == 'p' as u16 && content[index + 3] == 'o' as u16 && content[index + 4] == 's' as u16 && index + 5 < content.len() && content[index + 5] == ';' as u16 {
+            if content[index + 2] == 'p' as u16
+                && content[index + 3] == 'o' as u16
+                && content[index + 4] == 's' as u16
+                && index + 5 < content.len()
+                && content[index + 5] == ';' as u16
+            {
                 return Some(('\'' as u16, index + 5));
             }
 
         }
 
-        else if content[index + 1] == 'l' as u16 && content[index + 2] == 't' as u16 && content[index + 3] == ';' as u16 {
+        else if content[index + 1] == 'l' as u16
+            && content[index + 2] == 't' as u16
+            && content[index + 3] == ';' as u16
+        {
             return Some(('<' as u16, index + 3));
         }
 
-        else if content[index + 1] == 'q' as u16 && content[index + 2] == 'u' as u16 && content[index + 3] == 'o' as u16 && content[index + 4] == 't' as u16 && index + 5 < content.len() && content[index + 5] == ';' as u16 {
+        else if content[index + 1] == 'g' as u16
+            && content[index + 2] == 't' as u16
+            && content[index + 3] == ';' as u16
+        {
+            return Some(('>' as u16, index + 3));
+        }
+
+        else if content[index + 1] == 'q' as u16
+            && content[index + 2] == 'u' as u16
+            && content[index + 3] == 'o' as u16
+            && content[index + 4] == 't' as u16
+            && index + 5 < content.len()
+            && content[index + 5] == ';' as u16
+        {
             return Some(('"' as u16, index + 5));
         }
 
@@ -135,7 +165,7 @@ pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
     result
 }
 
-// <special_form> -> /c
+// <special_form> -> \c
 pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
 
     let mut result = Vec::with_capacity(content.len());
@@ -201,7 +231,8 @@ pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
     ).collect()
 }
 
-pub const BACKSLASH_ESCAPE_MARKER: u16 = u16::MAX - 2000;
+// it's an illegal unicode, which is appropriate to be used as an internal meta character
+pub const BACKSLASH_ESCAPE_MARKER: u16 = 0xd804;
 
 #[cfg(test)]
 mod tests {

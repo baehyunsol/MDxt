@@ -100,7 +100,21 @@ d[^b][^d]
             <a href=\"#footnote-ref-6\"> [6] </a>
             Another one, that&apos;s not shadowed.<br/>
 </p>
-".to_string()),
+".to_string()), ("
+![^a]
+
+[^a]: not an image.
+".to_string(), "
+<p>
+    !<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
+</p>
+
+<hr class=\"footnote-hr\"/>
+
+<p>
+    <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> not an image.<br/>
+</p>
+".to_string())
     ]
 }
 

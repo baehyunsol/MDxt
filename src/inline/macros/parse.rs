@@ -1,5 +1,5 @@
-use super::{Macro, MacroType, character::{DIRECT, INDIRECT_MAPS}};
-use crate::inline::{InlineNode, DecorationType, InlineMacro};
+use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}};
+use crate::inline::{DecorationType, InlineNode, InlineMacro};
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
 use crate::escape::render_backslash_escapes;
@@ -32,12 +32,12 @@ impl Macro {
 
                     // number or direct_name
                     // &#32; or &infin; 
-                    if arguments[0][1][0] < 'A' as u16 || DIRECT.contains(&arguments[0][1]) {
+                    if arguments[0][1][0] < 'A' as u16 || DIRECT_MAPPINGS.contains(&arguments[0][1]) {
                         arguments[0][1].clone()
                     }
 
                     else {
-                        INDIRECT_MAPS.get(&arguments[0][1]).unwrap().to_vec()
+                        INDIRECT_MAPPINGS.get(&arguments[0][1]).unwrap().to_vec()
                     }
                 )),
                 content: vec![]

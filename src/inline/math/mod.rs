@@ -1,8 +1,195 @@
-use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
+mod entity;
+mod parse;
+mod validate;
+
+#[cfg(test)]
+mod testbench;
+
 use super::macros::predicate::read_macro;
-use crate::escape::{undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
-use crate::utils::{into_v16, get_curly_brace_end_index, get_bracket_end_index, is_alphabet};
+use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
+use crate::escape::{undo_backslash_escapes, undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
+use crate::utils::into_v16;
+use entity::Entity;
 use lazy_static::lazy_static;
+use parse::md_to_math;
+use std::collections::HashSet;
+
+lazy_static! {
+
+    pub static ref ZERO_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+        let vec = vec![
+            "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
+            "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
+            "inf", "infty", "infin", "pm", "mp"
+        ];
+        let mut result = HashSet::with_capacity(vec.len());
+
+        for func in vec.into_iter() {
+            result.insert(into_v16(func));
+        }
+
+        result
+    };
+
+    pub static ref ONE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+        let vec = vec![
+            "text", "sqrt"
+        ];
+        let mut result = HashSet::with_capacity(vec.len());
+
+        for func in vec.into_iter() {
+            result.insert(into_v16(func));
+        }
+
+        result
+    };
+
+    pub static ref TWO_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+        let vec = vec![
+            "sum", "prod", "sqrt", "root",
+            "sup", "sub",
+            "frac", "cfrac", "bincoeff"
+        ];
+        let mut result = HashSet::with_capacity(vec.len());
+
+        for func in vec.into_iter() {
+            result.insert(into_v16(func));
+        }
+
+        result
+    };
+
+}
+
+pub struct Math {
+    entities: Vec<Entity>
+}
+
+impl Math {
+
+    pub fn from_mdxt(content: &[u16]) -> Self {
+        let entities = md_to_math(&undo_backslash_escapes(content));
+
+        Math { entities }
+    }
+
+    pub fn to_math_ml(&self, xmlns: bool) -> Vec<u16> {
+        vec![
+            into_v16("<math>"),
+            self.entities.iter().map(
+                |entity| entity.to_math_ml()
+            ).collect::<Vec<Vec<u16>>>().concat(),
+            into_v16("</math>")
+        ].concat()
+    }
+}
+
+// This escape only works inside `[[math]]` macros
+// I don't want other inline elements to interrupt math formulas.
+fn escape_special_characters(content: &[u16]) -> Vec<u16> {
+
+    let content = undo_html_escapes(content);
+    let mut result = Vec::with_capacity(content.len() + content.len() / 6);
+
+    for c in content.iter() {
+
+        if *c == '<' as u16 {
+            result.push(' ' as u16);
+            result.push('l' as u16);
+            result.push('t' as u16);
+            result.push(' ' as u16);
+        }
+
+        else if *c == '>' as u16 {
+            result.push(' ' as u16);
+            result.push('g' as u16);
+            result.push('t' as u16);
+            result.push(' ' as u16);
+        }
+
+        else if into_v16("*~[|]^`").contains(c) {
+            result.push(BACKSLASH_ESCAPE_MARKER);
+            result.push(u16::MAX - c);
+        }
+
+        else {
+            result.push(*c);
+        }
+
+    }
+
+    undo_code_span_escapes(&result)
+}
+
+pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
+
+    let mut result = vec![];
+    let mut index = 0;
+    let mut last_index = 0;
+
+    while index < content.len() {
+
+        if is_code_span_marker_begin(&content, index) {
+            index = get_code_span_marker_end_index(&content, index);
+            continue;
+        }
+
+        match read_macro(&content, index) {
+
+            // it met `[[math]]`
+            Some(macro_name) if macro_name == into_v16("math") => {
+                let mut end_index = index + 5;
+
+                // seek `[[/math]]`
+                while end_index < content.len() {
+
+                    match read_macro(&content, end_index) {
+                        Some(macro_name) if macro_name == into_v16("/math") => {
+                            let math_begin_index = get_bracket_end_index(&content, index).unwrap() + 1;
+                            let escaped_math = escape_special_characters(&content[math_begin_index..end_index]);
+
+                            result.push(content[last_index..math_begin_index].to_vec());
+                            result.push(escaped_math);
+
+                            last_index = end_index;
+                            index = end_index;
+                            break;
+                        }
+                        _ => {}
+                    }
+
+                    end_index += 1;
+                }
+
+            },
+            _ => {}
+        }
+
+        index += 1;
+    }
+
+    if result.len() == 0 {
+        content
+    }
+
+    else {
+        result.push(content[last_index..content.len()].to_vec());
+        result.concat()
+    }
+
+}
+
+/// `<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>`
+/// If you want to support old browsers that don't understand mathml, insert this code in your html.
+pub fn mathjax_javascript() -> String {
+    "<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>".to_string()
+}
+
+// ----------------
+// --- OLD CODE ---
+// ----------------
+
+use crate::utils::{get_curly_brace_end_index, get_bracket_end_index, is_alphabet};
 
 lazy_static! {
     static ref LATEX_SYMBOLS: Vec<Vec<u16>> = {
@@ -38,7 +225,7 @@ pub fn translate_to_latex(content: &[u16]) -> Vec<u16> {
 
     while index < content.len() {
 
-        if is_alphabet(content[index]) {
+        if is_alphabet(&content[index]) {
             curr_word.push(content[index]);
         }
 
@@ -254,106 +441,6 @@ fn get_arguments(content: &[u16], index: usize, mut current_args: Vec<Vec<u16>>,
         (current_args, arg_end_indexes)
     }
 
-}
-
-// This escape only works inside `[[math]]` macros
-// I don't want other inline elements to interrupt math formulas.
-fn escape_special_characters(content: &[u16]) -> Vec<u16> {
-
-    let content = undo_html_escapes(content);
-    let mut result = Vec::with_capacity(content.len() + content.len() / 6);
-
-    for c in content.iter() {
-
-        if *c == '<' as u16 {
-            result.push(' ' as u16);
-            result.push('l' as u16);
-            result.push('t' as u16);
-            result.push(' ' as u16);
-        }
-
-        else if *c == '>' as u16 {
-            result.push(' ' as u16);
-            result.push('g' as u16);
-            result.push('t' as u16);
-            result.push(' ' as u16);
-        }
-
-        else if into_v16("*~[|]^`").contains(c) {
-            result.push(BACKSLASH_ESCAPE_MARKER);
-            result.push(u16::MAX - c);
-        }
-
-        else {
-            result.push(*c);
-        }
-
-    }
-
-    undo_code_span_escapes(&result)
-}
-
-pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
-
-    let mut result = vec![];
-    let mut index = 0;
-    let mut last_index = 0;
-
-    while index < content.len() {
-
-        if is_code_span_marker_begin(&content, index) {
-            index = get_code_span_marker_end_index(&content, index);
-            continue;
-        }
-
-        match read_macro(&content, index) {
-
-            // it met `[[math]]`
-            Some(macro_name) if macro_name == into_v16("math") => {
-                let mut end_index = index + 5;
-
-                // seek `[[/math]]`
-                while end_index < content.len() {
-
-                    match read_macro(&content, end_index) {
-                        Some(macro_name) if macro_name == into_v16("/math") => {
-                            let math_begin_index = get_bracket_end_index(&content, index).unwrap() + 1;
-                            let escaped_math = escape_special_characters(&content[math_begin_index..end_index]);
-
-                            result.push(content[last_index..math_begin_index].to_vec());
-                            result.push(escaped_math);
-
-                            last_index = end_index;
-                            index = end_index;
-                            break;
-                        }
-                        _ => {}
-                    }
-
-                    end_index += 1;
-                }
-
-            },
-            _ => {}
-        }
-
-        index += 1;
-    }
-
-    if result.len() == 0 {
-        content
-    }
-
-    else {
-        result.push(content[last_index..content.len()].to_vec());
-        result.concat()
-    }
-
-}
-
-/// <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-pub fn mathjax_javascript() -> String {
-    "<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>".to_string()
 }
 
 const LATEX_SYMBOLS_RAW: [&str;103] = ["lt", "gt", "leq", "geq", "ll", "gg", "equiv", "subset", "supset", "approx", "in", "ni", "subseteq", "supseteq", "cong", "simeq", "notin", "propto", "neq", "therefore", "because", "pm", "mp", "times", "div", "star", "cap", "cup", "vee", "wedge", "cdot", "diamond", "bullet", "oplus", "ominus", "otimes", "oslash", "odot", "circ", "exists", "nexists", "forall", "neg", "land", "lor", "rightarrow", "leftarrow", "iff", "top", "bot", "varnothing", "quad", "backslash", "leftcurlybrace", "rightcurlybrace", "alpha", "beta", "gamma", "Gamma", "delta", "Delta", "epsilon", "zeta", "eta", "theta", "Theta", "iota", "kappa", "lambda", "Lambda", "mu", "nu", "xi", "Xi", "pi", "Pi", "rho", "sigma", "Sigma", "tau", "upsilon", "Upsilon", "phi", "Phi", "chi", "psi", "Psi", "omega", "Omega", "partial", "nabla", "infty", "cos", "sin", "tan", "cosh", "sinh", "tanh", "angle", "leftrightarrow", "sqcap", "sqcup", "space"];

@@ -5,7 +5,7 @@ pub mod predicate;
 #[cfg(test)]
 mod testbench;
 
-use crate::utils::{collapse_whitespaces, strip_whitespaces, lowercase};
+use crate::utils::{collapse_whitespaces, lowercase, strip_whitespaces};
 
 // [  F  OO ] -> [f oo]
 pub fn normalize_link_label(original: &[u16]) -> Vec<u16> {

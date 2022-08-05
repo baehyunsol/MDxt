@@ -3,11 +3,11 @@ use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::inline::macros::multiline::MultiLineMacro;
 use crate::container::{
-    table::Table,
-    codefence::FencedCode,
     blockquote::Blockquote,
+    codefence::FencedCode,
+    header::normalize_header,
     list::List,
-    header::normalize_header
+    table::Table,
 };
 
 #[derive(Clone)]
@@ -41,12 +41,24 @@ impl Node {
 
     pub fn new_paragraph(lines: &Vec<Line>) -> Node {
         Node::Paragraph {
-            content: InlineNode::Raw(lines.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]))
+            content: InlineNode::Raw(
+                lines
+                    .iter()
+                    .map(add_br_if_needed)
+                    .collect::<Vec<Vec<u16>>>()
+                    .join(&[' ' as u16][..])
+            )
         }
     }
 
-    pub fn new_code_fence(lines: &Vec<Line>, language: &[u16], line_num: &Option<usize>, highlights: &Vec<usize>, copy_button: bool, index: usize) -> Node {
-
+    pub fn new_code_fence(
+        lines: &Vec<Line>,
+        language: &[u16],
+        line_num: &Option<usize>,
+        highlights: &Vec<usize>,
+        copy_button: bool,
+        index: usize
+    ) -> Node {
         Node::FencedCode(FencedCode::new(
             lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
             language.to_vec(),

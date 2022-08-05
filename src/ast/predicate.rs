@@ -49,7 +49,8 @@ impl Line {
 
     #[inline]
     fn is_code_fence(&self) -> bool {
-        self.indent < 4 && self.content.len() > 2 && (self.content[0] == '`' as u16 || self.content[0] == '~' as u16)
+        self.indent < 4 && self.content.len() > 2
+        && (self.content[0] == '`' as u16 || self.content[0] == '~' as u16)
         && self.content[0] == self.content[1] && self.content[1] == self.content[2]
     }
 
@@ -108,12 +109,16 @@ impl Line {
 
     #[inline]
     pub fn is_blockquote(&self) -> bool {
-        self.indent < 4 && self.content.len() > 0 && self.content[0] == '>' as u16
+        self.indent < 4 && self.content.len() > 2
+        && self.content[0] == '&' as u16 && self.content[1] == 'g' as u16
+        && self.content[2] == 't' as u16 && self.content[3] == ';' as u16
     }
 
     #[inline]
     pub fn is_unordered_list(&self) -> bool {
-        self.content.len() > 2 && (self.content[0] == '-' as u16 || self.content[0] == '*' as u16) && self.content[1] == ' ' as u16
+        self.content.len() > 2
+        && (self.content[0] == '-' as u16 || self.content[0] == '*' as u16)
+        && self.content[1] == ' ' as u16
     }
 
     #[inline]
@@ -126,9 +131,9 @@ impl Line {
                 marker.iter().all(is_numeric) && match to_int(marker) {
                     Some(n) if n < 1_000_000_000 => true,
                     _ => false
-                } ||
-                marker == into_v16("a") || marker == into_v16("A") ||
-                marker == into_v16("i") || marker == into_v16("I")
+                }
+                || marker == into_v16("a") || marker == into_v16("A")
+                || marker == into_v16("i") || marker == into_v16("I")
             },
             _ => false,
         }
@@ -136,7 +141,8 @@ impl Line {
 
     #[inline]
     pub fn is_link_or_footnote_reference_definition(&self) -> bool {
-        self.indent < 4 && self.content.len() > 4 && self.content[0] == '[' as u16
+        self.indent < 4 && self.content.len() > 4
+        && self.content[0] == '[' as u16
         && match get_bracket_end_index(&self.content, 0) {
             None => false,
             Some(bracket_end_index) => self.content.len() > bracket_end_index + 2

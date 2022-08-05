@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-use crate::inline::footnote::Footnote;
 use crate::container::codefence::FencedCode;
+use crate::inline::footnote::Footnote;
+use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct DocData {

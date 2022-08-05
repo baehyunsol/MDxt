@@ -34,10 +34,10 @@ pub fn read_footnote(content: &[u16], index: usize, footnote_references: &HashMa
 
 fn is_valid_footnote_character(c: &u16) -> bool {
 
-    '0' as u16 <= *c && *c <= '9' as u16 ||
-    'a' as u16 <= *c && *c <= 'z' as u16 ||
-    'A' as u16 <= *c && *c <= 'Z' as u16 ||
-    '가' as u16 <= *c && *c <= '힣' as u16 ||  // korean
-    'ㄱ' as u16 <= *c && *c <= 'ㅣ' as u16 ||  // korean
-    'ぁ' as u16 <= *c && *c <= 'ヺ' as u16  // japanese
+    '0' as u16 <= *c && *c <= '9' as u16
+    || 'a' as u16 <= *c && *c <= 'z' as u16
+    || 'A' as u16 <= *c && *c <= 'Z' as u16
+    || '가' as u16 <= *c && *c <= '힣' as u16  // Korean
+    || 'ㄱ' as u16 <= *c && *c <= 'ㅣ' as u16  // Korean
+    || 'ぁ' as u16 <= *c && *c <= 'ヺ' as u16  // Japanese
 }

@@ -1,9 +1,9 @@
-mod predicate;
-pub mod parse;
-pub mod link;
 pub mod footnote;
+pub mod link;
 pub mod macros;
 pub mod math;
+pub mod parse;
+mod predicate;
 
 #[cfg(test)]
 mod testbench;
@@ -83,13 +83,17 @@ impl InlineNode {
                 inverse_index
             )),
 
-            InlineNode::Complex(content) => content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+            InlineNode::Complex(content) => content.iter().map(
+                |node| node.to_html(toc_rendered, class_prefix)
+            ).collect::<Vec<Vec<u16>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
                 into_v16("<a href=\""),
                 destination.clone(),
                 into_v16("\">"),
-                text.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                text.iter().map(
+                    |node| node.to_html(toc_rendered, class_prefix)
+                ).collect::<Vec<Vec<u16>>>().concat(),
                 into_v16("</a>")
             ].concat(),
 
@@ -104,32 +108,44 @@ impl InlineNode {
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
                     into_v16("<em>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</em>")
                 ].concat(),
                 DecorationType::Bold => vec![
                     into_v16("<strong>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</strong>")
                 ].concat(),
                 DecorationType::Underline => vec![
                     into_v16("<u>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</u>")
                 ].concat(),
                 DecorationType::Deletion => vec![
                     into_v16("<del>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</del>")
                 ].concat(),
                 DecorationType::Subscript => vec![
                     into_v16("<sub>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sub>")
                 ].concat(),
                 DecorationType::Superscript => vec![
                     into_v16("<sup>"),
-                    content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_html(toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("</sup>")
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
@@ -137,28 +153,36 @@ impl InlineNode {
                         into_v16(&format!("<span class=\"{}color-", class_prefix)),
                         color.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Size(size) => vec![
                         into_v16(&format!("<span class=\"{}size-", class_prefix)),
                         size.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Highlight(color) => vec![
                         into_v16(&format!("<span class=\"{}highlight-", class_prefix)),
                         color.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Alignment(alignment) => vec![
                         into_v16(&format!("<span class=\"{}align-", class_prefix)),
                         alignment.clone(),
                         into_v16("\">"),
-                        content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
                     InlineMacro::Box { border } => vec![
@@ -167,7 +191,9 @@ impl InlineNode {
                         } else {
                             into_v16(&format!("<div class=\"{}box no-border\">", class_prefix))
                         },
-                        content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</div>")
                     ].concat(),
                     InlineMacro::HTML { tag, class, id } => {
@@ -196,7 +222,9 @@ impl InlineNode {
                         }
 
                         result.push(into_v16(">"));
-                        result.push(content.iter().map(|node| node.to_html(toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat());
+                        result.push(content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat());
                         result.push(into_v16("</"));
 
                         if tag == &into_v16("anchor") {
@@ -259,11 +287,15 @@ impl InlineNode {
                 into_v16("]")
             ].concat(),
 
-            InlineNode::Complex(content) => content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+            InlineNode::Complex(content) => content.iter().map(
+                |node| node.to_mdxt()
+            ).collect::<Vec<Vec<u16>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
                 into_v16("["),
-                text.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                text.iter().map(
+                    |node| node.to_mdxt()
+                ).collect::<Vec<Vec<u16>>>().concat(),
                 into_v16("]("),
                 destination.clone(),
                 into_v16(")")
@@ -280,32 +312,44 @@ impl InlineNode {
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
                     into_v16("*"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("*")
                 ].concat(),
                 DecorationType::Bold => vec![
                     into_v16("**"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("**")
                 ].concat(),
                 DecorationType::Underline => vec![
                     into_v16("~_"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("_~")
                 ].concat(),
                 DecorationType::Deletion => vec![
                     into_v16("~~"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("~~")
                 ].concat(),
                 DecorationType::Subscript => vec![
                     into_v16("~"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("~")
                 ].concat(),
                 DecorationType::Superscript => vec![
                     into_v16("^"),
-                    content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                    content.iter().map(
+                        |node| node.to_mdxt()
+                    ).collect::<Vec<Vec<u16>>>().concat(),
                     into_v16("^")
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
@@ -313,7 +357,9 @@ impl InlineNode {
                         into_v16("[["),
                         name.clone(),
                         into_v16("]]"),
-                        content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_mdxt()
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/"),
                         name.clone(),
                         into_v16("]]")
@@ -322,7 +368,9 @@ impl InlineNode {
                         into_v16("[[highlight="),
                         color.clone(),
                         into_v16("]]"),
-                        content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
+                        content.iter().map(
+                            |node| node.to_mdxt()
+                        ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/highlight]]")
                     ].concat(),
                     InlineMacro::Box { border } => vec![
@@ -365,7 +413,9 @@ impl InlineNode {
                         result.push(classes);
                         result.push(ids);
                         result.push(into_v16("]]"));
-                        result.push(content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat());
+                        result.push(content.iter().map(
+                            |node| node.to_mdxt()
+                        ).collect::<Vec<Vec<u16>>>().concat());
                         result.push(into_v16("[[/"));
                         result.push(tag.clone());
                         result.push(into_v16("]]"));
@@ -402,7 +452,8 @@ impl InlineNode {
 
 }
 
-const INLINE_CODE_SPAN_MARKER1: u16 = u16::MAX - 1999;
-const INLINE_CODE_SPAN_MARKER2: u16 = u16::MAX - 1998;
-const INLINE_CODE_SPAN_MARKER3: u16 = u16::MAX - 1997;
-const INLINE_CODE_SPAN_MARKER4: u16 = u16::MAX - 1996;
+// those are illegal unicodes, which are appropriate to be used as internal meta characters
+const INLINE_CODE_SPAN_MARKER1: u16 = 0xd800;
+const INLINE_CODE_SPAN_MARKER2: u16 = 0xd801;
+const INLINE_CODE_SPAN_MARKER3: u16 = 0xd802;
+const INLINE_CODE_SPAN_MARKER4: u16 = 0xd803;

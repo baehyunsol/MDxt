@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod testbench;
 
-use yaml_rust::{Yaml, YamlLoader};
 use crate::ast::line::{Line, to_raw};
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
-use crate::utils::{into_v16, from_v16, strip_whitespaces};
+use crate::utils::{from_v16, into_v16, strip_whitespaces};
+use yaml_rust::{Yaml, YamlLoader};
 
 pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(metadata, end_index)>
 

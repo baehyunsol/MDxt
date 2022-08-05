@@ -405,7 +405,7 @@ cut
 | Hi, there!                            |
 ", "
 <table>
-    <thead id=\"table-collapse-toggle-0\" class=\"collapsible\" onclick =\"collapse-table('0')\">
+    <thead id=\"table-collapse-toggle-0\" class=\"collapsible\" onclick =\"collapse_table('0')\">
         <tr><th> Click Me! (Default shown) </th></tr>
     </thead>
     <tbody id=\"collapsible-table-0\">
@@ -413,7 +413,7 @@ cut
     </tbody>
 </table>
 <table>
-    <thead id=\"table-collapse-toggle-1\" class=\"collapsible collapsed\" onclick =\"collapse-table('1')\">
+    <thead id=\"table-collapse-toggle-1\" class=\"collapsible collapsed\" onclick =\"collapse_table('1')\">
         <tr><th> Click Me! (Default hidden) </th></tr>
     </thead>
     <tbody id=\"collapsible-table-1\" class=\"invisible\">

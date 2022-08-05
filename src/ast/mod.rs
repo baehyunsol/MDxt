@@ -1,7 +1,7 @@
-pub mod line;
-pub mod parse;
 pub mod doc_data;
+pub mod line;
 pub mod node;
+pub mod parse;
 mod predicate;
 
 #[cfg(test)]
@@ -11,13 +11,13 @@ use crate::inline::{
     InlineNode,
     footnote::{footnotes_to_html, Footnote}
 };
-use crate::render::render_option::RenderOption;
+use crate::{collapsible_table_javascript, mathjax_javascript};
 use crate::container::codefence::html::copy_button_javascript;
+use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
-use crate::{mathjax_javascript, collapsible_table_javascript};
-use std::collections::HashMap;
-use node::Node;
 use doc_data::DocData;
+use node::Node;
+use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct AST {
@@ -38,17 +38,17 @@ impl AST {
 
         self.nodes.iter_mut().for_each(
             |node| match node {
-                Node::Paragraph { content } | Node::Header { content, .. } => {content.parse_raw(&mut self.doc_data, &self.render_option);},
-                Node::Table(table) => {table.parse_inlines(&mut self.doc_data, &self.render_option);},
-                Node::List(list) => {list.parse_inlines(&mut self.doc_data, &self.render_option);},
-                Node::Blockquote(blockquote) => {blockquote.parse_inlines(&mut self.doc_data, &self.render_option);},
+                Node::Paragraph { content } | Node::Header { content, .. } => { content.parse_raw(&mut self.doc_data, &self.render_option); },
+                Node::Table(table) => { table.parse_inlines(&mut self.doc_data, &self.render_option); },
+                Node::List(list) => { list.parse_inlines(&mut self.doc_data, &self.render_option); },
+                Node::Blockquote(blockquote) => { blockquote.parse_inlines(&mut self.doc_data, &self.render_option); },
                 Node::Empty | Node::ThematicBreak | Node::MultiLineMacro(_) => {},
 
                 // this branch is ugly...
                 // it doesn't `parse_inline` inside the `parse_inlines` function
                 // but this is the only point where the `FencedCode` instances and `doc_data` meet
                 // I should call this function when the fenced_codes are initialized, but `doc_data` doesn't exist at that timing
-                Node::FencedCode(fenced_code) => {self.doc_data.add_fenced_code_content(fenced_code);},
+                Node::FencedCode(fenced_code) => { self.doc_data.add_fenced_code_content(fenced_code); },
             }
         );
 
@@ -162,15 +162,28 @@ impl AST {
 
         if self.render_option.javascript {
 
-            if self.doc_data.has_collapsible_table {
+            if self.doc_data.has_collapsible_table
+                || self.doc_data.fenced_code_contents.len() > 0
+            {
                 result.push(into_v16("<script>"));
-                result.push(into_v16(&collapsible_table_javascript()));
-                result.push(into_v16("</script>"));
-            }
 
-            if self.doc_data.fenced_code_contents.len() > 0 {
-                result.push(into_v16("<script>"));
-                result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+                if self.render_option.xml {
+                    result.push(into_v16("/*<![CDATA[*/"));
+                }
+
+                if self.doc_data.has_collapsible_table {
+                    result.push(into_v16(&collapsible_table_javascript()));
+                }
+
+                if self.doc_data.fenced_code_contents.len() > 0 {
+                    result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+                }
+
+                // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
+                if self.render_option.xml {
+                    result.push(into_v16("/*]]>*/"));
+                }
+
                 result.push(into_v16("</script>"));
             }
 

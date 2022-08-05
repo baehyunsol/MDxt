@@ -1,9 +1,9 @@
-use super::escape_pipes;
 use super::alignment::TableAlignment;
-use crate::inline::InlineNode;
-use crate::inline::macros::{predicate::read_macro, parse_arguments, get_macro_name};
+use super::escape_pipes;
 use crate::ast::line::Line;
-use crate::utils::{get_bracket_end_index, into_v16, drop_while, to_int};
+use crate::inline::InlineNode;
+use crate::inline::macros::{get_macro_name, parse_arguments, predicate::read_macro};
+use crate::utils::{drop_while, get_bracket_end_index, into_v16, to_int};
 
 #[derive(Clone)]
 pub struct Cell {
@@ -134,7 +134,10 @@ pub fn remove_colspan_macro(content: &[u16]) -> Vec<u16> {
             let macro_name = get_macro_name(&macro_arguments);
             let macro_end_index = get_bracket_end_index(content, 0).unwrap();
 
-            if macro_arguments.len() == 1 && macro_arguments[0].len() == 2 && macro_name == into_v16("colspan") {
+            if macro_arguments.len() == 1 
+                && macro_arguments[0].len() == 2
+                && macro_name == into_v16("colspan")
+            {
 
                 match to_int(&macro_arguments[0][1]) {
                     Some(n) if n > 0 => content[macro_end_index + 1..content.len()].to_vec(),

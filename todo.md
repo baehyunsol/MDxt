@@ -18,10 +18,6 @@ tooltip
 
 ---
 
-mdx engine이 mathjax 결과물까지 다 처리한 다음에 최종 결과물에는 svg만 넣으면 안되나?
-
----
-
 pretty output
 - output으로 나오는 html 좀 예쁘게 indent도 하고 그러자
 - 이거 만드는 과정에서 html-validator도 나올 듯...
@@ -35,3 +31,9 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 `[[blank = 3]]` -> `&nbsp;&nbsp;&nbsp;`
 
 `[[br = 2]]` -> `<br/><br/>`
+
+---
+
+난독화
+
+class들 난독화하는 기능 추가, 난독화하는 함수 자체도 넣어서 배포!

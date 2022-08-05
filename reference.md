@@ -139,6 +139,7 @@ fn main() {
     } else {
         5
     };
+    let z = x < 3 && y > 4;
     println!("Hello World!\n");
     println!("{:?}", 3 + 4);
 }
@@ -165,6 +166,7 @@ fn main() {
     } else {
         5
     };
+    let z = x < 3 && y > 4;
     println!("Hello World!\n");
     println!("{:?}", 3 + 4);
 }
@@ -239,7 +241,7 @@ Inline alignments are rendered to `span` tags and multi-lines are rendered to `d
 
 `[[highlight = red]] This text is highlighted! [[/highlight]]` is rendered to `<span class="highlight-red"> This text is highlighted! </span>`. The same rule is applied to the other colors.
 
-To see available colors, read [Colors](#colors) section.
+To see available colors, read the [Colors](#colors) section.
 
 ### Box
 
@@ -294,7 +296,7 @@ A paragraph in a borderless box in a box.
 | [[toc]]           |
 ```
 
-See how that's rendered [here](#tocsample)
+See how the above code is rendered, see [here](#tocsample).
 
 ### Special Characters
 
@@ -302,7 +304,7 @@ See how that's rendered [here](#tocsample)
 
 `[[char = copy]]` is rendered to `&copy;`, which is [[char = copy]].
 
-To see the complete list of available characters, visit [here](MDxt-Character-Reference.html).
+To see the list of available characters, visit [here](MDxt-Character-Reference.html).
 
 ### Icons
 
@@ -314,7 +316,7 @@ WIP
 
 [mathjax]: https://www.mathjax.org/
 
-To see available math elements, visit [here](MDxt-Math-Reference.html).
+To see the list of available math elements, visit [here](MDxt-Math-Reference.html).
 
 ### Multiline Macro
 

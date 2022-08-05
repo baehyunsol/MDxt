@@ -1,7 +1,7 @@
 // use this module to automate the creation of CSS files.
 
-use lazy_static::lazy_static;
 use crate::utils::{into_v16, from_v16};
+use lazy_static::lazy_static;
 
 #[derive(Clone, Debug)]
 pub struct Color {

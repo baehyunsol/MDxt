@@ -6,13 +6,13 @@ pub mod macros;
 mod testbench;
 
 use alignment::parse_alignments;
-use cell::{Cell, row_to_cells, get_colspan};
+use cell::{Cell, get_colspan, row_to_cells};
 use macros::{is_macro_row, try_parse_macro};
 use crate::ast::{doc_data::DocData, line::Line};
-use crate::render::render_option::RenderOption;
+use crate::escape::BACKSLASH_ESCAPE_MARKER;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
 use crate::inline::math::escape_inside_math_blocks;
-use crate::escape::BACKSLASH_ESCAPE_MARKER;
+use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
 
 #[derive(Clone)]
@@ -28,10 +28,17 @@ impl Table {
 
     // it has at least two lines: header, and delimiter
     // it assumes all the lines are valid table rows
-    pub fn from_lines(headers: &Vec<Line>, mut rows: &[Line], alignments: &Line, index: usize) -> Self {
+    pub fn from_lines(
+        headers: &Vec<Line>,
+        mut rows: &[Line],
+        alignments: &Line,
+        index: usize
+    ) -> Self {
         let alignments = parse_alignments(&alignments);
 
-        let header = headers.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
+        let header = headers.iter().map(
+            |row| row_to_cells(row, alignments.len(), &alignments)
+        ).collect::<Vec<Vec<Cell>>>();
 
         // configured by table-wide macros
         let (mut collapsible, mut default_hidden) = (false, false);
@@ -44,7 +51,9 @@ impl Table {
             rows = &rows[1..];
         }
 
-        let cells = rows.iter().map(|row| row_to_cells(row, alignments.len(), &alignments)).collect::<Vec<Vec<Cell>>>();
+        let cells = rows.iter().map(
+            |row| row_to_cells(row, alignments.len(), &alignments)
+        ).collect::<Vec<Vec<Cell>>>();
 
         Table {
             header, cells,
@@ -89,7 +98,7 @@ impl Table {
                 ""
             };
 
-            format!(" id=\"table-collapse-toggle-{}\" class=\"{}collapsible{}\" onclick =\"collapse-table('{}')\"", self.index, class_prefix, default_value, self.index)
+            format!(" id=\"table-collapse-toggle-{}\" class=\"{}collapsible{}\" onclick =\"collapse_table('{}')\"", self.index, class_prefix, default_value, self.index)
         } else {
             String::new()
         };
@@ -98,7 +107,9 @@ impl Table {
         self.header.iter().for_each(
             |row| {
                 result.push(into_v16("<tr>"));
-                result.push(row.iter().map(|c| c.to_html(true, toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat());
+                result.push(row.iter().map(
+                    |c| c.to_html(true, toc_rendered, class_prefix)
+                ).collect::<Vec<Vec<u16>>>().concat());
                 result.push(into_v16("</tr>"));
             }
         );
@@ -121,7 +132,9 @@ impl Table {
             self.cells.iter().for_each(
                 |row| {
                     result.push(into_v16("<tr>"));
-                    result.push(row.iter().map(|c| c.to_html(false, toc_rendered, class_prefix)).collect::<Vec<Vec<u16>>>().concat());
+                    result.push(row.iter().map(
+                        |c| c.to_html(false, toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u16>>>().concat());
                     result.push(into_v16("</tr>"));
                 }
             );

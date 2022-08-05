@@ -1,10 +1,11 @@
 mod ast;
-mod render;
-mod utils;
-mod inline;
 mod escape;
 mod container;
 mod color;
+mod inline;
+// mod obfuscate;  // WIP
+mod render;
+mod utils;
 
 #[cfg(test)]
 mod testbench;

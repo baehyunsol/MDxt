@@ -3,16 +3,22 @@
 // a valid link following a `!` is a valid image
 
 use super::normalize_link_label;
-use crate::utils::{get_bracket_end_index, get_parenthesis_end_index, drop_while};
+use crate::utils::{drop_while, get_bracket_end_index, get_parenthesis_end_index};
 use std::collections::HashMap;
 
 // [foo](address)
-pub fn read_direct_link(content: &[u16], index: usize, link_references: &HashMap<Vec<u16>, Vec<u16>>) -> Option<(Vec<u16>, Vec<u16>, usize)> {  // Option<(link_text, link_destination, last_index)>
+pub fn read_direct_link(
+    content: &[u16],
+    index: usize,
+    link_references: &HashMap<Vec<u16>, Vec<u16>>
+) -> Option<(Vec<u16>, Vec<u16>, usize)> {  // Option<(link_text, link_destination, last_index)>
 
     if content[index] == '[' as u16 {
 
         match get_bracket_end_index(content, index) {
-            Some(bracket_end_index) => if bracket_end_index + 1 >= content.len() || content[bracket_end_index + 1] != '(' as u16 {
+            Some(bracket_end_index) => if bracket_end_index + 1 >= content.len()
+                || content[bracket_end_index + 1] != '(' as u16
+            {
                 None
             } else {
 
@@ -52,7 +58,9 @@ pub fn read_reference_link(content: &[u16], index: usize, link_references: &Hash
     if content[index] == '[' as u16 {
 
         match get_bracket_end_index(content, index) {
-            Some(bracket_end_index) => if bracket_end_index + 1 >= content.len() || content[bracket_end_index + 1] != '[' as u16 {
+            Some(bracket_end_index) => if bracket_end_index + 1 >= content.len()
+                || content[bracket_end_index + 1] != '[' as u16
+            {
                 None
             } else {
 
@@ -101,7 +109,9 @@ pub fn read_shortcut_reference_link(content: &[u16], index: usize, link_referenc
 
                 // if a shortcut reference is followed by a balanced [] or (), the reference is invalid
                 if bracket_end_index + 1 == content.len()
-                || (content[bracket_end_index + 1] != '(' as u16 && content[bracket_end_index + 1] != '[' as u16) {
+                    || (content[bracket_end_index + 1] != '(' as u16
+                    && content[bracket_end_index + 1] != '[' as u16)
+                {
                     //
                 }
 
@@ -125,7 +135,10 @@ pub fn read_shortcut_reference_link(content: &[u16], index: usize, link_referenc
 
                 let link_text = &content[index + 1..bracket_end_index];
 
-                if link_references.contains_key(&normalize_link_label(link_text)) && is_valid_link_label(link_text) && is_valid_link_text(link_text, link_references) {
+                if link_references.contains_key(&normalize_link_label(link_text))
+                    && is_valid_link_label(link_text)
+                    && is_valid_link_text(link_text, link_references)
+                {
                     Some((link_text.to_vec(), bracket_end_index))
                 }
 
@@ -160,7 +173,10 @@ pub fn read_link_reference(content: &[u16]) -> (Vec<u16>, Vec<u16>) {  // (link_
 fn is_valid_link_text(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>) -> bool {
 
     !contains_link(content, link_references)  // it makes sure that the links are not nested
-    && (content.len() == 0 || if content[0] == '[' as u16 && content[content.len() - 1] == ']' as u16 {
+    && (content.len() == 0
+    || if content[0] == '[' as u16
+        && content[content.len() - 1] == ']' as u16
+    {
 
         // [...] -> link
         // [[...]] -> macro
@@ -184,25 +200,29 @@ fn contains_link(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u16>>)
     match content.iter().position(|c| *c == '[' as u16) {
         // this function is used to remove nested links
         // so images are fine
-        Some(index) if index == 0 || content[index - 1] != '!' as u16 => read_direct_link(content, index, link_references).is_some()
-        || read_reference_link(content, index, link_references).is_some()
-        || read_shortcut_reference_link(content, index, link_references).is_some()
-        || contains_link(&content[index + 1..content.len()], link_references),
+        Some(index)
+            if index == 0 || content[index - 1] != '!' as u16 =>
+        {
+            read_direct_link(content, index, link_references).is_some()
+            || read_reference_link(content, index, link_references).is_some()
+            || read_shortcut_reference_link(content, index, link_references).is_some()
+            || contains_link(&content[index + 1..content.len()], link_references)
+        },
         _ => false,
     }
 
 }
 
 fn is_valid_url_character(character: &u16) -> bool {
-    '-' as u16 <= *character && *character <= ';' as u16 ||
-    'a' as u16 <= *character && *character <= 'z' as u16 ||
-    '?' as u16 <= *character && *character <= 'Z' as u16 ||
-    '가' as u16 <= *character && *character <= '힣' as u16 ||  // korean
-    'ㄱ' as u16 <= *character && *character <= 'ㅣ' as u16 ||  // korean
-    'ぁ' as u16 <= *character && *character <= 'ヺ' as u16 ||  // japanese
-    '!' as u16 == *character || '=' as u16 == *character ||
-    '+' as u16 == *character || '&' as u16 == *character ||
-    '%' as u16 == *character || '_' as u16 == *character ||
-    '#' as u16 == *character || '$' as u16 == *character ||
-    '+' as u16 == *character
+    '-' as u16 <= *character && *character <= ';' as u16
+    || 'a' as u16 <= *character && *character <= 'z' as u16
+    || '?' as u16 <= *character && *character <= 'Z' as u16
+    || '가' as u16 <= *character && *character <= '힣' as u16  // korean
+    || 'ㄱ' as u16 <= *character && *character <= 'ㅣ' as u16  // korean
+    || 'ぁ' as u16 <= *character && *character <= 'ヺ' as u16  // japanese
+    || '!' as u16 == *character || '=' as u16 == *character
+    || '+' as u16 == *character || '&' as u16 == *character
+    || '%' as u16 == *character || '_' as u16 == *character
+    || '#' as u16 == *character || '$' as u16 == *character
+    || '+' as u16 == *character
 }

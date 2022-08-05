@@ -1,9 +1,9 @@
-use lazy_static::lazy_static;
-use syntect::parsing::SyntaxSet;
-use syntect::highlighting::{ThemeSet, Theme, Color, Style};
-use syntect::easy::HighlightLines;
-use crate::utils::{into_v16, from_v16};
 use crate::escape::escape_htmls;
+use crate::utils::{from_v16, into_v16};
+use lazy_static::lazy_static;
+use syntect::easy::HighlightLines;
+use syntect::highlighting::{Color, Style, Theme, ThemeSet};
+use syntect::parsing::SyntaxSet;
 
 lazy_static! {
     pub static ref SYNTAX_SET: SyntaxSet = SyntaxSet::load_defaults_newlines();
@@ -31,7 +31,8 @@ pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -
         match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
             Ok(styled_line) => {
                 result.push(styled_line.iter().map(
-                    |(Style {foreground, ..}, content)| classify_style_to_css(&foreground, content, class_prefix)
+                    |(Style {foreground, ..}, content)|
+                    classify_style_to_css(&foreground, content, class_prefix)
                 ).collect::<Vec<Vec<u16>>>().concat());
             }
             Err(_) => {

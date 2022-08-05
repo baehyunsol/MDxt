@@ -1,10 +1,10 @@
 use crate::utils::into_v16;
-use std::collections::{HashSet, HashMap};
 use lazy_static::lazy_static;
+use std::collections::{HashSet, HashMap};
 
 lazy_static! {
 
-    static ref INDIRECT: Vec<(Vec<u16>, Vec<u16>)> = vec![
+    static ref INDIRECT_MAPPINGS_VEC: Vec<(Vec<u16>, Vec<u16>)> = vec![
         (into_v16("won"), into_v16("8361")),
         (into_v16("intint"), into_v16("8748")),
         (into_v16("oint"), into_v16("8750")),
@@ -17,9 +17,33 @@ lazy_static! {
         (into_v16("smile"), into_v16("128516")),
         (into_v16("love"), into_v16("128525")),
         (into_v16("cry"), into_v16("128546")),
+        (into_v16("big alpha"), into_v16("Alpha")),
+        (into_v16("big beta"), into_v16("Beta")),
+        (into_v16("big gamma"), into_v16("Gamma")),
+        (into_v16("big delta"), into_v16("Delta")),
+        (into_v16("big epsilon"), into_v16("Epsilon")),
+        (into_v16("big zeta"), into_v16("Zeta")),
+        (into_v16("big eta"), into_v16("Eta")),
+        (into_v16("big theta"), into_v16("Theta")),
+        (into_v16("big iota"), into_v16("Iota")),
+        (into_v16("big kappa"), into_v16("Kappa")),
+        (into_v16("big lambda"), into_v16("Lambda")),
+        (into_v16("big mu"), into_v16("Mu")),
+        (into_v16("big nu"), into_v16("Nu")),
+        (into_v16("big xi"), into_v16("Xi")),
+        (into_v16("big omicron"), into_v16("Omicron")),
+        (into_v16("big pi"), into_v16("Pi")),
+        (into_v16("big rho"), into_v16("Rho")),
+        (into_v16("big sigma"), into_v16("Sigma")),
+        (into_v16("big tau"), into_v16("Tau")),
+        (into_v16("big upsilon"), into_v16("Upsilon")),
+        (into_v16("big phi"), into_v16("Phi")),
+        (into_v16("big chi"), into_v16("Chi")),
+        (into_v16("big psi"), into_v16("Psi")),
+        (into_v16("big omega"), into_v16("Omega")),
     ];
 
-    pub static ref DIRECT: HashSet<Vec<u16>> = {
+    pub static ref DIRECT_MAPPINGS: HashSet<Vec<u16>> = {
         let vec = vec![
             into_v16("bull"),
             into_v16("euro"),
@@ -60,6 +84,30 @@ lazy_static! {
             into_v16("nsub"),
             into_v16("sube"),
             into_v16("supe"),
+            into_v16("alpha"),
+            into_v16("beta"),
+            into_v16("gamma"),
+            into_v16("delta"),
+            into_v16("epsilon"),
+            into_v16("zeta"),
+            into_v16("eta"),
+            into_v16("theta"),
+            into_v16("iota"),
+            into_v16("kappa"),
+            into_v16("lambda"),
+            into_v16("mu"),
+            into_v16("nu"),
+            into_v16("xi"),
+            into_v16("omicron"),
+            into_v16("pi"),
+            into_v16("rho"),
+            into_v16("sigma"),
+            into_v16("tau"),
+            into_v16("upsilon"),
+            into_v16("phi"),
+            into_v16("chi"),
+            into_v16("psi"),
+            into_v16("omega"),
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
@@ -70,26 +118,26 @@ lazy_static! {
         result
     };
 
-    static ref INDIRECT_NAMES: HashSet<Vec<u16>> = {
-        let mut result = HashSet::with_capacity(INDIRECT.len());
+    static ref INDIRECT_MAPPING_NAMES: HashSet<Vec<u16>> = {
+        let mut result = HashSet::with_capacity(INDIRECT_MAPPINGS_VEC.len());
 
-        for (i, _) in INDIRECT.iter() {
+        for (i, _) in INDIRECT_MAPPINGS_VEC.iter() {
             result.insert(i.clone());
         }
 
         result
     };
 
-    pub static ref INDIRECT_MAPS: HashMap<Vec<u16>, Vec<u16>> = {
-        let mut result = HashMap::with_capacity(INDIRECT.len());
+    pub static ref INDIRECT_MAPPINGS: HashMap<Vec<u16>, Vec<u16>> = {
+        let mut result = HashMap::with_capacity(INDIRECT_MAPPINGS_VEC.len());
 
-        for (key, value) in INDIRECT.iter() {
+        for (key, value) in INDIRECT_MAPPINGS_VEC.iter() {
             result.insert(key.clone(), value.clone());
         }
 
         result
     };
 
-    pub static ref CHAR_NAMES: HashSet<Vec<u16>> = DIRECT.union(&INDIRECT_NAMES).map(|name| name.clone()).collect();
+    pub static ref CHAR_NAMES: HashSet<Vec<u16>> = DIRECT_MAPPINGS.union(&INDIRECT_MAPPING_NAMES).map(|name| name.clone()).collect();
 
 }

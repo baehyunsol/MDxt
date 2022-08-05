@@ -1,19 +1,19 @@
-use super::predicate::*;
 use super::{
     InlineNode, DecorationType,
     INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4
 };
+use super::footnote::predicate::read_footnote;
+use super::link::normalize_link_label;
 use super::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
 };
-use super::math::escape_inside_math_blocks;
-use super::footnote::predicate::read_footnote;
-use super::link::normalize_link_label;
 use super::macros::predicate::check_and_parse_macro_inline;
+use super::math::escape_inside_math_blocks;
+use super::predicate::*;
 use crate::ast::doc_data::DocData;
-use crate::render::render_option::RenderOption;
-use crate::utils::{get_bracket_end_index, into_v16, from_v16};
 use crate::escape::{render_backslash_escapes, undo_backslash_escapes};
+use crate::render::render_option::RenderOption;
+use crate::utils::{from_v16, get_bracket_end_index, into_v16};
 
 impl InlineNode {
 
@@ -49,10 +49,11 @@ impl InlineNode {
             }
 
             // it continues if the current character is not a special character
-            if content[index] < '*' as u16 ||
-            ('*' as u16) < content[index] && content[index] < '[' as u16 ||
-            ('`' as u16) < content[index] && content[index] < '~' as u16 ||
-            content[index] > '~' as u16 {
+            if content[index] < '*' as u16
+                || ('*' as u16) < content[index] && content[index] < '[' as u16
+                || ('`' as u16) < content[index] && content[index] < '~' as u16
+                || content[index] > '~' as u16
+            {
                 index += 1;
                 continue;
             }
@@ -557,11 +558,15 @@ pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
 }
 
 pub fn is_code_span_marker_begin(content: &[u16], index: usize) -> bool {
-    content[index] == INLINE_CODE_SPAN_MARKER1 && index + 1 < content.len() && content[index + 1] == INLINE_CODE_SPAN_MARKER2
+    content[index] == INLINE_CODE_SPAN_MARKER1
+    && index + 1 < content.len()
+    && content[index + 1] == INLINE_CODE_SPAN_MARKER2
 }
 
 pub fn is_code_span_marker_end(content: &[u16], index: usize) -> bool {
-    content[index] == INLINE_CODE_SPAN_MARKER3 && index + 1 < content.len() && content[index + 1] == INLINE_CODE_SPAN_MARKER4
+    content[index] == INLINE_CODE_SPAN_MARKER3
+    && index + 1 < content.len()
+    && content[index + 1] == INLINE_CODE_SPAN_MARKER4
 }
 
 pub fn get_code_span_marker_end_index(content: &[u16], mut index: usize) -> usize {

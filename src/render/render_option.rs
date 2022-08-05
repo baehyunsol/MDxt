@@ -1,6 +1,6 @@
-use crate::inline::link::predicate::is_valid_link_destination;
 use crate::container::header::normalize_header;
-use crate::utils::{into_v16, from_v16};
+use crate::inline::link::predicate::is_valid_link_destination;
+use crate::utils::{from_v16, into_v16};
 
 #[derive(Clone)]
 pub struct RenderOption {
@@ -25,7 +25,11 @@ pub struct RenderOption {
     pub javascript: bool,
 
     /// It prefixes all the html classes.
-    pub class_prefix: String
+    pub class_prefix: String,
+
+    /// If you want the output to be a well-formed xml, turn it on.
+    /// It's not a polyglot markup, though.
+    pub xml: bool
 }
 
 impl Default for RenderOption {
@@ -36,7 +40,8 @@ impl Default for RenderOption {
             header_anchor: true,
             parse_metadata: true,
             javascript: true,
-            class_prefix: String::new()
+            class_prefix: String::new(),
+            xml: false
         }
     }
 
@@ -56,6 +61,11 @@ impl RenderOption {
 
     pub fn set_class_prefix(&mut self, class_prefix: String) -> &mut Self {
         self.class_prefix = class_prefix;
+        self
+    }
+
+    pub fn set_xml(&mut self, xml: bool) -> &mut Self {
+        self.xml = xml;
         self
     }
 

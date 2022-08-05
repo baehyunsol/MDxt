@@ -1,7 +1,6 @@
 use super::FencedCode;
-use super::syntect::{is_syntax_available, highlight_syntax};
-use crate::utils::{into_v16, from_v16, log10};
-use crate::escape::{render_backslash_escapes, undo_html_escapes};
+use super::syntect::{highlight_syntax, is_syntax_available};
+use crate::utils::{from_v16, into_v16, log10};
 use std::collections::HashMap;
 
 // `<` in code, `\` in code
@@ -11,8 +10,8 @@ impl FencedCode {
 
     pub fn to_html(&self, class_prefix: &str) -> Vec<u16> {
 
-        let mut rows = if is_syntax_available(&self.language) {
-            let lines = highlight_syntax(&undo_html_escapes(&self.content), &self.language, class_prefix);
+        let rows = if is_syntax_available(&self.language) {
+            let lines = highlight_syntax(&self.get_raw_content(), &self.language, class_prefix);
 
             lines.iter().enumerate().map(
                 |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
@@ -74,7 +73,7 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
     vec![
         into_v16(&format!("<span{}>", highlight_or_not)),
         line_num,
-        render_backslash_escapes(line),
+        line.to_vec(),
         into_v16("</span></span>\n")
     ].concat()
 }

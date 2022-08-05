@@ -1,7 +1,7 @@
-use crate::container::header::normalize_header;
 use crate::ast::{AST, line::code_to_lines};
-use crate::utils::into_v16;
+use crate::container::header::normalize_header;
 use crate::escape::BACKSLASH_ESCAPE_MARKER;
+use crate::utils::into_v16;
 
 impl AST {
 

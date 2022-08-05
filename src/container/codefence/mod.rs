@@ -1,5 +1,5 @@
-pub mod predicate;
 pub mod html;
+pub mod predicate;
 mod syntect;
 
 #[cfg(test)]
@@ -7,9 +7,9 @@ mod testbench;
 
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
-use crate::utils::{take_and_drop_while, remove_whitespaces, into_v16, lowercase, to_int};
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
-use predicate::{is_line_num, is_highlight, is_copy_button, parse_arguments};
+use crate::utils::{into_v16, lowercase, remove_whitespaces, take_and_drop_while, to_int};
+use predicate::{is_copy_button, is_highlight, is_line_num, parse_arguments};
 
 #[derive(Clone)]
 pub struct FencedCode {
@@ -23,7 +23,14 @@ pub struct FencedCode {
 
 impl FencedCode {
 
-    pub fn new(content: Vec<u16>, language: Vec<u16>, line_num: Option<usize>, highlights: Vec<usize>, copy_button: bool, index: usize) -> Self {
+    pub fn new(
+        content: Vec<u16>,
+        language: Vec<u16>,
+        line_num: Option<usize>,
+        highlights: Vec<usize>,
+        copy_button: bool,
+        index: usize
+    ) -> Self {
         FencedCode {
             language,
             content: undo_backslash_escapes(&content),

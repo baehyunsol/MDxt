@@ -3,9 +3,9 @@ mod tasklist;
 #[cfg(test)]
 mod testbench;
 
-use crate::inline::InlineNode;
-use crate::ast::line::{Line, add_br_if_needed};
 use crate::ast::doc_data::DocData;
+use crate::ast::line::{Line, add_br_if_needed};
+use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
 use crate::utils::{is_numeric, to_int, into_v16};
 use tasklist::{parse_task_list, TaskMarker};
@@ -23,7 +23,7 @@ impl List {
         let (mut list, mut index) = from_lines_recursive(&lines[..], 0);
 
         /*
-        It's needed in ordered to parse
+        It's needed in order to parse
         ```
                 - 1
               - 1
@@ -133,8 +133,8 @@ impl List {
         for element in self.elements.iter_mut() {
 
             match element {
-                ElementOrSublist::Element{ content, .. } => {content.parse_raw(doc_data, options);}
-                ElementOrSublist::Sublist(sublist) => {sublist.parse_inlines(doc_data, options);}
+                ElementOrSublist::Element{ content, .. } => { content.parse_raw(doc_data, options); }
+                ElementOrSublist::Sublist(sublist) => { sublist.parse_inlines(doc_data, options); }
             }
 
         }

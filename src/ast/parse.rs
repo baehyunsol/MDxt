@@ -1,17 +1,17 @@
-use super::{doc_data::DocData, AST, line::Line, node::Node};
+use super::{AST, doc_data::DocData, line::Line, node::Node};
 use crate::inline::{
+    footnote::{Footnote, predicate::is_valid_footnote_label},
     InlineNode,
-    link::{predicate::read_link_reference, normalize_link_label},
-    footnote::{predicate::is_valid_footnote_label, Footnote},
-    macros::{predicate::read_macro, parse_arguments, get_macro_name, MACROS}
+    link::{normalize_link_label, predicate::read_link_reference},
+    macros::{get_macro_name, parse_arguments, predicate::read_macro, MACROS}
 };
 use crate::container::{
-    table::{count_cells, count_delimiter_cells},
     codefence::read_code_fence_info,
-    header::parse_header
+    header::parse_header,
+    table::{count_cells, count_delimiter_cells},
 };
-use crate::utils::{into_v16, from_v16};
 use crate::render::render_option::RenderOption;
+use crate::utils::{from_v16, into_v16};
 use std::collections::HashMap;
 
 #[derive(PartialEq, Debug)]
@@ -109,13 +109,18 @@ impl AST {
                         let mut header_end_index = index + 1;
                         let mut header_lines = vec![&lines[index]];
 
-                        while header_end_index < lines.len() && lines[header_end_index].is_table_row() && !lines[header_end_index].is_table_delimiter() {
+                        while header_end_index < lines.len()
+                            && lines[header_end_index].is_table_row()
+                            && !lines[header_end_index].is_table_delimiter()
+                        {
                             header_lines.push(&lines[header_end_index]);
                             header_end_index += 1;
                         }
 
-                        if header_end_index < lines.len() && lines[header_end_index].is_table_delimiter() &&
-                        count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content) {
+                        if header_end_index < lines.len()
+                            && lines[header_end_index].is_table_delimiter()
+                            && count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content)
+                        {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
                             let header_lines = header_lines.into_iter().map(|line| (*line).clone()).collect::<Vec<Line>>();
@@ -140,8 +145,11 @@ impl AST {
 
                     // a single line of an ordered list is not rendered to `<ol>`
                     // a single line of an unordered list is fine
-                    else if lines[index].is_unordered_list() ||
-                    lines[index].is_ordered_list() && index + 1 < lines.len() && lines[index + 1].is_ordered_list() {
+                    else if lines[index].is_unordered_list()
+                        || lines[index].is_ordered_list()
+                        && index + 1 < lines.len()
+                        && lines[index + 1].is_ordered_list()
+                    {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_parse_state = ParseState::List;
                         curr_lines.push(lines[index].clone());
@@ -168,9 +176,11 @@ impl AST {
                 },
                 ParseState::List => {
 
-                    if lines[index].is_empty() || lines[index].is_code_fence_begin() ||
-                    lines[index].is_header() || lines[index].is_thematic_break() ||
-                    lines[index].is_table_row() || lines[index].is_blockquote() {
+                    if lines[index].is_empty()
+                        || lines[index].is_code_fence_begin()
+                        || lines[index].is_header() || lines[index].is_thematic_break()
+                        || lines[index].is_table_row() || lines[index].is_blockquote()
+                    {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         continue;
                     }
@@ -182,10 +192,11 @@ impl AST {
                 },
                 ParseState::Blockquote => {
 
-                    if lines[index].is_empty() || lines[index].is_code_fence_begin() ||
-                    lines[index].is_header() || lines[index].is_thematic_break() ||
-                    lines[index].is_table_row() || lines[index].is_ordered_list() ||
-                    lines[index].is_unordered_list() {
+                    if lines[index].is_empty() || lines[index].is_code_fence_begin()
+                        || lines[index].is_header() || lines[index].is_thematic_break()
+                        || lines[index].is_table_row() || lines[index].is_ordered_list()
+                        || lines[index].is_unordered_list()
+                    {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         continue;
                     }
@@ -289,7 +300,10 @@ impl AST {
                                         let curr_macro_name = get_macro_name(&curr_macro_arguments);
 
                                         match MACROS.get(&curr_macro_name) {
-                                            Some(inner_macro) if inner_macro.has_closing && inner_macro.is_valid(&curr_macro_arguments) => {
+                                            Some(inner_macro)
+                                                if inner_macro.has_closing
+                                                    && inner_macro.is_valid(&curr_macro_arguments) =>
+                                            {
                                                 inner_macro_stack.push(inner_macro.clone());
                                                 curr_closing_macro = inner_macro.get_closing_macro();
                                             },
@@ -335,13 +349,18 @@ impl AST {
                         let mut header_end_index = index + 1;
                         let mut header_lines = vec![&lines[index]];
 
-                        while header_end_index < lines.len() && lines[header_end_index].is_table_row() && !lines[header_end_index].is_table_delimiter() {
+                        while header_end_index < lines.len()
+                            && lines[header_end_index].is_table_row()
+                            && !lines[header_end_index].is_table_delimiter()
+                        {
                             header_lines.push(&lines[header_end_index]);
                             header_end_index += 1;
                         }
 
-                        if header_end_index < lines.len() && lines[header_end_index].is_table_delimiter() &&
-                        count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content) {
+                        if header_end_index < lines.len()
+                            && lines[header_end_index].is_table_delimiter()
+                            && count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content)
+                        {
 
                             let header_lines = header_lines.into_iter().map(|line| (*line).clone()).collect::<Vec<Line>>();
                             let alignments = lines[header_end_index].clone();
@@ -360,8 +379,11 @@ impl AST {
 
                     // a single line of an ordered list is not rendered to `<ol>`
                     // a single line of an unordered list is fine
-                    else if lines[index].is_unordered_list() ||
-                    lines[index].is_ordered_list() && index + 1 < lines.len() && lines[index + 1].is_ordered_list() {
+                    else if lines[index].is_unordered_list()
+                        || lines[index].is_ordered_list()
+                        && index + 1 < lines.len()
+                        && lines[index + 1].is_ordered_list()
+                    {
                         curr_parse_state = ParseState::List;
                         curr_lines.push(lines[index].clone());
                     }

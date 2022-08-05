@@ -14,10 +14,10 @@ Table-wide macros
 
 use crate::ast::line::Line;
 use crate::inline::macros::{
-    predicate::{read_macro, is_valid_macro_character},
-    parse_arguments
+    parse_arguments,
+    predicate::{is_valid_macro_character, read_macro},
 };
-use crate::utils::{into_v16, remove_whitespaces, get_bracket_end_index};
+use crate::utils::{get_bracket_end_index, into_v16, remove_whitespaces};
 
 pub fn is_macro_row(line: &Line) -> bool {
 
