@@ -1,4 +1,4 @@
-use super::Math;
+use super::{Math, md_to_math};
 use crate::utils::{from_v16, into_v16, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
@@ -39,10 +39,8 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
                     <mi>b</mi>
                     <mn>2</mn>
                 </msup>
-                <mrow>
-                    <mo>-</mo>
-                    <mn>4</mn>
-                </mrow>
+                <mo>-</mo>
+                <mn>4</mn>
                 <mi>a</mi>
                 <mi>c</mi>
             </msqrt>
@@ -53,11 +51,68 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
         </mrow>
     </mfrac>
 </math>
-"), ("lim{n rightarrow +inf} sup{1 + frac{1}{n}}{n} = e", "
-
+"), ("lim{n rightarrow +inf} sup{(1 + frac{1}{n})}{n} = e simeq 2.718", "
+<math>
+    <munder>
+        <mi>lim</mi>
+        <mrow>
+            <mi>n</mi>
+            <mo>&#8594;</mo>
+            <mo>+</mo>
+            <mo>&#8734;</mo>
+        </mrow>
+    </munder>
+    <msup>
+        <mrow>
+            <mo>(</mo>
+            <mn>1</mn>
+            <mo>+</mo>
+            <mfrac displaystyle=\"false\">
+                <mn>1</mn>
+                <mi>n</mi>
+            </mfrac>
+            <mo>)</mo>
+        </mrow>
+        <mi>n</mi>
+    </msup>
+    <mo>=</mo>
+    <mi>e</mi>
+    <mo>&#8771;</mo>
+    <mn>2.718</mn>
+</math>
+"), ("(bincoeff{5}{2}) = multiscript{C}{}{}{5}{2} = frac{5!}{2!3!} = 10", "
+<math>
+    <mo>(</mo>
+    <mfrac displaystyle=\"false\" linethickness=\"0\">
+        <mn>5</mn>
+        <mn>2</mn>
+    </mfrac>
+    <mo>)=</mo>
+    <mmultiscripts>
+        <mi>C</mi>
+        <mn>2</mn>
+        <none/>
+        <mprescripts/>
+        <mn>5</mn>
+        <none/>
+    </mmultiscripts>
+    <mo>=</mo>
+    <mfrac displaystyle=\"false\">
+        <mrow>
+            <mn>5</mn>
+            <mo>!</mo>
+        </mrow>
+        <mrow>
+            <mn>2</mn>
+            <mo>!</mo>
+            <mn>3</mn>
+            <mo>!</mo>
+        </mrow>
+    </mfrac>
+    <mo>=</mo>
+    <mn>10</mn>
+</math>
 "), ("a circ b = |a| space |b| space cos theta", "
-
-"), ("bincoeff{5}{2} = multiscript{C}{}{}{5}{2} = frac{5!}{2!3!} = 10", "
 
 "), ("alpha beta gamma Alpha Beta Gamma", "
 
@@ -70,6 +125,8 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
 "), ("1+1=2", "
 
 "), ("space sspace ssspace", "
+
+"), ("root{4}{sup{|a|}{4} + sup{|b|}{4} + sup{|c|}{4} + sup{|d|}{4}} leq sup{(a+b+c+d)}{4} < inf", "
 
 "), ("", "")
     ];
@@ -135,4 +192,10 @@ fn render_to_html() {
     let mut f = File::create("math_test.html").unwrap();
     f.write_all(html.as_bytes()).unwrap();
 
+}
+
+#[test]
+fn md_to_math_test() {
+    assert!(md_to_math(&[]).len() == 0);
+    assert!(md_to_math(&into_v16("   ")).len() == 0);
 }

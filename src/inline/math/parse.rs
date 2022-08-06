@@ -1,6 +1,6 @@
-use super::entity::Entity;
+use super::entity::{Entity, parse_raw_data};
 use super::validate::is_valid;
-use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS};
+use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
 use crate::utils::{get_curly_brace_end_index, into_v16, is_alphabet, remove_whitespaces};
 
 pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
@@ -18,7 +18,11 @@ pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
                 let string = remove_whitespaces(&content[last_index..curr_index]);
 
                 if string.len() > 0 {
-                    result.push(Entity::String(string));
+
+                    for entity in parse_raw_data(&string) {
+                        result.push(entity);
+                    }
+                    //result.push(Entity::RawData(string));
                 }
 
             }
@@ -58,7 +62,11 @@ pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
                 let string = remove_whitespaces(&content[last_index..curr_index]);
 
                 if string.len() > 0 {
-                    result.push(Entity::String(string));
+
+                    for entity in parse_raw_data(&string) {
+                        result.push(entity);
+                    }
+                    //result.push(Entity::RawData(string));
                 }
 
             }
@@ -69,7 +77,11 @@ pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
             let string = remove_whitespaces(&content[last_index..curr_index]);
 
             if string.len() > 0 {
-                result.push(Entity::String(string));
+
+                for entity in parse_raw_data(&string) {
+                    result.push(entity);
+                }
+                //result.push(Entity::RawData(string));
             }
 
         }
@@ -287,6 +299,26 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             Entity::Character(8723)
         }
 
+        else if *word == into_v16("leftarrow") {
+            Entity::Character(8592)
+        }
+
+        else if *word == into_v16("uparrow") {
+            Entity::Character(8593)
+        }
+
+        else if *word == into_v16("rightarrow") {
+            Entity::Character(8594)
+        }
+
+        else if *word == into_v16("downarrow") {
+            Entity::Character(8595)
+        }
+
+        else if *word == into_v16("simeq") {
+            Entity::Character(8771)
+        }
+
         else {
             todo!()
         }
@@ -297,6 +329,15 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
         if *word == into_v16("sqrt") {
             Entity::new_root(vec![], md_to_math(&arguments[0]))
+        }
+
+        else if *word == into_v16("lim") || *word == into_v16("limit") {
+            Entity::new_underover(
+                vec![Entity::new_identifier(into_v16("lim"))],
+                md_to_math(&arguments[0]),
+                vec![],
+                false
+            )
         }
 
         else {
@@ -340,7 +381,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
         else if *word == into_v16("sum") {
             Entity::new_underover(
-                vec![Entity::new_string("∑")],
+                vec![Entity::new_operator(into_v16("∑"))],
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
                 true
@@ -349,7 +390,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
         else if *word == into_v16("prod") {
             Entity::new_underover(
-                vec![Entity::new_string("∏")],
+                vec![Entity::new_operator(into_v16("∏"))],
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
                 true
@@ -379,7 +420,25 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
         else {
             todo!()
         }
-    
+
+    }
+
+    else if FIVE_ARG_FUNCTIONS.contains(word) {
+
+        if *word == into_v16("multiscript") {
+            Entity::new_script(
+                md_to_math(&arguments[0]),
+                md_to_math(&arguments[1]),
+                md_to_math(&arguments[2]),
+                md_to_math(&arguments[3]),
+                md_to_math(&arguments[4]),
+            )
+        }
+
+        else {
+            todo!()
+        }
+
     }
 
     else {

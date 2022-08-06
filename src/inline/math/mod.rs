@@ -20,7 +20,9 @@ lazy_static! {
         let vec = vec![
             "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
             "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
-            "inf", "infty", "infin", "pm", "mp"
+            "inf", "infty", "infin", "pm", "mp",
+            "rightarrow", "leftarrow", "uparrow", "downarrow",
+            "simeq"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
@@ -33,7 +35,8 @@ lazy_static! {
 
     pub static ref ONE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
         let vec = vec![
-            "text", "sqrt"
+            "text", "sqrt",
+            "lim", "limit"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
@@ -49,6 +52,19 @@ lazy_static! {
             "sum", "prod", "sqrt", "root",
             "sup", "sub",
             "frac", "cfrac", "bincoeff"
+        ];
+        let mut result = HashSet::with_capacity(vec.len());
+
+        for func in vec.into_iter() {
+            result.insert(into_v16(func));
+        }
+
+        result
+    };
+
+    pub static ref FIVE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+        let vec = vec![
+            "multiscript"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 

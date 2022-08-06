@@ -15,9 +15,11 @@ pub enum Entity {
     Fraction(Box<Fraction>),
     Script(Box<Script>),
     UnderOver(Box<UnderOver>),
-    String(Vec<u16>),
-    RawString(Vec<u16>),
-    Character(u16)
+    Identifier(Vec<u16>),    // <mi>
+    Operator(Vec<u16>),      // <mo>
+    Number(Vec<u16>),        // <mn>
+    RawString(Vec<u16>),     // string inside `<mtext>`
+    Character(u16),          // &#xxx;
 }
 
 impl Entity {
@@ -48,15 +50,18 @@ impl Entity {
         Entity::Character(character)
     }
 
-    pub fn new_string(string: &str) -> Self {
-        Entity::String(into_v16(string))
+    pub fn new_identifier(identifier: Vec<u16>) -> Self {
+        Entity::Identifier(identifier)
     }
 
-    // it always returns a single element
-    // e.g) 
-    // <mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow>
-    // instead of
-    // <mn>1</mn><mo>+</mo><mn>2</mn>
+    pub fn new_number(number: Vec<u16>) -> Self {
+        Entity::Number(number)
+    }
+
+    pub fn new_operator(operator: Vec<u16>) -> Self {
+        Entity::Operator(operator)
+    }
+
     pub fn to_math_ml(&self) -> Vec<u16> {
 
         match self {
@@ -65,12 +70,26 @@ impl Entity {
             Entity::UnderOver(underover) => underover.to_math_ml(),
             Entity::Script(script) => script.to_math_ml(),
             Entity::Character(character) => into_v16(&format!("<mo>&#{};</mo>", character)),
+            Entity::Identifier(identifier) => vec![
+                into_v16("<mi>"),
+                identifier.clone(),
+                into_v16("</mi>"),
+            ].concat(),
+            Entity::Number(number) => vec![
+                into_v16("<mn>"),
+                number.clone(),
+                into_v16("</mn>"),
+            ].concat(),
+            Entity::Operator(operator) => vec![
+                into_v16("<mo>"),
+                operator.clone(),
+                into_v16("</mo>"),
+            ].concat(),
             Entity::RawString(string) => vec![
                 into_v16("<mtext>"),
                 string.clone(),
                 into_v16("</mtext>"),
             ].concat(),
-            Entity::String(string) => to_math_ml_string(string),
             _ => todo!()
         }
 
@@ -82,7 +101,7 @@ impl Entity {
 enum StringState {
     Identifier,  // <mi>
     Number,      // <mn>
-    Operand,     // <mo>
+    Operator,     // <mo>
 }
 
 fn get_string_state(character: &u16) -> StringState {
@@ -96,15 +115,15 @@ fn get_string_state(character: &u16) -> StringState {
     }
 
     else {
-        StringState::Operand
+        StringState::Operator
     }
 
 }
 
-pub fn to_math_ml_string(string: &[u16]) -> Vec<u16> {
+pub fn parse_raw_data(string: &[u16]) -> Vec<Entity> {
 
     if string.len() == 0 {
-        into_v16("<mrow></mrow>")
+        vec![]
     }
 
     else {
@@ -118,31 +137,19 @@ pub fn to_math_ml_string(string: &[u16]) -> Vec<u16> {
 
             match curr_state {
                 StringState::Identifier if !is_alphabet(c) => {
-                    result.push(vec![
-                        into_v16("<mi>"),
-                        string[last_index..curr_index].to_vec(),
-                        into_v16("</mi>"),
-                    ].concat());
+                    result.push(Entity::new_identifier(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
                     has_multiple_states = true;
                 },
                 StringState::Number if !is_numeric(c) && *c != '.' as u16 => {
-                    result.push(vec![
-                        into_v16("<mn>"),
-                        string[last_index..curr_index].to_vec(),
-                        into_v16("</mn>"),
-                    ].concat());
+                    result.push(Entity::new_number(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
                     has_multiple_states = true;
                 },
-                StringState::Operand if is_alphabet(c) || is_numeric(c) => {
-                    result.push(vec![
-                        into_v16("<mo>"),
-                        string[last_index..curr_index].to_vec(),
-                        into_v16("</mo>"),
-                    ].concat());
+                StringState::Operator if is_alphabet(c) || is_numeric(c) => {
+                    result.push(Entity::new_operator(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
                     has_multiple_states = true;
@@ -156,42 +163,19 @@ pub fn to_math_ml_string(string: &[u16]) -> Vec<u16> {
 
             match curr_state {
                 StringState::Identifier => {
-                    result.push(vec![
-                        into_v16("<mi>"),
-                        string[last_index..].to_vec(),
-                        into_v16("</mi>"),
-                    ].concat());
+                    result.push(Entity::new_identifier(string[last_index..].to_vec()));
                 }
                 StringState::Number => {
-                    result.push(vec![
-                        into_v16("<mn>"),
-                        string[last_index..].to_vec(),
-                        into_v16("</mn>"),
-                    ].concat());
+                    result.push(Entity::new_number(string[last_index..].to_vec()));
                 }
-                StringState::Operand => {
-                    result.push(vec![
-                        into_v16("<mo>"),
-                        string[last_index..].to_vec(),
-                        into_v16("</mo>"),
-                    ].concat());
+                StringState::Operator => {
+                    result.push(Entity::new_operator(string[last_index..].to_vec()));
                 }
             }
 
         }
 
-        if has_multiple_states {
-            vec![
-                into_v16("<mrow>"),
-                result.concat(),
-                into_v16("</mrow>"),
-            ].concat()
-        }
-
-        else {
-            result.concat()
-        }
-
+        result
     }
 
 }
