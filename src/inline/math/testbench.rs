@@ -9,7 +9,7 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
     <munderover displaystyle=\"true\">
         <mo>∑</mo>
         <mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow>
-        <mrow><mo>+</mo><mo>&#8734;</mo></mrow>
+        <mrow><mo>+</mo><mn>&#8734;</mn></mrow>
     </munderover>
     <mfrac displaystyle=\"false\">
         <mn>1</mn>
@@ -21,7 +21,7 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
     <mo>=</mo>
     <mfrac displaystyle=\"false\">
         <msup>
-            <mo>&#960;</mo>
+            <mi>&#960;</mi>
             <mn>2</mn>
         </msup>
         <mn>6</mn>
@@ -59,7 +59,7 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
             <mi>n</mi>
             <mo>&#8594;</mo>
             <mo>+</mo>
-            <mo>&#8734;</mo>
+            <mn>&#8734;</mn>
         </mrow>
     </munder>
     <msup>
@@ -87,7 +87,8 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
         <mn>5</mn>
         <mn>2</mn>
     </mfrac>
-    <mo>)=</mo>
+    <mo>)</mo>
+    <mo>=</mo>
     <mmultiscripts>
         <mi>C</mi>
         <mn>2</mn>
@@ -113,22 +114,161 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
     <mn>10</mn>
 </math>
 "), ("a circ b = |a| space |b| space cos theta", "
-
+<math>
+    <mi>a</mi>
+    <mo>&#8728;</mo>
+    <mi>b</mi>
+    <mo>=</mo>
+    <mo>|</mo>
+    <mi>a</mi>
+    <mo>|</mo>
+    <mspace width=\"0.333em\"/>
+    <mo>|</mo>
+    <mi>b</mi>
+    <mo>|</mo>
+    <mspace width=\"0.333em\"/>
+    <mi>cos</mi>
+    <mi>&#952;</mi>
+</math>
 "), ("alpha beta gamma Alpha Beta Gamma", "
-
+<math>
+    <mi>&#945;</mi>
+    <mi>&#946;</mi>
+    <mi>&#947;</mi>
+    <mi>&#913;</mi>
+    <mi>&#914;</mi>
+    <mi>&#915;</mi>
+</math>
 "), ("broken sqrt{1", "
-
+<math>
+    <mi>broken</mi>
+    <mi>sqrt</mi>
+    <mo>{</mo>
+    <mn>1</mn>
+</math>
 "), ("text{delta} delta", "
-
+<math>
+    <mtext>delta</mtext>
+    <mi>&#948;</mi>
+</math>
 "), ("sub{Phi}{E} = oint{S}{} E circ d A", "
-
+<math>
+    <msub>
+        <mi>&#934;</mi>
+        <mi>E</mi>
+    </msub>
+    <mo>=</mo>
+    <munder displaystyle=\"true\">
+        <mo>∮</mo>
+        <mi>S</mi>
+    </munder>
+    <mi>E</mi>
+    <mo>&#8728;</mo>
+    <mi>d</mi>
+    <mi>A</mi>
+</math>
 "), ("1+1=2", "
-
-"), ("space sspace ssspace", "
-
+<math>
+    <mn>1</mn>
+    <mo>+</mo>
+    <mn>1</mn>
+    <mo>=</mo>
+    <mn>2</mn>
+</math>
+"), ("a space b sspace c ssspace d", "
+<math>
+    <mi>a</mi>
+    <mspace width=\"0.333em\"/>
+    <mi>b</mi>
+    <mspace width=\"0.667em\"/>
+    <mi>c</mi>
+    <mspace width=\"1em\"/>
+    <mi>d</mi>
+</math>
 "), ("root{4}{sup{|a|}{4} + sup{|b|}{4} + sup{|c|}{4} + sup{|d|}{4}} leq sup{(a+b+c+d)}{4} < inf", "
-
-"), ("", "")
+<math>
+    <mroot>
+        <mrow>
+            <msup>
+                <mrow>
+                    <mo>|</mo>
+                    <mi>a</mi>
+                    <mo>|</mo>
+                </mrow>
+                <mn>4</mn>
+            </msup>
+            <mo>+</mo>
+            <msup>
+                <mrow>
+                    <mo>|</mo>
+                    <mi>b</mi>
+                    <mo>|</mo>
+                </mrow>
+                <mn>4</mn>
+            </msup>
+            <mo>+</mo>
+            <msup>
+                <mrow>
+                    <mo>|</mo>
+                    <mi>c</mi>
+                    <mo>|</mo>
+                </mrow>
+                <mn>4</mn>
+            </msup>
+            <mo>+</mo>
+            <msup>
+                <mrow>
+                    <mo>|</mo>
+                    <mi>d</mi>
+                    <mo>|</mo>
+                </mrow>
+                <mn>4</mn>
+            </msup>
+        </mrow>
+        <mn>4</mn>
+    </mroot>
+    <mo>&#8804;</mo>
+    <msup>
+        <mrow>
+            <mo>(</mo>
+            <mi>a</mi>
+            <mo>+</mo>
+            <mi>b</mi>
+            <mo>+</mo>
+            <mi>c</mi>
+            <mo>+</mo>
+            <mi>d</mi>
+            <mo>)</mo>
+        </mrow>
+        <mn>4</mn>
+    </msup>
+    <mo><</mo>
+    <mn>&#8734;</mn>
+</math>
+"), ("hat{1} bar{1} dot{1} tilde{1} vec{1}", "
+<math>
+    <mover>
+        <mn>1</mn>
+        <mo>&#94;</mo>
+    </mover>
+    <mover>
+        <mn>1</mn>
+        <mo>&#45;</mo>
+    </mover>
+    <mover>
+        <mn>1</mn>
+        <mo>&#8901;</mo>
+    </mover>
+    <mover>
+        <mn>1</mn>
+        <mo>&#126;</mo>
+    </mover>
+    <mover>
+        <mn>1</mn>
+        <mo>&#8594;</mo>
+    </mover>
+</math>
+"), ("", "<math></math>")
     ];
 
     result.iter().map(
@@ -156,9 +296,6 @@ fn math_ml_test() {
     }
 
 }
-
-#[test]
-fn integration_test() {}  // inside mdxt
 
 #[test]
 fn render_to_html() {

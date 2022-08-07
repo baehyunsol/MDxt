@@ -40,7 +40,7 @@ fn table_samples() -> Vec<(String, String)> {
     <tbody>
         <tr>
             <td> math inside a table </td>
-            <td> \\( &#124;a&#124; \\) </td>
+            <td> <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>|</mo><mi>a</mi><mo>|</mo></math> </td>
             <td> the pipe shouldn&apos;t break a cell </td>
         </tr>
         <tr>
@@ -50,8 +50,6 @@ fn table_samples() -> Vec<(String, String)> {
         </tr>
     </tbody>
 </table>
-
-<script id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\"></script>
 "), ("
 |Left aligned Column |Centered Column |Right aligned Column |
 |:-------------------|:--------------:|--------------------:|

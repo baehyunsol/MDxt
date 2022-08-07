@@ -68,11 +68,6 @@ pub fn check_and_parse_macro_inline(
 
                             match read_macro(content, curr_index) {
                                 Some(macro_content) if macro_content == closing_macro => {
-
-                                    if macro_name == into_v16("math") {
-                                        doc_data.has_math = true;
-                                    }
-
                                     return Some(
                                         (
                                             macro_.parse(

@@ -11,7 +11,7 @@ use crate::inline::{
     InlineNode,
     footnote::{footnotes_to_html, Footnote}
 };
-use crate::{collapsible_table_javascript, mathjax_javascript};
+use crate::collapsible_table_javascript;
 use crate::container::codefence::html::copy_button_javascript;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
@@ -185,10 +185,6 @@ impl AST {
                 }
 
                 result.push(into_v16("</script>"));
-            }
-
-            if self.doc_data.has_math {
-                result.push(into_v16(&mathjax_javascript()));
             }
         
         }

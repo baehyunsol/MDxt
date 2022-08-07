@@ -15,6 +15,7 @@ pub enum Entity {
     Fraction(Box<Fraction>),
     Script(Box<Script>),
     UnderOver(Box<UnderOver>),
+    Space(usize),
     Identifier(Vec<u16>),    // <mi>
     Operator(Vec<u16>),      // <mo>
     Number(Vec<u16>),        // <mn>
@@ -65,11 +66,21 @@ impl Entity {
     pub fn to_math_ml(&self) -> Vec<u16> {
 
         match self {
+            Entity::Space(space) => into_v16(&format!("<mspace width=\"{}\"/>", calc_space(*space))),
             Entity::Root(root) => root.to_math_ml(),
             Entity::Fraction(fraction) => fraction.to_math_ml(),
             Entity::UnderOver(underover) => underover.to_math_ml(),
             Entity::Script(script) => script.to_math_ml(),
-            Entity::Character(character) => into_v16(&format!("<mo>&#{};</mo>", character)),
+            Entity::Character(character) => {
+                let tag = if 913 <= *character && *character <= 969 {  // Alpha to omega
+                    "mi"
+                } else if *character == 8734 {  // infty
+                    "mn"
+                } else {
+                    "mo"
+                };
+                into_v16(&format!("<{}>&#{};</{}>", tag, character, tag))
+            }
             Entity::Identifier(identifier) => vec![
                 into_v16("<mi>"),
                 identifier.clone(),
@@ -80,21 +91,40 @@ impl Entity {
                 number.clone(),
                 into_v16("</mn>"),
             ].concat(),
-            Entity::Operator(operator) => vec![
-                into_v16("<mo>"),
-                operator.clone(),
-                into_v16("</mo>"),
-            ].concat(),
+            // `++` -> `<mo>+</mo><mo>+</mo>`
+            Entity::Operator(operator) => {
+                operator.iter().map(
+                    |op|
+                    vec![
+                        into_v16("<mo>"),
+                        vec![*op],
+                        into_v16("</mo>"),
+                    ].concat()
+                ).collect::<Vec<Vec<u16>>>().concat()
+            },
             Entity::RawString(string) => vec![
                 into_v16("<mtext>"),
                 string.clone(),
                 into_v16("</mtext>"),
             ].concat(),
-            _ => todo!()
         }
 
     }
 
+}
+
+fn calc_space(space: usize) -> String {
+    format!(
+        "{}{}em",
+        space / 3,
+        if space % 3 == 0 {
+            ""
+        } else if space % 3 == 1 {
+            ".333"
+        } else {
+            ".667"
+        }
+    )
 }
 
 #[derive(PartialEq)]
@@ -130,7 +160,6 @@ pub fn parse_raw_data(string: &[u16]) -> Vec<Entity> {
         let mut curr_state = get_string_state(&string[0]);
 
         let mut last_index = 0;
-        let mut has_multiple_states = false;
         let mut result = vec![];
 
         for (curr_index, c) in string.iter().enumerate() {
@@ -140,19 +169,16 @@ pub fn parse_raw_data(string: &[u16]) -> Vec<Entity> {
                     result.push(Entity::new_identifier(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
-                    has_multiple_states = true;
                 },
                 StringState::Number if !is_numeric(c) && *c != '.' as u16 => {
                     result.push(Entity::new_number(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
-                    has_multiple_states = true;
                 },
                 StringState::Operator if is_alphabet(c) || is_numeric(c) => {
                     result.push(Entity::new_operator(string[last_index..curr_index].to_vec()));
                     last_index = curr_index;
                     curr_state = get_string_state(c);
-                    has_multiple_states = true;
                 },
                 _ => {}
             }

@@ -28,12 +28,6 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 
 ---
 
-`[[blank = 3]]` -> `&nbsp;&nbsp;&nbsp;`
-
-`[[br = 2]]` -> `<br/><br/>`
-
----
-
 난독화
 
 class들 난독화하는 기능 추가, 난독화하는 함수 자체도 넣어서 배포!

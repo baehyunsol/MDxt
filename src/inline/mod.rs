@@ -51,8 +51,8 @@ pub enum InlineMacro {
     Math(Vec<u16>),
     Box { border: bool },
     Toc,
-    Blank,
-    Br,
+    Blank { repeat: usize },
+    Br { repeat: usize },
     HTML {
         tag: Vec<u16>,
         class: Vec<u16>,
@@ -252,8 +252,8 @@ impl InlineNode {
                             into_v16(";")
                         ].concat()
                     },
-                    InlineMacro::Br => into_v16("<br/>"),
-                    InlineMacro::Blank => into_v16("&nbsp;"),
+                    InlineMacro::Br { repeat } => vec![into_v16("<br/>"); *repeat].concat(),
+                    InlineMacro::Blank { repeat } => vec![into_v16("&nbsp;"); *repeat].concat(),
                     InlineMacro::Math (content) => render_math(content),
                     InlineMacro::Toc => toc_rendered.to_vec(),
                     InlineMacro::Icon { .. } => todo!()
@@ -427,8 +427,16 @@ impl InlineNode {
                         character.clone(),
                         into_v16("]]")
                     ].concat(),
-                    InlineMacro::Br => into_v16("[[br]]"),
-                    InlineMacro::Blank => into_v16("[[blank]]"),
+                    InlineMacro::Br { repeat } => if *repeat == 1 {
+                        into_v16("[[br]]")
+                    } else {
+                        into_v16(&format!("[[br={}]]", repeat))
+                    },
+                    InlineMacro::Blank { repeat } => if *repeat == 1 {
+                        into_v16("[[blank]]")
+                    } else {
+                        into_v16(&format!("[[blank={}]]", repeat))
+                    },
                     InlineMacro::Toc => into_v16("[[toc]]"),
                     InlineMacro::Icon { name, size } => vec![
                         into_v16("[[icon="),

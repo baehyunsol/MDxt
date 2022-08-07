@@ -9,9 +9,16 @@ impl Macro {
         match self.macro_type {
 
             // no args, only a name
-            MacroType::Br | MacroType::Blank | MacroType::Color |
-            MacroType::Size | MacroType::Alignment | MacroType::Toc |
-            MacroType::Math => arguments.len() == 1 && arguments[0].len() == 1,
+            MacroType::Color | MacroType::Size
+            | MacroType::Alignment | MacroType::Toc
+            | MacroType::Math => arguments.len() == 1 && arguments[0].len() == 1,
+
+            MacroType::Br | MacroType::Blank => {
+                arguments.len() == 1 && (
+                    arguments[0].len() == 1
+                    || arguments[0].len() == 2 && to_int(&arguments[0][1]).is_some()
+                )
+            },
 
             MacroType::Box => (arguments.len() == 1 && arguments[0].len() == 1)
             || (arguments.len() == 2 && arguments[1].len() == 1 && arguments[1][0] == into_v16("noborder")),

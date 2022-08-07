@@ -54,7 +54,6 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     RenderResult {
         content: from_v16(&html),
-        has_math: ast.doc_data.has_math,
         has_collapsible_table: ast.doc_data.has_collapsible_table,
         metadata,
         fenced_code_contents

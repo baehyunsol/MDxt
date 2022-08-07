@@ -80,13 +80,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[char = won]], [[char = euro]], [[char = therefore]], [[char = cry]]", "&#8361;, &euro;, &there4;, &#128546;"),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color-red\"><span class=\"align-center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
         ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color-red\"><code class=\"short\">a code span in red</code></span>"),
-        ("[[math]] `a code span inside a math` [[/math]] `[[math]] a math inside a code span [[/math]]`", "\\( `a code span inside a math` \\) <code class=\"short\">[[math]] a math inside a code span [[/math]]</code>"),
-        ("`[[math]] a code span before a math`[[/math]] [[math]] `a code span after a math [[/math]]`", "<code class=\"short\">[[math]] a code span before a math</code>[[/math]] \\( `a code span after a math \\)`"),
-        ("[[math]] `a code span after a math [[/math]]` `[[math]] a code span before a math`[[/math]]", "\\( `a code span after a math \\)` <code class=\"short\">[[math]] a code span before a math</code>[[/math]]"),
-        ("[[math]] a * b * c = abc [[/math]]", "\\( a &#42; b &#42; c = abc \\)"),
-        ("[[math]] \\\\a + b [[/math]]", "\\( &#92;a + b \\)"),
+        ("[[math]] `codespan` [[/math]] `[[math]] codespan [[/math]]`", "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>`</mo><mi>codespan</mi><mo>`</mo></math> <code class=\"short\">[[math]] codespan [[/math]]</code>"),
+        ("`[[math]] codespan` [[/math]] [[math]] `codespan [[/math]]`", "<code class=\"short\">[[math]] codespan</code> [[/math]] <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>`</mo><mi>codespan</mi></math>`"),
+        ("[[math]] `codespan [[/math]]` `[[math]] codespan` [[/math]]", "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>`</mo><mi>codespan</mi></math>` <code class=\"short\">[[math]] codespan</code> [[/math]]"),
+        ("[[math]] a * b * c = abc [[/math]]", "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>a</mi><mo>*</mo><mi>b</mi><mo>*</mo><mi>c</mi><mo>=</mo><mi>abc</mi></math>"),
+        ("[[math]] \\\\a + b [[/math]]", "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>\\</mo><mi>a</mi><mo>+</mo><mi>b</mi></math>"),
         ("[[highlight = red]] This text is highlighted! [[/highlight]]", "<span class=\"highlight-red\"> This text is highlighted! </span>"),
-        ("*inter-math inline element [[math]] F * G = int{-infty}{infty} F(theta)G(k - theta) d theta [[/math]]", "*inter-math inline element \\( F &#42; G = \\int\\limits _{-\\infty }^{\\infty } F(\\theta )G(k - \\theta ) d \\theta  \\)"),
+        ("*inter-math inline element [[math]] F * G [[/math]]", "*inter-math inline element <math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>F</mi><mo>*</mo><mi>G</mi></math>"),
         ("[[highlight]] [[highlight = red]] [[/highlight]] [[highlight = invalid_color]] [[/highlight]]", "[[highlight]] <span class=\"highlight-red\"> </span> [[highlight = invalid_color]] [[/highlight]]"),
         ("[[red]] [[big]] error [[/red]] [[/big]]", "<span class=\"color-red\"> [[big]] error </span> [[/big]]"),
         ("[[div, class = foo]] abc [[/div]]", "<div class=\"foo\"> abc </div>"),
@@ -96,7 +96,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[box, no border]] boxed [[/box]]", "<div class=\"box no-border\"> boxed </div>"),
         ("[[br]][[blank]]", "<br/>&nbsp;"),
         ("[[br=2]][[blank=3]]", "<br/><br/>&nbsp;&nbsp;&nbsp;"),
-        ("[[br=x]][[blank=y]]", "[[br=x]][[blank=y]]"),
+        ("[[br=]][[blank=y]]", "[[br=]][[blank=y]]"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
@@ -136,7 +136,6 @@ fn inline_render_test() {
         );
     }
 
-    assert!(doc_data.has_math);
 }
 
 #[test]

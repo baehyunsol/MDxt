@@ -1,8 +1,7 @@
 use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}};
 use crate::inline::{DecorationType, InlineNode, InlineMacro};
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v16;
-use crate::escape::render_backslash_escapes;
+use crate::utils::{into_v16, to_int};
 use crate::ast::doc_data::DocData;
 
 impl Macro {
@@ -18,12 +17,28 @@ impl Macro {
         match self.macro_type {
 
             MacroType::Br => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Br),
+                deco_type: DecorationType::Macro({
+                    let repeat = if arguments[0].len() == 1 {
+                        1
+                    } else {
+                        to_int(&arguments[0][1]).unwrap() as usize
+                    };
+
+                    InlineMacro::Br { repeat }
+                }),
                 content: vec![]
             },
 
             MacroType::Blank => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Blank),
+                deco_type: DecorationType::Macro({
+                    let repeat = if arguments[0].len() == 1 {
+                        1
+                    } else {
+                        to_int(&arguments[0][1]).unwrap() as usize
+                    };
+
+                    InlineMacro::Blank { repeat }
+                }),
                 content: vec![]
             },
 
@@ -77,7 +92,7 @@ impl Macro {
             },
 
             MacroType::Math => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Math(render_backslash_escapes(&content))),
+                deco_type: DecorationType::Macro(InlineMacro::Math(content.to_vec())),
                 content: vec![]
             },
 

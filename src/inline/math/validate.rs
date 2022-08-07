@@ -1,4 +1,4 @@
-use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
+use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS, parse::is_space};
 use lazy_static::lazy_static;
 use std::collections::HashSet;
 
@@ -15,7 +15,8 @@ lazy_static! {
 
 pub fn is_valid(word: &[u16], arguments: &Vec<Vec<u16>>) -> bool {
 
-    FUNCTION_NAMES.contains(word) && (
+    is_space(word)
+    || FUNCTION_NAMES.contains(word) && (
         (ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0)
         || (ONE_ARG_FUNCTIONS.contains(word) && arguments.len() == 1)
         || (TWO_ARG_FUNCTIONS.contains(word) && arguments.len() == 2)

@@ -219,11 +219,34 @@ pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
+// <special_form> -> c
+pub fn render_backslash_escapes_raw(content: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if content[index] != BACKSLASH_ESCAPE_MARKER {
+            result.push(content[index]);
+        }
+
+        else {
+            result.push(u16::MAX - content[index + 1]);
+            index += 1;
+        }
+
+        index += 1;
+    }
+
+    result
+}
+
 pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
     content.iter().filter(
         |c| **c < 11 || **c > 13  // only `\n`, no other newline characters!
     ).map(
-        |c| if *c > u16::MAX - 5000 {  // the engine uses these characters as meta characters!
+        |c| if 0xd7ff < *c && *c < 0xe000 {  // the engine uses these characters as meta characters!
             '?' as u16
         } else {
             *c
@@ -261,6 +284,11 @@ mod tests {
         assert_eq!(
             from_v16(&render_backslash_escapes(&escape_backslashes(&input))),
             from_v16(&output),
+        );
+
+        assert_eq!(
+            from_v16(&render_backslash_escapes_raw(&escape_backslashes(&input))),
+            String::from("a\\\\\n*\\"),
         );
     }
 

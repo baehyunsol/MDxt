@@ -634,7 +634,7 @@ span.triangle {
 <span class="code-fence-row"><span class="code-fence-code">|-------------------|</span></span>
 <span class="code-fence-row"><span class="code-fence-code">|!![[collapsible]]  |</span></span>
 <span class="code-fence-row"><span class="code-fence-code">| [[toc]]           |</span></span>
-</code></pre><p>See how the above code is rendered, see <a href="#tocsample">here</a>.</p><h3 id="special-characters">Special Characters</h3><p><code class="short">[[char = 44032]]</code> is rendered to <code class="short">&amp;#44032;</code>, which is &#44032;.</p><p><code class="short">[[char = copy]]</code> is rendered to <code class="short">&amp;copy;</code>, which is &copy;.</p><p>To see the list of available characters, visit <a href="MDxt-Character-Reference.html">here</a>.</p><h3 id="icons">Icons</h3><p>WIP</p><h3 id="math">Math</h3><p><code class="short">[[math]] sqrt{a sup{2} + b sup{2}} [[/math]]</code> is rendered to \( \sqrt{a ^{2} + b ^{2}} \). It uses the <a href="https://www.mathjax.org/">mathjax</a> library to render math formula.</p><p>To see the list of available math elements, visit <a href="MDxt-Math-Reference.html">here</a>.</p><h3 id="multiline-macro">Multiline Macro</h3><p>If a paragraph has a macro and no other contents at all, the paragraph is rendered to a multiline macro.</p><pre><code><span class="code-fence-row"><span class="code-fence-code">[[red]]</span></span>
+</code></pre><p>See how the above code is rendered, see <a href="#tocsample">here</a>.</p><h3 id="special-characters">Special Characters</h3><p><code class="short">[[char = 44032]]</code> is rendered to <code class="short">&amp;#44032;</code>, which is &#44032;.</p><p><code class="short">[[char = copy]]</code> is rendered to <code class="short">&amp;copy;</code>, which is &copy;.</p><p>To see the list of available characters, visit <a href="MDxt-Character-Reference.html">here</a>.</p><h3 id="icons">Icons</h3><p>WIP</p><h3 id="math">Math</h3><p><code class="short">[[math]] sqrt{a sup{2} + b sup{2}} [[/math]]</code> is rendered to <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mi>a</mi><mi>sup</mi><mo>{</mo><mn>2</mn><mo>}</mo><mo>+</mo><mi>b</mi><mi>sup</mi><mo>{</mo><mn>2</mn><mo>}</mo></msqrt></math>. It uses the <a href="https://www.mathjax.org/">mathjax</a> library to render math formula.</p><p>To see the list of available math elements, visit <a href="MDxt-Math-Reference.html">here</a>.</p><h3 id="multiline-macro">Multiline Macro</h3><p>If a paragraph has a macro and no other contents at all, the paragraph is rendered to a multiline macro.</p><pre><code><span class="code-fence-row"><span class="code-fence-code">[[red]]</span></span>
 <span class="code-fence-row"><span class="code-fence-code"></span></span>
 <span class="code-fence-row"><span class="code-fence-code">These 3 paragraphs are</span></span>
 <span class="code-fence-row"><span class="code-fence-code"></span></span>
@@ -654,6 +654,6 @@ const fenced_code_block_contents = ["", "", "", "", "/*\n    multiline\n    comm
 
 function copy_code_to_clipboard(index) {
     navigator.clipboard.writeText(fenced_code_block_contents[index]);
-}</script><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></article>
+}</script></article>
 </body>
 </html>

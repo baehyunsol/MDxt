@@ -4,9 +4,6 @@ use yaml_rust::Yaml;
 pub struct RenderResult {
     pub content: String,
 
-    /// This flag tells you if the document has a `[[math]]` macro.
-    pub has_math: bool,
-
     /// This flag tells you if the document has a collapsible table.
     pub has_collapsible_table: bool,
 

@@ -5,7 +5,6 @@ use std::collections::HashMap;
 #[derive(Clone)]
 pub struct DocData {
     pub headers: Vec<(usize, Vec<u16>)>,  // (level, content)
-    pub has_math: bool,
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize,
@@ -19,7 +18,6 @@ impl Default for DocData {
     fn default() -> Self {
         DocData {
             headers: vec![],
-            has_math: false,
             link_references: HashMap::new(),
             footnote_references: HashMap::new(),
             footnote_reference_count: 0,
