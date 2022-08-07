@@ -1,6 +1,6 @@
 use super::entity::{Entity, parse_raw_data};
 use super::validate::is_valid;
-use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
+use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
 use crate::utils::{get_curly_brace_end_index, into_v16, is_alphabet, remove_whitespaces};
 
 pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
@@ -641,6 +641,24 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
                 md_to_math(&arguments[1]),
                 true
             )
+        }
+
+    }
+
+    else if THREE_ARG_FUNCTIONS.contains(word) && arguments.len() == 3 {
+
+        if *word == into_v16("subsup") {
+            Entity::new_script(
+                md_to_math(&arguments[0]),
+                vec![],
+                md_to_math(&arguments[2]),
+                vec![],
+                md_to_math(&arguments[1]),
+            )
+        }
+
+        else {
+            todo!()
         }
 
     }

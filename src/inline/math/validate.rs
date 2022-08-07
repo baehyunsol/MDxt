@@ -1,4 +1,4 @@
-use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS, parse::is_space};
+use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS, parse::is_space};
 use lazy_static::lazy_static;
 use std::collections::HashSet;
 
@@ -9,6 +9,7 @@ lazy_static! {
         ZERO_ARG_FUNCTIONS
             .union(&ONE_ARG_FUNCTIONS).map(|f| f.clone()).collect::<HashSet<Vec<u16>>>()
             .union(&TWO_ARG_FUNCTIONS).map(|f| f.clone()).collect::<HashSet<Vec<u16>>>()
+            .union(&THREE_ARG_FUNCTIONS).map(|f| f.clone()).collect::<HashSet<Vec<u16>>>()
             .union(&FIVE_ARG_FUNCTIONS).map(|f| f.clone()).collect::<HashSet<Vec<u16>>>()
     };
 }
@@ -20,6 +21,7 @@ pub fn is_valid(word: &[u16], arguments: &Vec<Vec<u16>>) -> bool {
         (ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0)
         || (ONE_ARG_FUNCTIONS.contains(word) && arguments.len() == 1)
         || (TWO_ARG_FUNCTIONS.contains(word) && arguments.len() == 2)
+        || (THREE_ARG_FUNCTIONS.contains(word) && arguments.len() == 3)
         || (FIVE_ARG_FUNCTIONS.contains(word) && arguments.len() == 5)
     )
 

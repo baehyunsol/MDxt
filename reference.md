@@ -1,5 +1,5 @@
 ---
-date: [2022, 7, 26]
+date: [2022, 8, 7]
 tags: [mdxt, reference, documentation]
 ---
 
@@ -184,6 +184,8 @@ pub const CONST: u32 = 1;
 > This is a blockquote.
 >> This is another blockquote.
 
+### Metadata
+
 ### Unlike GFM...
 
 MDxt doesn't support setext headers and indented code blocks.
@@ -312,9 +314,9 @@ WIP
 
 ### Math
 
-`[[math]] sqrt{a sup{2} + b sup{2}} [[/math]]` is rendered to [[math]] sqrt {a sup{2} + b sup{2}} [[/math]]. It uses the [mathjax] library to render math formula.
+`[[math]] sqrt{sup{a}{2} + sup{b}{2}} [[/math]]` is rendered to [[math]] sqrt{sup{a}{2} + sup{b}{2}} [[/math]]. It renders the output in [MathML].
 
-[mathjax]: https://www.mathjax.org/
+[MathML]: https://developer.mozilla.org/en-US/docs/Web/MathML
 
 To see the list of available math elements, visit [here](MDxt-Math-Reference.html).
 

@@ -74,6 +74,19 @@ lazy_static! {
         result
     };
 
+    pub static ref THREE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+        let vec = vec![
+            "subsup"
+        ];
+        let mut result = HashSet::with_capacity(vec.len());
+
+        for func in vec.into_iter() {
+            result.insert(into_v16(func));
+        }
+
+        result
+    };
+
     pub static ref FIVE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
         let vec = vec![
             "multiscript"

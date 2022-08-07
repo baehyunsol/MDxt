@@ -1,8 +1,9 @@
 use super::{Math, md_to_math};
+use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
 use crate::utils::{from_v16, into_v16, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
-fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
+fn samples() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
     let result = vec![
 ("sum{n=1}{+inf} frac{1}{sup{n}{2}} = frac{sup{pi}{2}}{6}", "
 <math>
@@ -280,7 +281,7 @@ fn md_samples1() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
 #[test]
 fn math_ml_test() {
 
-    for (test_case, answer) in md_samples1() {
+    for (test_case, answer) in samples() {
         let math_obj = Math::from_mdxt(&test_case);
         let rendered = math_obj.to_math_ml(false);
 
@@ -297,26 +298,130 @@ fn math_ml_test() {
 
 }
 
+fn escape_math(math: &[u16]) -> Vec<u16> {
+
+    let mut result = Vec::with_capacity(math.len() * 5 / 4);
+
+    for c in math.iter() {
+
+        if *c == '|' as u16 {
+            result.push('\\' as u16);
+        }
+
+        result.push(*c);
+    }
+
+    result
+}
+
+fn render_math_reference() -> Vec<u16> {
+
+    let mut result = vec![];
+    result.push(into_v16("# Math in MDxt\n\n"));
+    result.push(into_v16("| Table of Contents |\n"));
+    result.push(into_v16("|-|\n"));
+    result.push(into_v16("|!![[collapsible]]|\n"));
+    result.push(into_v16("|[[toc]]|\n\n"));
+    result.push(into_v16("## Examples\n\n"));
+    result.push(into_v16("| [[colspan=2]] examples |\n"));
+    result.push(into_v16("| mdxt | result |\n"));
+    result.push(into_v16("|-|-|\n"));
+
+    for (test_case, _) in samples() {
+        result.push(into_v16("|\\[[math]]"));
+        result.push(escape_math(&test_case));
+        result.push(into_v16("[[/math]]|[[math]]"));
+        result.push(test_case);
+        result.push(into_v16("[[/math]]|\n"));
+    }
+
+    result.push(into_v16("\n\n## Special Entities\n\n"));
+
+    let mut entities = ZERO_ARG_FUNCTIONS.iter().map(|e| from_v16(e)).collect::<Vec<String>>();
+    entities.sort();
+
+    for entity in entities.iter() {
+        result.push(into_v16(&format!(
+            "\n\n### {}\n\n`[[math]]{}[[/math]]` -> [[math]]{}[[/math]]",
+            entity,
+            entity,
+            entity
+        )));
+    }
+
+    result.push(into_v16("\n\n## Functions with one argument\n\n"));
+
+    let mut entities = ONE_ARG_FUNCTIONS.iter().map(|e| from_v16(e)).collect::<Vec<String>>();
+    entities.sort();
+
+    for entity in entities.iter() {
+        result.push(into_v16(&format!(
+            "\n\n### {}\n\n`[[math]]123{}{}456{}789[[/math]]` -> [[math]]123{}{}456{}789[[/math]]",
+            entity,
+            entity, '{', '}',
+            entity, '{', '}'
+        )));
+    }
+
+    result.push(into_v16("\n\n## Functions with two arguments\n\n"));
+
+    let mut entities = TWO_ARG_FUNCTIONS.iter().map(|e| from_v16(e)).collect::<Vec<String>>();
+    entities.sort();
+
+    for entity in entities.iter() {
+        result.push(into_v16(&format!(
+            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}012[[/math]]` -> [[math]]123{}{}456{}{}789{}012[[/math]]",
+            entity,
+            entity, '{', '}', '{', '}',
+            entity, '{', '}', '{', '}'
+        )));
+    }
+
+    result.push(into_v16("\n\n## Functions with three arguments\n\n"));
+
+    let mut entities = THREE_ARG_FUNCTIONS.iter().map(|e| from_v16(e)).collect::<Vec<String>>();
+    entities.sort();
+
+    for entity in entities.iter() {
+        result.push(into_v16(&format!(
+            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}{}012{}345[[/math]]` -> [[math]]123{}{}456{}{}789{}{}012{}345[[/math]]",
+            entity,
+            entity, '{', '}', '{', '}', '{', '}',
+            entity, '{', '}', '{', '}', '{', '}'
+        )));
+    }
+
+    result.push(into_v16("\n\n## Functions with five arguments\n\n"));
+
+    let mut entities = FIVE_ARG_FUNCTIONS.iter().map(|e| from_v16(e)).collect::<Vec<String>>();
+    entities.sort();
+
+    for entity in entities.iter() {
+        result.push(into_v16(&format!(
+            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]` -> [[math]]123{}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]",
+            entity,
+            entity, '{', '}', '{', '}', '{', '}', '{', '}', '{', '}',
+            entity, '{', '}', '{', '}', '{', '}', '{', '}', '{', '}'
+        )));
+    }
+
+    result.concat()
+}
+
 #[test]
 fn render_to_html() {
     use std::fs::File;
     use std::io::Write;
 
-    let mut md = vec![];
+    let mut md = render_math_reference();
 
-    for (test_case, _) in md_samples1() {
-        md.push(into_v16("[[math]]"));
-        md.push(test_case);
-        md.push(into_v16("[[/math]]\n\n"));
-    }
-
-    let md = from_v16(&md.concat());
+    let md = from_v16(&md);
     let html = format!(
 "
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MDxt Reference</title>
+    <title>MDxt Math Reference</title>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
