@@ -18,11 +18,16 @@ lazy_static! {
 
     pub static ref ZERO_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
         let vec = vec![
+            "space",
             "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
             "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
-            "inf", "infty", "infin", "pm", "mp",
-            "rightarrow", "leftarrow", "uparrow", "downarrow",
-            "simeq"
+            "times", "pm", "leftarrow", "uparrow", "rightarrow", "downarrow", "forall",
+            "partial", "exist", "empty", "null", "triangle", "nabla", "in", "notin",
+            "ni", "notni", "qed", "mp", "circ", "bullet", "prop", "inf", "infty", "infin",
+            "and", "or", "cap", "cup", "therefore", "because", "simeq", "asymp", "ne", "neq",
+            "equiv", "nequiv", "lt", "gt", "le", "leq", "ge", "geq", "llt", "ggt",
+            "sub", "sup", "nsub", "nsup", "sube", "supe", "nsube", "nsupe",
+            "oplus", "ominus", "otimes", "odiv", "odot", "star"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 

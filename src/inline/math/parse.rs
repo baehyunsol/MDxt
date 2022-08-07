@@ -93,9 +93,13 @@ pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
 
 pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
-    if ZERO_ARG_FUNCTIONS.contains(word) {
+    if ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0 {
 
-        if *word == into_v16("alpha") {
+        if *word == into_v16("space") {
+            Entity::Character(160)
+        }
+
+        else if *word == into_v16("alpha") {
             Entity::Character(945)
         }
 
@@ -287,16 +291,12 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             Entity::Character(937)
         }
 
-        else if *word == into_v16("inf") || *word == into_v16("infty") || *word == into_v16("infin") {
-            Entity::Character(8734)
-        }
-
         else if *word == into_v16("pm") {
             Entity::Character(177)
         }
 
-        else if *word == into_v16("mp") {
-            Entity::Character(8723)
+        else if *word == into_v16("times") {
+            Entity::Character(215)
         }
 
         else if *word == into_v16("leftarrow") {
@@ -315,8 +315,192 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             Entity::Character(8595)
         }
 
+        else if *word == into_v16("forall") {
+            Entity::Character(8704)
+        }
+
+        else if *word == into_v16("partial") {
+            Entity::Character(8706)
+        }
+
+        else if *word == into_v16("exist") {
+            Entity::Character(8707)
+        }
+
+        else if *word == into_v16("empty") || *word == into_v16("null") {
+            Entity::Character(8709)
+        }
+
+        else if *word == into_v16("triangle") {
+            Entity::Character(8710)
+        }
+
+        else if *word == into_v16("nabla") {
+            Entity::Character(8711)
+        }
+
+        else if *word == into_v16("in") {
+            Entity::Character(8712)
+        }
+
+        else if *word == into_v16("notin") {
+            Entity::Character(8713)
+        }
+
+        else if *word == into_v16("ni") {
+            Entity::Character(8715)
+        }
+
+        else if *word == into_v16("notni") {
+            Entity::Character(8716)
+        }
+
+        else if *word == into_v16("qed") {
+            Entity::Character(8718)
+        }
+
+        else if *word == into_v16("mp") {
+            Entity::Character(8723)
+        }
+
+        else if *word == into_v16("circ") {
+            Entity::Character(8728)
+        }
+
+        else if *word == into_v16("bullet") {
+            Entity::Character(8729)
+        }
+
+        else if *word == into_v16("prop") {
+            Entity::Character(8733)
+        }
+
+        else if *word == into_v16("inf") || *word == into_v16("infty") || *word == into_v16("infin") {
+            Entity::Character(8734)
+        }
+
+        else if *word == into_v16("and") {
+            Entity::Character(8743)
+        }
+
+        else if *word == into_v16("or") {
+            Entity::Character(8744)
+        }
+
+        else if *word == into_v16("cap") {
+            Entity::Character(8745)
+        }
+
+        else if *word == into_v16("cup") {
+            Entity::Character(8746)
+        }
+
+        else if *word == into_v16("therefore") {
+            Entity::Character(8756)
+        }
+
+        else if *word == into_v16("because") {
+            Entity::Character(8757)
+        }
+
         else if *word == into_v16("simeq") {
             Entity::Character(8771)
+        }
+
+        else if *word == into_v16("asymp") {
+            Entity::Character(8776)
+        }
+
+        else if *word == into_v16("ne") || *word == into_v16("neq") {
+            Entity::Character(8800)
+        }
+
+        else if *word == into_v16("equiv") {
+            Entity::Character(8801)
+        }
+
+        else if *word == into_v16("nequiv") {
+            Entity::Character(8802)
+        }
+
+        else if *word == into_v16("lt") {
+            Entity::Character(60)
+        }
+
+        else if *word == into_v16("gt") {
+            Entity::Character(62)
+        }
+
+        else if *word == into_v16("le") || *word == into_v16("leq") {
+            Entity::Character(8804)
+        }
+
+        else if *word == into_v16("ge") || *word == into_v16("geq") {
+            Entity::Character(8805)
+        }
+
+        else if *word == into_v16("llt") {
+            Entity::Character(8810)
+        }
+
+        else if *word == into_v16("ggt") {
+            Entity::Character(8811)
+        }
+
+        else if *word == into_v16("sub") {
+            Entity::Character(8834)
+        }
+
+        else if *word == into_v16("sup") {
+            Entity::Character(8835)
+        }
+
+        else if *word == into_v16("nsub") {
+            Entity::Character(8836)
+        }
+
+        else if *word == into_v16("nsup") {
+            Entity::Character(8837)
+        }
+
+        else if *word == into_v16("sube") {
+            Entity::Character(8838)
+        }
+
+        else if *word == into_v16("supe") {
+            Entity::Character(8839)
+        }
+
+        else if *word == into_v16("nsube") {
+            Entity::Character(8840)
+        }
+
+        else if *word == into_v16("nsupe") {
+            Entity::Character(8841)
+        }
+
+        else if *word == into_v16("oplus") {
+            Entity::Character(8853)
+        }
+
+        else if *word == into_v16("ominus") {
+            Entity::Character(8854)
+        }
+
+        else if *word == into_v16("otimes") {
+            Entity::Character(8855)
+        }
+
+        else if *word == into_v16("odiv") {
+            Entity::Character(8856)
+        }
+
+        else if *word == into_v16("odot") {
+            Entity::Character(8857)
+        }
+
+        else if *word == into_v16("star") {
+            Entity::Character(8902)
         }
 
         else {
@@ -325,7 +509,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     }
 
-    else if ONE_ARG_FUNCTIONS.contains(word) {
+    else if ONE_ARG_FUNCTIONS.contains(word) && arguments.len() == 1 {
 
         if *word == into_v16("sqrt") {
             Entity::new_root(vec![], md_to_math(&arguments[0]))
@@ -346,7 +530,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     }
 
-    else if TWO_ARG_FUNCTIONS.contains(word) {
+    else if TWO_ARG_FUNCTIONS.contains(word) && arguments.len() == 2 {
 
         if *word == into_v16("sqrt") || *word == into_v16("root") {
             Entity::new_root(md_to_math(&arguments[0]), md_to_math(&arguments[1]))
@@ -423,7 +607,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     }
 
-    else if FIVE_ARG_FUNCTIONS.contains(word) {
+    else if FIVE_ARG_FUNCTIONS.contains(word) && arguments.len() == 5 {
 
         if *word == into_v16("multiscript") {
             Entity::new_script(

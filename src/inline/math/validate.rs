@@ -15,28 +15,11 @@ lazy_static! {
 
 pub fn is_valid(word: &[u16], arguments: &Vec<Vec<u16>>) -> bool {
 
-    if !FUNCTION_NAMES.contains(word) {
-        false
-    }
-
-    else if ZERO_ARG_FUNCTIONS.contains(word) {
-        arguments.len() == 0
-    }
-
-    else if ONE_ARG_FUNCTIONS.contains(word) {
-        arguments.len() == 1
-    }
-
-    else if TWO_ARG_FUNCTIONS.contains(word) {
-        arguments.len() == 2
-    }
-
-    else if FIVE_ARG_FUNCTIONS.contains(word) {
-        arguments.len() == 5
-    }
-
-    else {
-        false
-    }
+    FUNCTION_NAMES.contains(word) && (
+        (ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0)
+        || (ONE_ARG_FUNCTIONS.contains(word) && arguments.len() == 1)
+        || (TWO_ARG_FUNCTIONS.contains(word) && arguments.len() == 2)
+        || (FIVE_ARG_FUNCTIONS.contains(word) && arguments.len() == 5)
+    )
 
 }

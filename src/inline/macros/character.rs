@@ -11,6 +11,7 @@ lazy_static! {
         (into_v16("therefore"), into_v16("there4")),
         (into_v16("because"), into_v16("8757")),
         (into_v16("nsup"), into_v16("8837")),
+        (into_v16("star"), into_v16("8902")),
         (into_v16("earth"), into_v16("127759")),
         (into_v16("moon"), into_v16("127769")),
         (into_v16("sun"), into_v16("127774")),
