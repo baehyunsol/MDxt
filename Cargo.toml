@@ -1,6 +1,6 @@
 [package]
 name = "mdxt"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 authors = ["Baehyunsol <baehyunsol@naver.com>"]
 description = "Custom Markdown Engine for my personal blog."

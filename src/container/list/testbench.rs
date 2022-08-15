@@ -462,6 +462,39 @@ paragraph
     <li><div class=\"unchecked-box\"></div>7 (valid)</li>
     <li><div class=\"checked-box\"><span class=\"triangle\"></span></div>8 (valid)</li>
 </ul>
+"), ("
+1. a
+  - 1
+  - 2
+1. b
+  - 1
+  - 2
+  - 3
+1. c
+  - 1
+  - 2
+", "
+<ol type=\"1\">
+    <li>a
+        <ul>
+            <li>1</li>
+            <li>2</li>
+        </ul>
+    </li>
+    <li>b
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </li>
+    <li>c
+        <ul>
+            <li>1</li>
+            <li>2</li>
+        </ul>
+    </li>
+</ol>
 ")
     ];
 

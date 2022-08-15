@@ -148,7 +148,10 @@ impl AST {
                     else if lines[index].is_unordered_list()
                         || lines[index].is_ordered_list()
                         && index + 1 < lines.len()
-                        && lines[index + 1].is_ordered_list()
+                        && (
+                            lines[index + 1].is_ordered_list()
+                            || lines[index + 1].is_unordered_list()
+                        )
                     {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_parse_state = ParseState::List;
@@ -382,7 +385,10 @@ impl AST {
                     else if lines[index].is_unordered_list()
                         || lines[index].is_ordered_list()
                         && index + 1 < lines.len()
-                        && lines[index + 1].is_ordered_list()
+                        && (
+                            lines[index + 1].is_ordered_list()
+                            || lines[index + 1].is_unordered_list()
+                        )
                     {
                         curr_parse_state = ParseState::List;
                         curr_lines.push(lines[index].clone());

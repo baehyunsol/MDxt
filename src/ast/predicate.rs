@@ -124,6 +124,7 @@ impl Line {
     #[inline]
     pub fn is_ordered_list(&self) -> bool {
 
+        // `1. ` ~ `999999999. `, `a. `, `A. `, `i. `, `I. `
         match self.content.iter().position(|c| *c == '.' as u16) {
             Some(ind) if ind + 1 < self.content.len() && self.content[ind + 1] == ' ' as u16 => {
                 let marker = &self.content[0..ind];
