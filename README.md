@@ -10,7 +10,6 @@ If you wanna know more about MDxt, see these articles.
 
 - [Reference]
 - [API Doc]
-  - Not yet
 
 ## GFM compatibility
 
@@ -22,6 +21,7 @@ I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Beca
 
 [GFM]: https://github.github.com/gfm
 [Reference]: https://blog.baehyunsol.repl.co/MDxt-Reference.html
+[API Doc]: https://docs.rs/mdxt/latest/mdxt/index.html
 [my blog]: https://blog.baehyunsol.repl.co/
 
 ## Contributing
