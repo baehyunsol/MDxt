@@ -1,7 +1,12 @@
+@media screen and (orientation: landscape) {
+  html {
+    font-size: 21px;
+  }
+}
 body .markdown {
   background-color: #404040;
   color: #ffffff;
-  font-size: 21px;
+  font-size: 1rem;
   line-height: 1.5;
   letter-spacing: 1px;
 }
@@ -10,19 +15,19 @@ body .markdown ::selection {
   color: #000000;
 }
 body .markdown hr.footnote-hr {
-  margin-top: 60px;
+  margin-top: 2.857rem;
 }
 body .markdown img {
-  max-width: 450px;
-  max-height: 450px;
+  max-width: 21.43rem;
+  max-height: 21.43rem;
 }
 
 /* Blockquote */
 .markdown blockquote {
   background-color: #00000080;
   width: 75%;
-  border-left: 5px solid #808080;
-  padding: 12px;
+  border-left: 0.238rem solid #808080;
+  padding: 0.571rem;
 }
 
 /* Colors */
@@ -198,9 +203,9 @@ body .markdown img {
 /* Box */
 .markdown div.box {
   width: 80%;
-  padding: 12px;
-  margin: 12px;
-  border: 3px solid #808080;
+  padding: 0.571rem;
+  margin: 0.571rem;
+  border: 0.143rem solid #808080;
 }
 .markdown div.box.no-border {
   border: none;
@@ -208,39 +213,39 @@ body .markdown img {
 
 /* Sizes */
 .markdown .size-tiny {
-  font-size: 13px;
+  font-size: 0.619rem;
 }
 .markdown .size-tiny img {
-  max-width: 250px;
-  max-height: 250px;
+  max-width: 11.9rem;
+  max-height: 11.9rem;
 }
 .markdown .size-small {
-  font-size: 16px;
+  font-size: 0.762rem;
 }
 .markdown .size-small img {
-  max-width: 350px;
-  max-height: 350px;
+  max-width: 16.67rem;
+  max-height: 16.67rem;
 }
 .markdown .size-medium {
-  font-size: 21px;
+  font-size: 1rem;
 }
 .markdown .size-medium img {
-  max-width: 450px;
-  max-height: 450px;
+  max-width: 21.43rem;
+  max-height: 21.43rem;
 }
 .markdown .size-big {
-  font-size: 25px;
+  font-size: 1.19rem;
 }
 .markdown .size-big img {
-  max-width: 600px;
-  max-height: 600px;
+  max-width: 28.57rem;
+  max-height: 28.57rem;
 }
 .markdown .size-giant {
-  font-size: 33px;
+  font-size: 1.571rem;
 }
 .markdown .size-giant img {
-  max-width: 720px;
-  max-height: 720px;
+  max-width: 34.29rem;
+  max-height: 34.29rem;
 }
 
 /* Alignments */
@@ -268,9 +273,9 @@ body .markdown img {
 
 /* Headers */
 .markdown h1 {
-  font-size: 56px;
-  margin-top: 60px;
-  margin-bottom: 30px;
+  font-size: 2.667rem;
+  margin-top: 2.857rem;
+  margin-bottom: 1.4285rem;
   transition: color 0.3s;
 }
 .markdown h1:hover {
@@ -278,9 +283,9 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h2 {
-  font-size: 48px;
-  margin-top: 54px;
-  margin-bottom: 27px;
+  font-size: 2.286rem;
+  margin-top: 2.571rem;
+  margin-bottom: 1.2855rem;
   transition: color 0.3s;
 }
 .markdown h2:hover {
@@ -288,9 +293,9 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h3 {
-  font-size: 42px;
-  margin-top: 45px;
-  margin-bottom: 22.5px;
+  font-size: 2rem;
+  margin-top: 2.143rem;
+  margin-bottom: 1.0715rem;
   transition: color 0.3s;
 }
 .markdown h3:hover {
@@ -298,9 +303,9 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h4 {
-  font-size: 36px;
-  margin-top: 39px;
-  margin-bottom: 19.5px;
+  font-size: 1.714rem;
+  margin-top: 1.857rem;
+  margin-bottom: 0.9285rem;
   transition: color 0.3s;
 }
 .markdown h4:hover {
@@ -308,9 +313,9 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h5 {
-  font-size: 27px;
-  margin-top: 30px;
-  margin-bottom: 15px;
+  font-size: 1.286rem;
+  margin-top: 1.429rem;
+  margin-bottom: 0.7145rem;
   transition: color 0.3s;
 }
 .markdown h5:hover {
@@ -318,12 +323,12 @@ body .markdown img {
   transition: color 0.3s;
 }
 .markdown h1, .markdown h2 {
-  border-bottom: 3px solid #808080;
+  border-bottom: 0.143rem solid #808080;
 }
 
 /* Links */
 .markdown a:link {
-  border-bottom: 3px solid #40c0ff80;
+  border-bottom: 0.143rem solid #40c0ff80;
   color: #40c0ff;
   text-decoration: none;
   transition: border 0.3s;
@@ -334,7 +339,7 @@ body .markdown img {
 }
 .markdown a:hover {
   text-decoration: none;
-  border-bottom: 3px solid #40c0ff;
+  border-bottom: 0.143rem solid #40c0ff;
 }
 .markdown a::selection {
   color: #bf3f00;
@@ -342,28 +347,28 @@ body .markdown img {
 
 /* Fenced Code Block */
 .markdown pre.line-num-width-0 span.code-fence-index {
-  min-width: 22.5px;
+  min-width: 1.071rem;
 }
 .markdown pre.line-num-width-1 span.code-fence-index {
-  min-width: 33px;
+  min-width: 1.571rem;
 }
 .markdown pre.line-num-width-2 span.code-fence-index {
-  min-width: 43.5px;
+  min-width: 2.071rem;
 }
 .markdown pre.line-num-width-3 span.code-fence-index {
-  min-width: 54px;
+  min-width: 2.571rem;
 }
 .markdown pre.line-num-width-4 span.code-fence-index {
-  min-width: 64.5px;
+  min-width: 3.071rem;
 }
 .markdown pre.line-num-width-5 span.code-fence-index {
-  min-width: 75px;
+  min-width: 3.571rem;
 }
 .markdown pre.line-num-width-6 span.code-fence-index {
-  min-width: 85.5px;
+  min-width: 4.071rem;
 }
 .markdown pre {
-  padding: 12px;
+  padding: 0.571rem;
   background-color: #000000;
   width: 90%;
   overflow: auto;
@@ -371,12 +376,12 @@ body .markdown img {
 }
 .markdown pre span.code-fence-index {
   display: inline-block;
-  border-right: 3px solid #40ffc0;
+  border-right: 0.143rem solid #40ffc0;
   text-align: right;
-  padding-right: 12px;
-  margin-right: 12px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-right: 0.571rem;
+  margin-right: 0.571rem;
+  padding-top: 0.143rem;
+  padding-bottom: 0.143rem;
 }
 .markdown pre span.code-fence-row {
   display: inline-block;
@@ -387,15 +392,15 @@ body .markdown img {
 }
 .markdown pre span.code-fence-code {
   display: inline-block;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 0.143rem;
+  padding-bottom: 0.143rem;
 }
 .markdown pre span.highlight.code-fence-row {
   background-color: #ffffff;
   color: #000000;
 }
 .markdown pre span.highlight.code-fence-row span.code-fence-index {
-  border-right: 3px solid #bf003f;
+  border-right: 0.143rem solid #bf003f;
 }
 .markdown pre span.highlight.code-fence-row:hover {
   background-color: #ffffff80;
@@ -446,8 +451,8 @@ body .markdown img {
   background-color: #404040;
   border: none;
   color: #ffffff;
-  font-size: 21px;
-  padding: 6px;
+  font-size: 1rem;
+  padding: 0.286rem;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.5s ease-out;
@@ -462,7 +467,7 @@ body .markdown img {
   color: #ffc040;
   background-color: #000000;
   border-radius: 3px;
-  padding: 3px 6px 3px;
+  padding: 0.143rem 0.286rem 0.143rem;
 }
 
 /* Table */
@@ -475,7 +480,7 @@ body .markdown img {
   transition: padding 0.5s ease-out;
 }
 .markdown td, .markdown th {
-  padding: 18px;
+  padding: 0.857rem;
 }
 .markdown tr:nth-last-child(odd) {
   background-color: #000000;
@@ -487,7 +492,7 @@ body .markdown img {
   cursor: pointer;
 }
 .markdown thead.collapsed th {
-  padding: 6px;
+  padding: 0.286rem;
   transition: padding 0.5s ease-out;
 }
 .markdown .invisible th, .markdown .invisible td {
@@ -495,47 +500,53 @@ body .markdown img {
 }
 
 /*
+----- Lists -----
+*/
+.markdown ul, .markdown ol {
+  padding-left: 1.524rem;
+}
+.markdown li {
+  padding: 0.286rem;
+}
+
+/*
 ----- Checkbox for task lists -----
 */
-div.unchecked-box, div.checked-box {
+.markdown div.unchecked-box, .markdown div.checked-box {
   position: relative;
-  top: 5.25px;
+  top: 0.25rem;
   display: inline-block;
   border-radius: 4px;
-  width: 21px;
-  height: 21px;
+  width: 1rem;
+  height: 1rem;
 }
-
-div.unchecked-box {
+.markdown div.unchecked-box {
   background-color: #808080;
-  margin-right: 12px;
+  margin-right: 0.571rem;
 }
-
-div.checked-box {
+.markdown div.checked-box {
   background-color: #000000;
-  margin-right: 12px;
+  margin-right: 0.571rem;
 }
-
-span.checkmark {
+.markdown span.checkmark {
   display: block;
   position: relative;
-  left: 5.25px;
-  top: 2.625px;
-  width: 7px;
-  height: 10.5px;
-  border-bottom: 3px solid #ffffff;
-  border-right: 3px solid #ffffff;
+  left: 0.25rem;
+  top: 0.125rem;
+  width: 0.3333333333rem;
+  height: 0.5rem;
+  border-bottom: 0.143rem solid #ffffff;
+  border-right: 0.143rem solid #ffffff;
   transform: rotate(45deg);
 }
-
-span.triangle {
+.markdown span.triangle {
   display: block;
   position: relative;
   width: 0;
   height: 0;
-  left: 3.5px;
-  top: 7px;
-  border-left: 7px solid #0000;
-  border-right: 7px solid #0000;
-  border-bottom: 7px solid #ffffff;
+  left: 0.1666666667rem;
+  top: 0.3333333333rem;
+  border-left: 0.3333333333rem solid #0000;
+  border-right: 0.3333333333rem solid #0000;
+  border-bottom: 0.3333333333rem solid #ffffff;
 }

@@ -11,8 +11,8 @@ fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // valid macro, normalized
         ("[[red ]] ... [[/ red]]", "red"),
         ("[[Red_]] ... [[/Red]]", "red"),
         ("[[char = 44032]]", "char=44032"),
-        ("[[highlight = red]]", "highlight=red"),
-        ("[[icon = github, size = 24]]", "icon=github,size=24")
+        ("[[highlight = red]] ... [[/highlight]]", "highlight=red"),
+        //("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
     macros.iter().map(|(case, answer)| (into_v16(case), into_v16(answer))).collect()
@@ -56,7 +56,7 @@ fn macro_test() {
     for (index, parsed) in valid_cases_parsed.iter().enumerate() {
 
         if parsed.is_none() {
-            panic!("failed to parse {:?}", valid[index]);
+            panic!("failed to parse ({}, {})", from_v16(&valid[index].0), from_v16(&valid[index].1));
         }
 
     }

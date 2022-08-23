@@ -1,6 +1,6 @@
 use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
 use crate::inline::InlineNode;
-use crate::utils::{get_bracket_end_index, into_v16};
+use crate::utils::{get_bracket_end_index, into_v16, remove_whitespaces};
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
@@ -106,4 +106,57 @@ pub fn is_valid_macro_character(chr: &u16) -> bool {
     || 'A' as u16 <= *chr && *chr <= 'Z' as u16
     || ' ' as u16 == *chr || '_' as u16 == *chr
     || ',' as u16 == *chr || '=' as u16 == *chr
+}
+
+// !![[macro, ...]] [[another macro...]]
+// These macros are used in special contexts (in tables and lists)
+pub fn is_special_macro(content: &[u16]) -> bool {
+
+    let mut prefix = Vec::with_capacity(4);
+
+    for c in content.iter() {
+
+        if *c == ' ' as u16 {
+            continue;
+        }
+
+        else if *c == '!' as u16 || *c == '[' as u16 {
+            prefix.push(*c);
+
+            if prefix.len() == 4 {
+                break;
+            }
+
+        }
+
+        else {
+            return false;
+        }
+
+    }
+
+    if prefix != into_v16("!![[") {
+        return false;
+    }
+
+    // if the content following `!!` purely consists of macros, it's a macro row
+    let macros = remove_whitespaces(&content);
+    let macros = macros[2..].to_vec();  // remove `!`s.
+
+    let mut index = 0;
+
+    while index < macros.len() {
+
+        match read_macro(&macros, index) {
+            Some(content) if content.iter().all(is_valid_macro_character) => {
+                index = get_bracket_end_index(&macros, index).unwrap() + 1;
+            }
+            _ => {
+                return false;
+            }
+        }
+
+    }
+
+    true
 }

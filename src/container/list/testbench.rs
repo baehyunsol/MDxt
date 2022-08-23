@@ -495,6 +495,41 @@ paragraph
         </ul>
     </li>
 </ol>
+"), ("
+- !![[no bullet]]
+- no
+- bullet
+  - 123
+  - 456
+- 789
+  a. !![[start = 20]]
+  a. `[[start = x]]` is invalid.
+  a. hahaha
+", "
+<ul class=\"no-bullet-list\">
+    <li>no</li>
+    <li>bullet
+        <ul>
+            <li>123</li>
+            <li>456</li>
+        </ul>
+    </li>
+    <li>789
+        <ol type=\"a\" start=\"20\">
+            <li><code class=\"short\">[[start = x]]</code> is invalid.</li>
+            <li>hahaha</li>
+        </ol>
+    </li>
+</ul>
+"), ("
+- !![[no bullet]] [[start = 20]]
+- `[[no bullet]]` for an unordered list is pointless
+- yeah, it's just for test purpose
+", "
+<ul start=\"20\" class=\"no-bullet-list\">
+    <li><code class=\"short\">[[no bullet]]</code> for an unordered list is pointless</li>
+    <li>yeah, it&apos;s just for test purpose</li>
+</ul>
 ")
     ];
 

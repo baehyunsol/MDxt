@@ -17,3 +17,15 @@
 이전 indent보다 2칸 이상 덜 indent하면 이전 level로 돌아감.
   - 현재 indent보다 더 작은 indent가 나올 때까지 traverse하면서 전부 닫음.
   - traverse가 끝났을 때, 그 indent와 현재 indent가 1칸 이하로 차이나면 거기에 붙이고, 아니면 걔의 sublist로 붙이고
+
+```
+- !![[no bullet]]
+- no
+- bullet
+  - 123
+  - 456
+- 789
+  a. !![[start = 24]]
+  a. `[[start = x]]` is invalid.
+  a. hahaha
+```

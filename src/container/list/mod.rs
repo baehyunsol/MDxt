@@ -1,3 +1,4 @@
+mod macros;
 mod tasklist;
 
 #[cfg(test)]
@@ -6,14 +7,17 @@ mod testbench;
 use crate::ast::doc_data::DocData;
 use crate::ast::line::{Line, add_br_if_needed};
 use crate::inline::InlineNode;
+use crate::inline::macros::predicate::is_special_macro;
 use crate::render::render_option::RenderOption;
 use crate::utils::{is_numeric, to_int, into_v16};
+use macros::try_parse_macro;
 use tasklist::{parse_task_list, TaskMarker};
 
 #[derive(Clone)]
 pub struct List {
     list_type: ListType,
     start_index: usize,
+    no_bullet: bool,
     elements: Vec<ElementOrSublist>
 }
 
@@ -53,34 +57,36 @@ impl List {
             "".to_string()
         };
 
+        let no_bullet = if self.no_bullet {
+            " class=\"no-bullet-list\""
+        } else {
+            ""
+        };
+
         let (opening_tag, closing_tag) = match &self.list_type {
             ListType::Unordered => (
-                format!("<ul{}>", start_index),
+                format!("<ul{}{}>", start_index, no_bullet),
                 "</ul>".to_string()
             ),
             ListType::Ordered(marker) => match marker {
                 Marker::Number => (
-                    format!("<ol type=\"1\"{}>", start_index),
+                    format!("<ol type=\"1\"{}{}>", start_index, no_bullet),
                     "</ol>".to_string()
                 ),
                 Marker::UpperAlpha => (
-                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
-                    format!("<ol type=\"A\"{}>", start_index),
+                    format!("<ol type=\"A\"{}{}>", start_index, no_bullet),
                     "</ol>".to_string()
                 ),
                 Marker::LowerAlpha => (
-                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
-                    format!("<ol type=\"a\"{}>", start_index),
+                    format!("<ol type=\"a\"{}{}>", start_index, no_bullet),
                     "</ol>".to_string()
                 ),
                 Marker::UpperRoman => (
-                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
-                    format!("<ol type=\"I\"{}>", start_index),
+                    format!("<ol type=\"I\"{}{}>", start_index, no_bullet),
                     "</ol>".to_string()
                 ),
                 Marker::LowerRoman => (
-                    // Although the current syntax of MDex doesn't support setting start_index of this marker, I'll leave it like this for future
-                    format!("<ol type=\"i\"{}>", start_index),
+                    format!("<ol type=\"i\"{}{}>", start_index, no_bullet),
                     "</ol>".to_string()
                 ),
             }
@@ -144,11 +150,38 @@ impl List {
 }
 
 fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) {
-    let (list_type, start_index) = get_list_type_and_start_index(&lines[curr_index]);
+    let (list_type, mut start_index) = get_list_type_and_start_index(&lines[curr_index]);
     let mut elements = Vec::with_capacity(lines.len());
     let mut curr_indent = lines[curr_index].indent;
     let mut curr_element = vec![];
     let mut curr_task_marker = None;
+    let mut no_bullet = false;
+
+    if lines[curr_index].is_ordered_list()
+        && is_special_macro(&lines[curr_index].content[2..])
+    {
+        let (no_bullet_, start_index_) = try_parse_macro(&lines[curr_index].content[2..]);
+        no_bullet = no_bullet_;
+
+        if start_index_.is_some() {
+            start_index = start_index_.unwrap();
+        }
+
+        curr_index += 1;
+    }
+
+    else if lines[curr_index].is_unordered_list()
+        && is_special_macro(&lines[curr_index].content[1..])
+    {
+        let (no_bullet_, start_index_) = try_parse_macro(&lines[curr_index].content[1..]);
+        no_bullet = no_bullet_;
+
+        if start_index_.is_some() {
+            start_index = start_index_.unwrap();
+        }
+
+        curr_index += 1;
+    }
 
     while curr_index < lines.len() {
 
@@ -205,7 +238,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
 
     (
         List {
-            list_type, start_index, elements
+            list_type, start_index, no_bullet, elements
         },
         curr_index
     )

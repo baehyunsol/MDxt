@@ -1,35 +1,35 @@
-$font-tiny: 13px;
-$font-small: 16px;
-$font-medium: 21px;
-$font-big: 25px;
-$font-giant: 33px;
+$font-tiny: 0.619rem;  // 13px;
+$font-small: 0.762rem;  // 16px;
+$font-medium: 1rem;  // 21px;
+$font-big: 1.19rem;  // 25px;
+$font-giant: 1.571rem;  // 33px;
 
-$border-medium: 3px;
-$border-big: 5px;
-$border-giant: 9px;
+$border-medium: 0.143rem;  // 3px;
+$border-big: 0.238rem;  // 5px;
+$border-giant: 0.429rem;  // 9px;
 
-$padding-tiny: 3px;
-$padding-small: 6px;
-$padding-medium: 12px;
-$padding-big: 18px;
-$padding-giant: 32px;
+$padding-tiny: 0.143rem;  // 3px;
+$padding-small: 0.286rem;  // 6px;
+$padding-medium: 0.571rem;  // 12px;
+$padding-big: 0.857rem;  // 18px;
+$padding-giant: 1.524rem;  // 32px;
 
-$image-tiny: 250px;
-$image-small: 350px;
-$image-medium: 450px;
-$image-big: 600px;
-$image-giant: 720px;
+$image-tiny: 11.9rem;  // 250px;
+$image-small: 16.67rem;  // 350px;
+$image-medium: 21.43rem;  // 450px;
+$image-big: 28.57rem;  // 600px;
+$image-giant: 34.29rem;  // 720px;
 
-$h1-font-size: 56px;
-$h2-font-size: 48px;
-$h3-font-size: 42px;
-$h4-font-size: 36px;
-$h5-font-size: 27px;
+$h1-font-size: 2.667rem;  // 56px;
+$h2-font-size: 2.286rem;  // 48px;
+$h3-font-size: 2rem;  // 42px;
+$h4-font-size: 1.714rem;  // 36px;
+$h5-font-size: 1.286rem;  // 27px;
 
-$h1-margin: 60px;
-$h2-margin: 54px;
-$h3-margin: 45px;
-$h4-margin: 39px;
-$h5-margin: 30px;
+$h1-margin: 2.857rem;  // 60px;
+$h2-margin: 2.571rem;  // 54px;
+$h3-margin: 2.143rem;  // 45px;
+$h4-margin: 1.857rem;  // 39px;
+$h5-margin: 1.429rem;  // 30px;
 
 $header-height: $font-big + $padding-big * 2 + $border-big;

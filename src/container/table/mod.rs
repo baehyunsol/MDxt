@@ -7,10 +7,11 @@ mod testbench;
 
 use alignment::parse_alignments;
 use cell::{Cell, get_colspan, row_to_cells};
-use macros::{is_macro_row, try_parse_macro};
+use macros::try_parse_macro;
 use crate::ast::{doc_data::DocData, line::Line};
 use crate::escape::BACKSLASH_ESCAPE_MARKER;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
+use crate::inline::macros::predicate::is_special_macro;
 use crate::inline::math::escape_inside_math_blocks;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
@@ -43,8 +44,12 @@ impl Table {
         // configured by table-wide macros
         let (mut collapsible, mut default_hidden) = (false, false);
 
-        if rows.len() > 0 && is_macro_row(&rows[0]) {
-            let (collapsible_, default_hidden_) = try_parse_macro(&rows[0]);
+        // if rows[0] is `|!![[whatever macro ...]] [[another macro...]]|`
+        if rows.len() > 0
+            && rows[0].content.len() > 0
+            && is_special_macro(&rows[0].content[1..(rows[0].content.len() - 1)])
+        {
+            let (collapsible_, default_hidden_) = try_parse_macro(&rows[0].content);
             collapsible = collapsible_;
             default_hidden = default_hidden_;
 

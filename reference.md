@@ -1,6 +1,7 @@
 ---
-date: [2022, 8, 7]
+date: [2022, 8, 23]
 tags: [mdxt, reference, documentation]
+preview: MDxt Reference
 ---
 
 # MDxt Reference
@@ -114,12 +115,58 @@ This is another footnote.[^B]
 ```
 - [ ] Unchecked
 - [X] Checked
-- [^] Not yet
+- [^] Triangle
 ```
 
 - [ ] Unchecked
 - [X] Checked
-- [^] Not yet
+- [^] Triangle
+
+#### List Macros
+
+```
+- !![[no bullet]]
+- no
+- bullet
+  - 123
+  - 456
+- 789
+  a. !![[start = 20]]
+  a. `[[start = t]]` is invalid.
+  a. hahaha
+```
+
+is rendered to 
+
+```html
+<ul class="no-bullet-list">
+    <li>no</li>
+    <li>bullet
+        <ul>
+            <li>123</li>
+            <li>456</li>
+        </ul>
+    </li>
+    <li>789
+        <ol type="a" start="20">
+            <li><code class="short">[[start = t]]</code> is invalid.</li>
+            <li>hahaha</li>
+        </ol>
+    </li>
+</ul>
+```
+
+which looks like
+
+- !![[no bullet]]
+- no
+- bullet
+  - 123
+  - 456
+- 789
+  a. !![[start = 20]]
+  a. `[[start = t]]` is invalid.
+  a. hahaha
 
 ### Fenced Code Blocks
 
@@ -186,6 +233,23 @@ pub const CONST: u32 = 1;
 
 ### Metadata
 
+The engine can read metadata in your markdown files. Metadata section starts with `---` and ends with `---`. There can only be one or less metadata section in each file. A metadata section must be the very first part of the document, if exists.
+
+The engine uses [yaml-rust](https://github.com/chyh1990/yaml-rust) crate to parse metadata. Metadata should be a valid yaml object. Since yaml is superset of json, you can also use json objects as metadata.
+
+Below is an example of a metadata section.
+
+```
+---
+date: [2022, 8, 7]
+author: Baehyunsol
+---
+
+# Header
+
+Paragraph
+```
+
 ### Unlike GFM...
 
 MDxt doesn't support setext headers and indented code blocks.
@@ -237,7 +301,17 @@ It has 3 alignments: left, right, and center.
 
 `[[center]] center [[/center]]` is rendered to `<span class="align-center"> center </span>`. The same rule is applied to the other alignments.
 
-Inline alignments are rendered to `span` tags and multi-lines are rendered to `div`. In most cases, `span` tags don't work with alignments.
+Inline alignments are rendered to `span` tags and multi-lines are rendered to `div`. In most cases, `span` tags don't work with alignments. That means,
+
+```
+[[center]] This text is not centered.[[/center]]
+
+[[center]]
+
+This text is centered.
+
+[[/center]]
+```
 
 ### Highlights
 
@@ -307,6 +381,8 @@ See how the above code is rendered, see [here](#tocsample).
 `[[char = copy]]` is rendered to `&copy;`, which is [[char = copy]].
 
 To see the list of available characters, visit [here](MDxt-Character-Reference.html).
+
+`[[br]]` is rendered to `<br/>` and `[[blank]]` is rendered to `&nbsp;` If you want multiple blanks, `[[blank=3]]` and `[[br=4]]` are your options.
 
 ### Icons
 

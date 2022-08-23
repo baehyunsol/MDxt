@@ -413,7 +413,7 @@ fn render_to_html() {
     use std::fs::File;
     use std::io::Write;
 
-    let mut md = render_math_reference();
+    let md = render_math_reference();
 
     let md = from_v16(&md);
     let html = format!(

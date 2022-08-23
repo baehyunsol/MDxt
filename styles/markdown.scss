@@ -1,6 +1,12 @@
 @import "colors";
 @import "units";
 
+@media screen and (orientation: landscape) {
+    html {
+        font-size: 21px;
+    }
+}
+
 body .markdown {
     background-color: $dark;
     color: $white;
@@ -694,50 +700,68 @@ body .markdown {
 }
 
 /*
+----- Lists -----
+*/
+
+.markdown {
+
+    ul, ol {
+        padding-left: $padding-giant;
+    }
+
+    li {
+        padding: $padding-small;
+    }
+
+}
+
+/*
 ----- Checkbox for task lists -----
 */
 
-div.unchecked-box, div.checked-box {
-    position: relative;
-    top: $font-medium / 4;
-    display: inline-block;
-    border-radius: 4px;
-    width: $font-medium;
-    height: $font-medium;
-}
-
-div.unchecked-box {
-    background-color: $gray;
-    margin-right: $padding-medium;
-}
-
-div.checked-box {
-    background-color: $black;
-    margin-right: $padding-medium;
-}
-
-span.checkmark {
-    display: block;
-    position: relative;
-    left: $font-medium / 4;
-    top: $font-medium / 8;
-    width: $font-medium / 3;
-    height: $font-medium / 2;
-    border: {
-        bottom: $border-medium solid $white;
-        right: $border-medium solid $white;
+.markdown {
+    div.unchecked-box, div.checked-box {
+        position: relative;
+        top: $font-medium / 4;
+        display: inline-block;
+        border-radius: 4px;
+        width: $font-medium;
+        height: $font-medium;
     }
-    transform: rotate(45deg);
-}
 
-span.triangle {
-    display: block;
-    position: relative;
-    width: 0;
-    height: 0;
-    left: $font-medium / 6;
-    top: $font-medium / 3;
-    border-left: $font-medium / 3 solid #0000;
-    border-right: $font-medium / 3 solid #0000;
-    border-bottom: $font-medium / 3 solid $white;
+    div.unchecked-box {
+        background-color: $gray;
+        margin-right: $padding-medium;
+    }
+
+    div.checked-box {
+        background-color: $black;
+        margin-right: $padding-medium;
+    }
+
+    span.checkmark {
+        display: block;
+        position: relative;
+        left: $font-medium / 4;
+        top: $font-medium / 8;
+        width: $font-medium / 3;
+        height: $font-medium / 2;
+        border: {
+            bottom: $border-medium solid $white;
+            right: $border-medium solid $white;
+        }
+        transform: rotate(45deg);
+    }
+
+    span.triangle {
+        display: block;
+        position: relative;
+        width: 0;
+        height: 0;
+        left: $font-medium / 6;
+        top: $font-medium / 3;
+        border-left: $font-medium / 3 solid #0000;
+        border-right: $font-medium / 3 solid #0000;
+        border-bottom: $font-medium / 3 solid $white;
+    }
 }
