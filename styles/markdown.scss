@@ -631,7 +631,7 @@ body .markdown {
         color: $white;
         font-size: $font-medium;
         padding: $padding-small;
-        border-radius: 6px;
+        border-radius: $round-border-medium;
         cursor: pointer;
         transition: background-color 0.5s ease-out;
     }
@@ -649,7 +649,7 @@ body .markdown {
     code.short {
         color: $gold;
         background-color: $black;
-        border-radius: 3px;
+        border-radius: $round-border-tiny;
         padding: $padding-tiny $padding-small $padding-tiny;
     }
 
@@ -660,7 +660,7 @@ body .markdown {
 
     table {
         border-collapse: collapse;
-        margin: 12px;
+        margin: $padding-medium;
     }
 
     th {
@@ -709,6 +709,10 @@ body .markdown {
         padding-left: $padding-giant;
     }
 
+    ul.no-bullet-list, ol.no-bullet-list {
+        list-style-type: none;
+    }
+
     li {
         padding: $padding-small;
     }
@@ -724,7 +728,7 @@ body .markdown {
         position: relative;
         top: $font-medium / 4;
         display: inline-block;
-        border-radius: 4px;
+        border-radius: $round-border-small;
         width: $font-medium;
         height: $font-medium;
     }

@@ -453,7 +453,7 @@ body .markdown img {
   color: #ffffff;
   font-size: 1rem;
   padding: 0.286rem;
-  border-radius: 6px;
+  border-radius: 0.286rem;
   cursor: pointer;
   transition: background-color 0.5s ease-out;
 }
@@ -466,14 +466,14 @@ body .markdown img {
 .markdown code.short {
   color: #ffc040;
   background-color: #000000;
-  border-radius: 3px;
+  border-radius: 0.143rem;
   padding: 0.143rem 0.286rem 0.143rem;
 }
 
 /* Table */
 .markdown table {
   border-collapse: collapse;
-  margin: 12px;
+  margin: 0.571rem;
 }
 .markdown th {
   background-color: #808080;
@@ -505,6 +505,9 @@ body .markdown img {
 .markdown ul, .markdown ol {
   padding-left: 1.524rem;
 }
+.markdown ul.no-bullet-list, .markdown ol.no-bullet-list {
+  list-style-type: none;
+}
 .markdown li {
   padding: 0.286rem;
 }
@@ -516,7 +519,7 @@ body .markdown img {
   position: relative;
   top: 0.25rem;
   display: inline-block;
-  border-radius: 4px;
+  border-radius: 0.19rem;
   width: 1rem;
   height: 1rem;
 }
