@@ -34,15 +34,17 @@ class들 난독화하는 기능 추가, 난독화하는 함수 자체도 넣어�
 
 ---
 
-list
+TOC
 
 ```
-a. !![start = c]
-a. This would be `d`.
-a. This would be `e`.
-
-- !![no bullet]
-- 이렇게 한 다음에 나무위키-스타일 toc 만들 수 있게 하자!
-- `1.3.2 XXX/비판 및 논란` 해놓고 `1.3.2`에만 링크 넣으면
-  - 그럼 제목에 있는 inline decoration이 더 잘살듯
+- !![[no bullet]]
+- 1. h1
+  - 1.1. h2
+  - 1.2. h2
+    - 1.2.1. h3
+  - 1.3. h2
+- 2. h1
+  - 2.1. h2
 ```
+
+저런 식으로 하고 index에다가만 링크를 걸어야 header에 inline decoration 넣기 수월!
