@@ -4,31 +4,12 @@ use crate::utils::{from_v16, into_v16};
 
 #[derive(Clone)]
 pub struct RenderOption {
-
-    /// when rendering `[Lable](Link)` to html, `Link` goes through this function.
-    /// The link first goes through the default handler then the given function.
-    /// If you don't give any function, it'll only go through the default handler.
-    /// The default handler does two things
-    /// - reject links with invalid characters
-    /// - normalize anchors
-    ///  - make alphabets lowercase
-    ///  - replace whitespaces with dashes
     pub link_handler: fn(&str) -> String,
-
-    /// give `id` attributes to header tags
     pub header_anchor: bool,
     pub parse_metadata: bool,
-
-    /// Javascript is required to render collapsible tables and math formulas.
-    /// If this option is true, the engine will add javascript codes when needed.
-    /// If you want to use your own script, turn this option off.
-    pub javascript: bool,
-
-    /// It prefixes all the html classes.
+    pub javascript_collapsible_tables: bool,
+    pub javascript_copy_buttons: bool,
     pub class_prefix: String,
-
-    /// If you want the output to be a well-formed xml, turn it on.
-    /// It's not a polyglot markup, though.
     pub xml: bool
 }
 
@@ -39,7 +20,8 @@ impl Default for RenderOption {
             link_handler: |s| s.to_string(),
             header_anchor: true,
             parse_metadata: true,
-            javascript: true,
+            javascript_collapsible_tables: true,
+            javascript_copy_buttons: true,
             class_prefix: String::new(),
             xml: false
         }
@@ -49,33 +31,52 @@ impl Default for RenderOption {
 
 impl RenderOption {
 
+    /// when rendering `[Lable](Link)` to html, `Link` goes through this function.
+    /// The link first goes through the default handler then the given function.
+    /// If you don't give any function, it'll only go through the default handler.
+    /// The default handler does two things
+    /// - reject links with invalid characters
+    /// - normalize anchors
+    ///  - make alphabets lowercase
+    ///  - replace whitespaces with dashes
     pub fn set_link_handler(&mut self, link_handler: fn(&str) -> String) -> &mut Self {
         self.link_handler = link_handler;
         self
     }
 
+    /// give `id` attributes to header tags
     pub fn set_header_anchor(&mut self, header_anchor: bool) -> &mut Self {
         self.header_anchor = header_anchor;
         self
     }
 
+    /// It prefixes all the html classes.
     pub fn set_class_prefix(&mut self, class_prefix: String) -> &mut Self {
         self.class_prefix = class_prefix;
         self
     }
 
-    pub fn set_xml(&mut self, xml: bool) -> &mut Self {
-        self.xml = xml;
+    /// If you want the output to be a well-formed xml, turn it on.
+    /// It's not a polyglot markup, though.
+    pub fn well_formed_xml(&mut self, well_formed_xml: bool) -> &mut Self {
+        self.xml = well_formed_xml;
         self
     }
 
-    pub fn enable_metadata(&mut self, parse_metadata: bool) -> &mut Self {
+    pub fn parse_metadata(&mut self, parse_metadata: bool) -> &mut Self {
         self.parse_metadata = parse_metadata;
         self
     }
 
-    pub fn enable_javascript(&mut self, javascript: bool) -> &mut Self {
-        self.javascript = javascript;
+    /// It embeds javascript for collapsible tables in a `<script>`.
+    pub fn embed_js_for_collapsible_tables(&mut self, javascript: bool) -> &mut Self {
+        self.javascript_collapsible_tables = javascript;
+        self
+    }
+
+    /// It embeds javascript for copy buttons of fenced code blocks in a `<script>`.
+    pub fn embed_js_for_copy_buttons(&mut self, javascript: bool) -> &mut Self {
+        self.javascript_copy_buttons = javascript;
         self
     }
 

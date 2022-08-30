@@ -1,11 +1,5 @@
 ## TODO
 
-normalize_어쩌구저쩌구, link_handler 등에 특수문자를 넣어서 저 함수를 여러번 거치는 친구들이 있는지 검사
-
-ex) normalize 함수를 거치면 결과물에 0x8000이 포함되게 하고, normalize 함수에 들어온 input에 0x8000이 포함돼 있으면 에러 던지기
-
----
-
 Plugin system
 
 macro 처리하는 함수가, 일단 지 거 해보고 안되는 거 있으면 사용자가 넘겨준 함수한테 매크로 처리 시키는 거지! `arguments: Vec<Vec<Vec<u16>>>, content: Vec<u16> -> Option<Vec<u16>>`의 함수를 사용자가 만들면 그게 곧 plugin 아님?
@@ -36,7 +30,7 @@ class들 난독화하는 기능 추가, 난독화하는 함수 자체도 넣어�
 
 TOC
 
-```
+```markdown
 - !![[no bullet]]
 - 1. h1
   - 1.1. h2

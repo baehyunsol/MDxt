@@ -77,7 +77,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color-red\">This text is red and <strong>bold</strong>.</span> <span class=\"align-center\"> Some whitespaces  </span>"),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
         ("[[char = 32]], [[char = 1307674368000]]", "&#32;, [[char = 1307674368000]]"),
-        ("[[char = won]], [[char = euro]], [[char = therefore]], [[char = cry]]", "&#8361;, &euro;, &there4;, &#128546;"),
+        ("[[char = won]], [[char = euro]], [[char = therefore]]", "&#8361;, &euro;, &there4;"),
         ("[[red]][[center]]**This text is bold, center aligned and red.**[[/center]][[/red]]", "<span class=\"color-red\"><span class=\"align-center\"><strong>This text is bold, center aligned and red.</strong></span></span>"),
         ("`[[red]]red in a code span[[/red]]`, [[red]]`a code span in red`[[/red]]", "<code class=\"short\">[[red]]red in a code span[[/red]]</code>, <span class=\"color-red\"><code class=\"short\">a code span in red</code></span>"),
         ("[[math]] `codespan` [[/math]] `[[math]] codespan [[/math]]`", "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mo>`</mo><mi>codespan</mi><mo>`</mo></math> <code class=\"short\">[[math]] codespan [[/math]]</code>"),

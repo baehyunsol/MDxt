@@ -91,7 +91,8 @@ impl AST {
             tmp_ast_for_toc.nodes = tmp_ast_for_toc.toc.clone();
             tmp_ast_for_toc.doc_data.has_toc = false;  // to prevent infinite recursion
             tmp_ast_for_toc.doc_data.footnote_references = HashMap::new();  // not to render it multiple times
-            tmp_ast_for_toc.render_option.javascript = false;  // not to render it multiple times
+            tmp_ast_for_toc.render_option.javascript_collapsible_tables = false;  // not to render it multiple times
+            tmp_ast_for_toc.render_option.javascript_copy_buttons = false;  // not to render it multiple times
             tmp_ast_for_toc.to_html()
         } else {
             vec![]
@@ -160,33 +161,30 @@ impl AST {
             result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
 
-        if self.render_option.javascript {
+        let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_collapsible_tables;
+        let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_copy_buttons;
 
-            if self.doc_data.has_collapsible_table
-                || self.doc_data.fenced_code_contents.len() > 0
-            {
-                result.push(into_v16("<script>"));
+        if enable_js_for_copy_buttons || enable_js_for_tables {
+            result.push(into_v16("<script>"));
 
-                if self.render_option.xml {
-                    result.push(into_v16("/*<![CDATA[*/"));
-                }
-
-                if self.doc_data.has_collapsible_table {
-                    result.push(into_v16(&collapsible_table_javascript()));
-                }
-
-                if self.doc_data.fenced_code_contents.len() > 0 {
-                    result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
-                }
-
-                // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
-                if self.render_option.xml {
-                    result.push(into_v16("/*]]>*/"));
-                }
-
-                result.push(into_v16("</script>"));
+            if self.render_option.xml {
+                result.push(into_v16("/*<![CDATA[*/"));
             }
-        
+
+            if enable_js_for_tables {
+                result.push(into_v16(&collapsible_table_javascript()));
+            }
+
+            if enable_js_for_copy_buttons {
+                result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+            }
+
+            // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
+            if self.render_option.xml {
+                result.push(into_v16("/*]]>*/"));
+            }
+
+            result.push(into_v16("</script>"));
         }
 
         result.concat()
