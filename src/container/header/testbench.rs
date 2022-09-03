@@ -74,7 +74,7 @@ Valid header
 
 <h1 id=\"red-red-red\"><span class=\"color-red\"> Red </span></h1>
 <h1 id=\"bold-and-del\"><strong>Bold</strong> and <del>Del</del>..!!</h1>
-<h1 id=\"code-header\"><code class=\"short\">Code header</code></h1>
+<h1 id=\"code-header\"><code class=\"inline-code-span\">Code header</code></h1>
 "), ("
 # Header 1
 
@@ -110,7 +110,7 @@ Another [[toc]]
 
 <h1 id=\"toc-test\">TOC test</h1>
 
-<p>
+<p><div class=\"toc\">
 <ol type=\"1\">
     <li><a href=\"#toc-test\">TOC test</a>
         <ol type=\"1\">
@@ -128,7 +128,7 @@ Another [[toc]]
         </ol>
     </li>
 </ol>
-</p>
+</div></p>
 
 <h2 id=\"header-1-1\">Header 1-1</h2>
 <h2 id=\"header-1-2\">Header 1-2</h2>
@@ -138,6 +138,7 @@ Another [[toc]]
 <h2 id=\"-lt--valid-link\">] &lt;- valid link?</h2>
 <h2 id=\"footnotes-a\">Footnotes <sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup></h2>
 <h2 id=\"recursive-toc\">Recursive
+<div class=\"toc\">
     <ol type=\"1\">
         <li><a href=\"#toc-test\">TOC test</a>
             <ol type=\"1\">
@@ -155,10 +156,12 @@ Another [[toc]]
             </ol>
         </li>
     </ol>
+</div>
 </h2>
 
 <p>
-Another <ol type=\"1\">
+Another <div class=\"toc\">
+<ol type=\"1\">
     <li><a href=\"#toc-test\">TOC test</a>
         <ol type=\"1\">
             <li><a href=\"#header-1-1\">Header 1-1</a></li>
@@ -175,12 +178,16 @@ Another <ol type=\"1\">
         </ol>
     </li>
 </ol>
-</p>
+</div></p>
 
 <hr class=\"footnote-hr\"/>
 
 <div class=\"mdxt-footnote-cites\">
-<p><a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.<br/></p>
+<p>
+    <div class=\"footnote-cite\">
+        <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.
+    </div>
+</p>
 </div>
 ")
     ];

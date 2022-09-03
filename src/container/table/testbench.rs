@@ -44,7 +44,7 @@ fn table_samples() -> Vec<(String, String)> {
             <td> the pipe shouldn&apos;t break a cell </td>
         </tr>
         <tr>
-            <td> <code class=\"short\">&#124;</code> </td>
+            <td> <code class=\"inline-code-span\">&#124;</code> </td>
             <td> a pipe in a *cell </td>
             <td> inter-cell highlights* </td>
         </tr>

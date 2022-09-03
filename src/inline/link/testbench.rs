@@ -25,7 +25,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*[github](https://github.com)*", "<em><a href=\"https://github.com\">github</a></em>"),
         ("*[github*](https://github.com)", "<em>[github</em>](https://github.com)"),
         ("[github](*https://github.com*)", "<a href=\"\">github</a>"),
-        ("[link] [no link] `[link]` [`link`][link]", "<a href=\"https://example\">link</a> [no link] <code class=\"short\">[link]</code> <a href=\"https://example\"><code class=\"short\">link</code></a>"),
+        ("[link] [no link] `[link]` [`link`][link]", "<a href=\"https://example\">link</a> [no link] <code class=\"inline-code-span\">[link]</code> <a href=\"https://example\"><code class=\"inline-code-span\">link</code></a>"),
         ("*[github](https://github.com*)", "<em>[github](https://github.com</em>)"),  // Add this to the document
 
         ("[invalid url](*bold*~subscript~)", "<a href=\"\">invalid url</a>"),
@@ -67,7 +67,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*![github](https://github.com)*", "<em><img src=\"https://github.com\" alt=\"github\"/></em>"),
         ("*![github*](https://github.com)", "<em>![github</em>](https://github.com)"),
         ("![github](*https://github.com*)", "<img src=\"\" alt=\"github\"/>"),
-        ("![link] ![no link] `![link]` ![`link`][link]", "<img src=\"https://example\" alt=\"link\"/> ![no link] <code class=\"short\">![link]</code> <img src=\"https://example\" alt=\"`link`\"/>"),
+        ("![link] ![no link] `![link]` ![`link`][link]", "<img src=\"https://example\" alt=\"link\"/> ![no link] <code class=\"inline-code-span\">![link]</code> <img src=\"https://example\" alt=\"`link`\"/>"),
         ("*![github](https://github.com*)", "<em>![github](https://github.com</em>)"),  // Add this to the document
 
         ("![invalid url](*bold*~subscript~)", "<img src=\"\" alt=\"invalid url\"/>"),

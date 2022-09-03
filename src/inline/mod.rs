@@ -71,7 +71,7 @@ impl InlineNode {
             InlineNode::Raw(content) => content.clone(),
 
             InlineNode::CodeSpan(content) => vec![
-                into_v16(&format!("<code class=\"{}short\">", class_prefix)),
+                into_v16(&format!("<code class=\"{}inline-code-span\">", class_prefix)),
                 content.clone(),
                 into_v16("</code>")
             ].concat(),

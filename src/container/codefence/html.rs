@@ -37,11 +37,11 @@ impl FencedCode {
         // so that each index has the same width
         let line_num_width = match self.line_num {
             None => String::new(),
-            Some(n) => format!(" class=\"{}line-num-width-{}\"", class_prefix, log10(n + rows.len()))
+            Some(n) => format!(" {}line-num-width-{}", class_prefix, log10(n + rows.len()))
         };
 
         vec![
-            into_v16(&format!("<pre{}><code>", line_num_width)),
+            into_v16(&format!("<pre class=\"{}fenced-code-block{}\"><code>", class_prefix, line_num_width)),
             rows.concat(),
             into_v16("</code>"),
             copy_button,

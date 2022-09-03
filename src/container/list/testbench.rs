@@ -375,7 +375,7 @@ nothing
     <li>1</li>
 </ul>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
 <span class=\"code-fence-row\"><span class=\"code-fence-code\">nothing</span></span>
 </code></pre>
 "), ("
@@ -516,7 +516,7 @@ paragraph
     </li>
     <li>789
         <ol type=\"a\" start=\"20\">
-            <li><code class=\"short\">[[start = x]]</code> is invalid.</li>
+            <li><code class=\"inline-code-span\">[[start = x]]</code> is invalid.</li>
             <li>hahaha</li>
         </ol>
     </li>
@@ -527,7 +527,7 @@ paragraph
 - yeah, it's just for test purpose
 ", "
 <ul start=\"20\" class=\"no-bullet-list\">
-    <li><code class=\"short\">[[no bullet]]</code> for an unordered list is pointless</li>
+    <li><code class=\"inline-code-span\">[[no bullet]]</code> for an unordered list is pointless</li>
     <li>yeah, it&apos;s just for test purpose</li>
 </ul>
 ")

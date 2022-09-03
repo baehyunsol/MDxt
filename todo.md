@@ -43,6 +43,11 @@ TOC
 
 저런 식으로 하고 index에다가만 링크를 걸어야 header에 inline decoration 넣기 수월!
 
+각 header마다 `[[span]]`으로 감싸면 좀 더 낫지 않을까?
+1. 만약에 header 안에다가 `[[span]]` 없이 `[[/span]]`만 넣는 싸이코가 있으면?
+  - `[]`는 전부 escape해서 ㄱㅊ
+1. 
+
 ---
 
 `[[math]]`에 `calc{1 + sqrt{2}}` 이런 식으로 할 수 있을까??

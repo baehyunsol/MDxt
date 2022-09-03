@@ -232,7 +232,7 @@ fn main() {
 ```
 ````
 ", "
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\">
         <span class=\"code-fence-code\"><span class=\"color-gray\">/*</span></span>
     </span>
@@ -301,7 +301,7 @@ fn main() {
     </span>
 </code></pre>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\">
         <span class=\"code-fence-code\">```rust</span>
     </span>
@@ -325,7 +325,7 @@ fn main() {
 }
 ```
 ", "
-<pre class=\"line-num-width-0\"><code>
+<pre class=\"fenced-code-block line-num-width-0\"><code>
     <span class=\"code-fence-row\">
         <span class=\"code-fence-index\">1</span>
         <span class=\"code-fence-code\"><span class=\"color-violet\">fn</span><span class=\"color-white\"> </span><span class=\"color-aqua\">main</span><span class=\"color-white\">(</span><span class=\"color-white\">)</span><span class=\"color-white\"> </span><span class=\"color-white\">{</span></span>
@@ -355,7 +355,7 @@ fn main() {
 }
 ```
 ", "
-<pre class=\"line-num-width-0\"><code>
+<pre class=\"fenced-code-block line-num-width-0\"><code>
     <span class=\"code-fence-row\">
         <span class=\"code-fence-index\">5</span>
         <span class=\"code-fence-code\"><span class=\"color-violet\">fn</span><span class=\"color-white\"> </span><span class=\"color-aqua\">main</span><span class=\"color-white\">(</span><span class=\"color-white\">)</span><span class=\"color-white\"> </span><span class=\"color-white\">{</span></span>
@@ -383,7 +383,7 @@ function copy_code_to_clipboard(index) {
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">p</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\"> </span><span class=\"color-gold\">class</span><span class=\"color-white\">=</span><span class=\"color-white\">&quot;</span><span class=\"color-green\">box</span><span class=\"color-white\">&quot;</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> box </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">p</span><span class=\"color-white\">&gt;</span></span></span>
 </code></pre>
 "), ("
@@ -391,7 +391,7 @@ function copy_code_to_clipboard(index) {
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre class=\"line-num-width-0\"><code>
+<pre class=\"fenced-code-block line-num-width-0\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-index\">1</span><span class=\"code-fence-code\">&lt;p&gt; &lt;div class=&quot;box&quot;&gt; box &lt;/div&gt; &lt;/p&gt;</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
@@ -409,14 +409,14 @@ function copy_code_to_clipboard(index) {
 <p> <div class=\"box\"> box </div> </p>
 ```
 ", "
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;p&gt; &lt;div class=&quot;box&quot;&gt; box &lt;/div&gt; &lt;/p&gt;</span></span>
 </code></pre>
 "), ("
 ```
 ```
 ", "
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
 </code></pre>
 "), ("
@@ -430,9 +430,9 @@ function copy_code_to_clipboard(index) {
 ", "
 <h1 id=\"backslash-test\">Backslash test</h1>
 
-<p><code class=\"short\">\\\\</code></p>
+<p><code class=\"inline-code-span\">\\\\</code></p>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\">
         <span class=\"code-fence-code\">\\\\</span>
     </span>
@@ -444,11 +444,11 @@ function copy_code_to_clipboard(index) {
 ````
 ``````
 ", "
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\">````</span></span>
 </code></pre>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
 </code></pre>
 "), (
@@ -468,16 +468,16 @@ function copy_code_to_clipboard(index) {
 ", "
 <h1 id=\"bracket-tests\">Bracket tests</h1>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\">&lt;&gt;</span></span>
 </code></pre>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span><span class=\"color-white\"> a </span><span class=\"color-white\">&lt;/</span><span class=\"color-red\">div</span><span class=\"color-white\">&gt;</span></span></span>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\"><span class=\"color-white\">&lt;</span></span></span>
 </code></pre>
 
-<p><code class=\"short\">&lt;&gt;</code></p>
+<p><code class=\"inline-code-span\">&lt;&gt;</code></p>
 "
 ), ("
 # Copy Button test
@@ -492,13 +492,13 @@ Nothing2
 ", "
 <h1 id=\"copy-button-test\">Copy Button test</h1>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\">Nothing1</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
 </pre>
 
-<pre><code>
+<pre class=\"fenced-code-block\"><code>
     <span class=\"code-fence-row\"><span class=\"code-fence-code\">Nothing2</span></span>
 </code>
     <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(1)\">Copy</button>

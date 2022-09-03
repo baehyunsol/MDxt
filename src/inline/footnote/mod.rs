@@ -36,11 +36,10 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
 
         result.push(
             vec![
-                into_v16(&format!("<a id=\"footnote-cite-{}\"></a>", index)),
-                into_v16(&format!("{}. ", index)),
+                into_v16(&format!("<div class=\"footnote-cite\"><a id=\"footnote-cite-{}\"></a>{}. ", index, index)),
                 inverse_indexes,
                 content.to_html(toc_rendered, class_prefix),
-                into_v16("<br/>")
+                into_v16("</div>")
             ].concat()
         );
     }

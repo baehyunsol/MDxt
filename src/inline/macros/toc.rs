@@ -8,6 +8,7 @@ impl AST {
     pub fn render_toc(&mut self) {
 
         let mut toc_mdxt = Vec::with_capacity(self.doc_data.headers.len());
+        toc_mdxt.push(into_v16("\n[[div, class=toc]]\n"));
 
         for (level, content) in self.doc_data.headers.iter() {
 
@@ -29,6 +30,8 @@ impl AST {
                 element
             ].concat());
         }
+
+        toc_mdxt.push(into_v16("\n[[/div]]\n"));
 
         let toc_mdxt = toc_mdxt.join(&['\n' as u16][..]);
         let lines = code_to_lines(&toc_mdxt);
