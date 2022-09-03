@@ -21,7 +21,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
 
     let mut result = Vec::with_capacity(notes.len());
 
-    result.push(into_v16(&format!("<hr class=\"{}footnote-hr\"/><p>", class_prefix)));
+    result.push(into_v16(&format!("<hr class=\"{}footnote-hr\"/><div class=\"{}mdxt-footnote-cites\"><p>", class_prefix, class_prefix)));
 
     for Footnote {index, inverse_index, content} in notes.into_iter() {
 
@@ -45,7 +45,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
         );
     }
 
-    result.push(into_v16("</p>"));
+    result.push(into_v16("</p></div>"));
 
     result.concat()
 }

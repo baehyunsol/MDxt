@@ -19,7 +19,7 @@ d[^b][^d]
 [^b]: This is another ^sample^!!
 
 [^c]: This is another footnote.[[br]]
-[^d]: Another one, but shadowed
+[^d]: Another one, but shadowed.
 [^d]: Another one, that's not shadowed.
 [^e]: It's never used.
 
@@ -79,27 +79,30 @@ d[^b][^d]
 </p>
 
 <hr class=\"footnote-hr\"/>
-<p>
-    <a id=\"footnote-cite-0\"></a>
-        0.
-            <a href=\"#footnote-ref-0\"> [0] </a>
-            <a href=\"#footnote-ref-1\"> [1] </a>
-            <a href=\"#footnote-ref-4\"> [4] </a>
-            This is a <strong>Sample</strong> <em>Footnote</em>.<br/>
-    <a id=\"footnote-cite-1\"></a>
-        1.
-            <a href=\"#footnote-ref-2\"> [2] </a>
-            <a href=\"#footnote-ref-5\"> [5] </a>
-            This is another <sup>sample</sup>!!<br/>
-    <a id=\"footnote-cite-2\"></a>
-        2.
-            <a href=\"#footnote-ref-3\"> [3] </a>
-            This is another footnote.<br/><br/>
-    <a id=\"footnote-cite-3\"></a>
-        3.
-            <a href=\"#footnote-ref-6\"> [6] </a>
-            Another one, that&apos;s not shadowed.<br/>
-</p>
+
+<div class=\"mdxt-footnote-cites\">
+    <p>
+        <a id=\"footnote-cite-0\"></a>
+            0.
+                <a href=\"#footnote-ref-0\"> [0] </a>
+                <a href=\"#footnote-ref-1\"> [1] </a>
+                <a href=\"#footnote-ref-4\"> [4] </a>
+                This is a <strong>Sample</strong> <em>Footnote</em>.<br/>
+        <a id=\"footnote-cite-1\"></a>
+            1.
+                <a href=\"#footnote-ref-2\"> [2] </a>
+                <a href=\"#footnote-ref-5\"> [5] </a>
+                This is another <sup>sample</sup>!!<br/>
+        <a id=\"footnote-cite-2\"></a>
+            2.
+                <a href=\"#footnote-ref-3\"> [3] </a>
+                This is another footnote.<br/><br/>
+        <a id=\"footnote-cite-3\"></a>
+            3.
+                <a href=\"#footnote-ref-6\"> [6] </a>
+                Another one, that&apos;s not shadowed.<br/>
+    </p>
+</div>
 ".to_string()), ("
 ![^a]
 
@@ -111,9 +114,71 @@ d[^b][^d]
 
 <hr class=\"footnote-hr\"/>
 
+<div class=\"mdxt-footnote-cites\">
+    <p>
+        <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> not an image.<br/>
+    </p>
+</div>
+".to_string()), (
+"
+a[^a] b[^b]
+
+[^a]: a
+
+[^a]: aa
+
+[^b]: b
+
+[^b]: bb
+".to_string(), "
 <p>
-    <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> not an image.<br/>
+    a<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
+    b<sup id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></sup>
 </p>
+
+<hr class=\"footnote-hr\"/>
+
+<div class=\"mdxt-footnote-cites\">
+    <p>
+        <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> aa<br/>
+        <a id=\"footnote-cite-1\"></a>1. <a href=\"#footnote-ref-1\"> [1]</a> bb<br/>
+    </p>
+</div>
+".to_string()
+), ("
+a[^A] b[^B] c[^C]
+
+[^A]: Hi there!
+
+[^B]: Hello there!
+
+[^C]: Goodbye!
+
+aa[^A] bb[^B]
+
+[^A]: another A.
+
+[^B]: another B.
+".to_string(), "
+<p>
+    a<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
+    b<sup id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></sup>
+    c<sup id=\"footnote-ref-2\"><a href=\"#footnote-cite-2\">[2]</a></sup>
+</p>
+<p>
+    aa<sup id=\"footnote-ref-3\"><a href=\"#footnote-cite-0\">[3]</a></sup>
+    bb<sup id=\"footnote-ref-4\"><a href=\"#footnote-cite-1\">[4]</a></sup>
+</p>
+
+<hr class=\"footnote-hr\"/>
+
+<div class=\"mdxt-footnote-cites\">
+    <p>
+        <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> <a href=\"#footnote-ref-3\"> [3]</a> another A.<br/>
+        <a id=\"footnote-cite-1\"></a>1. <a href=\"#footnote-ref-1\"> [1]</a> <a href=\"#footnote-ref-4\"> [4]</a> another B.<br/>
+        <a id=\"footnote-cite-2\"></a>2. <a href=\"#footnote-ref-2\"> [2]</a> Goodbye!<br/>
+    </p>
+</div>
 ".to_string())
     ]
 }

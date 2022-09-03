@@ -43,7 +43,7 @@ impl AST {
         let mut curr_lines = vec![];
         let mut curr_parse_state = ParseState::None;
         let mut link_references = HashMap::new();
-        let mut footnote_references = HashMap::new();
+        let mut footnote_references: HashMap<Vec<u16>, Footnote> = HashMap::new();
         let mut headers = vec![];
         let mut table_count = 0;
         let mut fenced_code_count = 0;
@@ -238,12 +238,10 @@ impl AST {
 
                         if is_valid_footnote_label(&link_label) {
                             let footnote_label = normalize_link_label(&link_label);
-                            let footnote_index = if footnote_references.contains_key(&footnote_label) {
-                                footnote_references.len() - 1
-                            }
 
-                            else {
-                                footnote_references.len()
+                            let footnote_index = match footnote_references.get(&footnote_label) {
+                                Some(f) => f.index,
+                                None => footnote_references.len()
                             };
 
                             footnote_references.insert(

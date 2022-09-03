@@ -179,7 +179,9 @@ Another <ol type=\"1\">
 
 <hr class=\"footnote-hr\"/>
 
+<div class=\"mdxt-footnote-cites\">
 <p><a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.<br/></p>
+</div>
 ")
     ];
 
