@@ -126,7 +126,7 @@ impl MultiLineMacro {
                 MultiLineMacroType::Box { border } => if *border {
                     into_v16(&format!("<div class=\"{}box\">", class_prefix))
                 } else {
-                    into_v16(&format!("<div class=\"{}box no-border\">", class_prefix))
+                    into_v16(&format!("<div class=\"{}box {}no-border\">", class_prefix, class_prefix))
                 },
                 MultiLineMacroType::Color(color) => vec![
                     into_v16(&format!("<div class=\"{}color-", class_prefix)),

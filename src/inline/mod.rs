@@ -187,14 +187,14 @@ impl InlineNode {
                     ].concat(),
                     InlineMacro::Box { border } => vec![
                         if *border {
-                            into_v16(&format!("<div class=\"{}box\">", class_prefix))
+                            into_v16(&format!("<span class=\"{}box\">", class_prefix))
                         } else {
-                            into_v16(&format!("<div class=\"{}box no-border\">", class_prefix))
+                            into_v16(&format!("<span class=\"{}box {}no-border\">", class_prefix, class_prefix))
                         },
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u16>>>().concat(),
-                        into_v16("</div>")
+                        into_v16("</span>")
                     ].concat(),
                     InlineMacro::HTML { tag, class, id } => {
                         let mut result = vec![];

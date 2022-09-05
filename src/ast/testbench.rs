@@ -164,6 +164,20 @@ A paragraph in a borderless box in a box.
 <h1 id=\"link-escape-test\">Link Escape Test</h1>
 
 <p><a href=\"&amp;\">escape test &amp;</a></p>
+"), ("
+[[box]]
+
+div box
+
+[[/box]]
+
+[[box]] span box [[/box]]
+", "
+<div class=\"box\">
+    <p> div box </p>
+</div>
+
+<p><span class=\"box\"> span box </span></p>
 ")
     ];
 
