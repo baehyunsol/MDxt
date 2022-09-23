@@ -1,4 +1,4 @@
-use super::line::{add_br_if_needed, to_raw};
+use super::line::add_br_if_needed;
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::inline::macros::multiline::MultiLineMacro;
@@ -60,7 +60,7 @@ impl Node {
         index: usize
     ) -> Node {
         Node::FencedCode(FencedCode::new(
-            lines.iter().map(to_raw).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
+            lines.iter().map(|line| line.to_raw()).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
             language.to_vec(),
             line_num.clone(),
             highlights.clone(),

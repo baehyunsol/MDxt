@@ -1,6 +1,7 @@
 // https://github.github.com/gfm/#links
 
 // a valid link following a `!` is a valid image
+// [t][l], [l], [t](d) where t is link_text, l is link_label and d is link_destination
 
 use super::normalize_link_label;
 use crate::utils::{drop_while, get_bracket_end_index, get_parenthesis_end_index};
@@ -188,7 +189,18 @@ fn is_valid_link_text(content: &[u16], link_references: &HashMap<Vec<u16>, Vec<u
 }
 
 pub fn is_valid_link_label(content: &[u16]) -> bool {
-    true
+
+    // [...] -> link
+    // [[...]] -> macro
+    // [[[...]]] -> macro in a link
+    if content.len() > 1 && content[0] == '[' as u16 && content[content.len() - 1] == ']' as u16 {
+        content.len() > 4 && content[1] == '[' as u16 && content[content.len() - 2] == ']' as u16
+    }
+
+    else {
+        true
+    }
+
 }
 
 pub fn is_valid_link_destination(content: &[u16]) -> bool {

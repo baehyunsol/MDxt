@@ -27,51 +27,51 @@ d[^b][^d]
         ".to_string(), "
 <p>
     a
-        <sup id=\"footnote-ref-0\">
+        <span class=\"footnote-ref\" id=\"footnote-ref-0\">
             <a href=\"#footnote-cite-0\">
                 [0]
             </a>
-        </sup>
+        </span>
 </p>
 <p>
     b
-        <sup id=\"footnote-ref-1\">
+        <span class=\"footnote-ref\" id=\"footnote-ref-1\">
             <a href=\"#footnote-cite-0\">
                 [1]
             </a>
-        </sup>
-        <sup id=\"footnote-ref-2\">
+        </span>
+        <span class=\"footnote-ref\" id=\"footnote-ref-2\">
             <a href=\"#footnote-cite-1\">
                 [2]
             </a>
-        </sup>
+        </span>
     [^no]: A footnote cannot interrupt a paragraph!
 </p>
 <p>
     c
-        <sup id=\"footnote-ref-3\">
+        <span class=\"footnote-ref\" id=\"footnote-ref-3\">
             <a href=\"#footnote-cite-2\">
                 [3]
             </a>
-        </sup>
-        <sup id=\"footnote-ref-4\">
+        </span>
+        <span class=\"footnote-ref\" id=\"footnote-ref-4\">
             <a href=\"#footnote-cite-0\">
                 [4]
             </a>
-        </sup>
+        </span>
 </p>
 <p>
     d
-        <sup id=\"footnote-ref-5\">
+        <span class=\"footnote-ref\" id=\"footnote-ref-5\">
             <a href=\"#footnote-cite-1\">
                 [5]
             </a>
-        </sup>
-        <sup id=\"footnote-ref-6\">
+        </span>
+        <span class=\"footnote-ref\" id=\"footnote-ref-6\">
             <a href=\"#footnote-cite-3\">
                 [6]
             </a>
-        </sup>
+        </span>
 </p>
 
 <p>
@@ -117,7 +117,7 @@ d[^b][^d]
 [^a]: not an image.
 ".to_string(), "
 <p>
-    !<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
+    !<span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span>
 </p>
 
 <hr class=\"footnote-hr\"/>
@@ -142,8 +142,8 @@ a[^a] b[^b]
 [^b]: bb
 ".to_string(), "
 <p>
-    a<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
-    b<sup id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></sup>
+    a<span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span>
+    b<span class=\"footnote-ref\" id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></span>
 </p>
 
 <hr class=\"footnote-hr\"/>
@@ -175,13 +175,13 @@ aa[^A] bb[^B]
 [^B]: another B.
 ".to_string(), "
 <p>
-    a<sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup>
-    b<sup id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></sup>
-    c<sup id=\"footnote-ref-2\"><a href=\"#footnote-cite-2\">[2]</a></sup>
+    a<span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span>
+    b<span class=\"footnote-ref\" id=\"footnote-ref-1\"><a href=\"#footnote-cite-1\">[1]</a></span>
+    c<span class=\"footnote-ref\" id=\"footnote-ref-2\"><a href=\"#footnote-cite-2\">[2]</a></span>
 </p>
 <p>
-    aa<sup id=\"footnote-ref-3\"><a href=\"#footnote-cite-0\">[3]</a></sup>
-    bb<sup id=\"footnote-ref-4\"><a href=\"#footnote-cite-1\">[4]</a></sup>
+    aa<span class=\"footnote-ref\" id=\"footnote-ref-3\"><a href=\"#footnote-cite-0\">[3]</a></span>
+    bb<span class=\"footnote-ref\" id=\"footnote-ref-4\"><a href=\"#footnote-cite-1\">[4]</a></span>
 </p>
 
 <hr class=\"footnote-hr\"/>

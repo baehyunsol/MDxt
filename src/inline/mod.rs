@@ -77,7 +77,8 @@ impl InlineNode {
             ].concat(),
 
             InlineNode::Footnote((index, inverse_index, _)) => into_v16(&format!(
-                "<sup id=\"footnote-ref-{}\"><a href=\"#footnote-cite-{}\">[{}]</a></sup>",
+                "<span class=\"{}footnote-ref\" id=\"footnote-ref-{}\"><a href=\"#footnote-cite-{}\">[{}]</a></span>",
+                class_prefix,
                 inverse_index,
                 index,
                 inverse_index

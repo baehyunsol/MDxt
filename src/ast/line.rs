@@ -39,7 +39,16 @@ impl Line {
             content: raw[index..].to_vec(),
             indent
         }
-    
+
+    }
+
+    pub fn to_raw(&self) -> Vec<u16> {
+        vec![vec![' ' as u16; self.indent], self.content.clone()].concat()
+    }
+
+    #[cfg(test)]
+    pub fn from_raw_string(string: &str) -> Line {
+        Line::from_raw(&into_v16(string))
     }
 
 }
@@ -52,10 +61,6 @@ pub fn code_to_lines(code: &[u16]) -> Vec<Line> {
     ).map(
         |ln| Line::from_raw(&ln.to_vec())
     ).collect::<Vec<Line>>()
-}
-
-pub fn to_raw(line: &Line) -> Vec<u16> {
-    vec![vec![' ' as u16; line.indent], line.content.clone()].concat()
 }
 
 pub fn add_br_if_needed(line: &Line) -> Vec<u16> {

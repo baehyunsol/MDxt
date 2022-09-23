@@ -21,12 +21,6 @@ tooltip
 
 ---
 
-pretty output
-- output으로 나오는 html 좀 예쁘게 indent도 하고 그러자
-- 이거 만드는 과정에서 html-validator도 나올 듯...
-
----
-
 list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으로 들어가버림. 아마 blockquote도 동일할 듯. table도 실험해보셈. 저게 맞는 동작인지 아닌지는 고민을 좀 해보자
 
 ---
@@ -59,31 +53,35 @@ TOC
 
 ---
 
-`[[math]]`에 `calc{1 + sqrt{2}}` 이런 식으로 할 수 있을까??
-
-계산 가능한 친구들
-- `sqrt{}`, `root{}`
-- `bincoeff{}{}`
-- `cfrac{}{}`, `frac{}{}`
-- `sum{}{}`
-  - 아 이거 좀 어렵다. 어디까지가 시그마에 걸려있는 expr인지 파악하기가 무지무지하게 어렵네
-
-덧셈뺄셈 범위 잡는 것만 해도 개빡셀 듯
-
----
-
-fenced code block 실행가능하게 하고 싶음... 쥬피터 노트북처럼.
-- 만약에 MDxt를 다른 인터넷 커뮤니티에서도 쓰이게 하고 싶으면 여기가 보안 구멍이 될 확률이 매우 높음.
-- Python이나 lua 정도는 그럭저럭 넣을 수 있을텐데 다른 언어들은 빡센 거 많을텐데? 당장 Rust만 해도 구현 개빡셈.
-- 실행 오래 걸리면 어떻게 할 거임? 끝날 때까지 기다릴 거임?
-  - halting problem!
-
----
-
-footnote에 `<sup>` 붙이지 말고 `<span class="footnote-ref">`를 붙이자! 이게 더 유연하지
-
----
-
 html_to_mdxt도 만들 수 있지 않음? `<b>x</b>`는 `**x**`로 바꾸는 방식으로!
 
-`<em>a</em><em>b</em>`을 `*a**b*`로 바꿔버리면 어떻게 해?? 저러면 아예 다른 syntax인데?
+`<em>a</em><em>b</em>`을 `*a**b*`로 바꿔버리면 어떻게 해?? 저러면 아예 다른 syntax인데? 똑같은 decoration끼리 붙어있으면 합칠까? 그건 구현에서 edge case가 무지 많을텐데...
+
+---
+
+from gitlab
+
+1. diagram
+  - fenced code block 안에 diagram을 그려줌. language 설정을 mermaid, plantuml, kroki 등으로 해주면 됨.
+  - 내가 직접 diagram language 구현하는 건 빡센데 쟤넨 전부 js로 돼 있어서 내 엔진에 넣기 애매함
+  - 굳이 diagram이 아니더라도 fenced code block에 특별한 language 주면 특별한 동작하도록 하는 건 좋은 아이디어인 듯!
+    - 얘는 math도 fenced code block에 `math`라는 language를 줘서 구현함
+  - language를 json으로 넣어서 table로 만드는 것도 있네..!!
+1. emoji
+  - 얘는 `:monkey:` 이런 식으로 emoji를 넣음
+1. front matter
+  - metadata block을 front matter라고 하네.
+  - metadata를 어느 언어(json, yaml, toml등)로 쓰냐에 따라서 fence의 모양이 다름
+1. task list
+  - `[~]`도 있음.
+  - 내 추가 아이디어: `[!]`도 넣을까?
+1. multiline blockquote
+  - fenced code block이랑 비슷한 blockquote
+  - fence로 `>>>`를 씀.
+  - 이러면 blockquote 안에 표, 리스트 등등을 넣을 수 있음!
+  - list 안에다가 표/fencedcode 넣고 싶은데 이건 어떻게 할까??
+1. underscore로 emphasis하는 것도 넣을까..??
+
+---
+
+`*a* **b**`하고 `*a***b**`가 다르게 render되는데 이건 intended로 치는게 낫겠지?

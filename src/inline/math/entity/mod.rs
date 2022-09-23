@@ -211,7 +211,7 @@ pub fn vec_to_math_ml(vec: &Vec<Entity>, single_element: bool) -> Vec<u16> {
         |entity| entity.to_math_ml()
     ).collect::<Vec<Vec<u16>>>().concat();
 
-    if vec.len() > 1 && single_element {
+    if count_entity(vec) > 1 && single_element {
         vec![
             into_v16("<mrow>"),
             result,
@@ -219,7 +219,7 @@ pub fn vec_to_math_ml(vec: &Vec<Entity>, single_element: bool) -> Vec<u16> {
         ].concat()
     }
 
-    else if vec.len() == 0 {
+    else if count_entity(vec) == 0 {
         into_v16("<mo>&nbsp;</mo>")
     }
 
@@ -227,4 +227,23 @@ pub fn vec_to_math_ml(vec: &Vec<Entity>, single_element: bool) -> Vec<u16> {
         result
     }
 
+}
+
+// `vec.len()` and `count_entity(vec)` are different sometimes
+fn count_entity(vec: &Vec<Entity>) -> usize {
+    let mut result = 0;
+
+    for entity in vec.iter() {
+        match entity {
+            // `++` -> `<mo>+</mo><mo>+</mo>`
+            Entity::Operator(operator) => {
+                result += operator.len();
+            }
+            _ => {
+                result += 1;
+            }
+        }
+    }
+
+    result
 }

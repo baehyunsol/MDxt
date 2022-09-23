@@ -136,7 +136,7 @@ Another [[toc]]
 <h2 id=\"header-1-3\">Header 1-3</h2>
 <h2 id=\"italic-and-red-red-red\"><em>Italic</em> and <span class=\"color-red\"> red </span></h2>
 <h2 id=\"-lt--valid-link\">] &lt;- valid link?</h2>
-<h2 id=\"footnotes-a\">Footnotes <sup id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></sup></h2>
+<h2 id=\"footnotes-a\">Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span></h2>
 <h2 id=\"recursive-toc\">Recursive
 <div class=\"toc\">
     <ol type=\"1\">
