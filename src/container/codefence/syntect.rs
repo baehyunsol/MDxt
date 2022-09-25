@@ -1,5 +1,5 @@
 use crate::escape::escape_htmls;
-use crate::utils::{from_v16, into_v16};
+use crate::utils::{from_v16, inclusive_split, into_v16};
 use lazy_static::lazy_static;
 use syntect::easy::HighlightLines;
 use syntect::highlighting::{Color, Style, Theme, ThemeSet};
@@ -24,8 +24,9 @@ pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -
     let mut highlighter = HighlightLines::new(syntax_reference, &THEME);
     let mut result = vec![];
 
-    for line_u16 in content.split(|c| *c == '\n' as u16) {
-        let line_u16 = line_u16.to_vec();
+    for line_u16 in inclusive_split(&content, '\n' as u16).into_iter() {
+        let mut line_u16 = line_u16.to_vec();
+
         let curr_line = &from_v16(&line_u16);
 
         match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
@@ -71,9 +72,18 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
         }
     };
 
-    vec![
-        into_v16(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
-        escape_htmls(&into_v16(content)),
-        into_v16("</span>")
-    ].concat()
+    let content_v16 = into_v16(content);
+
+    if content_v16.len() == 0 || content_v16.iter().all(|c| *c == ' ' as u16 || *c == '\n' as u16) {
+        content_v16
+    }
+
+    else {
+        vec![
+            into_v16(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
+            escape_htmls(&content_v16),
+            into_v16("</span>")
+        ].concat()
+    }
+
 }

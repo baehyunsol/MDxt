@@ -85,3 +85,15 @@ from gitlab
 ---
 
 `*a* **b**`하고 `*a***b**`가 다르게 render되는데 이건 intended로 치는게 낫겠지?
+
+---
+
+```
+a
+---
+b
+---
+c
+```
+
+쟤네를 horizontal line으로 할지 paragraph로 할 지는 어떻게 결정함..?? GFM 따라할까? 근데 GFM은 쟤네를 header로 쓰는데?

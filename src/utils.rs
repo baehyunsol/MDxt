@@ -209,6 +209,32 @@ pub fn to_int(string: &[u16]) -> Option<u32> {
     Some(result)
 }
 
+pub fn inclusive_split(content: &[u16], delim: u16) -> Vec<&[u16]> {
+
+    let mut last_index = 0;
+    let mut result = vec![];
+
+    for (ind, c) in content.iter().enumerate() {
+
+        if *c == delim {
+            result.push(&content[last_index..(ind + 1)]);
+            last_index = ind + 1;
+        }
+
+    }
+
+    if last_index < content.len() {
+        result.push(&content[last_index..]);
+    }
+
+    if result.len() == 0 {
+        // i want to return `vec![vec![]]` this case, but the borrow checker doesn't let me `result.push(&vec![])`
+        result.push(&content[0..0]);
+    }
+
+    result
+}
+
 pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
     line.iter().filter(
         |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
@@ -241,10 +267,10 @@ pub fn log10(n: usize) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
 
     #[test]
     fn partner_test() {
-        use crate::utils::{get_parenthesis_end_index, get_bracket_end_index, into_v16};
         let test1 = into_v16("[name](link)");
 
         assert_eq!(get_bracket_end_index(&test1, 0), Some(5));
@@ -261,7 +287,6 @@ mod tests {
 
     #[test]
     fn whitespace_test() {
-        use crate::utils::{into_v16, collapse_whitespaces, strip_whitespaces};
         let sample1 = into_v16(" F  OO BA R  ");
         let sample2 = into_v16("   A    ");
         let sample3 = into_v16("   ");
@@ -278,8 +303,6 @@ mod tests {
 
     #[test]
     fn whiles_test() {
-        use crate::utils::{into_v16, take_while, drop_while, take_and_drop_while};
-
         let samples = vec![  // (content, char, take, drop)
             ("", ' ', "", ""),
             (" ", ' ', " ", ""),
@@ -303,6 +326,61 @@ mod tests {
             assert_eq!(&taken_actual, taken_answer);
             assert_eq!(&dropped_actual, dropped_answer);
         }
+    }
+
+    #[test]
+    fn split_test() {
+        let samples = vec![
+            ("100100", '1'),
+            ("100100", '0'),
+            ("01001100101011000101011", '1'),
+            ("01001100101011000101011", '0'),
+            ("", '1'),
+            ("1", '1'),
+            ("11", '1'),
+            ("11", '2'),
+        ];
+
+        let samples: Vec<(Vec<u16>, u16)> = samples.into_iter().map(
+            |(string, delim)| (into_v16(string), delim as u16)
+        ).collect();
+
+        for (string, delim) in samples.into_iter() {
+            let splits1: Vec<Vec<u16>> = inclusive_split(&string, delim).into_iter().map(|s| s.to_vec()).collect();
+            let mut splits2: Vec<Vec<u16>> = string.split(|c| *c == delim).map(|s| s.to_vec()).collect();
+
+            for i in 0..(splits2.len() - 1) {
+                splits2[i].push(delim);
+            }
+
+            if string.len() > 0 && delim == string[string.len() - 1] {
+                splits2.pop();
+            }
+
+            if splits1.len() != splits2.len() {
+                panic!(
+                    "Assertion error on `splits1.len() == splits2.len()`\nstring: {:?}\nsplits1: {:?}\nsplits2: {:?}",
+                    from_v16(&string),
+                    splits1.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                    splits2.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                );
+            };
+
+            for index in 0..splits1.len() {
+
+                if splits1[index] != splits2[index] {
+                    panic!(
+                        "A failure at `split_test`\nstring: {:?}\nsplits1: {:?}\nsplits2: {:?}",
+                        from_v16(&string),
+                        splits1.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                        splits2.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                    );
+                }
+
+            }
+
+        }
+
     }
 
 }
