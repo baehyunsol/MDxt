@@ -1,26 +1,22 @@
 @import "colors";
 @import "units";
 
-@media screen and (orientation: landscape) {
-    html {
-        font-size: 21px;
-    }
-}
-
 body .markdown {
-    background-color: $dark;
-    color: $white;
+    background-color: var(--dark);
+    color: var(--white);
     font-size: $font-medium;
     line-height: 1.5;
     letter-spacing: 1px;
+    transition: color 0.5s ease-out;
+    transition: background-color 0.5s ease-out;
 
-    ::selection {
-        background-color: $dark-compl;
-        color: $white-compl;
+    p {
+        margin-top: $margin-big;
     }
 
-    hr.footnote-hr {
-        margin-top: $h1-margin;
+    ::selection {
+        background-color: var(--dark-compl);
+        color: var(--white-compl);
     }
 
     img {
@@ -30,11 +26,35 @@ body .markdown {
 
 }
 
+/* Footnotes */
+.markdown {
+
+    hr.footnote-hr {
+        margin-top: $h1-margin;
+    }
+
+    div.footnote-cite {
+        margin-top: $margin-medium;
+        margin-bottom: $margin-medium;
+    }
+
+    span.footnote-ref {
+        vertical-align: super;
+        font-size: $font-small;
+
+        a {
+            border: none;
+        }
+
+    }
+
+}
+
 /* Blockquote */
 .markdown {
 
     blockquote {
-        background-color: $black-trans;
+        background-color: var(--black-trans);
         width: 75%;
         border-left: $border-big solid $gray;
         padding: $padding-medium;
@@ -47,227 +67,227 @@ body .markdown {
 
     
     .color-black {
-        color: $black;
+        color: var(--black);
     }
 
     .color-black::selection {
-        color: $black-compl;
+        color: var(--black-compl);
     }
 
     .highlight-black {
-        background-color: $black;
+        background-color: var(--black);
     }
 
     .highlight-black::selection {
-        background-color: $black-compl;
+        background-color: var(--black-compl);
     }
     
     .color-dark {
-        color: $dark;
+        color: var(--dark);
     }
 
     .color-dark::selection {
-        color: $dark-compl;
+        color: var(--dark-compl);
     }
 
     .highlight-dark {
-        background-color: $dark;
+        background-color: var(--dark);
     }
 
     .highlight-dark::selection {
-        background-color: $dark-compl;
+        background-color: var(--dark-compl);
     }
     
     .color-gray {
-        color: $gray;
+        color: var(--gray);
     }
 
     .color-gray::selection {
-        color: $gray-compl;
+        color: var(--gray-compl);
     }
 
     .highlight-gray {
-        background-color: $gray;
+        background-color: var(--gray);
     }
 
     .highlight-gray::selection {
-        background-color: $gray-compl;
+        background-color: var(--gray-compl);
     }
     
     .color-lightgray {
-        color: $lightgray;
+        color: var(--lightgray);
     }
 
     .color-lightgray::selection {
-        color: $lightgray-compl;
+        color: var(--lightgray-compl);
     }
 
     .highlight-lightgray {
-        background-color: $lightgray;
+        background-color: var(--lightgray);
     }
 
     .highlight-lightgray::selection {
-        background-color: $lightgray-compl;
+        background-color: var(--lightgray-compl);
     }
     
     .color-white {
-        color: $white;
+        color: var(--white);
     }
 
     .color-white::selection {
-        color: $white-compl;
+        color: var(--white-compl);
     }
 
     .highlight-white {
-        background-color: $white;
+        background-color: var(--white);
     }
 
     .highlight-white::selection {
-        background-color: $white-compl;
+        background-color: var(--white-compl);
     }
     
     .color-red {
-        color: $red;
+        color: var(--red);
     }
 
     .color-red::selection {
-        color: $red-compl;
+        color: var(--red-compl);
     }
 
     .highlight-red {
-        background-color: $red;
+        background-color: var(--red);
     }
 
     .highlight-red::selection {
-        background-color: $red-compl;
+        background-color: var(--red-compl);
     }
     
     .color-green {
-        color: $green;
+        color: var(--green);
     }
 
     .color-green::selection {
-        color: $green-compl;
+        color: var(--green-compl);
     }
 
     .highlight-green {
-        background-color: $green;
+        background-color: var(--green);
     }
 
     .highlight-green::selection {
-        background-color: $green-compl;
+        background-color: var(--green-compl);
     }
     
     .color-blue {
-        color: $blue;
+        color: var(--blue);
     }
 
     .color-blue::selection {
-        color: $blue-compl;
+        color: var(--blue-compl);
     }
 
     .highlight-blue {
-        background-color: $blue;
+        background-color: var(--blue);
     }
 
     .highlight-blue::selection {
-        background-color: $blue-compl;
+        background-color: var(--blue-compl);
     }
     
     .color-aqua {
-        color: $aqua;
+        color: var(--aqua);
     }
 
     .color-aqua::selection {
-        color: $aqua-compl;
+        color: var(--aqua-compl);
     }
 
     .highlight-aqua {
-        background-color: $aqua;
+        background-color: var(--aqua);
     }
 
     .highlight-aqua::selection {
-        background-color: $aqua-compl;
+        background-color: var(--aqua-compl);
     }
     
     .color-emerald {
-        color: $emerald;
+        color: var(--emerald);
     }
 
     .color-emerald::selection {
-        color: $emerald-compl;
+        color: var(--emerald-compl);
     }
 
     .highlight-emerald {
-        background-color: $emerald;
+        background-color: var(--emerald);
     }
 
     .highlight-emerald::selection {
-        background-color: $emerald-compl;
+        background-color: var(--emerald-compl);
     }
     
     .color-violet {
-        color: $violet;
+        color: var(--violet);
     }
 
     .color-violet::selection {
-        color: $violet-compl;
+        color: var(--violet-compl);
     }
 
     .highlight-violet {
-        background-color: $violet;
+        background-color: var(--violet);
     }
 
     .highlight-violet::selection {
-        background-color: $violet-compl;
+        background-color: var(--violet-compl);
     }
     
     .color-pink {
-        color: $pink;
+        color: var(--pink);
     }
 
     .color-pink::selection {
-        color: $pink-compl;
+        color: var(--pink-compl);
     }
 
     .highlight-pink {
-        background-color: $pink;
+        background-color: var(--pink);
     }
 
     .highlight-pink::selection {
-        background-color: $pink-compl;
+        background-color: var(--pink-compl);
     }
     
     .color-grassgreen {
-        color: $grassgreen;
+        color: var(--grassgreen);
     }
 
     .color-grassgreen::selection {
-        color: $grassgreen-compl;
+        color: var(--grassgreen-compl);
     }
 
     .highlight-grassgreen {
-        background-color: $grassgreen;
+        background-color: var(--grassgreen);
     }
 
     .highlight-grassgreen::selection {
-        background-color: $grassgreen-compl;
+        background-color: var(--grassgreen-compl);
     }
     
     .color-gold {
-        color: $gold;
+        color: var(--gold);
     }
 
     .color-gold::selection {
-        color: $gold-compl;
+        color: var(--gold-compl);
     }
 
     .highlight-gold {
-        background-color: $gold;
+        background-color: var(--gold);
     }
 
     .highlight-gold::selection {
-        background-color: $gold-compl;
+        background-color: var(--gold-compl);
     }
     
 
@@ -276,14 +296,19 @@ body .markdown {
 /* Box */
 .markdown {
 
+    span.box {
+        padding: $padding-medium;
+        border: $border-medium solid var(--gray);
+    }
+
     div.box {
         width: 80%;
         padding: $padding-medium;
-        margin: $padding-medium;
-        border: $border-medium solid $gray;
+        margin: $margin-big $margin-medium;
+        border: $border-medium solid var(--gray);
     }
 
-    div.box.no-border {
+    .box.no-border {
         border: none;
     }
 
@@ -387,7 +412,7 @@ body .markdown {
     }
 
     h1:hover {
-        color: $white-trans;
+        color: var(--white-trans);
         transition: color 0.3s;
     }
     
@@ -399,7 +424,7 @@ body .markdown {
     }
 
     h2:hover {
-        color: $white-trans;
+        color: var(--white-trans);
         transition: color 0.3s;
     }
     
@@ -411,7 +436,7 @@ body .markdown {
     }
 
     h3:hover {
-        color: $white-trans;
+        color: var(--white-trans);
         transition: color 0.3s;
     }
     
@@ -423,7 +448,7 @@ body .markdown {
     }
 
     h4:hover {
-        color: $white-trans;
+        color: var(--white-trans);
         transition: color 0.3s;
     }
     
@@ -435,13 +460,13 @@ body .markdown {
     }
 
     h5:hover {
-        color: $white-trans;
+        color: var(--white-trans);
         transition: color 0.3s;
     }
     
 
     h1, h2 {
-        border-bottom: $border-medium solid $gray;
+        border-bottom: $border-medium solid var(--gray);
     }
 
 }
@@ -450,24 +475,24 @@ body .markdown {
 .markdown {
 
     a:link {
-        border-bottom: $border-medium solid $aqua-trans;
-        color: $aqua;
+        border-bottom: $border-medium solid var(--aqua-trans);
+        color: var(--aqua);
         text-decoration: none;
         transition: border 0.3s;
     }
 
     a:visited {
-        color: $aqua;
+        color: var(--aqua);
         text-decoration: none;
     }
 
     a:hover {
         text-decoration: none;
-        border-bottom: $border-medium solid $aqua;
+        border-bottom: $border-medium solid var(--aqua);
     }
 
     a::selection {
-        color: $aqua-compl;
+        color: var(--aqua-compl);
     }
 
 }
@@ -519,19 +544,140 @@ body .markdown {
     }
     
 
-    pre {
+    pre.fenced-code-block {
         padding: $padding-medium;
         background-color: $black;
         width: 90%;
         overflow: auto;
         line-height: 1.0;
+        margin-top: $margin-big;
+        margin-bottom: $margin-big;
+
+        /* Not affected by themes */
+        code {
+            color: $white;
+
+            
+            .color-black {
+                color: $black;
+            }
+        
+            .color-black::selection {
+                color: $black-compl;
+            }
+            
+            .color-dark {
+                color: $dark;
+            }
+        
+            .color-dark::selection {
+                color: $dark-compl;
+            }
+            
+            .color-gray {
+                color: $gray;
+            }
+        
+            .color-gray::selection {
+                color: $gray-compl;
+            }
+            
+            .color-lightgray {
+                color: $lightgray;
+            }
+        
+            .color-lightgray::selection {
+                color: $lightgray-compl;
+            }
+            
+            .color-white {
+                color: $white;
+            }
+        
+            .color-white::selection {
+                color: $white-compl;
+            }
+            
+            .color-red {
+                color: $red;
+            }
+        
+            .color-red::selection {
+                color: $red-compl;
+            }
+            
+            .color-green {
+                color: $green;
+            }
+        
+            .color-green::selection {
+                color: $green-compl;
+            }
+            
+            .color-blue {
+                color: $blue;
+            }
+        
+            .color-blue::selection {
+                color: $blue-compl;
+            }
+            
+            .color-aqua {
+                color: $aqua;
+            }
+        
+            .color-aqua::selection {
+                color: $aqua-compl;
+            }
+            
+            .color-emerald {
+                color: $emerald;
+            }
+        
+            .color-emerald::selection {
+                color: $emerald-compl;
+            }
+            
+            .color-violet {
+                color: $violet;
+            }
+        
+            .color-violet::selection {
+                color: $violet-compl;
+            }
+            
+            .color-pink {
+                color: $pink;
+            }
+        
+            .color-pink::selection {
+                color: $pink-compl;
+            }
+            
+            .color-grassgreen {
+                color: $grassgreen;
+            }
+        
+            .color-grassgreen::selection {
+                color: $grassgreen-compl;
+            }
+            
+            .color-gold {
+                color: $gold;
+            }
+        
+            .color-gold::selection {
+                color: $gold-compl;
+            }
+            
+        }
 
         span.code-fence-index {
             display: inline-block;
             border-right: $border-medium solid $emerald;
             text-align: right;
             padding-right: $padding-medium;
-            margin-right: $padding-medium;
+            margin-right: $margin-medium;
             padding-top: $padding-tiny;
             padding-bottom: $padding-tiny;
         }
@@ -631,6 +777,8 @@ body .markdown {
         color: $white;
         font-size: $font-medium;
         padding: $padding-small;
+        margin-top: $margin-medium;
+        margin-left: $margin-medium;
         border-radius: $round-border-medium;
         cursor: pointer;
         transition: background-color 0.5s ease-out;
@@ -646,11 +794,12 @@ body .markdown {
 /* Code Spans */
 .markdown {
 
-    code.short {
+    code.inline-code-span {
         color: $gold;
         background-color: $black;
         border-radius: $round-border-tiny;
         padding: $padding-tiny $padding-small $padding-tiny;
+        white-space: pre;
     }
 
 }
@@ -660,11 +809,11 @@ body .markdown {
 
     table {
         border-collapse: collapse;
-        margin: $padding-medium;
+        margin: $margin-big $margin-medium;
     }
 
     th {
-        background-color: $gray;
+        background-color: var(--gray);
         transition: padding 0.5s ease-out;
     }
 
@@ -673,11 +822,11 @@ body .markdown {
     }
 
     tr:nth-last-child(odd) {
-        background-color: $black;
+        background-color: var(--black);
     }
 
     tr:nth-last-child(even) {
-        background-color: $dark;
+        background-color: var(--dark);
     }
 
     thead.collapsible {
@@ -734,12 +883,12 @@ body .markdown {
     }
 
     div.unchecked-box {
-        background-color: $gray;
+        background-color: var(--gray);
         margin-right: $padding-medium;
     }
 
     div.checked-box {
-        background-color: $black;
+        background-color: var(--black);
         margin-right: $padding-medium;
     }
 
@@ -751,8 +900,8 @@ body .markdown {
         width: $font-medium / 3;
         height: $font-medium / 2;
         border: {
-            bottom: $border-medium solid $white;
-            right: $border-medium solid $white;
+            bottom: $border-medium solid var(--white);
+            right: $border-medium solid var(--white);
         }
         transform: rotate(45deg);
     }
@@ -766,6 +915,6 @@ body .markdown {
         top: $font-medium / 3;
         border-left: $font-medium / 3 solid #0000;
         border-right: $font-medium / 3 solid #0000;
-        border-bottom: $font-medium / 3 solid $white;
+        border-bottom: $font-medium / 3 solid var(--white);
     }
 }

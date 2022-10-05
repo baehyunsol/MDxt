@@ -9,7 +9,7 @@ $border-big: 0.238rem;  // 5px;
 $border-giant: 0.429rem;  // 9px;
 
 $round-border-tiny: 0.143rem;  // 3px;
-$round-border-small: 0.19rem; //  4px;
+$round-border-small: 0.19rem;  // 4px;
 $round-border-medium: 0.286rem;  // 6px;
 
 $padding-tiny: 0.143rem;  // 3px;
@@ -17,6 +17,12 @@ $padding-small: 0.286rem;  // 6px;
 $padding-medium: 0.571rem;  // 12px;
 $padding-big: 0.857rem;  // 18px;
 $padding-giant: 1.524rem;  // 32px;
+
+$margin-tiny: 0.19rem;  // 4px;
+$margin-small: 0.429rem;  // 9px;
+$margin-medium: 1rem;  // 21px;
+$margin-big: 1.571rem;  // 33px;
+$margin-giant: 2.286rem;  // 48px;
 
 $image-tiny: 11.9rem;  // 250px;
 $image-small: 16.67rem;  // 350px;
@@ -30,10 +36,10 @@ $h3-font-size: 2rem;  // 42px;
 $h4-font-size: 1.714rem;  // 36px;
 $h5-font-size: 1.286rem;  // 27px;
 
-$h1-margin: 2.857rem;  // 60px;
-$h2-margin: 2.571rem;  // 54px;
-$h3-margin: 2.143rem;  // 45px;
-$h4-margin: 1.857rem;  // 39px;
-$h5-margin: 1.429rem;  // 30px;
+$h1-margin: 4rem;  // 84px;
+$h2-margin: 3.714rem;  // 78px;
+$h3-margin: 3.429rem;  // 72px;
+$h4-margin: 2.571rem;  // 54px;
+$h5-margin: 2.286rem;  // 48px;
 
 $header-height: $font-big + $padding-big * 2 + $border-big;

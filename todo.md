@@ -25,12 +25,6 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 
 ---
 
-난독화
-
-class들 난독화하는 기능 추가, 난독화하는 함수 자체도 넣어서 배포!
-
----
-
 TOC
 
 ```markdown
@@ -64,6 +58,7 @@ from gitlab
 1. diagram
   - fenced code block 안에 diagram을 그려줌. language 설정을 mermaid, plantuml, kroki 등으로 해주면 됨.
   - 내가 직접 diagram language 구현하는 건 빡센데 쟤넨 전부 js로 돼 있어서 내 엔진에 넣기 애매함
+    - 직접 만들자!
   - 굳이 diagram이 아니더라도 fenced code block에 특별한 language 주면 특별한 동작하도록 하는 건 좋은 아이디어인 듯!
     - 얘는 math도 fenced code block에 `math`라는 language를 줘서 구현함
   - language를 json으로 넣어서 table로 만드는 것도 있네..!!
@@ -97,3 +92,11 @@ c
 ```
 
 쟤네를 horizontal line으로 할지 paragraph로 할 지는 어떻게 결정함..?? GFM 따라할까? 근데 GFM은 쟤네를 header로 쓰는데?
+
+---
+
+math에 있는 기호들 웬만해선 char에도 넣자!
+
+곱셈, rightarrow
+
+음표도 추가 ㄱㄱ

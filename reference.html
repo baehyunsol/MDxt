@@ -3,33 +3,110 @@
 <html>
 <head>
     <title>MDxt Reference</title>
-    <style>@media screen and (orientation: landscape) {
-  html {
-    font-size: 21px;
-  }
+    <style>/*
+The default theme is dark.
+SCSS variables (`$black`) are not affected by scripts. (Inside code blocks, ...)
+CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
+*/
+:root {
+  --black: #000000;
+  --black-compl: #ffffff;
+  --black-trans: #00000080;
+  --black-compl-trans: #ffffff80;
+  --dark: #404040;
+  --dark-compl: #bfbfbf;
+  --dark-trans: #40404080;
+  --dark-compl-trans: #bfbfbf80;
+  --gray: #808080;
+  --gray-compl: #7f7f7f;
+  --gray-trans: #80808080;
+  --gray-compl-trans: #7f7f7f80;
+  --lightgray: #c0c0c0;
+  --lightgray-compl: #3f3f3f;
+  --lightgray-trans: #c0c0c080;
+  --lightgray-compl-trans: #3f3f3f80;
+  --white: #ffffff;
+  --white-compl: #000000;
+  --white-trans: #ffffff80;
+  --white-compl-trans: #00000080;
+  --red: #c04040;
+  --red-compl: #3fbfbf;
+  --red-trans: #c0404080;
+  --red-compl-trans: #3fbfbf80;
+  --green: #40c040;
+  --green-compl: #bf3fbf;
+  --green-trans: #40c04080;
+  --green-compl-trans: #bf3fbf80;
+  --blue: #4040c0;
+  --blue-compl: #bfbf3f;
+  --blue-trans: #4040c080;
+  --blue-compl-trans: #bfbf3f80;
+  --aqua: #40c0ff;
+  --aqua-compl: #bf3f00;
+  --aqua-trans: #40c0ff80;
+  --aqua-compl-trans: #bf3f0080;
+  --emerald: #40ffc0;
+  --emerald-compl: #bf003f;
+  --emerald-trans: #40ffc080;
+  --emerald-compl-trans: #bf003f80;
+  --violet: #c040ff;
+  --violet-compl: #3fbf00;
+  --violet-trans: #c040ff80;
+  --violet-compl-trans: #3fbf0080;
+  --pink: #ff40c0;
+  --pink-compl: #00bf3f;
+  --pink-trans: #ff40c080;
+  --pink-compl-trans: #00bf3f80;
+  --grassgreen: #c0ff40;
+  --grassgreen-compl: #3f00bf;
+  --grassgreen-trans: #c0ff4080;
+  --grassgreen-compl-trans: #3f00bf80;
+  --gold: #ffc040;
+  --gold-compl: #003fbf;
+  --gold-trans: #ffc04080;
+  --gold-compl-trans: #003fbf80;
 }
+
 body .markdown {
-  background-color: #404040;
-  color: #ffffff;
+  background-color: var(--dark);
+  color: var(--white);
   font-size: 1rem;
   line-height: 1.5;
   letter-spacing: 1px;
+  transition: color 0.5s ease-out;
+  transition: background-color 0.5s ease-out;
+}
+body .markdown p {
+  margin-top: 1.571rem;
 }
 body .markdown ::selection {
-  background-color: #bfbfbf;
-  color: #000000;
-}
-body .markdown hr.footnote-hr {
-  margin-top: 2.857rem;
+  background-color: var(--dark-compl);
+  color: var(--white-compl);
 }
 body .markdown img {
   max-width: 21.43rem;
   max-height: 21.43rem;
 }
 
+/* Footnotes */
+.markdown hr.footnote-hr {
+  margin-top: 4rem;
+}
+.markdown div.footnote-cite {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.markdown span.footnote-ref {
+  vertical-align: super;
+  font-size: 0.762rem;
+}
+.markdown span.footnote-ref a {
+  border: none;
+}
+
 /* Blockquote */
 .markdown blockquote {
-  background-color: #00000080;
+  background-color: var(--black-trans);
   width: 75%;
   border-left: 0.238rem solid #808080;
   padding: 0.571rem;
@@ -37,182 +114,186 @@ body .markdown img {
 
 /* Colors */
 .markdown .color-black {
-  color: #000000;
+  color: var(--black);
 }
 .markdown .color-black::selection {
-  color: #ffffff;
+  color: var(--black-compl);
 }
 .markdown .highlight-black {
-  background-color: #000000;
+  background-color: var(--black);
 }
 .markdown .highlight-black::selection {
-  background-color: #ffffff;
+  background-color: var(--black-compl);
 }
 .markdown .color-dark {
-  color: #404040;
+  color: var(--dark);
 }
 .markdown .color-dark::selection {
-  color: #bfbfbf;
+  color: var(--dark-compl);
 }
 .markdown .highlight-dark {
-  background-color: #404040;
+  background-color: var(--dark);
 }
 .markdown .highlight-dark::selection {
-  background-color: #bfbfbf;
+  background-color: var(--dark-compl);
 }
 .markdown .color-gray {
-  color: #808080;
+  color: var(--gray);
 }
 .markdown .color-gray::selection {
-  color: #7f7f7f;
+  color: var(--gray-compl);
 }
 .markdown .highlight-gray {
-  background-color: #808080;
+  background-color: var(--gray);
 }
 .markdown .highlight-gray::selection {
-  background-color: #7f7f7f;
+  background-color: var(--gray-compl);
 }
 .markdown .color-lightgray {
-  color: #c0c0c0;
+  color: var(--lightgray);
 }
 .markdown .color-lightgray::selection {
-  color: #3f3f3f;
+  color: var(--lightgray-compl);
 }
 .markdown .highlight-lightgray {
-  background-color: #c0c0c0;
+  background-color: var(--lightgray);
 }
 .markdown .highlight-lightgray::selection {
-  background-color: #3f3f3f;
+  background-color: var(--lightgray-compl);
 }
 .markdown .color-white {
-  color: #ffffff;
+  color: var(--white);
 }
 .markdown .color-white::selection {
-  color: #000000;
+  color: var(--white-compl);
 }
 .markdown .highlight-white {
-  background-color: #ffffff;
+  background-color: var(--white);
 }
 .markdown .highlight-white::selection {
-  background-color: #000000;
+  background-color: var(--white-compl);
 }
 .markdown .color-red {
-  color: #c04040;
+  color: var(--red);
 }
 .markdown .color-red::selection {
-  color: #3fbfbf;
+  color: var(--red-compl);
 }
 .markdown .highlight-red {
-  background-color: #c04040;
+  background-color: var(--red);
 }
 .markdown .highlight-red::selection {
-  background-color: #3fbfbf;
+  background-color: var(--red-compl);
 }
 .markdown .color-green {
-  color: #40c040;
+  color: var(--green);
 }
 .markdown .color-green::selection {
-  color: #bf3fbf;
+  color: var(--green-compl);
 }
 .markdown .highlight-green {
-  background-color: #40c040;
+  background-color: var(--green);
 }
 .markdown .highlight-green::selection {
-  background-color: #bf3fbf;
+  background-color: var(--green-compl);
 }
 .markdown .color-blue {
-  color: #4040c0;
+  color: var(--blue);
 }
 .markdown .color-blue::selection {
-  color: #bfbf3f;
+  color: var(--blue-compl);
 }
 .markdown .highlight-blue {
-  background-color: #4040c0;
+  background-color: var(--blue);
 }
 .markdown .highlight-blue::selection {
-  background-color: #bfbf3f;
+  background-color: var(--blue-compl);
 }
 .markdown .color-aqua {
-  color: #40c0ff;
+  color: var(--aqua);
 }
 .markdown .color-aqua::selection {
-  color: #bf3f00;
+  color: var(--aqua-compl);
 }
 .markdown .highlight-aqua {
-  background-color: #40c0ff;
+  background-color: var(--aqua);
 }
 .markdown .highlight-aqua::selection {
-  background-color: #bf3f00;
+  background-color: var(--aqua-compl);
 }
 .markdown .color-emerald {
-  color: #40ffc0;
+  color: var(--emerald);
 }
 .markdown .color-emerald::selection {
-  color: #bf003f;
+  color: var(--emerald-compl);
 }
 .markdown .highlight-emerald {
-  background-color: #40ffc0;
+  background-color: var(--emerald);
 }
 .markdown .highlight-emerald::selection {
-  background-color: #bf003f;
+  background-color: var(--emerald-compl);
 }
 .markdown .color-violet {
-  color: #c040ff;
+  color: var(--violet);
 }
 .markdown .color-violet::selection {
-  color: #3fbf00;
+  color: var(--violet-compl);
 }
 .markdown .highlight-violet {
-  background-color: #c040ff;
+  background-color: var(--violet);
 }
 .markdown .highlight-violet::selection {
-  background-color: #3fbf00;
+  background-color: var(--violet-compl);
 }
 .markdown .color-pink {
-  color: #ff40c0;
+  color: var(--pink);
 }
 .markdown .color-pink::selection {
-  color: #00bf3f;
+  color: var(--pink-compl);
 }
 .markdown .highlight-pink {
-  background-color: #ff40c0;
+  background-color: var(--pink);
 }
 .markdown .highlight-pink::selection {
-  background-color: #00bf3f;
+  background-color: var(--pink-compl);
 }
 .markdown .color-grassgreen {
-  color: #c0ff40;
+  color: var(--grassgreen);
 }
 .markdown .color-grassgreen::selection {
-  color: #3f00bf;
+  color: var(--grassgreen-compl);
 }
 .markdown .highlight-grassgreen {
-  background-color: #c0ff40;
+  background-color: var(--grassgreen);
 }
 .markdown .highlight-grassgreen::selection {
-  background-color: #3f00bf;
+  background-color: var(--grassgreen-compl);
 }
 .markdown .color-gold {
-  color: #ffc040;
+  color: var(--gold);
 }
 .markdown .color-gold::selection {
-  color: #003fbf;
+  color: var(--gold-compl);
 }
 .markdown .highlight-gold {
-  background-color: #ffc040;
+  background-color: var(--gold);
 }
 .markdown .highlight-gold::selection {
-  background-color: #003fbf;
+  background-color: var(--gold-compl);
 }
 
 /* Box */
+.markdown span.box {
+  padding: 0.571rem;
+  border: 0.143rem solid var(--gray);
+}
 .markdown div.box {
   width: 80%;
   padding: 0.571rem;
-  margin: 0.571rem;
-  border: 0.143rem solid #808080;
+  margin: 1.571rem 1rem;
+  border: 0.143rem solid var(--gray);
 }
-.markdown div.box.no-border {
+.markdown .box.no-border {
   border: none;
 }
 
@@ -279,75 +360,75 @@ body .markdown img {
 /* Headers */
 .markdown h1 {
   font-size: 2.667rem;
-  margin-top: 2.857rem;
-  margin-bottom: 1.4285rem;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
   transition: color 0.3s;
 }
 .markdown h1:hover {
-  color: #ffffff80;
+  color: var(--white-trans);
   transition: color 0.3s;
 }
 .markdown h2 {
   font-size: 2.286rem;
-  margin-top: 2.571rem;
-  margin-bottom: 1.2855rem;
+  margin-top: 3.714rem;
+  margin-bottom: 1.857rem;
   transition: color 0.3s;
 }
 .markdown h2:hover {
-  color: #ffffff80;
+  color: var(--white-trans);
   transition: color 0.3s;
 }
 .markdown h3 {
   font-size: 2rem;
-  margin-top: 2.143rem;
-  margin-bottom: 1.0715rem;
+  margin-top: 3.429rem;
+  margin-bottom: 1.7145rem;
   transition: color 0.3s;
 }
 .markdown h3:hover {
-  color: #ffffff80;
+  color: var(--white-trans);
   transition: color 0.3s;
 }
 .markdown h4 {
   font-size: 1.714rem;
-  margin-top: 1.857rem;
-  margin-bottom: 0.9285rem;
+  margin-top: 2.571rem;
+  margin-bottom: 1.2855rem;
   transition: color 0.3s;
 }
 .markdown h4:hover {
-  color: #ffffff80;
+  color: var(--white-trans);
   transition: color 0.3s;
 }
 .markdown h5 {
   font-size: 1.286rem;
-  margin-top: 1.429rem;
-  margin-bottom: 0.7145rem;
+  margin-top: 2.286rem;
+  margin-bottom: 1.143rem;
   transition: color 0.3s;
 }
 .markdown h5:hover {
-  color: #ffffff80;
+  color: var(--white-trans);
   transition: color 0.3s;
 }
 .markdown h1, .markdown h2 {
-  border-bottom: 0.143rem solid #808080;
+  border-bottom: 0.143rem solid var(--gray);
 }
 
 /* Links */
 .markdown a:link {
-  border-bottom: 0.143rem solid #40c0ff80;
-  color: #40c0ff;
+  border-bottom: 0.143rem solid var(--aqua-trans);
+  color: var(--aqua);
   text-decoration: none;
   transition: border 0.3s;
 }
 .markdown a:visited {
-  color: #40c0ff;
+  color: var(--aqua);
   text-decoration: none;
 }
 .markdown a:hover {
   text-decoration: none;
-  border-bottom: 0.143rem solid #40c0ff;
+  border-bottom: 0.143rem solid var(--aqua);
 }
 .markdown a::selection {
-  color: #bf3f00;
+  color: var(--aqua-compl);
 }
 
 /* Fenced Code Block */
@@ -372,84 +453,174 @@ body .markdown img {
 .markdown pre.line-num-width-6 span.code-fence-index {
   min-width: 4.071rem;
 }
-.markdown pre {
+.markdown pre.fenced-code-block {
   padding: 0.571rem;
   background-color: #000000;
   width: 90%;
   overflow: auto;
   line-height: 1;
+  margin-top: 1.571rem;
+  margin-bottom: 1.571rem;
+  /* Not affected by themes */
 }
-.markdown pre span.code-fence-index {
+.markdown pre.fenced-code-block code {
+  color: #ffffff;
+}
+.markdown pre.fenced-code-block code .color-black {
+  color: #000000;
+}
+.markdown pre.fenced-code-block code .color-black::selection {
+  color: #ffffff;
+}
+.markdown pre.fenced-code-block code .color-dark {
+  color: #404040;
+}
+.markdown pre.fenced-code-block code .color-dark::selection {
+  color: #bfbfbf;
+}
+.markdown pre.fenced-code-block code .color-gray {
+  color: #808080;
+}
+.markdown pre.fenced-code-block code .color-gray::selection {
+  color: #7f7f7f;
+}
+.markdown pre.fenced-code-block code .color-lightgray {
+  color: #c0c0c0;
+}
+.markdown pre.fenced-code-block code .color-lightgray::selection {
+  color: #3f3f3f;
+}
+.markdown pre.fenced-code-block code .color-white {
+  color: #ffffff;
+}
+.markdown pre.fenced-code-block code .color-white::selection {
+  color: #000000;
+}
+.markdown pre.fenced-code-block code .color-red {
+  color: #c04040;
+}
+.markdown pre.fenced-code-block code .color-red::selection {
+  color: #3fbfbf;
+}
+.markdown pre.fenced-code-block code .color-green {
+  color: #40c040;
+}
+.markdown pre.fenced-code-block code .color-green::selection {
+  color: #bf3fbf;
+}
+.markdown pre.fenced-code-block code .color-blue {
+  color: #4040c0;
+}
+.markdown pre.fenced-code-block code .color-blue::selection {
+  color: #bfbf3f;
+}
+.markdown pre.fenced-code-block code .color-aqua {
+  color: #40c0ff;
+}
+.markdown pre.fenced-code-block code .color-aqua::selection {
+  color: #bf3f00;
+}
+.markdown pre.fenced-code-block code .color-emerald {
+  color: #40ffc0;
+}
+.markdown pre.fenced-code-block code .color-emerald::selection {
+  color: #bf003f;
+}
+.markdown pre.fenced-code-block code .color-violet {
+  color: #c040ff;
+}
+.markdown pre.fenced-code-block code .color-violet::selection {
+  color: #3fbf00;
+}
+.markdown pre.fenced-code-block code .color-pink {
+  color: #ff40c0;
+}
+.markdown pre.fenced-code-block code .color-pink::selection {
+  color: #00bf3f;
+}
+.markdown pre.fenced-code-block code .color-grassgreen {
+  color: #c0ff40;
+}
+.markdown pre.fenced-code-block code .color-grassgreen::selection {
+  color: #3f00bf;
+}
+.markdown pre.fenced-code-block code .color-gold {
+  color: #ffc040;
+}
+.markdown pre.fenced-code-block code .color-gold::selection {
+  color: #003fbf;
+}
+.markdown pre.fenced-code-block span.code-fence-index {
   display: inline-block;
   border-right: 0.143rem solid #40ffc0;
   text-align: right;
   padding-right: 0.571rem;
-  margin-right: 0.571rem;
+  margin-right: 1rem;
   padding-top: 0.143rem;
   padding-bottom: 0.143rem;
 }
-.markdown pre span.code-fence-row {
+.markdown pre.fenced-code-block span.code-fence-row {
   display: inline-block;
   width: 100%;
 }
-.markdown pre span.code-fence-row:hover {
+.markdown pre.fenced-code-block span.code-fence-row:hover {
   background-color: #404040;
 }
-.markdown pre span.code-fence-code {
+.markdown pre.fenced-code-block span.code-fence-code {
   display: inline-block;
   padding-top: 0.143rem;
   padding-bottom: 0.143rem;
 }
-.markdown pre span.highlight.code-fence-row {
+.markdown pre.fenced-code-block span.highlight.code-fence-row {
   background-color: #ffffff;
   color: #000000;
 }
-.markdown pre span.highlight.code-fence-row span.code-fence-index {
+.markdown pre.fenced-code-block span.highlight.code-fence-row span.code-fence-index {
   border-right: 0.143rem solid #bf003f;
 }
-.markdown pre span.highlight.code-fence-row:hover {
+.markdown pre.fenced-code-block span.highlight.code-fence-row:hover {
   background-color: #ffffff80;
 }
-.markdown pre span.highlight span .color-black {
+.markdown pre.fenced-code-block span.highlight span .color-black {
   color: #ffffff;
 }
-.markdown pre span.highlight span .color-dark {
+.markdown pre.fenced-code-block span.highlight span .color-dark {
   color: #bfbfbf;
 }
-.markdown pre span.highlight span .color-gray {
+.markdown pre.fenced-code-block span.highlight span .color-gray {
   color: #7f7f7f;
 }
-.markdown pre span.highlight span .color-lightgray {
+.markdown pre.fenced-code-block span.highlight span .color-lightgray {
   color: #3f3f3f;
 }
-.markdown pre span.highlight span .color-white {
+.markdown pre.fenced-code-block span.highlight span .color-white {
   color: #000000;
 }
-.markdown pre span.highlight span .color-red {
+.markdown pre.fenced-code-block span.highlight span .color-red {
   color: #3fbfbf;
 }
-.markdown pre span.highlight span .color-green {
+.markdown pre.fenced-code-block span.highlight span .color-green {
   color: #bf3fbf;
 }
-.markdown pre span.highlight span .color-blue {
+.markdown pre.fenced-code-block span.highlight span .color-blue {
   color: #bfbf3f;
 }
-.markdown pre span.highlight span .color-aqua {
+.markdown pre.fenced-code-block span.highlight span .color-aqua {
   color: #bf3f00;
 }
-.markdown pre span.highlight span .color-emerald {
+.markdown pre.fenced-code-block span.highlight span .color-emerald {
   color: #bf003f;
 }
-.markdown pre span.highlight span .color-violet {
+.markdown pre.fenced-code-block span.highlight span .color-violet {
   color: #3fbf00;
 }
-.markdown pre span.highlight span .color-pink {
+.markdown pre.fenced-code-block span.highlight span .color-pink {
   color: #00bf3f;
 }
-.markdown pre span.highlight span .color-grassgreen {
+.markdown pre.fenced-code-block span.highlight span .color-grassgreen {
   color: #3f00bf;
 }
-.markdown pre span.highlight span .color-gold {
+.markdown pre.fenced-code-block span.highlight span .color-gold {
   color: #003fbf;
 }
 .markdown button.copy-fenced-code {
@@ -458,6 +629,8 @@ body .markdown img {
   color: #ffffff;
   font-size: 1rem;
   padding: 0.286rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
   border-radius: 0.286rem;
   cursor: pointer;
   transition: background-color 0.5s ease-out;
@@ -468,30 +641,31 @@ body .markdown img {
 }
 
 /* Code Spans */
-.markdown code.short {
+.markdown code.inline-code-span {
   color: #ffc040;
   background-color: #000000;
   border-radius: 0.143rem;
   padding: 0.143rem 0.286rem 0.143rem;
+  white-space: pre;
 }
 
 /* Table */
 .markdown table {
   border-collapse: collapse;
-  margin: 0.571rem;
+  margin: 1.571rem 1rem;
 }
 .markdown th {
-  background-color: #808080;
+  background-color: var(--gray);
   transition: padding 0.5s ease-out;
 }
 .markdown td, .markdown th {
   padding: 0.857rem;
 }
 .markdown tr:nth-last-child(odd) {
-  background-color: #000000;
+  background-color: var(--black);
 }
 .markdown tr:nth-last-child(even) {
-  background-color: #404040;
+  background-color: var(--dark);
 }
 .markdown thead.collapsible {
   cursor: pointer;
@@ -529,11 +703,11 @@ body .markdown img {
   height: 1rem;
 }
 .markdown div.unchecked-box {
-  background-color: #808080;
+  background-color: var(--gray);
   margin-right: 0.571rem;
 }
 .markdown div.checked-box {
-  background-color: #000000;
+  background-color: var(--black);
   margin-right: 0.571rem;
 }
 .markdown span.checkmark {
@@ -543,8 +717,8 @@ body .markdown img {
   top: 0.125rem;
   width: 0.3333333333rem;
   height: 0.5rem;
-  border-bottom: 0.143rem solid #ffffff;
-  border-right: 0.143rem solid #ffffff;
+  border-bottom: 0.143rem solid var(--white);
+  border-right: 0.143rem solid var(--white);
   transform: rotate(45deg);
 }
 .markdown span.triangle {
@@ -556,7 +730,7 @@ body .markdown img {
   top: 0.3333333333rem;
   border-left: 0.3333333333rem solid #0000;
   border-right: 0.3333333333rem solid #0000;
-  border-bottom: 0.3333333333rem solid #ffffff;
+  border-bottom: 0.3333333333rem solid var(--white);
 }
 </style>
 </head>
