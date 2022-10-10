@@ -100,3 +100,20 @@ math에 있는 기호들 웬만해선 char에도 넣자!
 곱셈, rightarrow
 
 음표도 추가 ㄱㄱ
+
+---
+
+haskell, line_num으로 했음!
+fenced code block 마지막 줄에 빈 줄 넣으면 아무 영향이 없음: 한 줄만 넣었을 때.
+
+요게 맞음?
+
+---
+
+table에서 각 cell의 prefix, postfix로 있는 whitespace는 다 지우자.
+
+`| a   | b   | c   |` 보통 요런 식으로 쓰는데 `<td> a   </td><td> b   </td><td> c   </td>`보다는 ``<td>a</td><td>b</td><td>c</td>``가 낫잖아?
+
+---
+
+underscore로 emphasis하는 문법도 넣을까? 그냥 testcode 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
