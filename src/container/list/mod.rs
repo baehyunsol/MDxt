@@ -278,9 +278,7 @@ fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
 
 fn remove_marker(line: &Line) -> Line {
     let content = match line.content[0] {
-        x if x == '-' as u16 || x == '*' as u16 => (
-            line.content[2..line.content.len()].to_vec()
-        ),
+        x if x == '-' as u16 || x == '*' as u16 => line.content[2..line.content.len()].to_vec(),
         _ => {
             let marker_end_index = line.content.iter().position(|c| *c == '.' as u16).unwrap();
 

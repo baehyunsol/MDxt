@@ -328,6 +328,12 @@ fn render_math_reference() -> Vec<u16> {
     result.push(into_v16("|-|-|\n"));
 
     for (test_case, _) in samples() {
+
+        // too short to be a meaningful example
+        if test_case.len() < 32 {
+            continue;
+        }
+
         result.push(into_v16("|\\[[math]]"));
         result.push(escape_math(&test_case));
         result.push(into_v16("[[/math]]|[[math]]"));
@@ -440,4 +446,11 @@ fn render_to_html() {
 fn md_to_math_test() {
     assert!(md_to_math(&[]).len() == 0);
     assert!(md_to_math(&into_v16("   ")).len() == 0);
+}
+
+// in some cases, md to mathml works fine, but md to html fails!
+// mostly due to escaping issues
+#[test]
+fn math_to_html_test() {
+    panic!("{}", render_to_html_with_default_options(&"[[math]]text{<=}text{=>}[[/math]]".to_string()));
 }

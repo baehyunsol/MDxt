@@ -44,14 +44,6 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
         |(index, content)| (*index, from_v16(content))
     ).collect();
 
-    #[cfg(test)]
-    if html.iter().any(|c| 0xd7ff < *c && *c < 0xe000) {
-        panic!(
-            "An illegal unicode character is found, which possibly be an internal meta character.\n{}",
-            from_v16(&html)
-        )
-    }
-
     RenderResult {
         content: from_v16(&html),
         has_collapsible_table: ast.doc_data.has_collapsible_table,

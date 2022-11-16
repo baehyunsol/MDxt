@@ -483,11 +483,22 @@ fn cell_count_test() {
 
 #[test]
 fn table_test() {
+
     for (md, html) in table_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
+        let rendered_v16 = into_v16(&rendered);
+        let html_v16 = into_v16(html);
 
-        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+        if remove_whitespaces(&rendered_v16) != remove_whitespaces(&html_v16) {
             panic!("{} \n\n {}", md, rendered);
+        }
+
+        if rendered.contains("<td> ")
+            || rendered.contains(" </td>")
+            || rendered.contains("<th> ")
+            || rendered.contains(" </th>")
+        {
+            panic!("A table's trailing whitespaces are not trimmed properly: {}", rendered);
         }
 
     }

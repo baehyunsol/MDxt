@@ -67,6 +67,10 @@ pub enum InlineMacro {
 impl InlineNode {
 
     pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
+
+        #[cfg(test)]
+        self.check_validity();
+
         match self {
             InlineNode::Raw(content) => content.clone(),
 

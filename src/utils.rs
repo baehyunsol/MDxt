@@ -255,12 +255,8 @@ pub fn log10(n: usize) -> usize {
         2
     }
 
-    else if n < 10_000 {
-        3
-    }
-
     else {
-        4
+        log10(n / 1_000) + 3
     }
 
 }

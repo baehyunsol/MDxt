@@ -3,7 +3,7 @@ use super::escape_pipes;
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
 use crate::inline::macros::{get_macro_name, parse_arguments, predicate::read_macro};
-use crate::utils::{drop_while, get_bracket_end_index, into_v16, to_int};
+use crate::utils::{drop_while, get_bracket_end_index, into_v16, strip_whitespaces, to_int};
 
 #[derive(Clone)]
 pub struct Cell {
@@ -23,7 +23,7 @@ impl Cell {
     pub fn new(content: &[u16]) -> Self {
 
         Cell {
-            content: InlineNode::Raw(remove_colspan_macro(content)),
+            content: InlineNode::Raw(remove_colspan_macro(&strip_whitespaces(content))),
             colspan: get_colspan(content),
             alignment: TableAlignment::None
         }

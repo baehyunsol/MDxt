@@ -212,11 +212,9 @@ fn list_samples() -> Vec<(String, String)> {
 <ul>
     <li>1</li>
     <li>1</li>
-    <li>1 - 
-        <ul>
-            <li>2</li>
-        </ul>
-    </li>
+    <li>1</li>
+    <li></li>
+    <li>2</li>
 </ul>
 "), ("
 1. 1

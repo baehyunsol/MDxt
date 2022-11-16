@@ -101,9 +101,9 @@ impl Line {
             self.content[0] == '-' as u16 ||
             self.content[0] == '_' as u16
         ) && {
-            let (pre, post) = take_and_drop_while(&self.content, self.content[0]);
-    
-            pre.len() > 2 && post.iter().filter(|c| **c != ' ' as u16 && **c != '\t' as u16).collect::<Vec<&u16>>().len() == 0
+            let break_ = remove_whitespaces(&self.content);
+
+            break_.iter().all(|c| *c == self.content[0])
         }
     }
 
@@ -116,9 +116,11 @@ impl Line {
 
     #[inline]
     pub fn is_unordered_list(&self) -> bool {
-        self.content.len() > 2
+        self.content.len() > 1 && !self.is_thematic_break()
         && (self.content[0] == '-' as u16 || self.content[0] == '*' as u16)
-        && self.content[1] == ' ' as u16
+        && self.content[1] == ' ' as u16 || (
+            self.content.len() == 1 && self.content[0] == '-' as u16
+        )
     }
 
     #[inline]

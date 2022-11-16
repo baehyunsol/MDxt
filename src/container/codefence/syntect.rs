@@ -25,7 +25,7 @@ pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -
     let mut result = vec![];
 
     for line_u16 in inclusive_split(&content, '\n' as u16).into_iter() {
-        let mut line_u16 = line_u16.to_vec();
+        let line_u16 = line_u16.to_vec();
 
         let curr_line = &from_v16(&line_u16);
 

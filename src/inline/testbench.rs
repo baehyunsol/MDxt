@@ -5,6 +5,41 @@ use crate::escape::escape_backslashes;
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
+impl InlineNode {
+
+    pub fn check_validity(&self) {
+
+        match self {
+            InlineNode::Raw (content)
+            | InlineNode::CodeSpan (content)
+            | InlineNode::Footnote ((_, _, content)) => {
+                check_validity_(content);
+            }
+            _ => {}
+        }
+
+    }
+
+}
+
+fn check_validity_(content: &[u16]) {
+
+    for c in content.iter() {
+
+        if 0xd7ff < *c && *c < 0xe000 {
+            panic!();  // TODO: nice error message
+        }
+
+        else if *c == '<' as u16 {
+            panic!();  // TODO: nice error message
+        }
+
+        // how do I check whether `\`s are properly closed?
+
+    }
+
+}
+
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
         ("`*`*`*`, *`*`*`*", "<code class=\"inline-code-span\">*</code><em><code class=\"inline-code-span\">*</code>, *<code class=\"inline-code-span\">*</code></em>`*"),

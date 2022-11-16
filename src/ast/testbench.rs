@@ -204,7 +204,33 @@ If you want `<div>` rather than `<span>`, add empty lines before and after `[[bo
 <h3 id=\"123\">123</h3>
 <p>&Sigma;: a finite set of symbols.</p>
 <ul><li>456</li></ul>
-")
+"), ("
+> br  
+> br\
+> no br
+> no br
+> br  
+> br\
+> no br
+> no br
+
+- br  
+no br
+- br\
+no br
+- no br
+no br
+- no br
+no br
+- br  
+no br
+- br\
+no br
+- no br
+no br
+- no br
+no br
+", "")
     ];
 
     result.into_iter().map(
@@ -248,6 +274,26 @@ fn line_samples() -> Vec<(Line, Vec<usize>)> {
         (Line::from_raw_string("[[box]]"), vec![IS_MULTILINE_MACRO]),
         (Line::from_raw_string("[[box]] box"), vec![]),
         (Line::from_raw_string("[[char = big sigma]]: a finite set of symbols."), vec![]),
+        (Line::from_raw_string("---"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string(" ---"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("  ---"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("    ---"), vec![]),
+        (Line::from_raw_string("***"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string(" ***"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("  ***"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("    ***"), vec![]),
+        (Line::from_raw_string("___"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string(" ___"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("  ___"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("    ___"), vec![]),
+        (Line::from_raw_string(" - - -"), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string(" - - - "), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string(" - * - "), vec![IS_UNORDERED_LIST]),
+        (Line::from_raw_string(" -           -         - "), vec![IS_THEMATIC_BREAK]),
+        (Line::from_raw_string("-"), vec![IS_UNORDERED_LIST]),
+        (Line::from_raw_string("- "), vec![IS_UNORDERED_LIST]),
+        (Line::from_raw_string("- abc"), vec![IS_UNORDERED_LIST]),
+        (Line::from_raw_string("-abc"), vec![]),
     ]
 }
 
@@ -400,7 +446,7 @@ fn line_predicate_test() {
 
     if failures.len() > 0 {
         panic!(
-            "{} out of {} line_predicate_test case(s) have failed!{}",
+            "{} out of {} line_predicate_test case(s) have failed!\n{}",
             failures.len(),
             (IS_MULTILINE_MACRO + 1) * samples.len(),
             failures.join("\n\n-----------------------------------\n")

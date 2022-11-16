@@ -141,6 +141,8 @@ fn escape_special_characters(content: &[u16]) -> Vec<u16> {
 
     for c in content.iter() {
 
+        // TODO
+        // it's messing up with `text{=>}`
         if *c == '<' as u16 {
             result.push(' ' as u16);
             result.push('l' as u16);

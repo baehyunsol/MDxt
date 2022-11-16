@@ -13,7 +13,7 @@ impl AST {
         for (level, content) in self.doc_data.headers.iter() {
 
             // I know that `if { for { ... } } else { ... } ` is more efficient than `for { if { ... } ... }`,
-            // I prefer more readable and pretty code
+            // but I prefer more readable and pretty code
             let element = if self.render_option.header_anchor {
                 header_to_link(&content)
             }

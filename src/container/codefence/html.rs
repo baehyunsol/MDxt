@@ -6,6 +6,8 @@ use std::collections::HashMap;
 // `<` in code, `\` in code
 // with/without syntax highlights
 
+// TODO: inline::testbench::check_validity_(FencedCode.content) 
+
 impl FencedCode {
 
     pub fn to_html(&self, class_prefix: &str) -> Vec<u16> {

@@ -19,6 +19,16 @@ tooltip
 
 얘도 `[[span]]`으로 어찌저찌 하거나 걍 plugin으로 편입시켜버리면 될 듯!
 
+`[[details, summary = click me to open!]]` 이렇게 하고 싶긴 한데...
+
+- 대소문자 구분 X, 띄어쓰기 무시
+  - 저 제한 그냥 없애버릴까?
+  - 대소문자 달라도 같은 identifier이지만 대소문자 정보를 날리진 말자!
+- 문장부호 아무것도 못 씀
+  - 이거는 좀 다른 얘기임. macro 읽는 함수들을 싹다 뜯어 고쳐야하는데?
+
+footnote 전부 tooltip으로 띄우고 싶음!
+
 ---
 
 list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으로 들어가버림. 아마 blockquote도 동일할 듯. table도 실험해보셈. 저게 맞는 동작인지 아닌지는 고민을 좀 해보자
@@ -38,18 +48,9 @@ TOC
   - 2.1. h2
 ```
 
-저런 식으로 하고 index에다가만 링크를 걸어야 header에 inline decoration 넣기 수월!
+저런 식으로 하고 index에다가만 링크를 걸어야 header에 inline decoration 넣기 수월함.
 
-각 header마다 `[[span]]`으로 감싸면 좀 더 낫지 않을까?
-1. 만약에 header 안에다가 `[[span]]` 없이 `[[/span]]`만 넣는 싸이코가 있으면?
-  - `[]`는 전부 escape해서 ㄱㅊ
-1. 
-
----
-
-html_to_mdxt도 만들 수 있지 않음? `<b>x</b>`는 `**x**`로 바꾸는 방식으로!
-
-`<em>a</em><em>b</em>`을 `*a**b*`로 바꿔버리면 어떻게 해?? 저러면 아예 다른 syntax인데? 똑같은 decoration끼리 붙어있으면 합칠까? 그건 구현에서 edge case가 무지 많을텐데...
+여러 방식의 link/index 넣을 생각하지 말고 저 방식으로 통일하자! inline::macros::toc.rs만 고치면 됨.
 
 ---
 
@@ -83,18 +84,6 @@ from gitlab
 
 ---
 
-```
-a
----
-b
----
-c
-```
-
-쟤네를 horizontal line으로 할지 paragraph로 할 지는 어떻게 결정함..?? GFM 따라할까? 근데 GFM은 쟤네를 header로 쓰는데?
-
----
-
 math에 있는 기호들 웬만해선 char에도 넣자!
 
 곱셈, rightarrow
@@ -103,17 +92,159 @@ math에 있는 기호들 웬만해선 char에도 넣자!
 
 ---
 
-haskell, line_num으로 했음!
-fenced code block 마지막 줄에 빈 줄 넣으면 아무 영향이 없음: 한 줄만 넣었을 때.
-
-요게 맞음?
-
----
-
-table에서 각 cell의 prefix, postfix로 있는 whitespace는 다 지우자.
-
-`| a   | b   | c   |` 보통 요런 식으로 쓰는데 `<td> a   </td><td> b   </td><td> c   </td>`보다는 ``<td>a</td><td>b</td><td>c</td>``가 낫잖아?
-
----
-
 underscore로 emphasis하는 문법도 넣을까? 그냥 testcode 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
+
+---
+
+blockquote에서 `\`로 줄바꿈하는 거 왜 안됨..??
+
+`\`로 줄바꿈하는 거랑 `  `로 줄바꿈 하는 거 대대적으로 손보자! 지금 너무 지저분하게 구현돼있음...
+
+---
+
+아래의 md를 gfm이랑 mdxt에서 둘다 해보셈. 첫번째랑 두번째 code fence가 다른데 rendering된 결과는 같음...(gfm 기준) mdxt도 같을 듯?
+
+일단 gfm spec 뒤져보자
+
+````
+
+abc
+
+```c
+int a = 3;
+```
+
+abc
+
+```c
+int a = 3;
+
+```
+
+abc
+
+```c
+int a = 3;
+
+
+```
+
+````
+
+---
+
+`[[define, id = table1]]`이랑 `[[reference, id = table1]]`를 만들까? `[[define]]` 안에서 table을 만들고 `[[reference]]`로 그 table을 재활용하는 거임. 이러면 table in table 등등도 전부 구현 가능!
+
+parameter도 넣을 수 있게 할까? macro 안에 대소문자 구분이 없고 띄어쓰기가 다 무시되는데 어떻게 할 거임??
+
+문제가 많을 거 같은데...
+
+1. circular reference
+  - circular reference를 찾아내서 막기
+    - 어떻게 막을 건데? 컴파일 에러를 낼 순 없잖아.
+  - reference depth를 일정 수준 이하로 제한하기.
+    - circular든 아니든 reference depth가 최대 5까지만 가능하도록 막기
+1. footnote 순서 주기
+  - definition 안의 footnote는 별개로 처리할까?
+  - definition은 아예 별개로 render를 한 다음에 html 수준에서 concat하는 거지.
+  - 그럼 definition 안에서 정의된 footnote들은 cite랑 ref랑 둘 다 그 안에서만 나오는 거임!
+  - 이런 식이면 table in table하기 되게 애매하지 않냐
+1. header 있으면 toc에는 걔네가 어떻게 들어감? 여러번 들어가? 애초에 들어갈 순서 정하는 것도 되게 애매할 듯...
+  - footnote랑 똑같은 방식으로 할까? definition 안에서 전부 먹어버리고 html 결과물만 내뿜는 거지!
+1. 앞으로 새로운 거 추가할 때마다 문제도 추가될 듯!
+
+장점도 너무 크고 단점도 너무 커서 애매하네...
+
+사실 definition 안에서 header 쓸 일은 많이 없을 거 같고 정 안되겠으면 header 자체를 막아버릴 수도 있음. 근데 definition 안에서 footnote 쓸 일은 생각보다 있을 거 같은데??
+
+`doc_data`라는 친구가 header도 전부 세고, footnote도 전부 세거든? 근데 모든 parser unit이 `&mut doc_data`을 갖고 있음. 그럼 `definition` 안에 있는 header랑 footnote도 얘가 세면 되는 거 아님?
+
+어쨌든 현재 후보 2개:
+
+1. 각각 별도로 render한 다음에 html 수준에서 합치기
+  - 이러면 recursion depth를 제한할 수 있나?
+  - toc랑 footnote는?
+  - def 밖에서 만든 link를 def 안에서 ref하면?
+  - def 안에서 다른 def를 ref하면?
+    - 이건 recursion이랑도 이어지는 문제인 듯!
+1. 적절히 잘 묶은 다음에 한번에 render
+  - mdxt 수준에서 concat해버리는 건 말이 안됨. 그럼 table in table이 구현이 안되거든
+  - `def`라는 inline_node를 만들어야지.
+  - `def` 안의 toc랑 footnote도 따로 세고
+  - rendering할 때 `def`를 html로 바꿈. 그때 recursion depth도 셈.
+
+아니면 좀 덜 flexible하게 할까? table 하나만 하거나 code fence 하나만 하는 거임!
+
+table 안에다가 `!![[ref, id = table1]]` 하거나, fence에다가 ```` ```rust, line_num, ref(code1) ```` 하거나 이런 식으로 하고 나중에 `[[reference, id = code1]]` 이런 식으로 불러오는 거지! 이거는 구현이 그나마 나을 듯?
+- 그래도 footnote는 신경 써야함.
+
+---
+
+```markdown
+[[box]]
+교수님의 질문: 내 폰이랑 공유기랑 통신하고 니네 폰이랑 공유기랑도 통신하지? 그럼 니네 폰에서 공유기로 가는 packet을 내 폰에서도 볼 수 있을까?
+- yes.
+- 근데 header 확인해보고 나랑 관련없는 packet은 걍 버림. 그래서 내 폰에서 공유기로 가는 정보를 다른 폰에서 못 보는 거임.
+  - 엥? 근데 이럼 보안 구멍 아님? 내 폰에서 쓰는 데이터를 친구 폰에서 볼 수 있는 거잖아?
+  - ㅇㅇ 그래서 application layer에서 암호화를 해버림. 그럼 중간에 가로채도 알 방법이 없음.
+    - 왜 application layer냐? 민감한 정보는 다 저기 있을 거 아녀? 다른 layer에는 공유기 ip 주소같은 안 민감한 정보만 있을 거잖아.
+[[/box]]
+```
+
+버그 찾았음!
+
+---
+
+```markdown
+[[box]]
+a
+[[/box]]
+b
+[[box]]
+c
+[[/box]]
+```
+
+이거 지금처럼 되는게 맞아?
+
+---
+
+table에서 `[[background=red]]` 같은 것도 되게 할까?
+
+`[[column background = red]]`나 `[[row background = red]]` 같은 것도 되게 만든 다음에 `cell > row > column` 우선순위로 적용되게 해도 좋을 것 같고.
+
+굳이 색깔만 설정하는게 아니고 다른 것도 되게하면 좋을 거 같고...!!
+
+column이나 row는 어디서 선언해야해?
+
+---
+
+`[[math]]`안에서 `text{=>}` 하니까 죽음...
+
+`inline::math::escape_special_characters`가 범인임. escape 되고 풀고 하는 거 아주 복잡하게 돼 있잖아? 그거 좀 깔끔하게 정리하자!
+
+---
+
+HMD에서 icon 관련된 것들 그대로 갖고 오자.
+
+수정을 좀 할 수는 있음. 그래도 큰 틀은 그대로 갖고 오자.
+
+옛날에 HMD에 있던 svg를 [drawer](https://github.com/baehyunsol/drawer)로 출력하니까 뻑나서 당황했지? 저런 거 걍 신경쓰지말고 firefox, chrome으로만 test하자.
+
+한 svg만 골라서: 색깔, 크기 조절 test
+
+모든 svg: 기본 모드로 test
+
+저거 전부 다 되는 mdxt-svg-reference page 만들고 chrome이랑 firefox로 잘 되는지만 보자!
+
+---
+
+github이나 youtube 같은 거 macro로 지원할까? [linus.dev](https://linus.dev)에 있는 거 같은 github 카드!
+- `<iframe width="420" height="315"src="https://www.youtube.com/embed/W_xYzhjIEV8"></iframe>`
+- 간단하구먼.
+- github는 3rd party js lib 써야함... https://github.com/lepture/github-cards 같은 거??? 별루...
+
+emoji도 지원했으면 좋겠음...
+- https://www.w3schools.com/charsets/ref_emoji.asp
+- https://www.alt-codes.net/flags
+- char랑 겹치는 건 빼자!

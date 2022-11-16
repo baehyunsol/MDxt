@@ -84,30 +84,26 @@ d[^b][^d]
     <p>
         <div class=\"footnote-cite\">
             <a id=\"footnote-cite-0\"></a>
-                0.
-                    <a href=\"#footnote-ref-0\"> [0] </a>
-                    <a href=\"#footnote-ref-1\"> [1] </a>
-                    <a href=\"#footnote-ref-4\"> [4] </a>
-                    This is a <strong>Sample</strong> <em>Footnote</em>.
+                <a href=\"#footnote-ref-0\"> [0] </a>
+                <a href=\"#footnote-ref-1\"> [1] </a>
+                <a href=\"#footnote-ref-4\"> [4] </a>
+                This is a <strong>Sample</strong> <em>Footnote</em>.
         </div>
         <div class=\"footnote-cite\">
             <a id=\"footnote-cite-1\"></a>
-                1.
-                    <a href=\"#footnote-ref-2\"> [2] </a>
-                    <a href=\"#footnote-ref-5\"> [5] </a>
-                    This is another <sup>sample</sup>!!
+                <a href=\"#footnote-ref-2\"> [2] </a>
+                <a href=\"#footnote-ref-5\"> [5] </a>
+                This is another <sup>sample</sup>!!
         </div>
         <div class=\"footnote-cite\">
             <a id=\"footnote-cite-2\"></a>
-                2.
-                    <a href=\"#footnote-ref-3\"> [3] </a>
-                    This is another footnote.<br/>
+                <a href=\"#footnote-ref-3\"> [3] </a>
+                This is another footnote.<br/>
         </div>
         <div class=\"footnote-cite\">
             <a id=\"footnote-cite-3\"></a>
-                3.
-                    <a href=\"#footnote-ref-6\"> [6] </a>
-                    Another one, that&apos;s not shadowed.
+                <a href=\"#footnote-ref-6\"> [6] </a>
+                Another one, that&apos;s not shadowed.
         </div>
     </p>
 </div>
@@ -125,7 +121,7 @@ d[^b][^d]
 <div class=\"mdxt-footnote-cites\">
     <p>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> not an image.
+            <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> not an image.
         </div>
     </p>
 </div>
@@ -151,10 +147,10 @@ a[^a] b[^b]
 <div class=\"mdxt-footnote-cites\">
     <p>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> aa
+            <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> aa
         </div>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-1\"></a>1. <a href=\"#footnote-ref-1\"> [1]</a> bb
+            <a id=\"footnote-cite-1\"></a><a href=\"#footnote-ref-1\"> [1]</a> bb
         </div>
     </p>
 </div>
@@ -189,13 +185,13 @@ aa[^A] bb[^B]
 <div class=\"mdxt-footnote-cites\">
     <p>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> <a href=\"#footnote-ref-3\"> [3]</a> another A.
+            <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> <a href=\"#footnote-ref-3\"> [3]</a> another A.
         </div>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-1\"></a>1. <a href=\"#footnote-ref-1\"> [1]</a> <a href=\"#footnote-ref-4\"> [4]</a> another B.
+            <a id=\"footnote-cite-1\"></a><a href=\"#footnote-ref-1\"> [1]</a> <a href=\"#footnote-ref-4\"> [4]</a> another B.
         </div>
         <div class=\"footnote-cite\">
-            <a id=\"footnote-cite-2\"></a>2. <a href=\"#footnote-ref-2\"> [2]</a> Goodbye!
+            <a id=\"footnote-cite-2\"></a><a href=\"#footnote-ref-2\"> [2]</a> Goodbye!
         </div>
     </p>
 </div>
