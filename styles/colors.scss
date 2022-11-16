@@ -7,145 +7,145 @@ CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
 
 $black: #000000;
 $black-compl: #ffffff;
-$black-trans: #00000080;
-$black-compl-trans: #ffffff80;
+$black-trans: #00000060;
+$black-compl-trans: #ffffff60;
 
 $dark: #404040;
 $dark-compl: #bfbfbf;
-$dark-trans: #40404080;
-$dark-compl-trans: #bfbfbf80;
+$dark-trans: #40404060;
+$dark-compl-trans: #bfbfbf60;
 
 $gray: #808080;
 $gray-compl: #7f7f7f;
-$gray-trans: #80808080;
-$gray-compl-trans: #7f7f7f80;
+$gray-trans: #80808060;
+$gray-compl-trans: #7f7f7f60;
 
 $lightgray: #c0c0c0;
 $lightgray-compl: #3f3f3f;
-$lightgray-trans: #c0c0c080;
-$lightgray-compl-trans: #3f3f3f80;
+$lightgray-trans: #c0c0c060;
+$lightgray-compl-trans: #3f3f3f60;
 
 $white: #ffffff;
 $white-compl: #000000;
-$white-trans: #ffffff80;
-$white-compl-trans: #00000080;
+$white-trans: #ffffff60;
+$white-compl-trans: #00000060;
 
 $red: #c04040;
 $red-compl: #3fbfbf;
-$red-trans: #c0404080;
-$red-compl-trans: #3fbfbf80;
+$red-trans: #c0404060;
+$red-compl-trans: #3fbfbf60;
 
 $green: #40c040;
 $green-compl: #bf3fbf;
-$green-trans: #40c04080;
-$green-compl-trans: #bf3fbf80;
+$green-trans: #40c04060;
+$green-compl-trans: #bf3fbf60;
 
 $blue: #4040c0;
 $blue-compl: #bfbf3f;
-$blue-trans: #4040c080;
-$blue-compl-trans: #bfbf3f80;
+$blue-trans: #4040c060;
+$blue-compl-trans: #bfbf3f60;
 
 $aqua: #40c0ff;
 $aqua-compl: #bf3f00;
-$aqua-trans: #40c0ff80;
-$aqua-compl-trans: #bf3f0080;
+$aqua-trans: #40c0ff60;
+$aqua-compl-trans: #bf3f0060;
 
 $emerald: #40ffc0;
 $emerald-compl: #bf003f;
-$emerald-trans: #40ffc080;
-$emerald-compl-trans: #bf003f80;
+$emerald-trans: #40ffc060;
+$emerald-compl-trans: #bf003f60;
 
 $violet: #c040ff;
 $violet-compl: #3fbf00;
-$violet-trans: #c040ff80;
-$violet-compl-trans: #3fbf0080;
+$violet-trans: #c040ff60;
+$violet-compl-trans: #3fbf0060;
 
 $pink: #ff40c0;
 $pink-compl: #00bf3f;
-$pink-trans: #ff40c080;
-$pink-compl-trans: #00bf3f80;
+$pink-trans: #ff40c060;
+$pink-compl-trans: #00bf3f60;
 
 $grassgreen: #c0ff40;
 $grassgreen-compl: #3f00bf;
-$grassgreen-trans: #c0ff4080;
-$grassgreen-compl-trans: #3f00bf80;
+$grassgreen-trans: #c0ff4060;
+$grassgreen-compl-trans: #3f00bf60;
 
 $gold: #ffc040;
 $gold-compl: #003fbf;
-$gold-trans: #ffc04080;
-$gold-compl-trans: #003fbf80;
+$gold-trans: #ffc04060;
+$gold-compl-trans: #003fbf60;
 
 
 :root {
     
     --black: #000000;
     --black-compl: #ffffff;
-    --black-trans: #00000080;
-    --black-compl-trans: #ffffff80;
+    --black-trans: #00000060;
+    --black-compl-trans: #ffffff60;
     
     --dark: #404040;
     --dark-compl: #bfbfbf;
-    --dark-trans: #40404080;
-    --dark-compl-trans: #bfbfbf80;
+    --dark-trans: #40404060;
+    --dark-compl-trans: #bfbfbf60;
     
     --gray: #808080;
     --gray-compl: #7f7f7f;
-    --gray-trans: #80808080;
-    --gray-compl-trans: #7f7f7f80;
+    --gray-trans: #80808060;
+    --gray-compl-trans: #7f7f7f60;
     
     --lightgray: #c0c0c0;
     --lightgray-compl: #3f3f3f;
-    --lightgray-trans: #c0c0c080;
-    --lightgray-compl-trans: #3f3f3f80;
+    --lightgray-trans: #c0c0c060;
+    --lightgray-compl-trans: #3f3f3f60;
     
     --white: #ffffff;
     --white-compl: #000000;
-    --white-trans: #ffffff80;
-    --white-compl-trans: #00000080;
+    --white-trans: #ffffff60;
+    --white-compl-trans: #00000060;
     
     --red: #c04040;
     --red-compl: #3fbfbf;
-    --red-trans: #c0404080;
-    --red-compl-trans: #3fbfbf80;
+    --red-trans: #c0404060;
+    --red-compl-trans: #3fbfbf60;
     
     --green: #40c040;
     --green-compl: #bf3fbf;
-    --green-trans: #40c04080;
-    --green-compl-trans: #bf3fbf80;
+    --green-trans: #40c04060;
+    --green-compl-trans: #bf3fbf60;
     
     --blue: #4040c0;
     --blue-compl: #bfbf3f;
-    --blue-trans: #4040c080;
-    --blue-compl-trans: #bfbf3f80;
+    --blue-trans: #4040c060;
+    --blue-compl-trans: #bfbf3f60;
     
     --aqua: #40c0ff;
     --aqua-compl: #bf3f00;
-    --aqua-trans: #40c0ff80;
-    --aqua-compl-trans: #bf3f0080;
+    --aqua-trans: #40c0ff60;
+    --aqua-compl-trans: #bf3f0060;
     
     --emerald: #40ffc0;
     --emerald-compl: #bf003f;
-    --emerald-trans: #40ffc080;
-    --emerald-compl-trans: #bf003f80;
+    --emerald-trans: #40ffc060;
+    --emerald-compl-trans: #bf003f60;
     
     --violet: #c040ff;
     --violet-compl: #3fbf00;
-    --violet-trans: #c040ff80;
-    --violet-compl-trans: #3fbf0080;
+    --violet-trans: #c040ff60;
+    --violet-compl-trans: #3fbf0060;
     
     --pink: #ff40c0;
     --pink-compl: #00bf3f;
-    --pink-trans: #ff40c080;
-    --pink-compl-trans: #00bf3f80;
+    --pink-trans: #ff40c060;
+    --pink-compl-trans: #00bf3f60;
     
     --grassgreen: #c0ff40;
     --grassgreen-compl: #3f00bf;
-    --grassgreen-trans: #c0ff4080;
-    --grassgreen-compl-trans: #3f00bf80;
+    --grassgreen-trans: #c0ff4060;
+    --grassgreen-compl-trans: #3f00bf60;
     
     --gold: #ffc040;
     --gold-compl: #003fbf;
-    --gold-trans: #ffc04080;
-    --gold-compl-trans: #003fbf80;
+    --gold-trans: #ffc04060;
+    --gold-compl-trans: #003fbf60;
     
 }

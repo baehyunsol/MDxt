@@ -185,7 +185,7 @@ Another <div class=\"toc\">
 <div class=\"mdxt-footnote-cites\">
 <p>
     <div class=\"footnote-cite\">
-        <a id=\"footnote-cite-0\"></a>0. <a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.
+        <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.
     </div>
 </p>
 </div>

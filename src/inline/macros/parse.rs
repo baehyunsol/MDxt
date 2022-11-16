@@ -105,7 +105,19 @@ impl Macro {
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
-            MacroType::Icon => todo!()
+            MacroType::Icon => InlineNode::Decoration {
+                deco_type: DecorationType::Macro({
+                    let name = arguments[0][1].clone();
+                    let size = if arguments.len() > 1 {
+                        to_int(&arguments[1][1]).unwrap().min(u16::MAX as u32) as u16
+                    } else {
+                        32 as u16
+                    };
+
+                    InlineMacro::Icon { name, size }
+                }),
+                content: vec![]
+            }
         }
 
     }

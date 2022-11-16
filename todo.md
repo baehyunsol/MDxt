@@ -225,20 +225,6 @@ column이나 row는 어디서 선언해야해?
 
 ---
 
-HMD에서 icon 관련된 것들 그대로 갖고 오자.
-
-수정을 좀 할 수는 있음. 그래도 큰 틀은 그대로 갖고 오자.
-
-옛날에 HMD에 있던 svg를 [drawer](https://github.com/baehyunsol/drawer)로 출력하니까 뻑나서 당황했지? 저런 거 걍 신경쓰지말고 firefox, chrome으로만 test하자.
-
-한 svg만 골라서: 색깔, 크기 조절 test
-
-모든 svg: 기본 모드로 test
-
-저거 전부 다 되는 mdxt-svg-reference page 만들고 chrome이랑 firefox로 잘 되는지만 보자!
-
----
-
 github이나 youtube 같은 거 macro로 지원할까? [linus.dev](https://linus.dev)에 있는 거 같은 github 카드!
 - `<iframe width="420" height="315"src="https://www.youtube.com/embed/W_xYzhjIEV8"></iframe>`
 - 간단하구먼.

@@ -8,6 +8,7 @@ mod predicate;
 #[cfg(test)]
 mod testbench;
 
+use crate::container::icon::get_icon;
 use crate::utils::into_v16;
 use math::render_math;
 
@@ -261,7 +262,7 @@ impl InlineNode {
                     InlineMacro::Blank { repeat } => vec![into_v16("&nbsp;"); *repeat].concat(),
                     InlineMacro::Math (content) => render_math(content),
                     InlineMacro::Toc => toc_rendered.to_vec(),
-                    InlineMacro::Icon { .. } => todo!()
+                    InlineMacro::Icon { name, size } => get_icon(name, *size as usize, None, false).unwrap()
                 }
             }
         }

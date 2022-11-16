@@ -134,6 +134,9 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[br]][[blank]]", "<br/>&nbsp;"),
         ("[[br=2]][[blank=3]]", "<br/><br/>&nbsp;&nbsp;&nbsp;"),
         ("[[br=]][[blank=y]]", "[[br=]][[blank=y]]"),
+        ("[[icon = invalid icon, size = 24]]", "[[icon = invalid icon, size = 24]]"),
+        ("[[icon = invalid icon]]", "[[icon = invalid icon]]"),
+        ("[[icon = github, size = invalid size]]", "[[icon = github, size = invalid size]]"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

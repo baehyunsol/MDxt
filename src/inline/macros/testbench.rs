@@ -13,7 +13,7 @@ fn valid_macros() -> Vec<(Vec<u16>, Vec<u16>)> {  // valid macro, normalized
         ("[[Red_]] ... [[/Red]]", "red"),
         ("[[char = 44032]]", "char=44032"),
         ("[[highlight = red]] ... [[/highlight]]", "highlight=red"),
-        //("[[icon = github, size = 24]]", "icon=github,size=24")
+        ("[[icon = github, size = 24]]", "icon=github,size=24")
     ];
 
     macros.iter().map(|(case, answer)| (into_v16(case), into_v16(answer))).collect()
@@ -49,7 +49,10 @@ fn macro_test() {
     let invalid_cases = invalid.iter().map(|m| read_macro(m, 0)).collect::<Vec<Option<Vec<u16>>>>();
 
     if !invalid_cases.iter().all(|i| i.is_none()) {
-        panic!("{:?}", invalid_cases);
+        panic!(
+            "{:?}",
+            invalid_cases.iter().filter(|i| i.is_some()).map(|i| from_v16(&i.clone().unwrap())).collect::<Vec<String>>()
+        );
     }
 
     let valid_cases_parsed = valid.iter().map(|m| check_and_parse_macro_inline(&m.0, 0, &mut DocData::default(), &mut RenderOption::default())).collect::<Vec<Option<(InlineNode, usize)>>>();
@@ -85,24 +88,30 @@ fn render_character_reference() -> Vec<u16> {
 #[test]
 fn render_to_html() {
     use std::fs::File;
-    use std::io::Write;
+    use std::io::{Read, Write};
 
     let md = render_character_reference();
 
     let md = from_v16(&md);
+
+    let mut f = File::open("./styles/markdown.css").unwrap();
+    let mut css = String::new();
+    f.read_to_string(&mut css).unwrap();
     let html = format!(
 "
 <!DOCTYPE html>
 <html>
 <head>
     <title>MDxt Math Reference</title>
+    <style>{}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
-        render_to_html_with_default_options(&md)
+        css,
+        render_to_html_with_default_options(&md),
     );
 
     let mut f = File::create("character_test.html").unwrap();

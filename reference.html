@@ -11,60 +11,60 @@ CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
 :root {
   --black: #000000;
   --black-compl: #ffffff;
-  --black-trans: #00000080;
-  --black-compl-trans: #ffffff80;
+  --black-trans: #00000060;
+  --black-compl-trans: #ffffff60;
   --dark: #404040;
   --dark-compl: #bfbfbf;
-  --dark-trans: #40404080;
-  --dark-compl-trans: #bfbfbf80;
+  --dark-trans: #40404060;
+  --dark-compl-trans: #bfbfbf60;
   --gray: #808080;
   --gray-compl: #7f7f7f;
-  --gray-trans: #80808080;
-  --gray-compl-trans: #7f7f7f80;
+  --gray-trans: #80808060;
+  --gray-compl-trans: #7f7f7f60;
   --lightgray: #c0c0c0;
   --lightgray-compl: #3f3f3f;
-  --lightgray-trans: #c0c0c080;
-  --lightgray-compl-trans: #3f3f3f80;
+  --lightgray-trans: #c0c0c060;
+  --lightgray-compl-trans: #3f3f3f60;
   --white: #ffffff;
   --white-compl: #000000;
-  --white-trans: #ffffff80;
-  --white-compl-trans: #00000080;
+  --white-trans: #ffffff60;
+  --white-compl-trans: #00000060;
   --red: #c04040;
   --red-compl: #3fbfbf;
-  --red-trans: #c0404080;
-  --red-compl-trans: #3fbfbf80;
+  --red-trans: #c0404060;
+  --red-compl-trans: #3fbfbf60;
   --green: #40c040;
   --green-compl: #bf3fbf;
-  --green-trans: #40c04080;
-  --green-compl-trans: #bf3fbf80;
+  --green-trans: #40c04060;
+  --green-compl-trans: #bf3fbf60;
   --blue: #4040c0;
   --blue-compl: #bfbf3f;
-  --blue-trans: #4040c080;
-  --blue-compl-trans: #bfbf3f80;
+  --blue-trans: #4040c060;
+  --blue-compl-trans: #bfbf3f60;
   --aqua: #40c0ff;
   --aqua-compl: #bf3f00;
-  --aqua-trans: #40c0ff80;
-  --aqua-compl-trans: #bf3f0080;
+  --aqua-trans: #40c0ff60;
+  --aqua-compl-trans: #bf3f0060;
   --emerald: #40ffc0;
   --emerald-compl: #bf003f;
-  --emerald-trans: #40ffc080;
-  --emerald-compl-trans: #bf003f80;
+  --emerald-trans: #40ffc060;
+  --emerald-compl-trans: #bf003f60;
   --violet: #c040ff;
   --violet-compl: #3fbf00;
-  --violet-trans: #c040ff80;
-  --violet-compl-trans: #3fbf0080;
+  --violet-trans: #c040ff60;
+  --violet-compl-trans: #3fbf0060;
   --pink: #ff40c0;
   --pink-compl: #00bf3f;
-  --pink-trans: #ff40c080;
-  --pink-compl-trans: #00bf3f80;
+  --pink-trans: #ff40c060;
+  --pink-compl-trans: #00bf3f60;
   --grassgreen: #c0ff40;
   --grassgreen-compl: #3f00bf;
-  --grassgreen-trans: #c0ff4080;
-  --grassgreen-compl-trans: #3f00bf80;
+  --grassgreen-trans: #c0ff4060;
+  --grassgreen-compl-trans: #3f00bf60;
   --gold: #ffc040;
   --gold-compl: #003fbf;
-  --gold-trans: #ffc04080;
-  --gold-compl-trans: #003fbf80;
+  --gold-trans: #ffc04060;
+  --gold-compl-trans: #003fbf60;
 }
 
 body .markdown {
@@ -113,6 +113,9 @@ body .markdown img {
 }
 
 /* Colors */
+.markdown {
+  /* Default color */
+}
 .markdown .color-black {
   color: var(--black);
 }
@@ -124,6 +127,9 @@ body .markdown img {
 }
 .markdown .highlight-black::selection {
   background-color: var(--black-compl);
+}
+.markdown .color-black svg path, .markdown .color-black svg rect, .markdown .color-black svg circle {
+  fill: var(--black);
 }
 .markdown .color-dark {
   color: var(--dark);
@@ -137,6 +143,9 @@ body .markdown img {
 .markdown .highlight-dark::selection {
   background-color: var(--dark-compl);
 }
+.markdown .color-dark svg path, .markdown .color-dark svg rect, .markdown .color-dark svg circle {
+  fill: var(--dark);
+}
 .markdown .color-gray {
   color: var(--gray);
 }
@@ -148,6 +157,9 @@ body .markdown img {
 }
 .markdown .highlight-gray::selection {
   background-color: var(--gray-compl);
+}
+.markdown .color-gray svg path, .markdown .color-gray svg rect, .markdown .color-gray svg circle {
+  fill: var(--gray);
 }
 .markdown .color-lightgray {
   color: var(--lightgray);
@@ -161,6 +173,9 @@ body .markdown img {
 .markdown .highlight-lightgray::selection {
   background-color: var(--lightgray-compl);
 }
+.markdown .color-lightgray svg path, .markdown .color-lightgray svg rect, .markdown .color-lightgray svg circle {
+  fill: var(--lightgray);
+}
 .markdown .color-white {
   color: var(--white);
 }
@@ -172,6 +187,9 @@ body .markdown img {
 }
 .markdown .highlight-white::selection {
   background-color: var(--white-compl);
+}
+.markdown .color-white svg path, .markdown .color-white svg rect, .markdown .color-white svg circle {
+  fill: var(--white);
 }
 .markdown .color-red {
   color: var(--red);
@@ -185,6 +203,9 @@ body .markdown img {
 .markdown .highlight-red::selection {
   background-color: var(--red-compl);
 }
+.markdown .color-red svg path, .markdown .color-red svg rect, .markdown .color-red svg circle {
+  fill: var(--red);
+}
 .markdown .color-green {
   color: var(--green);
 }
@@ -196,6 +217,9 @@ body .markdown img {
 }
 .markdown .highlight-green::selection {
   background-color: var(--green-compl);
+}
+.markdown .color-green svg path, .markdown .color-green svg rect, .markdown .color-green svg circle {
+  fill: var(--green);
 }
 .markdown .color-blue {
   color: var(--blue);
@@ -209,6 +233,9 @@ body .markdown img {
 .markdown .highlight-blue::selection {
   background-color: var(--blue-compl);
 }
+.markdown .color-blue svg path, .markdown .color-blue svg rect, .markdown .color-blue svg circle {
+  fill: var(--blue);
+}
 .markdown .color-aqua {
   color: var(--aqua);
 }
@@ -220,6 +247,9 @@ body .markdown img {
 }
 .markdown .highlight-aqua::selection {
   background-color: var(--aqua-compl);
+}
+.markdown .color-aqua svg path, .markdown .color-aqua svg rect, .markdown .color-aqua svg circle {
+  fill: var(--aqua);
 }
 .markdown .color-emerald {
   color: var(--emerald);
@@ -233,6 +263,9 @@ body .markdown img {
 .markdown .highlight-emerald::selection {
   background-color: var(--emerald-compl);
 }
+.markdown .color-emerald svg path, .markdown .color-emerald svg rect, .markdown .color-emerald svg circle {
+  fill: var(--emerald);
+}
 .markdown .color-violet {
   color: var(--violet);
 }
@@ -244,6 +277,9 @@ body .markdown img {
 }
 .markdown .highlight-violet::selection {
   background-color: var(--violet-compl);
+}
+.markdown .color-violet svg path, .markdown .color-violet svg rect, .markdown .color-violet svg circle {
+  fill: var(--violet);
 }
 .markdown .color-pink {
   color: var(--pink);
@@ -257,6 +293,9 @@ body .markdown img {
 .markdown .highlight-pink::selection {
   background-color: var(--pink-compl);
 }
+.markdown .color-pink svg path, .markdown .color-pink svg rect, .markdown .color-pink svg circle {
+  fill: var(--pink);
+}
 .markdown .color-grassgreen {
   color: var(--grassgreen);
 }
@@ -269,6 +308,9 @@ body .markdown img {
 .markdown .highlight-grassgreen::selection {
   background-color: var(--grassgreen-compl);
 }
+.markdown .color-grassgreen svg path, .markdown .color-grassgreen svg rect, .markdown .color-grassgreen svg circle {
+  fill: var(--grassgreen);
+}
 .markdown .color-gold {
   color: var(--gold);
 }
@@ -280,6 +322,12 @@ body .markdown img {
 }
 .markdown .highlight-gold::selection {
   background-color: var(--gold-compl);
+}
+.markdown .color-gold svg path, .markdown .color-gold svg rect, .markdown .color-gold svg circle {
+  fill: var(--gold);
+}
+.markdown svg path, .markdown svg rect, .markdown svg circle {
+  fill: var(--white);
 }
 
 /* Box */
@@ -579,7 +627,7 @@ body .markdown img {
   border-right: 0.143rem solid #bf003f;
 }
 .markdown pre.fenced-code-block span.highlight.code-fence-row:hover {
-  background-color: #ffffff80;
+  background-color: #ffffff60;
 }
 .markdown pre.fenced-code-block span.highlight span .color-black {
   color: #ffffff;
@@ -636,7 +684,7 @@ body .markdown img {
   transition: background-color 0.5s ease-out;
 }
 .markdown button.copy-fenced-code:hover {
-  background-color: #ffffff80;
+  background-color: #ffffff60;
   transition: background-color 0.5s ease-out;
 }
 
@@ -653,28 +701,42 @@ body .markdown img {
 .markdown table {
   border-collapse: collapse;
   margin: 1.571rem 1rem;
+  /*break-inside: avoid;  // needs more research */
 }
-.markdown th {
+.markdown table th {
   background-color: var(--gray);
   transition: padding 0.5s ease-out;
+  border: 0.143rem solid var(--lightgray);
 }
-.markdown td, .markdown th {
+.markdown table tr th:first-child {
+  border-left: 0.238rem solid var(--gray);
+}
+.markdown table tr th:last-child {
+  border-right: 0.238rem solid var(--gray);
+}
+.markdown table tr:first-child th {
+  border-top: 0.238rem solid var(--gray);
+}
+.markdown table tr:last-child th {
+  border-bottom: 0.238rem solid var(--gray);
+}
+.markdown table td, .markdown table th {
   padding: 0.857rem;
 }
-.markdown tr:nth-last-child(odd) {
+.markdown table tr:nth-last-child(odd) {
   background-color: var(--black);
 }
-.markdown tr:nth-last-child(even) {
+.markdown table tr:nth-last-child(even) {
   background-color: var(--dark);
 }
-.markdown thead.collapsible {
+.markdown table thead.collapsible {
   cursor: pointer;
 }
-.markdown thead.collapsed th {
+.markdown table thead.collapsed th {
   padding: 0.286rem;
   transition: padding 0.5s ease-out;
 }
-.markdown .invisible th, .markdown .invisible td {
+.markdown table .invisible th, .markdown table .invisible td {
   display: none;
 }
 

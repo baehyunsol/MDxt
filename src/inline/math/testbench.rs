@@ -417,23 +417,29 @@ fn render_math_reference() -> Vec<u16> {
 #[test]
 fn render_to_html() {
     use std::fs::File;
-    use std::io::Write;
+    use std::io::{Read, Write};
 
     let md = render_math_reference();
 
     let md = from_v16(&md);
+
+    let mut f = File::open("./styles/markdown.css").unwrap();
+    let mut css = String::new();
+    f.read_to_string(&mut css).unwrap();
     let html = format!(
 "
 <!DOCTYPE html>
 <html>
 <head>
     <title>MDxt Math Reference</title>
+    <style>{}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
+        css,
         render_to_html_with_default_options(&md)
     );
 

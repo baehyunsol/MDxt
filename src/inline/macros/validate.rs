@@ -1,5 +1,6 @@
 use super::{character::CHAR_NAMES, Macro, MacroType};
 use crate::color::COLOR_NAMES;
+use crate::container::icon::ICONS;
 use crate::utils::{into_v16, to_int};
 
 impl Macro {
@@ -46,7 +47,12 @@ impl Macro {
 
             MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2 && COLOR_NAMES.contains(&arguments[0][1]),
 
-            MacroType::Icon => todo!()
+            MacroType::Icon => arguments[0].len() == 2 && ICONS.contains_key(&arguments[0][1]) && (
+                arguments.len() == 1 || arguments.len() == 2 && arguments[1][0] == into_v16("size") && match to_int(&arguments[1][1]) {
+                    Some(n) if n < u16::MAX as u32 => true,
+                    _ => false
+                }
+            )
         }
 
     }

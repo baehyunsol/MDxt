@@ -1,0 +1,98 @@
+#[test]
+fn render_icon_test() {
+    use std::fs::File;
+    use std::io::{Read, Write};
+    use crate::render_to_html_with_default_options;
+    use crate::utils::{from_v16};
+    use super::*;
+    use super::render::*;
+
+    let mut strings = vec![
+        String::from("# Icons\n\n[[toc]]\n\n## Sizing\n\n"),
+        String::from("`[[icon=github, size = 16]]`: [[icon=github, size = 16]]\n\n"),
+        String::from("`[[icon=github, size = 32]]`: [[icon=github, size = 32]]\n\n"),
+        String::from("`[[icon=github, size = 64]]`: [[icon=github, size = 64]]\n\n"),
+        String::from("`[[icon=github, size = 128]]`: [[icon=github, size = 128]]\n\n"),
+        String::from("## Coloring\n\n"),
+        String::from("`[[red]][[icon=github]][[/red]]`: [[red]][[icon=github]][[/red]]\n\n"),
+        String::from("`[[green]][[icon=github]][[/green]]`: [[green]][[icon=github]][[/green]]\n\n"),
+        String::from("`[[blue]][[icon=github]][[/blue]]`: [[blue]][[icon=github]][[/blue]]\n\n"),
+        String::from("## Alignments\n\n"),
+        String::from("```\n"),
+        String::from("[[center]]\n\n"),
+        String::from("[[icon=github]]\n\n"),
+        String::from("[[/center]]\n"),
+        String::from("```\n\n"),
+        String::from("[[center]]\n\n"),
+        String::from("[[icon=github]]\n\n"),
+        String::from("[[/center]]\n\n"),
+    ];
+
+    let mut icons = ICONS.iter().map(
+        |(name, (_, src))|
+        (name.clone(), src.clone())
+    ).collect::<Vec<(Vec<u16>, usize)>>();  // (Name, Source)
+
+    icons.sort_unstable_by_key(|(name, _)| name.clone());
+
+    strings.push(String::from("## Icons Table\n\n"));
+    strings.push(format!("Total {} icons.\n\n", icons.len()));
+
+    for (name, _) in icons.iter() {
+        strings.push(format!(" [{}](#icon{}) ", from_v16(name), from_v16(name)));
+    }
+
+    strings.push(String::from("\n\n| name | icon | source | license |\n|-|-|-|-|\n"));
+
+    for (name, src) in icons.iter() {
+
+        let (source, license) = match src {
+            _s if *_s == EVA_ICON => ("EVA", "MIT"),
+            _s if *_s == MATERIAL_ICON => ("MATERIAL", "Apache 2.0"),
+            _s if *_s == DEV_ICON => ("DEV", "MIT"),
+            _s if *_s == ION_ICON => ("ION", "MIT"),
+            _s if *_s == BOOTSTRAP_ICON => ("BOOTSTRAP", "MIT"),
+            _ => panic!()
+        };
+
+        strings.push(format!(
+            "|{}|[[icon = {}, size = 48]][[anchor, id=icon{}]][[/anchor]]|[{}]|{}|\n",
+            from_v16(name),
+            from_v16(name),
+            from_v16(name),
+            source, license
+        ));
+    }
+
+    strings.push(String::from("\n[EVA]: https://akveo.github.io/eva-icons"));
+    strings.push(String::from("\n[ION]: https://ionic.io/ionicons"));
+    strings.push(String::from("\n[DEV]: https://devicon.dev"));
+    strings.push(String::from("\n[BOOTSTRAP]: https://icons.getbootstrap.com"));
+    strings.push(String::from("\n[MATERIAL]: https://fonts.google.com/icons"));
+
+    let raw_html = render_to_html_with_default_options(&strings.concat());
+
+    let mut f = File::open("./styles/markdown.css").unwrap();
+    let mut css = String::new();
+    f.read_to_string(&mut css).unwrap();
+
+    let html = format!(
+"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MDxt Icon Reference</title>
+    <style>{}</style>
+</head>
+<body>
+    <article class=\"markdown\">{}</article>
+</body>
+</html>
+",
+        css,
+        raw_html
+    );
+
+    let mut f = File::create("icon_test.html").unwrap();
+    f.write_all(html.as_bytes()).unwrap();
+}
