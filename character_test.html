@@ -336,13 +336,16 @@ body .markdown img {
   border: 0.143rem solid var(--gray);
 }
 .markdown div.box {
-  width: 80%;
+  max-width: 90%;
   padding: 0.571rem;
   margin: 1.571rem 1rem;
   border: 0.143rem solid var(--gray);
 }
 .markdown .box.no-border {
   border: none;
+}
+.markdown .box.inline {
+  display: inline-block;
 }
 
 /* Sizes */
@@ -353,12 +356,24 @@ body .markdown img {
   max-width: 11.9rem;
   max-height: 11.9rem;
 }
+.markdown .box.width-tiny {
+  width: 7.143rem;
+}
+.markdown .box.height-tiny {
+  height: 7.143rem;
+}
 .markdown .size-small {
   font-size: 0.762rem;
 }
 .markdown .size-small img {
   max-width: 16.67rem;
   max-height: 16.67rem;
+}
+.markdown .box.width-small {
+  width: 10rem;
+}
+.markdown .box.height-small {
+  height: 10rem;
 }
 .markdown .size-medium {
   font-size: 1rem;
@@ -367,6 +382,12 @@ body .markdown img {
   max-width: 21.43rem;
   max-height: 21.43rem;
 }
+.markdown .box.width-medium {
+  width: 12.86rem;
+}
+.markdown .box.height-medium {
+  height: 12.86rem;
+}
 .markdown .size-big {
   font-size: 1.19rem;
 }
@@ -374,12 +395,24 @@ body .markdown img {
   max-width: 28.57rem;
   max-height: 28.57rem;
 }
+.markdown .box.width-big {
+  width: 17.14rem;
+}
+.markdown .box.height-big {
+  height: 17.14rem;
+}
 .markdown .size-giant {
   font-size: 1.571rem;
 }
 .markdown .size-giant img {
   max-width: 34.29rem;
   max-height: 34.29rem;
+}
+.markdown .box.width-giant {
+  width: 20.57rem;
+}
+.markdown .box.height-giant {
+  height: 20.57rem;
 }
 
 /* Alignments */

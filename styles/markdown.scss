@@ -392,7 +392,7 @@ body .markdown {
     }
 
     div.box {
-        width: 80%;
+        max-width: 90%;
         padding: $padding-medium;
         margin: $margin-big $margin-medium;
         border: $border-medium solid var(--gray);
@@ -400,6 +400,10 @@ body .markdown {
 
     .box.no-border {
         border: none;
+    }
+
+    .box.inline {
+        display: inline-block;
     }
 
 }
@@ -416,6 +420,14 @@ body .markdown {
             max-height: $image-tiny;
         }
     }
+
+    .box.width-tiny {
+        width: $box-tiny;
+    }
+
+    .box.height-tiny {
+        height: $box-tiny;
+    }
     
     .size-small {
         font-size: $font-small;
@@ -424,6 +436,14 @@ body .markdown {
             max-width: $image-small;
             max-height: $image-small;
         }
+    }
+
+    .box.width-small {
+        width: $box-small;
+    }
+
+    .box.height-small {
+        height: $box-small;
     }
     
     .size-medium {
@@ -434,6 +454,14 @@ body .markdown {
             max-height: $image-medium;
         }
     }
+
+    .box.width-medium {
+        width: $box-medium;
+    }
+
+    .box.height-medium {
+        height: $box-medium;
+    }
     
     .size-big {
         font-size: $font-big;
@@ -443,6 +471,14 @@ body .markdown {
             max-height: $image-big;
         }
     }
+
+    .box.width-big {
+        width: $box-big;
+    }
+
+    .box.height-big {
+        height: $box-big;
+    }
     
     .size-giant {
         font-size: $font-giant;
@@ -451,6 +487,14 @@ body .markdown {
             max-width: $image-giant;
             max-height: $image-giant;
         }
+    }
+
+    .box.width-giant {
+        width: $box-giant;
+    }
+
+    .box.height-giant {
+        height: $box-giant;
     }
     
 

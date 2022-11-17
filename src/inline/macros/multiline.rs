@@ -1,10 +1,10 @@
 use super::{
     get_macro_name, parse_arguments,
     Macro, MACROS, MacroType,
-    predicate::read_macro, parse::parse_html_tag,
+    predicate::read_macro, parse::{parse_html_tag, parse_box_arguments},
 };
 use crate::ast::line::Line;
-use crate::utils::into_v16;
+use crate::utils::{from_v16, into_v16};
 
 #[derive(Clone)]
 pub struct MultiLineMacro {
@@ -14,7 +14,12 @@ pub struct MultiLineMacro {
 
 #[derive(Clone)]
 enum MultiLineMacroType {
-    Box { border: bool },
+    Box {
+        border: bool,
+        inline: bool,
+        width: Vec<u16>,
+        height: Vec<u16>,
+    },
     Color(Vec<u16>),
     Size(Vec<u16>),
     Alignment(Vec<u16>),
@@ -52,10 +57,11 @@ impl MultiLineMacro {
 
         match macro_type {
             MacroType::Box => MultiLineMacro {
+                macro_type: {
+                    let (border, inline, width, height) = parse_box_arguments(&macro_arguments);
 
-                // for now, `no border` is the only valid argument for the `Box` macro
-                // so a valid `Box` macro with more than 1 argument has no border
-                macro_type: MultiLineMacroType::Box { border: macro_arguments.len() == 1 },
+                    MultiLineMacroType::Box { border, inline, width, height }
+                },
                 is_closing
             },
             MacroType::Color => MultiLineMacro {
@@ -123,11 +129,30 @@ impl MultiLineMacro {
         else {
 
             match &self.macro_type {
-                MultiLineMacroType::Box { border } => if *border {
-                    into_v16(&format!("<div class=\"{}box\">", class_prefix))
-                } else {
-                    into_v16(&format!("<div class=\"{}box {}no-border\">", class_prefix, class_prefix))
-                },
+                MultiLineMacroType::Box { border, inline, width, height } => into_v16(&format!(
+                    "<div class=\"{}box{}{}{}{}\">",
+                    class_prefix,
+                    if !border {
+                        format!(" {}no-border", class_prefix)
+                    } else {
+                        String::new()
+                    },
+                    if *inline {
+                        format!(" {}inline", class_prefix)
+                    } else {
+                        String::new()
+                    },
+                    if width.len() > 0 {
+                        format!(" {}width-{}", class_prefix, from_v16(&width))
+                    } else {
+                        String::new()
+                    },
+                    if height.len() > 0 {
+                        format!(" {}height-{}", class_prefix, from_v16(&height))
+                    } else {
+                        String::new()
+                    }
+                )),
                 MultiLineMacroType::Color(color) => vec![
                     into_v16(&format!("<div class=\"{}color-", class_prefix)),
                     color.clone(),

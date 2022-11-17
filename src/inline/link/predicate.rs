@@ -67,10 +67,21 @@ pub fn read_reference_link(content: &[u16], index: usize, link_references: &Hash
 
                 match get_bracket_end_index(content, bracket_end_index + 1) {
                     Some(second_bracket_end_index) => {
-                        let link_text = &content[index + 1..bracket_end_index];
-                        let mut link_label = &content[bracket_end_index + 2..second_bracket_end_index];
+                        let link_text = &content[index + 1..bracket_end_index];  // `foo` in `[foo][bar]`
+                        let mut link_label = &content[bracket_end_index + 2..second_bracket_end_index];  // `bar` in `[foo][bar]`
 
-                        if second_bracket_end_index == bracket_end_index + 2 {  // collapsed reference link
+                        if link_label.len() > 2 && link_label[0] == '[' as u16 {
+                            // `[link][[br]]` is a shortcut reference link followed by a macro
+                            match get_bracket_end_index(&link_label, 0) {
+                                Some(i) if i == link_label.len() - 1 => {
+                                    return None;
+                                }
+                                _ => {}
+                            }
+
+                        }
+
+                        if second_bracket_end_index == bracket_end_index + 2 {  // `[foo][]`, collapsed reference link
                             link_label = link_text;
                         }
 
@@ -127,8 +138,22 @@ pub fn read_shortcut_reference_link(content: &[u16], index: usize, link_referenc
 
                 else {  // content[bracket_end_index + 1] == '[' as u16
 
+                    // `[link][[br]]` is a shortcut reference link followed by a macro
                     match get_bracket_end_index(content, bracket_end_index + 1) {
-                        Some(_) => {return None;}
+                        Some(second_bracket_end_index) => {
+
+                            if second_bracket_end_index == bracket_end_index + 2 || content[bracket_end_index + 2] != '[' as u16 {
+                                return None;
+                            }
+
+                            match get_bracket_end_index(content, bracket_end_index + 2) {
+                                Some(second_inner_bracket_end_index) if second_inner_bracket_end_index + 1 == second_bracket_end_index => {
+                                    // may be a shortcut reference link
+                                }
+                                _ => { return None; }
+                            }
+
+                        }
                         _ => {},
                     }
 

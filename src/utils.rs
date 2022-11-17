@@ -1,7 +1,10 @@
+#[inline]
 pub fn into_v16(s: &str) -> Vec<u16> {
+    // TODO: why filtering?
     String::from(s).encode_utf16().filter(|c| *c != 13).collect()
 }
 
+#[inline]
 pub fn from_v16(v: &[u16]) -> String {
 
     if cfg!(test) {

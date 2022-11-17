@@ -21,8 +21,7 @@ impl Macro {
                 )
             },
 
-            MacroType::Box => (arguments.len() == 1 && arguments[0].len() == 1)
-            || (arguments.len() == 2 && arguments[1].len() == 1 && arguments[1][0] == into_v16("noborder")),
+            MacroType::Box => (arguments[0].len() == 1) && is_valid_box_arguments(&arguments),
 
             MacroType::Char => arguments.len() == 1 && arguments[0].len() == 2 && (
                 to_int(&arguments[0][1]).is_some() || CHAR_NAMES.contains(&arguments[0][1])
@@ -57,4 +56,37 @@ impl Macro {
 
     }
 
+}
+
+fn is_valid_box_arguments(arguments: &Vec<Vec<Vec<u16>>>) -> bool {
+    let mut result = true;
+
+    for argument in arguments[1..].iter() {
+
+        if (argument[0] == into_v16("noborder") || argument[0] == into_v16("inline")) && argument.len() == 1 {
+            //
+        }
+
+        else if (argument[0] == into_v16("width") || argument[0] == into_v16("height")) && argument.len() == 2 {
+
+            if argument[1] != into_v16("tiny")
+                && argument[1] != into_v16("small")
+                && argument[1] != into_v16("medium")
+                && argument[1] != into_v16("big")
+                && argument[1] != into_v16("giant")
+            {
+                result = false;
+                break;
+            }
+
+        }
+
+        else {
+            result = false;
+            break;
+        }
+
+    }
+
+    result
 }

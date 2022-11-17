@@ -14,9 +14,15 @@ fn render_icon_test() {
         String::from("`[[icon=github, size = 64]]`: [[icon=github, size = 64]]\n\n"),
         String::from("`[[icon=github, size = 128]]`: [[icon=github, size = 128]]\n\n"),
         String::from("## Coloring\n\n"),
-        String::from("`[[red]][[icon=github]][[/red]]`: [[red]][[icon=github]][[/red]]\n\n"),
-        String::from("`[[green]][[icon=github]][[/green]]`: [[green]][[icon=github]][[/green]]\n\n"),
-        String::from("`[[blue]][[icon=github]][[/blue]]`: [[blue]][[icon=github]][[/blue]]\n\n"),
+        String::from("`[[red]]        [[icon=github]]        [[/red]]`: [[red]][[icon=github]][[/red]]\n\n"),
+        String::from("`[[green]]      [[icon=github]]      [[/green]]`: [[green]][[icon=github]][[/green]]\n\n"),
+        String::from("`[[blue]]       [[icon=github]]       [[/blue]]`: [[blue]][[icon=github]][[/blue]]\n\n"),
+        String::from("`[[aqua]]       [[icon=github]]       [[/aqua]]`: [[aqua]][[icon=github]][[/aqua]]\n\n"),
+        String::from("`[[emerald]]    [[icon=github]]    [[/emerald]]`: [[emerald]][[icon=github]][[/emerald]]\n\n"),
+        String::from("`[[violet]]     [[icon=github]]     [[/violet]]`: [[violet]][[icon=github]][[/violet]]\n\n"),
+        String::from("`[[pink]]       [[icon=github]]       [[/pink]]`: [[pink]][[icon=github]][[/pink]]\n\n"),
+        String::from("`[[grassgreen]] [[icon=github]] [[/grassgreen]]`: [[grassgreen]][[icon=github]][[/grassgreen]]\n\n"),
+        String::from("`[[gold]]       [[icon=github]]       [[/gold]]`: [[gold]][[icon=github]][[/gold]]\n\n"),
         String::from("## Alignments\n\n"),
         String::from("```\n"),
         String::from("[[center]]\n\n"),
@@ -42,7 +48,7 @@ fn render_icon_test() {
         strings.push(format!(" [{}](#icon{}) ", from_v16(name), from_v16(name)));
     }
 
-    strings.push(String::from("\n\n| name | icon | source | license |\n|-|-|-|-|\n"));
+    strings.push(String::from("\n\n"));
 
     for (name, src) in icons.iter() {
 
@@ -56,7 +62,7 @@ fn render_icon_test() {
         };
 
         strings.push(format!(
-            "|{}|[[icon = {}, size = 48]][[anchor, id=icon{}]][[/anchor]]|[{}]|{}|\n",
+            "\n\n[[box, inline, width = medium]]\n\n[[center]]\n\n[[icon = {}, size = 64]][[br]]{}[[br]][[anchor, id=icon{}]][[/anchor]][{}][[br]]{}\n\n[[/center]]\n\n[[/box]]",
             from_v16(name),
             from_v16(name),
             from_v16(name),

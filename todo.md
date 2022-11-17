@@ -80,10 +80,6 @@ from gitlab
 
 ---
 
-`*a* **b**`하고 `*a***b**`가 다르게 render되는데 이건 intended로 치는게 낫겠지?
-
----
-
 math에 있는 기호들 웬만해선 char에도 넣자!
 
 곱셈, rightarrow
@@ -234,3 +230,7 @@ emoji도 지원했으면 좋겠음...
 - https://www.w3schools.com/charsets/ref_emoji.asp
 - https://www.alt-codes.net/flags
 - char랑 겹치는 건 빼자!
+
+---
+
+`[[anchor, id=iconairplane]][[/anchor]][Material][[br]]`에서 가운데 `[Material]`이 valid link거든? 근데 제대로 render가 안됨... square brackets 사이에 껴 있어서 그런 듯?

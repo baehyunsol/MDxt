@@ -6,6 +6,8 @@ use crate::ast::doc_data::DocData;
 
 impl Macro {
 
+    // all the validity checks are done before this function
+    // this function assumes that everything is valid
     pub fn parse(
         &self,
         arguments: &Vec<Vec<Vec<u16>>>,
@@ -79,10 +81,11 @@ impl Macro {
             },
 
             MacroType::Box => InlineNode::Decoration {
+                deco_type: DecorationType::Macro({
+                    let (border, inline, width, height) = parse_box_arguments(&arguments);
 
-                // for now, `no border` is the only valid argument for the `Box` macro
-                // so a valid `Box` macro with more than 1 argument has no border
-                deco_type: DecorationType::Macro(InlineMacro::Box { border: arguments.len() == 1 }),
+                    InlineMacro::Box { border, inline, width, height }
+                }),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
@@ -146,4 +149,35 @@ pub fn parse_html_tag(arguments: &Vec<Vec<Vec<u16>>>) -> (Vec<u16>, Vec<u16>, Ve
     }
 
     (arguments[0][0].clone(), classes.join(&[' ' as u16][..]), ids.join(&[' ' as u16][..]))
+}
+
+// all the validity checks are done before this function
+// this function assumes that everything is valid
+pub fn parse_box_arguments(arguments: &Vec<Vec<Vec<u16>>>) -> (bool, bool, Vec<u16>, Vec<u16>) {  // (HasBorder, Inline, Width, Height)
+    let mut no_border = false;
+    let mut inline = false;
+    let mut width = vec![];
+    let mut height = vec![];
+
+    for argument in arguments[1..].iter() {
+
+        if argument[0] == into_v16("noborder") {
+            no_border = true;
+        }
+
+        else if argument[0] == into_v16("inline") {
+            inline = true;
+        }
+
+        else if argument[0] == into_v16("width") {
+            width = argument[1].clone();
+        }
+
+        else if argument[0] == into_v16("height") {
+            height = argument[1].clone();
+        }
+
+    }
+
+    (!no_border, inline, width, height)
 }

@@ -41,7 +41,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[link]()", "<a href=\"\">link</a>"),
         ("[valid_link][link]", "<a href=\"https://example\">valid_link</a>"),
         ("[link][invalid_link]", "[link][invalid_link]"),
-        ("[link][[macro]]", "[link][[macro]]"),
+        ("[link][[macro]]", "<a href=\"https://example\">link</a>[[macro]]"),
+        ("[[macro]][link]", "[[macro]]<a href=\"https://example\">link</a>"),
         ("[link](https://github.com)", "<a href=\"https://github.com\">link</a>"),
         ("[invalid_link]", "[invalid_link]"),
 
@@ -83,7 +84,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("![link]()", "<img src=\"\" alt=\"link\"/>"),
         ("![valid_link][link]", "<img src=\"https://example\" alt=\"valid_link\"/>"),
         ("![link][invalid_link]", "![link][invalid_link]"),
-        ("![link][[macro]]", "![link][[macro]]"),
+        ("![link][[macro]]", "<img src=\"https://example\" alt=\"link\"/>[[macro]]"),
+        ("[[macro]]![link]", "[[macro]]<img src=\"https://example\" alt=\"link\"/>"),
         ("![link](https://github.com)", "<img src=\"https://github.com\" alt=\"link\"/>"),
         ("![invalid_link]", "![invalid_link]"),
 
@@ -93,7 +95,9 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[red]]![link](https://github.com)[[/red]]", "<span class=\"color-red\"><img src=\"https://github.com\" alt=\"link\"/></span>"),
 
         ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
-        ("[[[char=9650]]](#top)[[[char=9660]]](#bottom)", "<a href=\"#top\">&#9650;</a><a href=\"#bottom\">&#9660;</a>")
+        ("[[[char=9650]]](#top)[[[char=9660]]](#bottom)", "<a href=\"#top\">&#9650;</a><a href=\"#bottom\">&#9660;</a>"),
+
+        ("[[br]][link][[br]]", "<br/><a href=\"https://example\">link</a><br/>")
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()

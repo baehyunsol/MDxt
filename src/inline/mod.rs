@@ -9,7 +9,7 @@ mod predicate;
 mod testbench;
 
 use crate::container::icon::get_icon;
-use crate::utils::into_v16;
+use crate::utils::{from_v16, into_v16};
 use math::render_math;
 
 #[derive(Clone)]
@@ -50,7 +50,12 @@ pub enum InlineMacro {
     Char(Vec<u16>),
 
     Math(Vec<u16>),
-    Box { border: bool },
+    Box {
+        border: bool,
+        inline: bool,
+        width: Vec<u16>,
+        height: Vec<u16>,
+    },
     Toc,
     Blank { repeat: usize },
     Br { repeat: usize },
@@ -191,12 +196,31 @@ impl InlineNode {
                         ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("</span>")
                     ].concat(),
-                    InlineMacro::Box { border } => vec![
-                        if *border {
-                            into_v16(&format!("<span class=\"{}box\">", class_prefix))
-                        } else {
-                            into_v16(&format!("<span class=\"{}box {}no-border\">", class_prefix, class_prefix))
-                        },
+                    InlineMacro::Box { border, inline, width, height } => vec![
+                        into_v16(&format!(
+                            "<span class=\"{}box{}{}{}{}\">",
+                            class_prefix,
+                            if !border {
+                                format!(" {}no-border", class_prefix)
+                            } else {
+                                String::new()
+                            },
+                            if *inline {
+                                format!(" {}inline", class_prefix)
+                            } else {
+                                String::new()
+                            },
+                            if width.len() > 0 {
+                                format!(" {}width-{}", class_prefix, from_v16(&width))
+                            } else {
+                                String::new()
+                            },
+                            if height.len() > 0 {
+                                format!(" {}height-{}", class_prefix, from_v16(&height))
+                            } else {
+                                String::new()
+                            }
+                        )),
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u16>>>().concat(),
@@ -379,12 +403,30 @@ impl InlineNode {
                         ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/highlight]]")
                     ].concat(),
-                    InlineMacro::Box { border } => vec![
-                        if *border {
-                            into_v16("[[box]]")
-                        } else {
-                            into_v16("[[box, no border]]")
-                        },
+                    InlineMacro::Box { border, inline, width, height } => vec![
+                        into_v16(&format!(
+                            "[[box{}{}{}{}]]",
+                            if !border {
+                                ", no border"
+                            } else {
+                                ""
+                            },
+                            if *inline {
+                                ", inline"
+                            } else {
+                                ""
+                            },
+                            if width.len() > 0 {
+                                from_v16(&width)
+                            } else {
+                                String::new()
+                            },
+                            if height.len() > 0 {
+                                from_v16(&height)
+                            } else {
+                                String::new()
+                            },
+                        )),
                         content.iter().map(|node| node.to_mdxt()).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/box]]"),
                     ].concat(),
