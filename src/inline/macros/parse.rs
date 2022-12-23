@@ -108,16 +108,6 @@ impl Macro {
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
-            MacroType::Tooltip => InlineNode::Decoration {
-                deco_type: DecorationType::Macro({
-                    let content = todo!();
-                    let index = doc_data.fetch_and_inc_tooltip_count();
-
-                    InlineMacro::Tooltip { content, index }
-                }),
-                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
-            },
-
             MacroType::Icon => InlineNode::Decoration {
                 deco_type: DecorationType::Macro({
                     let name = arguments[0][1].clone();

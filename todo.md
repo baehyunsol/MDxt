@@ -221,6 +221,12 @@ c
 
 ---
 
+box에 새로 arguments 추가한 거 reference에도 추가하기
+
+- icon::testbench 참고 ㄱㄱ
+
+---
+
 table에서 `[[background=red]]` 같은 것도 되게 할까?
 
 `[[column background = red]]`나 `[[row background = red]]` 같은 것도 되게 만든 다음에 `cell > row > column` 우선순위로 적용되게 해도 좋을 것 같고.
@@ -266,6 +272,8 @@ table에 rowspan도 추가하자!
 ```
 
 colspan은 cell을 안 만들어도 되잖아? rowspan은 cell을 만들어야함. 그대신 해당 cell은 무시됨. (안의 내용도 무시됨)
+
+md로 쓰는 건 간편하다고 쳐도 구현하는게 개빡셀 듯... 일단 보류...
 
 ---
 

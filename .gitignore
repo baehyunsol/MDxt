@@ -1,6 +1,6 @@
 /target
 /Cargo.lock
-todo.md
-math_test.html
-character_test.html
-icon_test.html
+/math_test.html
+/character_test.html
+/icon_test.html
+/reference.html

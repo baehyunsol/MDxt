@@ -186,14 +186,14 @@ pub fn format(icon: &Vec<u16>, size: usize, color: Option<(u8, u8, u8)>, standal
     result
 }
 
-const COLOR: u16 = 55303;
-const SIZE: u16 = 55302;
-const XMLNS: u16 = 55301;
-pub const EVA_ICON: usize = 4096;
-pub const MATERIAL_ICON: usize = 4097;
-pub const DEV_ICON: usize = 4098;
-pub const ION_ICON: usize = 4099;
-pub const BOOTSTRAP_ICON: usize = 4100;
+const COLOR: u16 = 0xd807;
+const SIZE: u16 = 0xd806;
+const XMLNS: u16 = 0xd805;
+pub const EVA_ICON: usize = 0x1000;
+pub const MATERIAL_ICON: usize = 0x1001;
+pub const DEV_ICON: usize = 0x1002;
+pub const ION_ICON: usize = 0x1003;
+pub const BOOTSTRAP_ICON: usize = 0x1004;
 
 /*
 MIT License

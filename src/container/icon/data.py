@@ -1,5 +1,4 @@
 def main():
-
     sources = get_sources()
     icons = get_icons(0, 0)
     result = [""]
@@ -12,7 +11,7 @@ def main():
         rust_file = f.read()
 
     ind = rust_file.index('^')
-    rust_file = rust_file[:ind] + '\n'.join(result) + rust_file[ind + 1:] + f'\nconst COLOR: u16 = {color_token};\nconst SIZE: u16 = {size_token};\nconst XMLNS: u16 = {xmlns_token};\npub const EVA_ICON: usize = {EVA};\npub const MATERIAL_ICON: usize = {MATERIAL};\npub const DEV_ICON: usize = {DEV};\npub const ION_ICON: usize = {ION};\npub const BOOTSTRAP_ICON: usize = {BOOTSTRAP};\n' + licenses
+    rust_file = rust_file[:ind] + '\n'.join(result) + rust_file[ind + 1:] + f'\nconst COLOR: u16 = {hex(color_token)};\nconst SIZE: u16 = {hex(size_token)};\nconst XMLNS: u16 = {hex(xmlns_token)};\npub const EVA_ICON: usize = {hex(EVA)};\npub const MATERIAL_ICON: usize = {hex(MATERIAL)};\npub const DEV_ICON: usize = {hex(DEV)};\npub const ION_ICON: usize = {hex(ION)};\npub const BOOTSTRAP_ICON: usize = {hex(BOOTSTRAP)};\n' + licenses
 
     with open('./render.rs', 'w') as f:
         f.write(rust_file)
