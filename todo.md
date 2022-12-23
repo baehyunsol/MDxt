@@ -2,32 +2,48 @@
 
 Plugin system
 
-macro 처리하는 함수가, 일단 지 거 해보고 안되는 거 있으면 사용자가 넘겨준 함수한테 매크로 처리 시키는 거지! `arguments: Vec<Vec<Vec<u16>>>, content: Vec<u16> -> Option<Vec<u16>>`의 함수를 사용자가 만들면 그게 곧 plugin 아님?
+```rust
+fn custom_macro(arguments: &Vec<Vec<Vec<u16>>>, content: &Vec<u16>) -> Option<Vec<u16>>;
+```
 
-`Plugin`이라는 struct를 만들고 render_option에 넣어서 engine한테 넘기자. `.json`이나 `.yaml`, `.toml`등으로 `Plugin` 정의하고 그거 serde하는 함수도 만들자!
+저거 호출을 어느 시점에서 해? custom macro로 table 만들 수도 있나?? 그럼 구현이 좀 빡센데
 
-예시: `[[foo]] bar [[/foo]]` -> `[[div, class=foo]] bar [[/div]]`
-- `div`랑 `class` 조합하는 거는 설정파일로 정의하기 쉬울 거 같은데 다른 것들은?
-  - `id`가 조금씩 변하게 하려면?
-  - 안의 내용을 다룰 수 있게 하려면?
-
-아니면 아예 plugin 다루는 스크립트 언어를 추가할까?? Rust에 embed할 수 있는 script가 뭐 있지...
+- 매크로 예시: 아래의 매크로들만 매끄럽게 구현이 가능하면 충분할 듯
+  - `[[foo]]bar[[/foo]]` -> `[[div, class = foo, id = foo#]]bar[[/div]]`
+    - 37번째 등장한 `foo`의 id는 `foo37`임.
+- 구현
+  - macro 만나면 일단은 builtin인지 확인해보고, 안되면 저 함수에 넣어서 some인지 보고, some이면 그 문자열 그대로 대체
+- 외부에서 어떻게 넣지..??
+  - json, toml, ...
+    - 아주 간단한 mapping만 가능...ㅜ
+  - embedded scripting language
+    - 음...
+  - Rust
+    - 아니 이러면 plugin 만들 때마다 새로 컴파일해?
 
 ---
 
 tooltip
 
-얘도 `[[span]]`으로 어찌저찌 하거나 걍 plugin으로 편입시켜버리면 될 듯!
+```
+[[tooltip = aabb]] Tooltip on an image ![abc](abc.jpg) [[/tooltip]]
 
-`[[details, summary = click me to open!]]` 이렇게 하고 싶긴 한데...
+[^aabb]: [[big]]This is a tooltip message.[[/big]]
+```
 
-- 대소문자 구분 X, 띄어쓰기 무시
-  - 저 제한 그냥 없애버릴까?
-  - 대소문자 달라도 같은 identifier이지만 대소문자 정보를 날리진 말자!
-- 문장부호 아무것도 못 씀
-  - 이거는 좀 다른 얘기임. macro 읽는 함수들을 싹다 뜯어 고쳐야하는데?
+일단 tooltip은 multiline으로 못쓰게 해두자!
 
-footnote 전부 tooltip으로 띄우고 싶음!
+tooltip 안에 tooltip을 넣으면?? tooltip 안에서 자기자신을 ref하면?
+
+---
+
+footnote 안에 다른 footnote를 넣으면 어떻게 됨? 자기자신을 ref하면?
+
+```
+[^aa]: This is aa.[^aa]
+
+[^bb]: This is bb.[^bb]
+```
 
 ---
 
@@ -233,4 +249,35 @@ emoji도 지원했으면 좋겠음...
 
 ---
 
-`[[anchor, id=iconairplane]][[/anchor]][Material][[br]]`에서 가운데 `[Material]`이 valid link거든? 근데 제대로 render가 안됨... square brackets 사이에 껴 있어서 그런 듯?
+trace를 만들까?? 각 함수마다 시작할 때 `trace(func_name, *func_args)`를 호출하고 return하기 직전에 `trace_return(func_name)`을 하는 거임!
+
+그럼 누가 언제 누구를 호출하는지 추적하기 무지 쉬울텐데...
+
+복잡한 escape 함수들 추적하려면 필요할텐데...
+
+---
+
+table에 rowspan도 추가하자!
+
+```
+| [[rowspan=2]]DB  | [[colspan=2]]Creation | [[colspan=2]]Operation |
+|                  | Debug    | Release    | Debug    | Release     |
+|------------------|----------|------------|----------|-------------|
+```
+
+colspan은 cell을 안 만들어도 되잖아? rowspan은 cell을 만들어야함. 그대신 해당 cell은 무시됨. (안의 내용도 무시됨)
+
+---
+
+ordered, unordered list도 collapsible하게 하자!
+
+```
+- !![[collapsible, default=hidden]]1
+  - 2
+  - 3
+  - 4
+- 5
+- 6
+```
+
+저러면 2, 3, 4가 default로 안 보임

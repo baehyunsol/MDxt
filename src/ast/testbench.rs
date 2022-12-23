@@ -230,6 +230,10 @@ no br
 no br
 - no br
 no br
+", ""),
+("
+new\r\n
+lines\r\n
 ", "")
     ];
 

@@ -34,6 +34,10 @@ fn check_validity_(content: &[u16]) {
             panic!();  // TODO: nice error message
         }
 
+        else if *c == '\r' as u16 {
+            panic!();  // TODO: nice error message
+        }
+
         // how do I check whether `\`s are properly closed?
 
     }

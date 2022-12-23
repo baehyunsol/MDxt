@@ -1,4 +1,4 @@
-use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}};
+use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}, get_macro_name};
 use crate::inline::{DecorationType, InlineNode, InlineMacro};
 use crate::render::render_option::RenderOption;
 use crate::utils::{into_v16, to_int};
@@ -61,12 +61,12 @@ impl Macro {
             },
 
             MacroType::Color => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Color(arguments[0][0].clone())),
+                deco_type: DecorationType::Macro(InlineMacro::Color(get_macro_name(arguments))),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
             MacroType::Size => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Size(arguments[0][0].clone())),
+                deco_type: DecorationType::Macro(InlineMacro::Size(get_macro_name(arguments))),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
@@ -76,7 +76,7 @@ impl Macro {
             },
 
             MacroType::Alignment => InlineNode::Decoration {
-                deco_type: DecorationType::Macro(InlineMacro::Alignment(arguments[0][0].clone())),
+                deco_type: DecorationType::Macro(InlineMacro::Alignment(get_macro_name(arguments))),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
@@ -104,6 +104,16 @@ impl Macro {
                     let (tag, class, id) = parse_html_tag(arguments);
 
                     InlineMacro::HTML { tag, class, id }
+                }),
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
+            },
+
+            MacroType::Tooltip => InlineNode::Decoration {
+                deco_type: DecorationType::Macro({
+                    let content = todo!();
+                    let index = doc_data.fetch_and_inc_tooltip_count();
+
+                    InlineMacro::Tooltip { content, index }
                 }),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
@@ -148,7 +158,7 @@ pub fn parse_html_tag(arguments: &Vec<Vec<Vec<u16>>>) -> (Vec<u16>, Vec<u16>, Ve
 
     }
 
-    (arguments[0][0].clone(), classes.join(&[' ' as u16][..]), ids.join(&[' ' as u16][..]))
+    (get_macro_name(arguments), classes.join(&[' ' as u16][..]), ids.join(&[' ' as u16][..]))
 }
 
 // all the validity checks are done before this function
