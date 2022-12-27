@@ -183,6 +183,7 @@ impl AST {
                         || lines[index].is_code_fence_begin()
                         || lines[index].is_header() || lines[index].is_thematic_break()
                         || lines[index].is_table_row() || lines[index].is_blockquote()
+                        || lines[index].is_multiline_macro()
                     {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         continue;

@@ -204,7 +204,16 @@ If you want `<div>` rather than `<span>`, add empty lines before and after `[[bo
 <h3 id=\"123\">123</h3>
 <p>&Sigma;: a finite set of symbols.</p>
 <ul><li>456</li></ul>
-"), ("
+"), (
+"
+[[box]]
+- a
+[[/box]]
+",
+"<div class=\"box\">
+    <ul><li>a</li></ul>
+</div>"
+), ("
 > br  
 > br\
 > no br
