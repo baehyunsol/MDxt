@@ -19,6 +19,9 @@ use doc_data::DocData;
 use node::Node;
 use std::collections::HashMap;
 
+#[cfg(test)]
+use crate::testbench::debugger::*;
+
 #[derive(Clone)]
 pub struct AST {
     pub render_option: RenderOption,
@@ -31,6 +34,9 @@ pub struct AST {
 impl AST {
 
     pub fn parse_inlines(&mut self) {
+
+        #[cfg(test)]
+        push_call_stack("AST.parse_inlines", "");
 
         if self.is_inline_parsed {
             return;
@@ -78,9 +84,16 @@ impl AST {
             self.render_toc();
         }
 
+        #[cfg(test)]
+        pop_call_stack();
+
     }
 
     pub fn to_html(&mut self) -> Vec<u16> {
+
+        #[cfg(test)]
+        push_call_stack("AST.to_html", "");
+
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
         let class_prefix = &self.render_option.class_prefix;
@@ -186,6 +199,9 @@ impl AST {
 
             result.push(into_v16("</script>"));
         }
+
+        #[cfg(test)]
+        pop_call_stack();
 
         result.concat()
     }

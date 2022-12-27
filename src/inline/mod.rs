@@ -12,6 +12,9 @@ use crate::container::icon::get_icon;
 use crate::utils::{from_v16, into_v16};
 use math::render_math;
 
+#[cfg(test)]
+use crate::testbench::debugger::*;
+
 #[derive(Clone)]
 pub enum InlineNode {
     Raw(Vec<u16>),
@@ -74,10 +77,12 @@ impl InlineNode {
 
     pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
 
-        #[cfg(test)]
-        self.check_validity();
+        #[cfg(test)] {
+            self.check_validity();
+            push_call_stack("InlineNode.to_html", "");
+        }
 
-        match self {
+        let result = match self {
             InlineNode::Raw(content) => content.clone(),
 
             InlineNode::CodeSpan(content) => vec![
@@ -289,7 +294,12 @@ impl InlineNode {
                     InlineMacro::Icon { name, size } => get_icon(name, *size as usize, None, false).unwrap()
                 }
             }
-        }
+        };
+
+        #[cfg(test)]
+        pop_call_stack();
+
+        return result;
     }
 
     pub fn to_mdxt(&self) -> Vec<u16> {

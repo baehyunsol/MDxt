@@ -1,5 +1,8 @@
 pub use crate::inline::parse::{escape_code_spans, undo_code_span_escapes};
-use crate::utils::into_v16;
+use crate::utils::{from_v16, into_v16};
+
+#[cfg(test)]
+use crate::testbench::debugger::*;
 
 /*
 `<`s are converted to `&lt` and `&gt`, always!
@@ -7,6 +10,9 @@ use crate::utils::into_v16;
 backslashes are always escaped.
 */
 pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("esacpe_htmls", &from_v16(content));
 
     let mut result = Vec::with_capacity(content.len() + content.len() / 4);
 
@@ -54,11 +60,16 @@ pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
         }
     }
 
+    #[cfg(test)]
+    pop_call_stack();
     result
 }
 
 // characters in syntax highlighted texts may not be escaped
 pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("undo_html_escapes", &from_v16(content));
 
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
@@ -77,6 +88,9 @@ pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
 
         index += 1;
     }
+
+    #[cfg(test)]
+    pop_call_stack();
 
     result
 }
@@ -139,6 +153,9 @@ fn is_html_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
 // \c -> <special_form>
 pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
 
+    #[cfg(test)]
+    push_call_stack("esacpe_backslashes", &from_v16(content));
+
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
@@ -162,11 +179,17 @@ pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
+    #[cfg(test)]
+    pop_call_stack();
+
     result
 }
 
 // <special_form> -> \c
 pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("undo_backslash_esacpes", &from_v16(content));
 
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
@@ -186,11 +209,17 @@ pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
+    #[cfg(test)]
+    pop_call_stack();
+
     result
 }
 
 // <special_form> -> &#__;
 pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("render_backslash_escapes", &from_v16(content));
 
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
@@ -216,11 +245,16 @@ pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
+    #[cfg(test)]
+    pop_call_stack();
     result
 }
 
 // <special_form> -> c
 pub fn render_backslash_escapes_raw(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("render_backslash_escapes_raw", &from_v16(content));
 
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
@@ -239,10 +273,18 @@ pub fn render_backslash_escapes_raw(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
+    #[cfg(test)]
+    pop_call_stack();
     result
 }
 
 pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
+
+    #[cfg(test)] {
+        push_call_stack("remove_invalid_characters", &from_v16(content));
+        pop_call_stack();
+    }
+
     content.iter().filter(
         |c| **c < 11 || **c > 13  // only `\n`, no other newline characters!
     ).map(

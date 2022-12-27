@@ -8,11 +8,14 @@ mod testbench;
 use super::macros::predicate::read_macro;
 use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
 use crate::escape::{render_backslash_escapes_raw, undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
-use crate::utils::{get_bracket_end_index, into_v16};
+use crate::utils::{from_v16, get_bracket_end_index, into_v16};
 use entity::Entity;
 use lazy_static::lazy_static;
 use parse::md_to_math;
 use std::collections::HashSet;
+
+#[cfg(test)]
+use crate::testbench::debugger::*;
 
 lazy_static! {
 
@@ -136,6 +139,9 @@ impl Math {
 // I don't want other inline elements to interrupt math formulas.
 fn escape_special_characters(content: &[u16]) -> Vec<u16> {
 
+    #[cfg(test)]
+    push_call_stack("escape_special_characters", &from_v16(content));
+
     let content = undo_html_escapes(content);
     let mut result = Vec::with_capacity(content.len() + content.len() / 6);
 
@@ -168,10 +174,18 @@ fn escape_special_characters(content: &[u16]) -> Vec<u16> {
 
     }
 
-    undo_code_span_escapes(&result)
+    let result = undo_code_span_escapes(&result);
+
+    #[cfg(test)]
+    pop_call_stack();
+
+    result
 }
 
 pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
+
+    #[cfg(test)]
+    push_call_stack("escape_inside_math_blocks", &from_v16(&content));
 
     let mut result = vec![];
     let mut index = 0;
@@ -217,6 +231,9 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
 
         index += 1;
     }
+
+    #[cfg(test)]
+    pop_call_stack();
 
     if result.len() == 0 {
         content

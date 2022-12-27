@@ -34,14 +34,15 @@ Not Red
 <p>Not Red</p>
 "
 ), ("
-Interrupt Paragraph
+Cannot interrupt a paragraph
 [[red]]
 Red
 [[/red]]
 ", "
-<p>
-Interrupt Paragraph <span class=\"color-red\"> Red </span>
-</p>
+<p>Cannot interrupt a paragraph</p>
+<div class=\"color-red\">
+    <p>Red</p>
+</div>
 "
 ), ("
 [[div, class=foo]]
@@ -180,21 +181,6 @@ div box
 
 <p><span class=\"box\"> span box </span></p>
 "), ("
-123
-[[box]]
-If you want `<div>` rather than `<span>`, add empty lines before and after `[[box]]`.
-[[/box]]
-789
-", "
-<p>
-    123
-    <span class=\"box\">
-        If you want <code class=\"inline-code-span\">&lt;div&gt;</code> rather than <code class=\"inline-code-span\">&lt;span&gt;</code>, add empty lines before and after <code class=\"inline-code-span\">[[box]]</code>.
-    </span>
-    789
-</p>
-"
-), ("
 ### 123
 
 [[char = big sigma]]: a finite set of symbols.
@@ -214,18 +200,41 @@ If you want `<div>` rather than `<span>`, add empty lines before and after `[[bo
     <ul><li>a</li></ul>
 </div>"
 ), ("
+Multiline macros start a new paragraph. See below.
+
+a
+[[box]]
+b
+[[/box]]
+c
+[[box]]
+d
+[[/box]]
+e
+", "
+<p>Multiline macros start a new paragraph. See below.</p>
+<p>a</p>
+<div class=\"box\">
+    <p>b</p>
+</div>
+<p>c</p>
+<div class=\"box\">
+    <p>d</p>
+</div>
+<p>e</p>
+"), ("
 > br  
-> br\
+> br\\
 > no br
 > no br
 > br  
-> br\
+> br\\
 > no br
 > no br
 
 - br  
 no br
-- br\
+- br\\
 no br
 - no br
 no br
@@ -233,17 +242,32 @@ no br
 no br
 - br  
 no br
-- br\
+- br\\
 no br
 - no br
 no br
 - no br
 no br
-", ""),
+", "
+<blockquote>br<br/> br<br/> no br no br br<br/> br<br/> no br no br </blockquote>
+<ul>
+    <li>br<br/> no br</li>
+    <li>br<br/> no br</li>
+    <li>no br no br</li>
+    <li>no br no br</li>
+    <li>br<br/> no br</li>
+    <li>br<br/> no br</li>
+    <li>no br no br</li>
+    <li>no br no br</li>
+</ul>
+"),
 ("
 new\r\n
 lines\r\n
-", "")
+", "
+<p>new</p>
+<p>lines</p>
+")
     ];
 
     result.into_iter().map(

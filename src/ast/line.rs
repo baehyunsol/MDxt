@@ -1,4 +1,7 @@
-use crate::utils::into_v16;
+use crate::utils::{from_v16, into_v16};
+
+#[cfg(test)]
+use crate::testbench::debugger::*;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Line {
@@ -63,24 +66,28 @@ pub fn code_to_lines(code: &[u16]) -> Vec<Line> {
     ).collect::<Vec<Line>>()
 }
 
-pub fn add_br_if_needed(line: &Line) -> Vec<u16> {
+pub fn add_br_if_needed(line: &[u16]) -> Vec<u16> {
+    #[cfg(test)] {
+        push_call_stack("add_br_if_needed", &from_v16(&line));
+        pop_call_stack();
+    }
 
-    if line.content.len() > 1 && line.content[line.content.len() - 1] == '\\' as u16 {
+    if line.len() > 1 && line[line.len() - 1] == '\\' as u16 {
         vec![
-            line.content[0..(line.content.len() - 1)].to_vec(),
+            line[0..(line.len() - 1)].to_vec(),
             into_v16("[[br]]")  // will later be converted to `<br/>`
         ].concat()
     }
 
-    else if line.content.len() > 2 && line.content[line.content.len() - 1] == ' ' as u16 && line.content[line.content.len() - 2] == ' ' as u16 {
+    else if line.len() > 2 && line[line.len() - 1] == ' ' as u16 && line[line.len() - 2] == ' ' as u16 {
         vec![
-            line.content[0..(line.content.len() - 2)].to_vec(),
+            line[0..(line.len() - 2)].to_vec(),
             into_v16("[[br]]")  // will later be converted to `<br/>`
         ].concat()
     }
 
     else {
-        line.content.clone()
+        line.to_vec()
     }
 
 }

@@ -5,7 +5,7 @@ mod tasklist;
 mod testbench;
 
 use crate::ast::doc_data::DocData;
-use crate::ast::line::{Line, add_br_if_needed};
+use crate::ast::line::{add_br_if_needed, Line};
 use crate::inline::InlineNode;
 use crate::inline::macros::predicate::is_special_macro;
 use crate::render::render_option::RenderOption;
@@ -153,7 +153,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
     let (list_type, mut start_index) = get_list_type_and_start_index(&lines[curr_index]);
     let mut elements = Vec::with_capacity(lines.len());
     let mut curr_indent = lines[curr_index].indent;
-    let mut curr_element = vec![];
+    let mut curr_element: Vec<Line> = vec![];
     let mut curr_task_marker = None;
     let mut no_bullet = false;
 
@@ -190,7 +190,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
             if curr_element.len() > 0 {
                 elements.push(
                     ElementOrSublist::new_element(
-                        &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                        &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
                         curr_task_marker
                     )
                 );
@@ -230,7 +230,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
     if curr_element.len() > 0 {
         elements.push(
             ElementOrSublist::new_element(
-                &curr_element.iter().map(add_br_if_needed).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
                 curr_task_marker
             )
         );

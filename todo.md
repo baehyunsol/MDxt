@@ -40,9 +40,9 @@ tooltip 안에 tooltip을 넣으면?? tooltip 안에서 자기자신을 ref하�
 footnote 안에 다른 footnote를 넣으면 어떻게 됨? 자기자신을 ref하면?
 
 ```
-[^aa]: This is aa.[^aa]
+[^aa]: This is aa.[^aa][^bb]
 
-[^bb]: This is bb.[^bb]
+[^bb]: This is bb.[^bb][^aa]
 ```
 
 ---
@@ -104,7 +104,7 @@ math에 있는 기호들 웬만해선 char에도 넣자!
 
 ---
 
-underscore로 emphasis하는 문법도 넣을까? 그냥 testcode 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
+underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
 
 ---
 
@@ -189,35 +189,6 @@ parameter도 넣을 수 있게 할까? macro 안에 대소문자 구분이 없�
 
 table 안에다가 `!![[ref, id = table1]]` 하거나, fence에다가 ```` ```rust, line_num, ref(code1) ```` 하거나 이런 식으로 하고 나중에 `[[reference, id = code1]]` 이런 식으로 불러오는 거지! 이거는 구현이 그나마 나을 듯?
 - 그래도 footnote는 신경 써야함.
-
----
-
-```markdown
-[[box]]
-교수님의 질문: 내 폰이랑 공유기랑 통신하고 니네 폰이랑 공유기랑도 통신하지? 그럼 니네 폰에서 공유기로 가는 packet을 내 폰에서도 볼 수 있을까?
-- yes.
-- 근데 header 확인해보고 나랑 관련없는 packet은 걍 버림. 그래서 내 폰에서 공유기로 가는 정보를 다른 폰에서 못 보는 거임.
-  - 엥? 근데 이럼 보안 구멍 아님? 내 폰에서 쓰는 데이터를 친구 폰에서 볼 수 있는 거잖아?
-  - ㅇㅇ 그래서 application layer에서 암호화를 해버림. 그럼 중간에 가로채도 알 방법이 없음.
-    - 왜 application layer냐? 민감한 정보는 다 저기 있을 거 아녀? 다른 layer에는 공유기 ip 주소같은 안 민감한 정보만 있을 거잖아.
-[[/box]]
-```
-
-버그 찾았음!
-
----
-
-```markdown
-[[box]]
-a
-[[/box]]
-b
-[[box]]
-c
-[[/box]]
-```
-
-이거 지금처럼 되는게 맞아?
 
 ---
 

@@ -10,6 +10,10 @@ use crate::container::{
     table::Table,
 };
 
+#[cfg(test)]
+use crate::testbench::debugger::*;
+use crate::utils::from_v16;
+
 #[derive(Clone)]
 pub enum Node {
     Paragraph {
@@ -32,23 +36,41 @@ pub enum Node {
 impl Node {
 
     pub fn new_header(level: usize, content: Vec<u16>) -> Node {
-        Node::Header {
+
+        #[cfg(test)]
+        push_call_stack("Node::new_header", &from_v16(&content));
+
+        let result = Node::Header {
             level,
             anchor: normalize_header(&content),
             content: InlineNode::Raw(content)
-        }
+        };
+
+        #[cfg(test)]
+        pop_call_stack();
+
+        result
     }
 
     pub fn new_paragraph(lines: &Vec<Line>) -> Node {
-        Node::Paragraph {
+
+        #[cfg(test)]
+        push_call_stack("Node::new_paragraph", "");
+
+        let result = Node::Paragraph {
             content: InlineNode::Raw(
                 lines
                     .iter()
-                    .map(add_br_if_needed)
+                    .map(|line| add_br_if_needed(&line.content))
                     .collect::<Vec<Vec<u16>>>()
                     .join(&[' ' as u16][..])
             )
-        }
+        };
+
+        #[cfg(test)]
+        pop_call_stack();
+
+        result
     }
 
     pub fn new_code_fence(
@@ -59,14 +81,23 @@ impl Node {
         copy_button: bool,
         index: usize
     ) -> Node {
-        Node::FencedCode(FencedCode::new(
+
+        #[cfg(test)]
+        push_call_stack("Node::new_paragraph", "");
+
+        let result = Node::FencedCode(FencedCode::new(
             lines.iter().map(|line| line.to_raw()).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
             language.to_vec(),
             line_num.clone(),
             highlights.clone(),
             copy_button,
             index
-        ))
+        ));
+
+        #[cfg(test)]
+        pop_call_stack();
+
+        result
     }
 
     pub fn new_table(headers: &Vec<Line>, lines: &Vec<Line>, alignments: &Line, index: usize) -> Node {

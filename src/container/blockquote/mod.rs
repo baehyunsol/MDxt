@@ -2,7 +2,7 @@
 mod testbench;
 
 use crate::ast::doc_data::DocData;
-use crate::ast::line::Line;
+use crate::ast::line::{add_br_if_needed, Line};
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
@@ -64,11 +64,11 @@ impl Blockquote {
                     curr_level = level;
                 }
 
-                elements.push(ElementOrIndent::Element(InlineNode::Raw(line.content[end_index..].to_vec())));
+                elements.push(ElementOrIndent::Element(InlineNode::Raw(add_br_if_needed(&line.content[end_index..]))));
             }
 
             else {
-                elements.push(ElementOrIndent::Element(InlineNode::Raw(line.content.clone())));
+                elements.push(ElementOrIndent::Element(InlineNode::Raw(add_br_if_needed(&line.content))));
             }
 
         }

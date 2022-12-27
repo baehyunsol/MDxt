@@ -1,3 +1,5 @@
+pub mod debugger;
+
 pub fn random(mut seed: usize) -> usize {
 
     for _ in 0..3 {

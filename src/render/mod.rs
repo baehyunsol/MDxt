@@ -8,11 +8,17 @@ use crate::utils::{from_v16, into_v16};
 use render_option::RenderOption;
 use render_result::RenderResult;
 
+#[cfg(test)]
+use crate::testbench::debugger::*;
+
 pub fn render_to_html_with_default_options(content: &String) -> String {
     render_to_html(content, RenderOption::default()).content
 }
 
 pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResult {
+
+    #[cfg(test)]
+    push_call_stack("render_to_html", "");
 
     let mut u16_content = into_v16(content);
 
@@ -43,6 +49,9 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     let fenced_code_contents = ast.doc_data.fenced_code_contents.iter().map(
         |(index, content)| (*index, from_v16(content))
     ).collect();
+
+    #[cfg(test)]
+    pop_call_stack();
 
     RenderResult {
         content: from_v16(&html),

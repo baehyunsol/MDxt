@@ -14,6 +14,9 @@ use crate::render::render_option::RenderOption;
 use crate::utils::{from_v16, into_v16};
 use std::collections::HashMap;
 
+#[cfg(test)]
+use crate::testbench::debugger::*;
+
 #[derive(PartialEq, Debug)]
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     Paragraph,
@@ -39,6 +42,10 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
 impl AST {
 
     pub fn from_lines(lines: Vec<Line>, options: &RenderOption) -> AST {
+
+        #[cfg(test)]
+        push_call_stack("AST::from_lines", "");
+
         let mut curr_nodes = Vec::with_capacity(lines.len());
         let mut curr_lines = vec![];
         let mut curr_parse_state = ParseState::None;
@@ -158,6 +165,90 @@ impl AST {
                         curr_lines.push(lines[index].clone());
                     }
 
+                    // All the closing macros are handled up there
+                    else if lines[index].is_multiline_macro() {
+                        let macro_content = read_macro(&lines[index].content, 0).unwrap();
+                        let macro_arguments = parse_arguments(&macro_content);
+                        let macro_name = get_macro_name(&macro_arguments);
+
+                        match MACROS.get(&macro_name) {
+                            // if it has a closing, find its partner
+                            Some(macro_) if macro_.has_closing && macro_.is_valid(&macro_arguments) => {
+                                let mut macro_closing_index = index + 1;
+
+                                let mut inner_macro_stack = vec![macro_.clone()];
+                                let mut curr_closing_macro = macro_.get_closing_macro();
+
+                                while macro_closing_index < lines.len() {
+
+                                    if lines[macro_closing_index].is_multiline_macro() {
+                                        let curr_macro = read_macro(&lines[macro_closing_index].content, 0).unwrap();
+
+                                        if curr_macro == curr_closing_macro {
+                                            inner_macro_stack.pop().unwrap();
+
+                                            if inner_macro_stack.len() == 0 {
+                                                add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                                                curr_parse_state = ParseState::Paragraph;
+                                                curr_nodes.push(Node::new_macro(&lines[index]));
+                                                macro_closing_indexes.push(macro_closing_index);
+                                                index += 1;
+                                                continue 'outer_loop;
+                                            }
+
+                                            else {
+                                                curr_closing_macro = inner_macro_stack[inner_macro_stack.len() - 1].get_closing_macro();
+                                                macro_closing_index += 1;
+                                                continue;
+                                            }
+
+                                        }
+
+                                        let curr_macro_arguments = parse_arguments(&curr_macro);
+                                        let curr_macro_name = get_macro_name(&curr_macro_arguments);
+
+                                        match MACROS.get(&curr_macro_name) {
+                                            Some(inner_macro)
+                                                if inner_macro.has_closing
+                                                    && inner_macro.is_valid(&curr_macro_arguments) =>
+                                            {
+                                                inner_macro_stack.push(inner_macro.clone());
+                                                curr_closing_macro = inner_macro.get_closing_macro();
+                                            },
+                                            _ => {
+                                                if curr_macro[0] == '/' as u16 {
+                                                    let possibly_another_macro = curr_macro[1..].to_vec();
+
+                                                    // it assumes that all the closing macros have the same form: `'/' + macro_name`
+                                                    match MACROS.get(&possibly_another_macro) {
+                                                        // it's always valid because I checked `MACROS.get(macro)`, not `MACROS.get(macro_name)`
+                                                        // if a valid macro is found here, that means the very first macro is not properly closed
+                                                        Some(another_macro) if another_macro.has_closing => {
+                                                            break;
+                                                        }
+                                                        _ => {}
+                                                    }
+
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                    macro_closing_index += 1;
+                                }
+
+                            },
+
+                            // otherwise it's just a paragraph
+                            _ => {}
+                        }
+
+                        curr_lines.push(lines[index].clone());
+                        curr_parse_state = ParseState::Paragraph;
+                    }
+
                     // paragraph
                     else {
                         curr_lines.push(lines[index].clone());
@@ -261,6 +352,7 @@ impl AST {
 
                     }
 
+                    // TODO: It's a copy-paste of the same code block from the `ParseState::Paragraph` branch
                     // All the closing macros are handled up there
                     else if lines[index].is_multiline_macro() {
                         let macro_content = read_macro(&lines[index].content, 0).unwrap();
@@ -416,13 +508,18 @@ impl AST {
 
         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-        AST {
+        let result = AST {
             nodes: curr_nodes,
             doc_data: DocData::new(headers, link_references, footnote_references),
             toc: vec![],  // if needed, will be rendered later
             render_option: options.clone(),
             is_inline_parsed: false
-        }
+        };
+
+        #[cfg(test)]
+        pop_call_stack();
+
+        result
     }
 
 }

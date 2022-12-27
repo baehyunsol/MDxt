@@ -5,15 +5,7 @@ pub fn into_v16(s: &str) -> Vec<u16> {
 
 #[inline]
 pub fn from_v16(v: &[u16]) -> String {
-
-    if cfg!(test) {
-        String::from_utf16(v).unwrap()
-    }
-
-    else {
-        String::from_utf16_lossy(v)
-    }
-
+    String::from_utf16_lossy(v)
 }
 
 pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
