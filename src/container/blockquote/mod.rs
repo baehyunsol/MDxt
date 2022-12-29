@@ -3,6 +3,7 @@ mod testbench;
 
 use crate::ast::doc_data::DocData;
 use crate::ast::line::{add_br_if_needed, Line};
+use crate::escape::HTML_ESCAPE_MARKER;
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
@@ -86,11 +87,11 @@ fn count_level_and_end_index(content: &[u16]) -> (usize, usize) {  // (level, en
 
     while index < content.len() {
 
-        // &gt;
-        if content[index] == '&' as u16 {
+        // `>`
+        if content[index] == HTML_ESCAPE_MARKER {
             level += 1;
             conseq_space = 0;
-            index += 3;
+            index += 1;
         }
 
         else if content[index] == ' ' as u16 {

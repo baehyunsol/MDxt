@@ -4,6 +4,7 @@
 // [t][l], [l], [t](d) where t is link_text, l is link_label and d is link_destination
 
 use super::normalize_link_label;
+use crate::escape::render_html_escapes;
 use crate::utils::{drop_while, get_bracket_end_index, get_parenthesis_end_index};
 use std::collections::HashMap;
 
@@ -26,7 +27,7 @@ pub fn read_direct_link(
                 match get_parenthesis_end_index(content, bracket_end_index + 1) {
                     Some(parenthesis_end_index) => {
                         let link_text = &content[index + 1..bracket_end_index];
-                        let link_destination = &content[bracket_end_index + 2..parenthesis_end_index];
+                        let link_destination = render_html_escapes(&content[bracket_end_index + 2..parenthesis_end_index]);
 
                         if is_valid_link_text(link_text, link_references) {
                             Some((link_text.to_vec(), link_destination.to_vec(), parenthesis_end_index))
@@ -191,7 +192,7 @@ pub fn read_link_reference(content: &[u16]) -> (Vec<u16>, Vec<u16>) {  // (link_
 
     let bracket_end_index = get_bracket_end_index(content, 0).unwrap();
     let link_label = content[1..bracket_end_index].to_vec();
-    let link_destination = drop_while(&content[bracket_end_index + 2..content.len()], ' ' as u16);
+    let link_destination = render_html_escapes(&drop_while(&content[bracket_end_index + 2..content.len()], ' ' as u16));
 
     (link_label, link_destination)
 }

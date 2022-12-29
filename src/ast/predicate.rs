@@ -1,10 +1,11 @@
+use crate::ast::line::Line;
+use crate::container::codefence::predicate::is_valid_info_string;
+use crate::escape::HTML_ESCAPE_MARKER;
 use crate::inline::{
     macros::predicate::read_macro,
     link::predicate::is_valid_link_label,
     footnote::predicate::is_valid_footnote_label
 };
-use crate::container::codefence::predicate::is_valid_info_string;
-use crate::ast::line::Line;
 use crate::utils::*;
 
 impl Line {
@@ -109,9 +110,8 @@ impl Line {
 
     #[inline]
     pub fn is_blockquote(&self) -> bool {
-        self.indent < 4 && self.content.len() > 2
-        && self.content[0] == '&' as u16 && self.content[1] == 'g' as u16
-        && self.content[2] == 't' as u16 && self.content[3] == ';' as u16
+        self.indent < 4 && self.content.len() > 1
+        && self.content[0] == HTML_ESCAPE_MARKER && self.content[1] == u16::MAX - '>' as u16
     }
 
     #[inline]

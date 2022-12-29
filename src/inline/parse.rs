@@ -15,9 +15,6 @@ use crate::escape::{render_backslash_escapes, undo_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use crate::utils::{from_v16, get_bracket_end_index, into_v16};
 
-#[cfg(test)]
-use crate::testbench::debugger::*;
-
 impl InlineNode {
 
     pub fn parse_raw(
@@ -36,10 +33,6 @@ impl InlineNode {
     }
 
     pub fn from_mdxt(content: &[u16], doc_data: &mut DocData, render_option: &RenderOption) -> Self {
-
-        #[cfg(test)]
-        push_call_stack("InlineNode::from_mdxt", &from_v16(content));
-
         // it prevents inline elements inside code spans from being rendered
         // code spans are rendered later
         let mut content = escape_code_spans(content);
@@ -87,7 +80,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -116,7 +108,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -141,7 +132,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -166,7 +156,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -191,7 +180,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -216,7 +204,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -241,7 +228,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -266,7 +252,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -304,7 +289,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -346,7 +330,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -370,7 +353,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -412,7 +394,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 },
                 _ => {}
@@ -432,7 +413,6 @@ impl InlineNode {
                         result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
                     }
 
-                    #[cfg(test)] pop_call_stack();
                     return InlineNode::Complex(result).render_code_spans();
                 }
                 _ => {}
@@ -440,8 +420,6 @@ impl InlineNode {
 
             index += 1;
         }
-
-        #[cfg(test)] pop_call_stack();
 
         // there're no inline element in the content
         InlineNode::Raw(render_backslash_escapes(&content)).render_code_spans()
@@ -524,7 +502,6 @@ impl InlineNode {
 }
 
 pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
-
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
 
@@ -557,7 +534,6 @@ pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
 }
 
 pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
-
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 

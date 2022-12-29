@@ -8,14 +8,11 @@ mod testbench;
 use super::macros::predicate::read_macro;
 use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
 use crate::escape::{render_backslash_escapes_raw, undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
-use crate::utils::{from_v16, get_bracket_end_index, into_v16};
+use crate::utils::{get_bracket_end_index, into_v16};
 use entity::Entity;
 use lazy_static::lazy_static;
 use parse::md_to_math;
 use std::collections::HashSet;
-
-#[cfg(test)]
-use crate::testbench::debugger::*;
 
 lazy_static! {
 
@@ -118,7 +115,6 @@ impl Math {
     }
 
     pub fn to_math_ml(&self, xmlns: bool) -> Vec<u16> {
-
         let xmlns = if xmlns {
             " xmlns=\"http://www.w3.org/1998/Math/MathML\""
         } else {
@@ -138,32 +134,12 @@ impl Math {
 // This escape only works inside `[[math]]` macros
 // I don't want other inline elements to interrupt math formulas.
 fn escape_special_characters(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("escape_special_characters", &from_v16(content));
-
     let content = undo_html_escapes(content);
     let mut result = Vec::with_capacity(content.len() + content.len() / 6);
 
     for c in content.iter() {
 
-        // TODO
-        // it's messing up with `text{=>}`
-        if *c == '<' as u16 {
-            result.push(' ' as u16);
-            result.push('l' as u16);
-            result.push('t' as u16);
-            result.push(' ' as u16);
-        }
-
-        else if *c == '>' as u16 {
-            result.push(' ' as u16);
-            result.push('g' as u16);
-            result.push('t' as u16);
-            result.push(' ' as u16);
-        }
-
-        else if into_v16("*~[|]^`").contains(c) {
+        if into_v16("<>*~[|]^`&").contains(c) {
             result.push(BACKSLASH_ESCAPE_MARKER);
             result.push(u16::MAX - c);
         }
@@ -174,19 +150,10 @@ fn escape_special_characters(content: &[u16]) -> Vec<u16> {
 
     }
 
-    let result = undo_code_span_escapes(&result);
-
-    #[cfg(test)]
-    pop_call_stack();
-
-    result
+    undo_code_span_escapes(&result)
 }
 
 pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("escape_inside_math_blocks", &from_v16(&content));
-
     let mut result = vec![];
     let mut index = 0;
     let mut last_index = 0;
@@ -232,9 +199,6 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
-
     if result.len() == 0 {
         content
     }
@@ -243,7 +207,6 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
         result.push(content[last_index..content.len()].to_vec());
         result.concat()
     }
-
 }
 
 pub fn render_math(content: &[u16]) -> Vec<u16> {

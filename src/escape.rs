@@ -1,161 +1,105 @@
 pub use crate::inline::parse::{escape_code_spans, undo_code_span_escapes};
-use crate::utils::{from_v16, into_v16};
+use crate::utils::into_v16;
 
-#[cfg(test)]
-use crate::testbench::debugger::*;
-
-/*
-`<`s are converted to `&lt` and `&gt`, always!
-`>`s are kept untouched because they could be part of a blockquote
-backslashes are always escaped.
-*/
 pub fn escape_htmls(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("esacpe_htmls", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len() + content.len() / 4);
 
     for c in content.iter() {
 
-        match *c {
-            38 => {  // &
-                result.push('&' as u16);
-                result.push('a' as u16);
-                result.push('m' as u16);
-                result.push('p' as u16);
-                result.push(';' as u16);
-            },
-            60 => {  // <
-                result.push('&' as u16);
-                result.push('l' as u16);
-                result.push('t' as u16);
-                result.push(';' as u16);
-            },
-            62 => {  // >
-                result.push('&' as u16);
-                result.push('g' as u16);
-                result.push('t' as u16);
-                result.push(';' as u16);
-            },
-            34 => {  // "
-                result.push('&' as u16);
-                result.push('q' as u16);
-                result.push('u' as u16);
-                result.push('o' as u16);
-                result.push('t' as u16);
-                result.push(';' as u16);
-            },
-            39 => {  // '
-                result.push('&' as u16);
-                result.push('a' as u16);
-                result.push('p' as u16);
-                result.push('o' as u16);
-                result.push('s' as u16);
-                result.push(';' as u16);
-            },
-            _ => {
-                result.push(*c);
-            }
+        if into_v16("&<>\"\'").contains(c) {
+            result.push(HTML_ESCAPE_MARKER);
+            result.push(u16::MAX - *c);
         }
+
+        else {
+            result.push(*c);
+        }
+
     }
 
-    #[cfg(test)]
-    pop_call_stack();
     result
 }
 
-// characters in syntax highlighted texts may not be escaped
+// <special_form> -> c
 pub fn undo_html_escapes(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("undo_html_escapes", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
     while index < content.len() {
 
-        match is_html_escaped(content, index) {
-            None => {
-                result.push(content[index]);
-            }
-            Some((c, i)) => {
-                result.push(c);
-                index = i;
-            }
+        if content[index] != HTML_ESCAPE_MARKER {
+            result.push(content[index]);
+        }
+
+        else {
+            result.push(u16::MAX - content[index + 1]);
+            index += 1;
         }
 
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
+    result
+}
+
+// <special_form> -> &__;
+pub fn render_html_escapes(content: &[u16]) -> Vec<u16> {
+    let mut result = Vec::with_capacity(content.len());
+    let mut index = 0;
+
+    while index < content.len() {
+
+        if content[index] != HTML_ESCAPE_MARKER {
+            result.push(content[index]);
+        }
+
+        else {
+            let escaped_char = u16::MAX - content[index + 1];
+            result.push('&' as u16);
+
+            match escaped_char {
+                62 => {  // >
+                    result.push('g' as u16);
+                    result.push('t' as u16);
+                }
+                60 => {  // <
+                    result.push('l' as u16);
+                    result.push('t' as u16);
+                }
+                38 => {  // &
+                    result.push('a' as u16);
+                    result.push('m' as u16);
+                    result.push('p' as u16);
+                }
+                39 => {  // '
+                    result.push('a' as u16);
+                    result.push('p' as u16);
+                    result.push('o' as u16);
+                    result.push('s' as u16);
+                }
+                34 => {  // "
+                    result.push('q' as u16);
+                    result.push('u' as u16);
+                    result.push('o' as u16);
+                    result.push('t' as u16);
+                }
+                _ => {
+                    panic!("unexpected char: {}", escaped_char);
+                }
+            }
+
+            result.push(';' as u16);
+            index += 1;
+        }
+
+        index += 1;
+    }
 
     result
 }
 
-
-fn is_html_escaped(content: &[u16], index: usize) -> Option<(u16, usize)> {
-
-    if content[index] == '&' as u16 && index + 3 < content.len() {
-
-        if content[index + 1] == 'a' as u16 {
-
-            if index + 4 < content.len()
-                && content[index + 2] == 'm' as u16
-                && content[index + 3] == 'p' as u16
-                && content[index + 4] == ';' as u16
-            {
-                return Some(('&' as u16, index + 4));
-            }
-
-            if content[index + 2] == 'p' as u16
-                && content[index + 3] == 'o' as u16
-                && content[index + 4] == 's' as u16
-                && index + 5 < content.len()
-                && content[index + 5] == ';' as u16
-            {
-                return Some(('\'' as u16, index + 5));
-            }
-
-        }
-
-        else if content[index + 1] == 'l' as u16
-            && content[index + 2] == 't' as u16
-            && content[index + 3] == ';' as u16
-        {
-            return Some(('<' as u16, index + 3));
-        }
-
-        else if content[index + 1] == 'g' as u16
-            && content[index + 2] == 't' as u16
-            && content[index + 3] == ';' as u16
-        {
-            return Some(('>' as u16, index + 3));
-        }
-
-        else if content[index + 1] == 'q' as u16
-            && content[index + 2] == 'u' as u16
-            && content[index + 3] == 'o' as u16
-            && content[index + 4] == 't' as u16
-            && index + 5 < content.len()
-            && content[index + 5] == ';' as u16
-        {
-            return Some(('"' as u16, index + 5));
-        }
-
-    }
-
-    None
-}
-
 // \c -> <special_form>
 pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("esacpe_backslashes", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
@@ -179,18 +123,11 @@ pub fn escape_backslashes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
-
     result
 }
 
 // <special_form> -> \c
 pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("undo_backslash_esacpes", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
@@ -209,18 +146,11 @@ pub fn undo_backslash_escapes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
-
     result
 }
 
 // <special_form> -> &#__;
 pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("render_backslash_escapes", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
 
@@ -245,17 +175,11 @@ pub fn render_backslash_escapes(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
     result
 }
 
 // <special_form> -> c
 pub fn render_backslash_escapes_raw(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)]
-    push_call_stack("render_backslash_escapes_raw", &from_v16(content));
-
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
@@ -273,18 +197,10 @@ pub fn render_backslash_escapes_raw(content: &[u16]) -> Vec<u16> {
         index += 1;
     }
 
-    #[cfg(test)]
-    pop_call_stack();
     result
 }
 
 pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
-
-    #[cfg(test)] {
-        push_call_stack("remove_invalid_characters", &from_v16(content));
-        pop_call_stack();
-    }
-
     content.iter().filter(
         |c| **c < 11 || **c > 13  // only `\n`, no other newline characters!
     ).map(
@@ -296,8 +212,9 @@ pub fn remove_invalid_characters(content: &[u16]) -> Vec<u16> {
     ).collect()
 }
 
-// it's an illegal unicode, which is appropriate to be used as an internal meta character
+// these are illegal unicodes, which are appropriate to be used as internal meta characters
 pub const BACKSLASH_ESCAPE_MARKER: u16 = 0xd804;
+pub const HTML_ESCAPE_MARKER: u16 = 0xd805;
 
 #[cfg(test)]
 mod tests {

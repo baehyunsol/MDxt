@@ -167,6 +167,18 @@ A paragraph in a borderless box in a box.
 
 <p><a href=\"&amp;\">escape test &amp;</a></p>
 "), ("
+# Link Esacpe Test2
+
+[&][link1]
+
+[link1]
+
+[link1]: a&b
+", "
+<h1 id=\"link-esacpe-test2\">Link Esacpe Test2</h1>
+<p><a href=\"a&amp;b\">&amp;</a></p>
+<p><a href=\"a&amp;b\">link1</a></p>
+"), ("
 [[box]]
 
 div box
@@ -267,6 +279,235 @@ lines\r\n
 ", "
 <p>new</p>
 <p>lines</p>
+"), ("
+# Escape rules
+
+[[math]]text{>}[[/math]]
+
+[[math]]`text{>}`[[/math]]
+
+`[[math]]text{>}[[/math]]`
+
+[[math]]>[[/math]]
+
+[[math]]`>`[[/math]]
+
+`[[math]]>[[/math]]`
+
+[[math]]text{&gt;}[[/math]]
+
+[[math]]`text{&gt;}`[[/math]]
+
+`[[math]]text{&gt;}[[/math]]`
+
+[[math]]&gt;[[/math]]
+
+[[math]]`&gt;`[[/math]]
+
+`[[math]]&gt;[[/math]]`
+
+[[math]]text{&amp;gt;}[[/math]]
+
+[[math]]`text{&amp;gt;}`[[/math]]
+
+`[[math]]text{&amp;gt;}[[/math]]`
+
+[[math]]&amp;gt;[[/math]]
+
+[[math]]`&amp;gt;`[[/math]]
+
+`[[math]]&amp;gt;[[/math]]`
+
+[[math]]5\\>4[[/math]]
+
+[[math]]`5\\>4`[[/math]]
+
+`[[math]]5\\>4[[/math]]`
+
+[[math]]<a>a?</a>[[/math]]
+
+[[math]]`<a>a?</a>`[[/math]]
+
+`[[math]]<a>a?</a>[[/math]]`
+", "
+<h1 id=\"escape-rules\">Escape rules</h1>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mtext>&gt;</mtext>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mtext>&gt;</mtext>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]text{&gt;}[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>&gt;</mo>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mo>&gt;</mo>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]&gt;[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mtext>&amp;gt;</mtext>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mtext>&amp;gt;</mtext>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]text{&amp;gt;}[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>&amp;</mo>
+        <mo>&#62;</mo>
+        <mo>;</mo>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mo>&amp;</mo>
+        <mo>&#62;</mo>
+        <mo>;</mo>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]&amp;gt;[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mtext>&amp;amp;gt;</mtext>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mtext>&amp;amp;gt;</mtext>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]text{&amp;amp;gt;}[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>&amp;</mo>
+        <mi>amp</mi>
+        <mo>;</mo>
+        <mo>&#62;</mo>
+        <mo>;</mo>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mo>&amp;</mo>
+        <mi>amp</mi>
+        <mo>;</mo>
+        <mo>&#62;</mo>
+        <mo>;</mo>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]&amp;amp;gt;[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mn>5</mn>
+        <mo>&gt;</mo>
+        <mn>4</mn>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mn>5</mn>
+        <mo>\\</mo>
+        <mo>&gt;</mo>
+        <mn>4</mn>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]5\\>4[[/math]]</code>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>&lt;</mo>
+        <mi>a</mi>
+        <mo>&gt;</mo>
+        <mi>a</mi>
+        <mo>?</mo>
+        <mo>&lt;</mo>
+        <mo>/</mo>
+        <mi>a</mi>
+        <mo>&gt;</mo>
+    </math>
+</p>
+
+<p>
+    <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        <mo>`</mo>
+        <mo>&lt;</mo>
+        <mi>a</mi>
+        <mo>&gt;</mo>
+        <mi>a</mi>
+        <mo>?</mo>
+        <mo>&lt;</mo>
+        <mo>/</mo>
+        <mi>a</mi>
+        <mo>&gt;</mo>
+        <mo>`</mo>
+    </math>
+</p>
+
+<p>
+    <code class=\"inline-code-span\">[[math]]&lt;a&gt;a?&lt;/a&gt;[[/math]]</code>
+</p>
 ")
     ];
 

@@ -14,9 +14,6 @@ use crate::render::render_option::RenderOption;
 use crate::utils::{from_v16, into_v16};
 use std::collections::HashMap;
 
-#[cfg(test)]
-use crate::testbench::debugger::*;
-
 #[derive(PartialEq, Debug)]
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     Paragraph,
@@ -42,10 +39,6 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
 impl AST {
 
     pub fn from_lines(lines: Vec<Line>, options: &RenderOption) -> AST {
-
-        #[cfg(test)]
-        push_call_stack("AST::from_lines", "");
-
         let mut curr_nodes = Vec::with_capacity(lines.len());
         let mut curr_lines = vec![];
         let mut curr_parse_state = ParseState::None;
@@ -508,18 +501,13 @@ impl AST {
 
         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-        let result = AST {
+        AST {
             nodes: curr_nodes,
             doc_data: DocData::new(headers, link_references, footnote_references),
             toc: vec![],  // if needed, will be rendered later
             render_option: options.clone(),
             is_inline_parsed: false
-        };
-
-        #[cfg(test)]
-        pop_call_stack();
-
-        result
+        }
     }
 
 }

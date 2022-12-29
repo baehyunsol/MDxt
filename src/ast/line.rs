@@ -1,7 +1,4 @@
-use crate::utils::{from_v16, into_v16};
-
-#[cfg(test)]
-use crate::testbench::debugger::*;
+use crate::utils::into_v16;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Line {
@@ -58,7 +55,6 @@ impl Line {
 
 
 pub fn code_to_lines(code: &[u16]) -> Vec<Line> {
-
     code.split(
         |c| *c == '\n' as u16
     ).map(
@@ -67,11 +63,6 @@ pub fn code_to_lines(code: &[u16]) -> Vec<Line> {
 }
 
 pub fn add_br_if_needed(line: &[u16]) -> Vec<u16> {
-    #[cfg(test)] {
-        push_call_stack("add_br_if_needed", &from_v16(&line));
-        pop_call_stack();
-    }
-
     if line.len() > 1 && line[line.len() - 1] == '\\' as u16 {
         vec![
             line[0..(line.len() - 1)].to_vec(),
@@ -89,5 +80,4 @@ pub fn add_br_if_needed(line: &[u16]) -> Vec<u16> {
     else {
         line.to_vec()
     }
-
 }

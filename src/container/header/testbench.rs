@@ -122,7 +122,7 @@ Another [[toc]]
             </li>
             <li><a href=\"#header-1-3\">Header 1-3</a></li>
             <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-            <li><a href=\"#-lt--valid-link\">&#93; &lt;- valid link?</a></li>
+            <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
             <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
             <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
         </ol>
@@ -135,7 +135,7 @@ Another [[toc]]
 <h5 id=\"header-1-2-1\">Header 1-2-1</h5>
 <h2 id=\"header-1-3\">Header 1-3</h2>
 <h2 id=\"italic-and-red-red-red\"><em>Italic</em> and <span class=\"color-red\"> red </span></h2>
-<h2 id=\"-lt--valid-link\">] &lt;- valid link?</h2>
+<h2 id=\"---valid-link\">] &lt;- valid link?</h2>
 <h2 id=\"footnotes-a\">Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span></h2>
 <h2 id=\"recursive-toc\">Recursive
 <div class=\"toc\">
@@ -150,7 +150,7 @@ Another [[toc]]
                 </li>
                 <li><a href=\"#header-1-3\">Header 1-3</a></li>
                 <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-                <li><a href=\"#-lt--valid-link\">&#93; &lt;- valid link?</a></li>
+                <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
                 <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
                 <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
             </ol>
@@ -172,7 +172,7 @@ Another <div class=\"toc\">
             </li>
             <li><a href=\"#header-1-3\">Header 1-3</a></li>
             <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-            <li><a href=\"#-lt--valid-link\">&#93; &lt;- valid link?</a></li>
+            <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
             <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
             <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
         </ol>

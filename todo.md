@@ -108,12 +108,6 @@ underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 
 
 ---
 
-blockquote에서 `\`로 줄바꿈하는 거 왜 안됨..??
-
-`\`로 줄바꿈하는 거랑 `  `로 줄바꿈 하는 거 대대적으로 손보자! 지금 너무 지저분하게 구현돼있음...
-
----
-
 아래의 md를 gfm이랑 mdxt에서 둘다 해보셈. 첫번째랑 두번째 code fence가 다른데 rendering된 결과는 같음...(gfm 기준) mdxt도 같을 듯?
 
 일단 gfm spec 뒤져보자
@@ -208,12 +202,6 @@ column이나 row는 어디서 선언해야해?
 
 ---
 
-`[[math]]`안에서 `text{=>}` 하니까 죽음...
-
-`inline::math::escape_special_characters`가 범인임. escape 되고 풀고 하는 거 아주 복잡하게 돼 있잖아? 그거 좀 깔끔하게 정리하자!
-
----
-
 github이나 youtube 같은 거 macro로 지원할까? [linus.dev](https://linus.dev)에 있는 거 같은 github 카드!
 - `<iframe width="420" height="315"src="https://www.youtube.com/embed/W_xYzhjIEV8"></iframe>`
 - 간단하구먼.
@@ -223,14 +211,6 @@ emoji도 지원했으면 좋겠음...
 - https://www.w3schools.com/charsets/ref_emoji.asp
 - https://www.alt-codes.net/flags
 - char랑 겹치는 건 빼자!
-
----
-
-trace를 만들까?? 각 함수마다 시작할 때 `trace(func_name, *func_args)`를 호출하고 return하기 직전에 `trace_return(func_name)`을 하는 거임!
-
-그럼 누가 언제 누구를 호출하는지 추적하기 무지 쉬울텐데...
-
-복잡한 escape 함수들 추적하려면 필요할텐데...
 
 ---
 

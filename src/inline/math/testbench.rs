@@ -243,7 +243,7 @@ fn samples() -> Vec<(Vec<u16>, Vec<u16>)> {  // Vec<(test_case, answer)>
         </mrow>
         <mn>4</mn>
     </msup>
-    <mo><</mo>
+    <mo>&lt;</mo>
     <mn>&#8734;</mn>
 </math>
 "), ("hat{1} bar{1} dot{1} tilde{1} vec{1}", "
@@ -452,11 +452,4 @@ fn render_to_html() {
 fn md_to_math_test() {
     assert!(md_to_math(&[]).len() == 0);
     assert!(md_to_math(&into_v16("   ")).len() == 0);
-}
-
-// in some cases, md to mathml works fine, but md to html fails!
-// mostly due to escaping issues
-#[test]
-fn math_to_html_test() {
-    panic!("{}", render_to_html_with_default_options(&"[[math]]text{<=}text{=>}[[/math]]".to_string()));
 }

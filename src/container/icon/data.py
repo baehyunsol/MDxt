@@ -159,9 +159,9 @@ def get_sources():
 
     return sources
 
-xmlns_token = 0xd805
-size_token = 0xd806
-color_token = 0xd807
+xmlns_token = 0xd806
+size_token = 0xd807
+color_token = 0xd808
 
 EVA = 0x1000
 MATERIAL = 0x1001

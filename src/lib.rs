@@ -37,15 +37,6 @@ pub fn render_reference() -> String {
     let mut css = String::new();
     f.read_to_string(&mut css).unwrap();
 
-    #[cfg(test)] {
-        use testbench::debugger::{CALL_STACK_ENABLED, print_call_stack};
-
-        if CALL_STACK_ENABLED {
-            print_call_stack();
-        }
-
-    }
-
     format!(
 "
 <!DOCTYPE html>

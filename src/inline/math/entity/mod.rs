@@ -3,6 +3,7 @@ mod root;
 mod script;
 mod underover;
 
+use crate::escape::{escape_htmls, render_html_escapes};
 use crate::utils::{into_v16, is_alphabet, is_numeric};
 use fraction::Fraction;
 use root::Root;
@@ -92,21 +93,26 @@ impl Entity {
                 into_v16("</mn>"),
             ].concat(),
             // `++` -> `<mo>+</mo><mo>+</mo>`
+            // `>`  -> `<mo>&gt;</mo>`
             Entity::Operator(operator) => {
                 operator.iter().map(
                     |op|
                     vec![
                         into_v16("<mo>"),
-                        vec![*op],
+                        render_html_escapes(&escape_htmls(&vec![*op])),
                         into_v16("</mo>"),
                     ].concat()
                 ).collect::<Vec<Vec<u16>>>().concat()
             },
-            Entity::RawString(string) => vec![
-                into_v16("<mtext>"),
-                string.clone(),
-                into_v16("</mtext>"),
-            ].concat(),
+            Entity::RawString(string) => {
+                let escaped_string = escape_htmls(&string);
+
+                vec![
+                    into_v16("<mtext>"),
+                    escaped_string,
+                    into_v16("</mtext>"),
+                ].concat()
+            },
         }
 
     }
