@@ -77,6 +77,7 @@ body .markdown p {
 body .markdown ::selection {
   background-color: var(--dark-compl);
   color: var(--white-compl);
+  text-decoration-color: var(--white-compl);
 }
 body .markdown img {
   max-width: 21.43rem;
@@ -114,7 +115,7 @@ body .markdown img {
 .markdown .color-black {
   color: var(--black);
 }
-.markdown .color-black::selection {
+.markdown .color-black::selection, .markdown .color-black ::selection {
   color: var(--black-compl);
 }
 .markdown .highlight-black {
@@ -129,7 +130,7 @@ body .markdown img {
 .markdown .color-dark {
   color: var(--dark);
 }
-.markdown .color-dark::selection {
+.markdown .color-dark::selection, .markdown .color-dark ::selection {
   color: var(--dark-compl);
 }
 .markdown .highlight-dark {
@@ -144,7 +145,7 @@ body .markdown img {
 .markdown .color-gray {
   color: var(--gray);
 }
-.markdown .color-gray::selection {
+.markdown .color-gray::selection, .markdown .color-gray ::selection {
   color: var(--gray-compl);
 }
 .markdown .highlight-gray {
@@ -159,7 +160,7 @@ body .markdown img {
 .markdown .color-lightgray {
   color: var(--lightgray);
 }
-.markdown .color-lightgray::selection {
+.markdown .color-lightgray::selection, .markdown .color-lightgray ::selection {
   color: var(--lightgray-compl);
 }
 .markdown .highlight-lightgray {
@@ -174,7 +175,7 @@ body .markdown img {
 .markdown .color-white {
   color: var(--white);
 }
-.markdown .color-white::selection {
+.markdown .color-white::selection, .markdown .color-white ::selection {
   color: var(--white-compl);
 }
 .markdown .highlight-white {
@@ -189,7 +190,7 @@ body .markdown img {
 .markdown .color-red {
   color: var(--red);
 }
-.markdown .color-red::selection {
+.markdown .color-red::selection, .markdown .color-red ::selection {
   color: var(--red-compl);
 }
 .markdown .highlight-red {
@@ -204,7 +205,7 @@ body .markdown img {
 .markdown .color-green {
   color: var(--green);
 }
-.markdown .color-green::selection {
+.markdown .color-green::selection, .markdown .color-green ::selection {
   color: var(--green-compl);
 }
 .markdown .highlight-green {
@@ -219,7 +220,7 @@ body .markdown img {
 .markdown .color-blue {
   color: var(--blue);
 }
-.markdown .color-blue::selection {
+.markdown .color-blue::selection, .markdown .color-blue ::selection {
   color: var(--blue-compl);
 }
 .markdown .highlight-blue {
@@ -234,7 +235,7 @@ body .markdown img {
 .markdown .color-aqua {
   color: var(--aqua);
 }
-.markdown .color-aqua::selection {
+.markdown .color-aqua::selection, .markdown .color-aqua ::selection {
   color: var(--aqua-compl);
 }
 .markdown .highlight-aqua {
@@ -249,7 +250,7 @@ body .markdown img {
 .markdown .color-emerald {
   color: var(--emerald);
 }
-.markdown .color-emerald::selection {
+.markdown .color-emerald::selection, .markdown .color-emerald ::selection {
   color: var(--emerald-compl);
 }
 .markdown .highlight-emerald {
@@ -264,7 +265,7 @@ body .markdown img {
 .markdown .color-violet {
   color: var(--violet);
 }
-.markdown .color-violet::selection {
+.markdown .color-violet::selection, .markdown .color-violet ::selection {
   color: var(--violet-compl);
 }
 .markdown .highlight-violet {
@@ -279,7 +280,7 @@ body .markdown img {
 .markdown .color-pink {
   color: var(--pink);
 }
-.markdown .color-pink::selection {
+.markdown .color-pink::selection, .markdown .color-pink ::selection {
   color: var(--pink-compl);
 }
 .markdown .highlight-pink {
@@ -294,7 +295,7 @@ body .markdown img {
 .markdown .color-grassgreen {
   color: var(--grassgreen);
 }
-.markdown .color-grassgreen::selection {
+.markdown .color-grassgreen::selection, .markdown .color-grassgreen ::selection {
   color: var(--grassgreen-compl);
 }
 .markdown .highlight-grassgreen {
@@ -309,7 +310,7 @@ body .markdown img {
 .markdown .color-gold {
   color: var(--gold);
 }
-.markdown .color-gold::selection {
+.markdown .color-gold::selection, .markdown .color-gold ::selection {
   color: var(--gold-compl);
 }
 .markdown .highlight-gold {
@@ -723,6 +724,12 @@ body .markdown img {
   border-radius: 0.143rem;
   padding: 0.143rem 0.286rem 0.143rem;
   white-space: pre;
+}
+.markdown code.inline-code-span::selection {
+  color: #003fbf;
+}
+.markdown table tr:nth-last-child(odd) code.inline-code-span {
+  background-color: #808080;
 }
 
 /* Table */

@@ -17,6 +17,7 @@ body .markdown {
     ::selection {
         background-color: var(--dark-compl);
         color: var(--white-compl);
+        text-decoration-color: var(--white-compl);
     }
 
     img {
@@ -70,7 +71,7 @@ body .markdown {
         color: var(--black);
     }
 
-    .color-black::selection {
+    .color-black::selection, .color-black ::selection {
         color: var(--black-compl);
     }
 
@@ -92,7 +93,7 @@ body .markdown {
         color: var(--dark);
     }
 
-    .color-dark::selection {
+    .color-dark::selection, .color-dark ::selection {
         color: var(--dark-compl);
     }
 
@@ -114,7 +115,7 @@ body .markdown {
         color: var(--gray);
     }
 
-    .color-gray::selection {
+    .color-gray::selection, .color-gray ::selection {
         color: var(--gray-compl);
     }
 
@@ -136,7 +137,7 @@ body .markdown {
         color: var(--lightgray);
     }
 
-    .color-lightgray::selection {
+    .color-lightgray::selection, .color-lightgray ::selection {
         color: var(--lightgray-compl);
     }
 
@@ -158,7 +159,7 @@ body .markdown {
         color: var(--white);
     }
 
-    .color-white::selection {
+    .color-white::selection, .color-white ::selection {
         color: var(--white-compl);
     }
 
@@ -180,7 +181,7 @@ body .markdown {
         color: var(--red);
     }
 
-    .color-red::selection {
+    .color-red::selection, .color-red ::selection {
         color: var(--red-compl);
     }
 
@@ -202,7 +203,7 @@ body .markdown {
         color: var(--green);
     }
 
-    .color-green::selection {
+    .color-green::selection, .color-green ::selection {
         color: var(--green-compl);
     }
 
@@ -224,7 +225,7 @@ body .markdown {
         color: var(--blue);
     }
 
-    .color-blue::selection {
+    .color-blue::selection, .color-blue ::selection {
         color: var(--blue-compl);
     }
 
@@ -246,7 +247,7 @@ body .markdown {
         color: var(--aqua);
     }
 
-    .color-aqua::selection {
+    .color-aqua::selection, .color-aqua ::selection {
         color: var(--aqua-compl);
     }
 
@@ -268,7 +269,7 @@ body .markdown {
         color: var(--emerald);
     }
 
-    .color-emerald::selection {
+    .color-emerald::selection, .color-emerald ::selection {
         color: var(--emerald-compl);
     }
 
@@ -290,7 +291,7 @@ body .markdown {
         color: var(--violet);
     }
 
-    .color-violet::selection {
+    .color-violet::selection, .color-violet ::selection {
         color: var(--violet-compl);
     }
 
@@ -312,7 +313,7 @@ body .markdown {
         color: var(--pink);
     }
 
-    .color-pink::selection {
+    .color-pink::selection, .color-pink ::selection {
         color: var(--pink-compl);
     }
 
@@ -334,7 +335,7 @@ body .markdown {
         color: var(--grassgreen);
     }
 
-    .color-grassgreen::selection {
+    .color-grassgreen::selection, .color-grassgreen ::selection {
         color: var(--grassgreen-compl);
     }
 
@@ -356,7 +357,7 @@ body .markdown {
         color: var(--gold);
     }
 
-    .color-gold::selection {
+    .color-gold::selection, .color-gold ::selection {
         color: var(--gold-compl);
     }
 
@@ -936,6 +937,14 @@ body .markdown {
         white-space: pre;
     }
 
+    code.inline-code-span::selection {
+        color: $gold-compl;
+    }
+
+    table tr:nth-last-child(odd) code.inline-code-span {
+        background-color: $gray;
+    }
+
 }
 
 /* Table */
@@ -971,7 +980,7 @@ body .markdown {
         td, th {
             padding: $padding-medium + $padding-small;
         }
-    
+
         tr:nth-last-child(odd) {
             background-color: var(--black);
         }

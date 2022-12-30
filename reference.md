@@ -1,5 +1,5 @@
 ---
-date: [2022, 8, 23]
+date: [2022, 12, 30]
 tags: [mdxt, reference, documentation]
 preview: MDxt Reference
 ---
@@ -55,6 +55,10 @@ A valid link after a bang(!) character is rendered to an `img` tag.
 
 ### Footnotes
 
+Links whose names begin with `^` are rendered to footnotes. A footnote may have multiple lines, but it can have only 1 paragraph. Don't ref another footnote inside a footnote.
+
+Below is an example.
+
 ```
 This is a footnote.[^A]
 
@@ -82,6 +86,22 @@ This is another footnote.[^B]
 #### Column Alignments
 
 #### Multiline Table Head
+
+```
+|         [[colspan = 6]] Shopping List         |
+| [[colspan = 3]] Food  | [[colspan = 3]] Drink |
+|-------|:-----:|-------|:-----:|-------|-------|
+| Bread | Cake  | Pie   | Beer  | Water | Coffee|
+| None  | Center| None  | Center| None  | None  |
+| Foo   | [[colspan = 4]] *Bar*         |
+```
+
+|         [[colspan = 6]] Shopping List         |
+| [[colspan = 3]] Food  | [[colspan = 3]] Drink |
+|-------|:-----:|-------|:-----:|-------|-------|
+| Bread | Cake  | Pie   | Beer  | Water | Coffee|
+| None  | Center| None  | Center| None  | None  |
+| Foo   | [[colspan = 4]] *Bar*         |
 
 #### Colspan
 
@@ -169,8 +189,6 @@ which looks like
   a. hahaha
 
 ### Fenced Code Blocks
-
-Fenced code blocks are rendered to `<table>` tags in html. Be aware if you're writing custom css files for mdxt.
 
 ````
 ```rust, line_num, highlight(6, 17, 22)
@@ -317,13 +335,15 @@ This text is centered.
 
 `[[highlight = red]] This text is highlighted! [[/highlight]]` is rendered to `<span class="highlight-red"> This text is highlighted! </span>`. The same rule is applied to the other colors.
 
+[[highlight = red]] This text is highlighted! [[/highlight]]
+
 To see available colors, read the [Colors](#colors) section.
 
 ### Box
 
-`[[box]]A text in a box.[[/box]]` is rendered to `<div class="box">A text in a box.</div>`.
+`[[box]]A text in a box.[[/box]]` is rendered to `<span class="box">A text in a box.</span>`.
 
-`[[box, no border]]A text in a box.[[/box]]` is rendered to `<div class="box no-border">A text in a box.</div>`.
+`[[box, no border]]A text in a box.[[/box]]` is rendered to `<span class="box no-border">A text in a box.</span>`.
 
 ```
 [[box]]
@@ -362,6 +382,36 @@ A paragraph in a borderless box in a box.
 [[/box]]
 
 [[/box]]
+
+You can set box's width/height using attributes. See examples below.
+
+```
+[[box, width = giant, height = giant]]
+
+A Giant Box
+
+[[/box]]
+
+[[box, width = tiny, height = tiny]]
+
+A Tiny Box
+
+[[/box]]
+```
+
+[[box, width = giant, height = giant]]
+
+A Giant Box
+
+[[/box]]
+
+[[box, width = tiny, height = tiny]]
+
+A Tiny Box
+
+[[/box]]
+
+There's another attribute: `inline`, which is a bit tricky. An inline `[[box]]` macro is rendered to a `<span>` tag, while a multiline `[[box]]` macro with an `inline` attribute is rendered to a `<div>` tag with an `"inline"` class.
 
 ### Table of Contents
 
@@ -386,7 +436,7 @@ To see the list of available characters, visit [here](MDxt-Character-Reference.h
 
 ### Icons
 
-WIP
+You can embed SVG icons using the `[[icon]]` macro. The full documentation can be found [here](MDxt-Icon-Reference.html).
 
 ### Math
 
