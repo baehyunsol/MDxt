@@ -45,6 +45,8 @@ footnote 안에 다른 footnote를 넣으면 어떻게 됨? 자기자신을 ref�
 [^bb]: This is bb.[^bb][^aa]
 ```
 
+저러면 footnote 내용 안의 footnote는 인식이 안됨 (번호는 붙는데 link가 안 생김). 그냥 레퍼런스에 저런 거 하지 말라고 적어놨음
+
 ---
 
 list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으로 들어가버림. 아마 blockquote도 동일할 듯. table도 실험해보셈. 저게 맞는 동작인지 아닌지는 고민을 좀 해보자
@@ -138,6 +140,8 @@ int a = 3;
 ````
 
 ---
+
+list/table/blockquote 안에 list/table/blockquote/fenced_code_block 넣기! ...how?
 
 `[[define, id = table1]]`이랑 `[[reference, id = table1]]`를 만들까? `[[define]]` 안에서 table을 만들고 `[[reference]]`로 그 table을 재활용하는 거임. 이러면 table in table 등등도 전부 구현 가능!
 

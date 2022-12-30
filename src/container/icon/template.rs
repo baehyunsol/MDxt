@@ -14,7 +14,7 @@ pub fn data() -> HashMap<Vec<u16>, (Vec<u16>, usize)> {  // HashMap<IconName, (S
 fn format_xmlns(standalone: bool) -> Vec<u16> {
 
     if standalone {
-        into_v16("xmlns=\"http://www.w3.org/2000/svg\"")
+        into_v16(" xmlns=\"http://www.w3.org/2000/svg\"")
     }
 
     else {
@@ -24,11 +24,11 @@ fn format_xmlns(standalone: bool) -> Vec<u16> {
 }
 
 fn format_size(n: usize) -> Vec<u16> {
-    into_v16(&format!("width=\"{}\" height=\"{}\"", n, n))
+    into_v16(&format!(" width=\"{}\" height=\"{}\"", n, n))
 }
 
 fn format_color(r: u8, g: u8, b: u8) -> Vec<u16> {
-    into_v16(&format!("fill=\"rgb({}, {}, {})\"", r, g, b))
+    into_v16(&format!(" fill=\"rgb({}, {}, {})\"", r, g, b))
 }
 
 pub fn format(icon: &Vec<u16>, size: usize, color: Option<(u8, u8, u8)>, standalone: bool) -> Vec<u16> {
