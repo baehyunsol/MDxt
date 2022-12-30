@@ -24,6 +24,7 @@ pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -
     let mut highlighter = HighlightLines::new(syntax_reference, &THEME);
     let mut result = vec![];
 
+    // it needs `\n` characters to highlight syntax properly (eg: without `\n`, single line comments don't work)
     for line_u16 in inclusive_split(&content, '\n' as u16).into_iter() {
         let line_u16 = line_u16.to_vec();
 
@@ -74,14 +75,24 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
 
     let content_v16 = into_v16(content);
 
-    if content_v16.len() == 0 || content_v16.iter().all(|c| *c == ' ' as u16 || *c == '\n' as u16) {
-        content_v16
+    // though we've included `\n` characters for the sake of proper syntax highlighting,
+    // the characters have to be erased before it's rendered to html.
+    // otherwise the result html will have redundant `\n`s.
+
+    // it doesn't touch empty pieces
+    if content_v16.len() == 0 {
+        vec![]
+    }
+
+    // it doesn't touch empty pieces
+    else if content_v16.iter().all(|c| *c == ' ' as u16 || *c == '\n' as u16) {
+        content_v16.into_iter().filter(|c| *c != '\n' as u16).collect()
     }
 
     else {
         vec![
             into_v16(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
-            escape_htmls(&content_v16),
+            escape_htmls(&content_v16).into_iter().filter(|c| *c != '\n' as u16).collect(),
             into_v16("</span>")
         ].concat()
     }

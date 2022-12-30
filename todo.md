@@ -186,12 +186,6 @@ table 안에다가 `!![[ref, id = table1]]` 하거나, fence에다가 ```` ```ru
 
 ---
 
-box에 새로 arguments 추가한 거 reference에도 추가하기
-
-- icon::testbench 참고 ㄱㄱ
-
----
-
 table에서 `[[background=red]]` 같은 것도 되게 할까?
 
 `[[column background = red]]`나 `[[row background = red]]` 같은 것도 되게 만든 다음에 `cell > row > column` 우선순위로 적용되게 해도 좋을 것 같고.
