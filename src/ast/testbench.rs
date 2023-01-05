@@ -3,8 +3,7 @@ use crate::utils::{from_v16, into_v16, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn mdxt_samples() -> Vec<(String, String)> {
-    let result = vec![
-        ("
+    let result = vec![("
 [[red]]
 Red
 [[/red]]

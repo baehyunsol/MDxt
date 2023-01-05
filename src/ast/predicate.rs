@@ -160,7 +160,7 @@ impl Line {
 
     #[inline]
     pub fn is_multiline_macro(&self) -> bool {
-        self.indent < 4 && read_macro(&self.content, 0).is_some() && {
+        read_macro(&self.content, 0).is_some() && {
 
             // trailing whitespaces are okay, but the other characters are not allowed
             let mut curr_index = get_bracket_end_index(&self.content, 0).unwrap() + 1;
