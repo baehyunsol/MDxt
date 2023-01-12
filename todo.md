@@ -26,7 +26,7 @@ fn custom_macro(arguments: &Vec<Vec<Vec<u16>>>, content: &Vec<u16>) -> Option<Ve
 tooltip
 
 ```
-[[tooltip = aabb]] Tooltip on an image ![abc](abc.jpg) [[/tooltip]]
+[[tooltip = aabb]] Hover over me to see a tooltip message! [[/tooltip]]
 
 [^aabb]: [[big]]This is a tooltip message.[[/big]]
 ```
@@ -34,6 +34,17 @@ tooltip
 일단 tooltip은 multiline으로 못쓰게 해두자!
 
 tooltip 안에 tooltip을 넣으면?? tooltip 안에서 자기자신을 ref하면?
+
+InlineNode.parse_raw가 check_and_parse_macro_inline를 부르고 check_and_parse_macro_inline가 Macro.parse를 부름. Macro.parse는 &mut doc_data를 갖고 있기 때문에 inline node를 마음껏 parse할 수 있음. 즉, 이 안에서 tooltip message와 tooltip content를 둘 다 parse해버리면 됨!! 굳이 label을 갖고 있을 필요 X
+
+근데 multiline macro는 doc_data가 없어서 inline을 못 parse함... 여기는 doc_data 줄 수도 없음. multiline_macro 읽는 타이밍이 doc_data 만들기 이전임...
+
+`[[tooltip = aabb]]` 했는데 `[^aabb]`가 존재 안하면? 그냥 inline은 존재여부 확인이 가능한데 multiline은 확인 불가능!
+
+- multiline macro는 못 쓰게 한다
+  - 일관성이 너무 없음..ㅜ
+- 일단 label만 갖고 있다가 나중에 일괄적으로 inline을 parsing 한다
+  - 언제?
 
 ---
 

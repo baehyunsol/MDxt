@@ -6,7 +6,19 @@ use syntect::highlighting::{Color, Style, Theme, ThemeSet};
 use syntect::parsing::SyntaxSet;
 
 lazy_static! {
-    pub static ref SYNTAX_SET: SyntaxSet = SyntaxSet::load_defaults_newlines();
+    pub static ref SYNTAX_SET: SyntaxSet = {
+        let default_set = SyntaxSet::load_defaults_newlines();
+        let mut syntax_set_builder = default_set.into_builder();
+
+        match syntax_set_builder.add_from_folder("./extra_syntaxes", true) {
+            Err(e) => {
+                println!("Error while reading `./extra_syntaxes`: {:?}", e);
+            }
+            _ => {}
+        }
+
+        syntax_set_builder.build()
+    };
     pub static ref THEME: Theme = {
         let theme_set = ThemeSet::load_defaults();
 
