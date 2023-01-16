@@ -489,6 +489,23 @@ body .markdown img {
   border-bottom: 0.143rem solid var(--gray);
 }
 
+/* Tooltips */
+.markdown .tooltip-message {
+  position: fixed;
+  visibility: hidden;
+  border: 0.143rem solid var(--black);
+  border-radius: 0.286rem;
+  padding: 0.286rem;
+  background-color: var(--gray);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.markdown .tooltip-container:hover .tooltip-message {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
 /* Links */
 .markdown a:link {
   border-bottom: 0.143rem solid var(--aqua-trans);
@@ -828,20 +845,4 @@ body .markdown img {
   border-left: 0.3333333333rem solid #0000;
   border-right: 0.3333333333rem solid #0000;
   border-bottom: 0.3333333333rem solid var(--white);
-}
-
-span.tooltip-message {
-  position: fixed; /* necessary */
-  visibility: hidden; /* necessary */
-  color: white;
-  background-color: #a04040;
-  padding: 4px;
-  opacity: 0;
-  transition: opacity 1.2s;
-}
-
-span.tooltip-container:hover span.tooltip-message {
-  visibility: visible; /* necessary */
-  opacity: 1;
-  transition: opacity 1.2s;
 }

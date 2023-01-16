@@ -606,6 +606,28 @@ body .markdown {
 
 }
 
+/* Tooltips */
+.markdown {
+
+    .tooltip-message {
+        position: fixed;
+        visibility: hidden;
+        border: $border-medium solid var(--black);
+        border-radius: $round-border-medium;
+        padding: $padding-small;
+        background-color: var(--gray);
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    .tooltip-container:hover .tooltip-message {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.5s;
+    }
+
+}
+
 /* Links */
 .markdown {
 

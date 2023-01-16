@@ -11,6 +11,7 @@ pub struct RenderOption {
     pub javascript_copy_buttons: bool,
     pub javascript_tooltips: bool,
     pub class_prefix: String,
+    pub footnote_tooltip: bool,
     pub xml: bool
 }
 
@@ -25,6 +26,7 @@ impl Default for RenderOption {
             javascript_copy_buttons: true,
             javascript_tooltips: true,
             class_prefix: String::new(),
+            footnote_tooltip: false,
             xml: false
         }
     }
@@ -92,6 +94,13 @@ impl RenderOption {
         self.javascript_collapsible_tables = javascript;
         self.javascript_copy_buttons = javascript;
         self.javascript_tooltips = javascript;
+
+        self
+    }
+
+    /// Shows a tooltip message when hovering over a footnote ref.
+    pub fn set_footnote_tooltip(&mut self, footnote_tooltip: bool) -> &mut Self {
+        self.footnote_tooltip = footnote_tooltip;
 
         self
     }

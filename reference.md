@@ -1,5 +1,5 @@
 ---
-date: [2022, 12, 30]
+date: [2023, 1, 16]
 tags: [mdxt, reference, documentation]
 preview: MDxt Reference
 ---
@@ -412,6 +412,22 @@ A Tiny Box
 [[/box]]
 
 There's another attribute: `inline`, which is a bit tricky. An inline `[[box]]` macro is rendered to a `<span>` tag, while a multiline `[[box]]` macro with an `inline` attribute is rendered to a `<div>` tag with an `"inline"` class.
+
+### Tooltips
+
+`[[tooltip]]` macro generates a tooltip. See the example below.
+
+```
+[[tooltip=abc]] Hover over me! [[/tooltip]]
+
+[^abc]: This is a tooltip message.
+```
+
+[[tooltip=abc]] Hover over me! [[/tooltip]]
+
+[^abc]: This is a tooltip message.
+
+A tooltip message's syntax is the same as footnote cite's. There are some limitations, though. You cannot nest a tooltip inside another tooltip.
 
 ### Table of Contents
 

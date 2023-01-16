@@ -1,5 +1,5 @@
 use super::{
-    InlineNode, DecorationType,
+    InlineNode, DecorationType, InlineMacro,
     INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4
 };
 use super::footnote::predicate::read_footnote;
@@ -7,7 +7,7 @@ use super::link::normalize_link_label;
 use super::link::predicate::{
     read_direct_link, read_reference_link, read_shortcut_reference_link
 };
-use super::macros::predicate::check_and_parse_macro_inline;
+use super::macros::{predicate::check_and_parse_macro_inline, tooltip::load_tooltip_message};
 use super::math::escape_inside_math_blocks;
 use super::predicate::*;
 use crate::ast::doc_data::DocData;
@@ -347,7 +347,20 @@ impl InlineNode {
                         result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
-                    result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
+                    if render_option.footnote_tooltip {
+                        result.push(Box::new(InlineNode::Decoration {
+                            deco_type: DecorationType::Macro(InlineMacro::Tooltip {
+                                label: footnote_label[1..].to_vec(),
+                                message: load_tooltip_message(&footnote_label[1..], doc_data, render_option),
+                                index: doc_data.add_tooltip()
+                            }),
+                            content: vec![Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label)))]
+                        }));
+                    }
+
+                    else {
+                        result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
+                    }
 
                     if bracket_end_index + 1 < content.len() {
                         result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));

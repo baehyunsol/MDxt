@@ -1,4 +1,4 @@
-use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}, get_macro_name, tooltip::dummy_tooltip};
+use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}, get_macro_name, tooltip::load_tooltip_message};
 use crate::inline::{DecorationType, InlineNode, InlineMacro};
 use crate::render::render_option::RenderOption;
 use crate::utils::{into_v16, to_int};
@@ -99,14 +99,7 @@ impl Macro {
                 let result = InlineNode::Decoration {
                     deco_type: DecorationType::Macro({
                         let label = arguments[0][1].clone();
-                        let label_key = vec![into_v16("^"), label.clone()].concat();
-                        let mut message = match doc_data.footnote_references.get(&label_key) {
-                            Some(f) => f.clone(),
-                            None => dummy_tooltip(&label),  // print error message: "Error! Undefined tooltip label: {}"
-                        };
-
-                        message.content.parse_raw(doc_data, render_option);
-                        let message = message.content.clone().to_vec();
+                        let message = load_tooltip_message(&label, doc_data, render_option);
                         let index = doc_data.add_tooltip();
 
                         let result = InlineMacro::Tooltip {

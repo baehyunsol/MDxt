@@ -40,6 +40,7 @@ impl List {
             let (new_list, new_index) = from_lines_recursive(&lines[..], index);
             index = new_index;
 
+            // TODO: this is O(n^2)
             list.elements = vec![
                 list.elements,
                 new_list.elements
