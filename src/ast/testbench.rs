@@ -507,6 +507,37 @@ lines\r\n
 <p>
     <code class=\"inline-code-span\">[[math]]&lt;a&gt;a?&lt;/a&gt;[[/math]]</code>
 </p>
+"), ("
+Not a tooltip, [[tooltip=tooltip1]]A tooltip[[/tooltip]], Not a tooltip
+
+[[tooltip=tooltipx]]Undefined tooltip[[/tooltip]]
+
+[[tooltip=tooltip2]]A tooltip in a tooltip: [[tooltip=tooltip1]]Invalid[[/tooltip]] Suffix[[/tooltip]]
+
+[^tooltip1]: Hello from tooltip1!
+[^tooltip2]: A tooltip in a tooltip: [[tooltip = tooltip1]]Invalid[[/tooltip]] Suffix
+", "
+<p>
+Not a tooltip,
+  <span class=\"tooltip-container\" id=\"tooltip-container-0\">A tooltip
+    <span class=\"tooltip-message\" id=\"tooltip-message-0\">Hello from tooltip1!</span>
+  </span>,
+Not a tooltip
+</p>
+
+<p>
+  <span class=\"tooltip-container\" id=\"tooltip-container-1\">
+    Undefined tooltip
+      <span class=\"tooltip-message\" id=\"tooltip-message-1\">Error! Undefined tooltip label: tooltipx</span>
+  </span>
+</p>
+
+<p>
+  <span class=\"tooltip-container\" id=\"tooltip-container-2\">
+    A tooltip in a tooltip: [[tooltip=tooltip1]]Invalid[[/tooltip]] Suffix
+      <span class=\"tooltip-message\" id=\"tooltip-message-2\">A tooltip in a tooltip: [[tooltip = tooltip1]]Invalid[[/tooltip]] Suffix</span>
+  </span>
+</p>
 ")
     ];
 

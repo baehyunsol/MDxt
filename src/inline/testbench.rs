@@ -95,6 +95,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[div, class = foo, id = bar, class = baz]] abc [[/div]]", "<div class=\"foo baz\" id=\"bar\"> abc </div>"),
         ("[[div, class = foo, onclick = malicious function]] abc [[/div]]", "[[div, class = foo, onclick = malicious function]] abc [[/div]]"),
         ("[[div]][[/div]], [[span]][[/span]], [[anchor]][[/anchor]], [[button]][[/button]], [[script]][[/script]]", "<div></div>, <span></span>, <a></a>, <button></button>, [[script]][[/script]]"),
+        ("[[div, id=abc]]abc[[div, id=def]]def[[/div]]ghi[[/div]]", "<div id=\"abc\">abc<div id=\"def\">def</div>ghi</div>"),
         ("[[box, no border]] boxed [[/box]]", "<span class=\"box no-border\"> boxed </span>"),
         ("[[br]][[blank]]", "<br/>&nbsp;"),
         ("[[br=2]][[blank=3]]", "<br/><br/>&nbsp;&nbsp;&nbsp;"),

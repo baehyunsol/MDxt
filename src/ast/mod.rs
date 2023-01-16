@@ -11,7 +11,7 @@ use crate::inline::{
     InlineNode,
     footnote::{footnotes_to_html, Footnote}
 };
-use crate::collapsible_table_javascript;
+use crate::{collapsible_table_javascript, tooltip_javascript};
 use crate::container::codefence::html::copy_button_javascript;
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v16;
@@ -164,6 +164,7 @@ impl AST {
 
         let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_collapsible_tables;
         let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_copy_buttons;
+        let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_collapsible_tables;
 
         if enable_js_for_copy_buttons || enable_js_for_tables {
             result.push(into_v16("<script>"));
@@ -178,6 +179,10 @@ impl AST {
 
             if enable_js_for_copy_buttons {
                 result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+            }
+
+            if enable_js_for_tooltips {
+                result.push(into_v16(&tooltip_javascript()));
             }
 
             // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work

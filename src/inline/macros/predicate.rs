@@ -4,6 +4,7 @@ use crate::utils::{get_bracket_end_index, into_v16, remove_whitespaces};
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
+// "[[div, id = def]]" -> "div,id=def"
 pub fn read_macro(content: &[u16], index: usize) -> Option<Vec<u16>> {
 
     if content.len() > 0 && content[index] == '[' as u16 && index + 1 < content.len() && content[index + 1] == '[' as u16 {
@@ -60,25 +61,46 @@ pub fn check_and_parse_macro_inline(
                         Some((macro_.parse(&macro_arguments, &vec![], doc_data, render_option), macro_end_index))
                     }
 
+                    else if doc_data.tooltip_enabled > 0 && (macro_name == into_v16("tooltip") || macro_name == into_v16("/tooltip")) {
+                        None
+                    }
+
                     else {
                         let closing_macro = macro_.get_closing_macro();
                         let mut curr_index = macro_end_index + 1;
+                        let mut macro_nest_stack = 0;
 
                         while curr_index < content.len() {
 
                             match read_macro(content, curr_index) {
-                                Some(macro_content) if macro_content == closing_macro => {
-                                    return Some(
-                                        (
-                                            macro_.parse(
-                                                &macro_arguments,
-                                                &content[macro_end_index + 1..curr_index],
-                                                doc_data,
-                                                render_option
-                                            ),
-                                            get_bracket_end_index(content, curr_index).unwrap()
-                                        )
-                                    );
+                                Some(macro_content) => if macro_content == closing_macro {
+
+                                    if macro_nest_stack == 0 {
+                                        return Some(
+                                            (
+                                                macro_.parse(
+                                                    &macro_arguments,
+                                                    &content[macro_end_index + 1..curr_index],
+                                                    doc_data,
+                                                    render_option
+                                                ),
+                                                get_bracket_end_index(content, curr_index).unwrap()
+                                            )
+                                        );
+                                    }
+
+                                    else {
+                                        macro_nest_stack -= 1;
+                                    }
+
+                                } else {
+                                    let inner_macro_arguments = parse_arguments(&macro_content);
+                                    let inner_macro_name = get_macro_name(&inner_macro_arguments);
+
+                                    if inner_macro_name == macro_name {  // the same macro is nested inside
+                                        macro_nest_stack += 1;
+                                    }
+
                                 },
                                 _ => {}
                             }

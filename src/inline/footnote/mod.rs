@@ -48,10 +48,18 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
         ));
     }
 
-    footnote_cites.sort_unstable_by_key(|(_, i)| *i);
-    result.push(footnote_cites.into_iter().map(|(c, _)| c).collect::<Vec<Vec<u16>>>().concat());
+    // footnotes are defined, but none of them are used
+    // in this case, nothing has to be rendered
+    if footnote_cites.len() == 0 {
+        result.pop();
+    }
 
-    result.push(into_v16("</p></div>"));
+    else {
+        footnote_cites.sort_unstable_by_key(|(_, i)| *i);
+        result.push(footnote_cites.into_iter().map(|(c, _)| c).collect::<Vec<Vec<u16>>>().concat());
+
+        result.push(into_v16("</p></div>"));
+    }
 
     result.concat()
 }

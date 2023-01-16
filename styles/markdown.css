@@ -829,3 +829,19 @@ body .markdown img {
   border-right: 0.3333333333rem solid #0000;
   border-bottom: 0.3333333333rem solid var(--white);
 }
+
+span.tooltip-message {
+  position: fixed; /* necessary */
+  visibility: hidden; /* necessary */
+  color: white;
+  background-color: #a04040;
+  padding: 4px;
+  opacity: 0;
+  transition: opacity 1.2s;
+}
+
+span.tooltip-container:hover span.tooltip-message {
+  visibility: visible; /* necessary */
+  opacity: 1;
+  transition: opacity 1.2s;
+}

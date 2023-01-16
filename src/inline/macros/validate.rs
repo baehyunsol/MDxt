@@ -44,6 +44,10 @@ impl Macro {
                 result
             },
 
+            // for `[[tooltip = aabb]]`, it doesn't check whether `aabb` is valid or not,
+            // -> it cannot check that
+            MacroType::Tooltip => arguments.len() == 1 && arguments[0].len() == 2,
+
             MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2 && COLOR_NAMES.contains(&arguments[0][1]),
 
             MacroType::Icon => arguments[0].len() == 2 && ICONS.contains_key(&arguments[0][1]) && (

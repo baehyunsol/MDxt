@@ -9,6 +9,7 @@ pub struct RenderOption {
     pub parse_metadata: bool,
     pub javascript_collapsible_tables: bool,
     pub javascript_copy_buttons: bool,
+    pub javascript_tooltips: bool,
     pub class_prefix: String,
     pub xml: bool
 }
@@ -22,6 +23,7 @@ impl Default for RenderOption {
             parse_metadata: true,
             javascript_collapsible_tables: true,
             javascript_copy_buttons: true,
+            javascript_tooltips: true,
             class_prefix: String::new(),
             xml: false
         }
@@ -77,6 +79,20 @@ impl RenderOption {
     /// It embeds javascript for copy buttons of fenced code blocks in a `<script>`.
     pub fn embed_js_for_copy_buttons(&mut self, javascript: bool) -> &mut Self {
         self.javascript_copy_buttons = javascript;
+        self
+    }
+
+    /// It embeds javascript for tooltips in a `<script>`.
+    pub fn embed_js_for_tooltips(&mut self, javascript: bool) -> &mut Self {
+        self.javascript_tooltips = javascript;
+        self
+    }
+
+    pub fn embed_js_all(&mut self, javascript: bool) -> &mut Self {
+        self.javascript_collapsible_tables = javascript;
+        self.javascript_copy_buttons = javascript;
+        self.javascript_tooltips = javascript;
+
         self
     }
 

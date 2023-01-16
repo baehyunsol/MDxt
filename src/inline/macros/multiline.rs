@@ -194,7 +194,7 @@ impl MultiLineMacro {
                     result.push(into_v16(">"));
 
                     result.concat()
-                }
+                },
             }
 
         }

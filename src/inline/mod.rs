@@ -57,6 +57,11 @@ pub enum InlineMacro {
         height: Vec<u16>,
     },
     Toc,
+    Tooltip {
+        message: Vec<Box<InlineNode>>,
+        index: usize,
+        label: Vec<u16>
+    },
     Blank { repeat: usize },
     Br { repeat: usize },
     HTML {
@@ -265,6 +270,25 @@ impl InlineNode {
 
                         result.concat()
                     }
+                    InlineMacro::Tooltip { message, index, .. } => vec![
+                        into_v16(&format!(
+                            "<span class=\"{}tooltip-container\" id=\"tooltip-container-{}\">",
+                            class_prefix,
+                            index
+                        )),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16(&format!(
+                            "<span class=\"{}tooltip-message\" id=\"tooltip-message-{}\">",
+                            class_prefix,
+                            index
+                        )),
+                        message.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("</span></span>")
+                    ].concat(),
                     InlineMacro::Char(character) => if character[0] < 'A' as u16 {
                         vec![
                             into_v16("&#"),
@@ -398,6 +422,15 @@ impl InlineNode {
                             |node| node.to_mdxt()
                         ).collect::<Vec<Vec<u16>>>().concat(),
                         into_v16("[[/highlight]]")
+                    ].concat(),
+                    InlineMacro::Tooltip { label, .. } => vec![
+                        into_v16("[[tooltip="),
+                        label.clone(),
+                        into_v16("]]"),
+                        content.iter().map(
+                            |node| node.to_mdxt()
+                        ).collect::<Vec<Vec<u16>>>().concat(),
+                        into_v16("[[/tooltip]]")
                     ].concat(),
                     InlineMacro::Box { border, inline, width, height } => vec![
                         into_v16(&format!(

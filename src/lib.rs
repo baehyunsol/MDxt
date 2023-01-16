@@ -19,6 +19,7 @@ pub use render::{
 
 pub use color::{COLORS, Color};
 pub use container::table::macros::collapsible_table_javascript;
+pub use inline::macros::tooltip::tooltip_javascript;
 
 /// `Reference.md` is an example mdxt file.
 /// See how it works.

@@ -1,9 +1,10 @@
+pub mod multiline;
 pub mod predicate;
 pub mod toc;
-pub mod multiline;
+pub mod tooltip;
+mod character;
 mod parse;
 mod validate;
-mod character;
 
 #[cfg(test)]
 mod testbench;
@@ -28,7 +29,7 @@ pub struct Macro {
 enum MacroType {
     Color, Size, Alignment, Highlight,
     Box, Toc, Blank, Br, Char, Icon, Math,
-    HTML
+    HTML, Tooltip
 }
 
 impl Macro {
@@ -46,6 +47,7 @@ impl Macro {
             Self::new("highlight", MacroType::Highlight, true),
             Self::new("box", MacroType::Box, true),
             Self::new("toc", MacroType::Toc, false),
+            Self::new("tooltip", MacroType::Tooltip, true),
             Self::new("blank", MacroType::Blank, false),
             Self::new("br", MacroType::Br, false),
             Self::new("char", MacroType::Char, false),

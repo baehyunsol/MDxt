@@ -8,6 +8,8 @@ pub struct DocData {
     pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
     pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize,
+    pub tooltip_count: usize,
+    pub tooltip_enabled: usize,  // it's used to prevent tooltips inside another tooltip
     pub has_toc: bool,
     pub has_collapsible_table: bool,
     pub fenced_code_contents: HashMap<usize, Vec<u16>>  // HashMap<index, content>
@@ -21,6 +23,8 @@ impl Default for DocData {
             link_references: HashMap::new(),
             footnote_references: HashMap::new(),
             footnote_reference_count: 0,
+            tooltip_count: 0,
+            tooltip_enabled: 0,  // 0 if enabled
             has_toc: false,
             has_collapsible_table: false,
             fenced_code_contents: HashMap::new()
@@ -53,6 +57,11 @@ impl DocData {
             self.fenced_code_contents.insert(fenced_code.index, fenced_code.get_raw_content());
         }
 
+    }
+
+    pub fn add_tooltip(&mut self) -> usize {
+        self.tooltip_count += 1;
+        self.tooltip_count - 1
     }
 
 }
