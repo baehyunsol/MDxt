@@ -48,6 +48,7 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
     RenderResult {
         content: from_v16(&clean_html),
         has_collapsible_table: ast.doc_data.has_collapsible_table,
+        has_tooltip: ast.doc_data.tooltip_count > 0,
         metadata,
         fenced_code_contents
     }

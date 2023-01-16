@@ -7,6 +7,9 @@ pub struct RenderResult {
     /// This flag tells you if the document has a collapsible table.
     pub has_collapsible_table: bool,
 
+    /// This flag tells you if the document has a tooltip.
+    pub has_tooltip: bool,
+
     pub metadata: Option<Yaml>,
 
     /// Some fenced codes have a `copy` button with them.
