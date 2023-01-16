@@ -45,6 +45,7 @@ InlineNode.parse_raw가 check_and_parse_macro_inline를 부르고 check_and_pars
   - 일관성이 너무 없음..ㅜ
 - 일단 label만 갖고 있다가 나중에 일괄적으로 inline을 parsing 한다
   - 언제?
+- 둘 다 쓸 수는 있음. 근데 multiline으로 쓰면 tooltip message를 "Error: multiline tooltip container is not supported yet"이라고 띄운다
 
 ---
 

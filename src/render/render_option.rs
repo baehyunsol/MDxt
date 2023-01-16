@@ -108,6 +108,7 @@ fn default_link_handler(link: &str) -> String {
     }
 
     else {
+        // if a mal-formed address is given, it rejects
         String::new()
     }
 
