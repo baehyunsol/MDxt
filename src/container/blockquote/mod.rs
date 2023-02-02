@@ -3,10 +3,10 @@ mod testbench;
 
 use crate::ast::doc_data::DocData;
 use crate::ast::line::{add_br_if_needed, Line};
-use crate::escape::HTML_ESCAPE_MARKER;
+use crate::escape::HTML_ESCAPE_OFFSET;
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct Blockquote {
@@ -15,7 +15,7 @@ pub struct Blockquote {
 
 impl Blockquote {
 
-    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
         let mut level = 0;
         let mut result = Vec::with_capacity(self.elements.len() * 2);
 
@@ -23,18 +23,18 @@ impl Blockquote {
 
             match element {
                 ElementOrIndent::Indent(n) => {
-                    result.push(vec![into_v16("<blockquote>"); *n].concat());
+                    result.push(vec![into_v32("<blockquote>"); *n].concat());
                     level += *n;
                 },
                 ElementOrIndent::Element(element) => {
                     result.push(element.to_html(toc_rendered, class_prefix));
-                    result.push(into_v16(" "));  // `\n` is converted to ` `
+                    result.push(into_v32(" "));  // `\n` is converted to ` `
                 }
             }
 
         }
 
-        result.push(vec![into_v16("</blockquote>"); level].concat());
+        result.push(vec![into_v32("</blockquote>"); level].concat());
         result.concat()
     }
 
@@ -79,22 +79,18 @@ impl Blockquote {
 
 }
 
-fn count_level_and_end_index(content: &[u16]) -> (usize, usize) {  // (level, end_index)
-
+fn count_level_and_end_index(content: &[u32]) -> (usize, usize) {  // (level, end_index)
     let mut level = 0;
     let mut conseq_space = 0;
-    let mut index = 0;
 
-    while index < content.len() {
+    for (index, ch) in content.iter().enumerate() {
 
-        // `>`
-        if content[index] == HTML_ESCAPE_MARKER {
+        if *ch == HTML_ESCAPE_OFFSET + '>' as u32 {
             level += 1;
             conseq_space = 0;
-            index += 1;
         }
 
-        else if content[index] == ' ' as u16 {
+        else if *ch == ' ' as u32 {
             conseq_space += 1;
 
             if conseq_space == 4 {
@@ -107,7 +103,6 @@ fn count_level_and_end_index(content: &[u16]) -> (usize, usize) {  // (level, en
             return (level, index);
         }
 
-        index += 1;
     }
 
     (level, content.len())

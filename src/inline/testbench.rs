@@ -1,12 +1,13 @@
 use super::predicate::*;
 use crate::inline::InlineNode;
-use crate::utils::{into_v16, from_v16};
+use crate::utils::{into_v32, from_v32};
 use crate::escape::escape_backslashes;
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
+        ("`\\`", "<code class=\"inline-code-span\">\\</code>"),  // TODO: remove this line
         ("`*`*`*`, *`*`*`*", "<code class=\"inline-code-span\">*</code><em><code class=\"inline-code-span\">*</code>, *<code class=\"inline-code-span\">*</code></em>`*"),
         ("`*italic in a code span, which is not rendered*` *`code span in an italic, which is rendered`*", "<code class=\"inline-code-span\">*italic in a code span, which is not rendered*</code> <em><code class=\"inline-code-span\">code span in an italic, which is rendered</code></em>"),
         ("^^super^^", "^<sup>super</sup>^"),
@@ -74,6 +75,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("~~_~underline_~~", "~<u>~underline</u>~"),
         ("~_no_underline _~", "<sub>_no_underline _</sub>"),
 
+        ("[[[char=65]], [[char=66]]]", "[&#65;, &#66;]"),
         ("[[]] [[ ]] empty macros", "[[]] [[ ]] empty macros"),
         ("[[red]]This text is red and **bold**.[[/red]] [[center]] Some whitespaces  [[/center]]", "<span class=\"color-red\">This text is red and <strong>bold</strong>.</span> <span class=\"align-center\"> Some whitespaces  </span>"),
         ("[[red]][[center]] Broken Macros! [[/cetner]]", "[[red]][[center]] Broken Macros! [[/cetner]]"),
@@ -117,17 +119,17 @@ fn inline_render_test() {
 
     for (case, answer) in test_cases.iter() {
         let rendered = InlineNode::from_mdxt(
-            &escape_backslashes(&into_v16(case)),
+            &escape_backslashes(&into_v32(case)),
             &mut doc_data,
             &mut render_option
         ).to_html(&[], "");
 
-        if rendered != into_v16(answer) {
+        if rendered != into_v32(answer) {
             failures.push(format!(
                 "inline_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
                 case,
                 answer,
-                from_v16(&rendered)
+                from_v32(&rendered)
             ));
         }
 
@@ -153,7 +155,7 @@ fn inline_inversion_test() {
     for (case, html) in samples().iter() {
 
         let inverted = InlineNode::from_mdxt(
-            &escape_backslashes(&into_v16(case)),
+            &escape_backslashes(&into_v32(case)),
             &mut doc_data,
             &mut render_option
         ).to_mdxt();
@@ -162,13 +164,13 @@ fn inline_inversion_test() {
             &escape_backslashes(&inverted), &mut doc_data, &mut render_option
         ).to_html(&[], "");
 
-        if into_v16(&html) != inverted_html {
+        if into_v32(&html) != inverted_html {
             failures.push(format!(
                 "inline_test: failed!! given md:  {}\ninverted md:  {}\ngiven html:  {}\ninverted html:  {}",
                 case,
-                from_v16(&inverted),
+                from_v32(&inverted),
                 html,
-                from_v16(&inverted_html)
+                from_v32(&inverted_html)
             ));
         }
 
@@ -195,7 +197,7 @@ fn predicate_test() {
     ];
 
     for (sample, answer) in code_span_samples.iter() {
-        let tested = is_code_span(&into_v16(sample), 0);
+        let tested = is_code_span(&into_v32(sample), 0);
 
         if &tested != answer {
             panic!("{} {:?} {:?}", sample, tested, answer);

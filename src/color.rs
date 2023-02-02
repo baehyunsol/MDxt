@@ -1,6 +1,6 @@
 // use this module to automate the creation of CSS files.
 
-use crate::utils::{into_v16, from_v16};
+use crate::utils::{into_v32, from_v32};
 use lazy_static::lazy_static;
 
 #[derive(Clone, Debug)]
@@ -34,9 +34,9 @@ impl Color {
     pub fn to_hex(&self) -> String {
         format!(
             "#{}{}{}",
-            from_v16(&into_v16(&format!("{:#04x}", self.r))[2..4]),
-            from_v16(&into_v16(&format!("{:#04x}", self.g))[2..4]),
-            from_v16(&into_v16(&format!("{:#04x}", self.b))[2..4])
+            from_v32(&into_v32(&format!("{:#04x}", self.r))[2..4]),
+            from_v32(&into_v32(&format!("{:#04x}", self.g))[2..4]),
+            from_v32(&into_v32(&format!("{:#04x}", self.b))[2..4])
         )
     }
 }
@@ -59,8 +59,8 @@ lazy_static! {
         Color::new("gold", 255, 192, 64),
     ];
 
-    pub static ref COLOR_NAMES: Vec<Vec<u16>> = COLORS.iter().map(
-        |color| into_v16(&color.name)
+    pub static ref COLOR_NAMES: Vec<Vec<u32>> = COLORS.iter().map(
+        |color| into_v32(&color.name)
     ).collect();
 }
 

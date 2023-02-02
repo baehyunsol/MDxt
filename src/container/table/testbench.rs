@@ -1,6 +1,6 @@
 use super::count_cells;
 use crate::ast::line::Line;
-use crate::utils::{into_v16, remove_whitespaces};
+use crate::utils::{into_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn row_samples() -> Vec<(String, usize, bool)> {  // (row, cell_count, is_delimiter)
@@ -439,7 +439,7 @@ fn cell_count_test() {
     let mut failures = vec![];
 
     for (row, cell_count, is_delimiter) in row_samples().into_iter() {
-        let line = Line::from_raw(&into_v16(&row));
+        let line = Line::from_raw(&into_v32(&row));
 
         if !line.is_table_row() {
 
@@ -461,10 +461,10 @@ fn cell_count_test() {
             ));
         }
 
-        else if cell_count != count_cells(&into_v16(&row), false) {
+        else if cell_count != count_cells(&into_v32(&row), false) {
             failures.push(format!(
                 "row: {}\nIt has {} cells, but `count_cells` says it's {}",
-                row, cell_count, count_cells(&into_v16(&row), false)
+                row, cell_count, count_cells(&into_v32(&row), false)
             ));
         }
 
@@ -486,10 +486,10 @@ fn table_test() {
 
     for (md, html) in table_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
-        let rendered_v16 = into_v16(&rendered);
-        let html_v16 = into_v16(html);
+        let rendered_v32 = into_v32(&rendered);
+        let html_v32 = into_v32(html);
 
-        if remove_whitespaces(&rendered_v16) != remove_whitespaces(&html_v16) {
+        if remove_whitespaces(&rendered_v32) != remove_whitespaces(&html_v32) {
             panic!("{} \n\n {}", md, rendered);
         }
 

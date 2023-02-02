@@ -1,4 +1,4 @@
-use crate::utils::{into_v16, remove_whitespaces};
+use crate::utils::{into_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn blockquote_samples() -> Vec<(String, String)> {
@@ -67,8 +67,20 @@ fn blockquote_samples() -> Vec<(String, String)> {
 ", "
 <blockquote>1  1 </blockquote>
 "), ("
+> 1
+> 
+> 1
+", "
+<blockquote>1  1 </blockquote>
+"), ("
 >>> 3
 >>>
+>>> 3
+", "
+<blockquote><blockquote><blockquote>3  3 </blockquote></blockquote></blockquote>
+"), ("
+>>> 3
+>>> 
 >>> 3
 ", "
 <blockquote><blockquote><blockquote>3  3 </blockquote></blockquote></blockquote>
@@ -197,7 +209,7 @@ fn blockquote_test() {
     for (md, html) in blockquote_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 
-        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+        if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
             panic!("{} \n\n {}", md, rendered);
         }
 

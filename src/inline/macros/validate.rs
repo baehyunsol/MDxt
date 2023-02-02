@@ -1,11 +1,11 @@
 use super::{character::CHAR_NAMES, Macro, MacroType};
 use crate::color::COLOR_NAMES;
 use crate::container::icon::ICONS;
-use crate::utils::{into_v16, to_int};
+use crate::utils::{into_v32, to_int};
 
 impl Macro {
 
-    pub fn is_valid(&self, arguments: &Vec<Vec<Vec<u16>>>) -> bool {
+    pub fn is_valid(&self, arguments: &Vec<Vec<Vec<u32>>>) -> bool {
 
         match self.macro_type {
 
@@ -32,8 +32,8 @@ impl Macro {
 
                 for argument in arguments[1..].iter() {
                     result = argument.len() == 2
-                        && (argument[0] == into_v16("class")
-                        || argument[0] == into_v16("id"));
+                        && (argument[0] == into_v32("class")
+                        || argument[0] == into_v32("id"));
 
                     if !result {
                         break;
@@ -51,8 +51,8 @@ impl Macro {
             MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2 && COLOR_NAMES.contains(&arguments[0][1]),
 
             MacroType::Icon => arguments[0].len() == 2 && ICONS.contains_key(&arguments[0][1]) && (
-                arguments.len() == 1 || arguments.len() == 2 && arguments[1][0] == into_v16("size") && match to_int(&arguments[1][1]) {
-                    Some(n) if n < u16::MAX as u32 => true,
+                arguments.len() == 1 || arguments.len() == 2 && arguments[1][0] == into_v32("size") && match to_int(&arguments[1][1]) {
+                    Some(n) if n < u32::MAX => true,
                     _ => false
                 }
             )
@@ -62,22 +62,22 @@ impl Macro {
 
 }
 
-fn is_valid_box_arguments(arguments: &Vec<Vec<Vec<u16>>>) -> bool {
+fn is_valid_box_arguments(arguments: &Vec<Vec<Vec<u32>>>) -> bool {
     let mut result = true;
 
     for argument in arguments[1..].iter() {
 
-        if (argument[0] == into_v16("noborder") || argument[0] == into_v16("inline")) && argument.len() == 1 {
+        if (argument[0] == into_v32("noborder") || argument[0] == into_v32("inline")) && argument.len() == 1 {
             //
         }
 
-        else if (argument[0] == into_v16("width") || argument[0] == into_v16("height")) && argument.len() == 2 {
+        else if (argument[0] == into_v32("width") || argument[0] == into_v32("height")) && argument.len() == 2 {
 
-            if argument[1] != into_v16("tiny")
-                && argument[1] != into_v16("small")
-                && argument[1] != into_v16("medium")
-                && argument[1] != into_v16("big")
-                && argument[1] != into_v16("giant")
+            if argument[1] != into_v32("tiny")
+                && argument[1] != into_v32("small")
+                && argument[1] != into_v32("medium")
+                && argument[1] != into_v32("big")
+                && argument[1] != into_v32("giant")
             {
                 result = false;
                 break;

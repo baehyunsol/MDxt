@@ -11,14 +11,14 @@ use crate::container::{
     table::{count_cells, count_delimiter_cells},
 };
 use crate::render::render_option::RenderOption;
-use crate::utils::{from_v16, into_v16};
+use crate::utils::{from_v32, into_v32};
 use std::collections::HashMap;
 
 #[derive(PartialEq, Debug)]
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
     Paragraph,
     CodeFence {
-        language: Vec<u16>,
+        language: Vec<u32>,
         line_num: Option<usize>,
         highlights: Vec<usize>,
         code_fence_size: usize,
@@ -43,7 +43,7 @@ impl AST {
         let mut curr_lines = vec![];
         let mut curr_parse_state = ParseState::None;
         let mut link_references = HashMap::new();
-        let mut footnote_references: HashMap<Vec<u16>, Footnote> = HashMap::new();
+        let mut footnote_references: HashMap<Vec<u32>, Footnote> = HashMap::new();
         let mut headers = vec![];
         let mut table_count = 0;
         let mut fenced_code_count = 0;
@@ -209,7 +209,7 @@ impl AST {
                                                 curr_closing_macro = inner_macro.get_closing_macro();
                                             },
                                             _ => {
-                                                if curr_macro[0] == '/' as u16 {
+                                                if curr_macro[0] == '/' as u32 {
                                                     let possibly_another_macro = curr_macro[1..].to_vec();
 
                                                     // it assumes that all the closing macros have the same form: `'/' + macro_name`
@@ -340,7 +340,7 @@ impl AST {
                         }
 
                         else {
-                            link_references.insert(normalize_link_label(&link_label), into_v16(&options.handle_link(&from_v16(&link_destination))));
+                            link_references.insert(normalize_link_label(&link_label), into_v32(&options.handle_link(&from_v32(&link_destination))));
                         }
 
                     }
@@ -395,7 +395,7 @@ impl AST {
                                                 curr_closing_macro = inner_macro.get_closing_macro();
                                             },
                                             _ => {
-                                                if curr_macro[0] == '/' as u16 {
+                                                if curr_macro[0] == '/' as u32 {
                                                     let possibly_another_macro = curr_macro[1..].to_vec();
 
                                                     // it assumes that all the closing macros have the same form: `'/' + macro_name`

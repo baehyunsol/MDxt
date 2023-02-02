@@ -1,5 +1,5 @@
 use super::line::Line;
-use crate::utils::{from_v16, into_v16, remove_whitespaces};
+use crate::utils::{from_v32, into_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn mdxt_samples() -> Vec<(String, String)> {
@@ -538,7 +538,13 @@ Not a tooltip
       <span class=\"tooltip-message\" id=\"tooltip-message-2\">A tooltip in a tooltip: [[tooltip = tooltip1]]Invalid[[/tooltip]] Suffix</span>
   </span>
 </p>
-")
+"), ("
+Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
+
+`🦈`, \\🦈
+", "
+<p>Multibyte characters: 가나다&#127836;&#128065;&#129416;&#129379;&#127834;&#128508;&#127874;&#128141;&#128247;&#127837;&#129425;&#128077;&#127909;&#128117;&#128512;&#129490;&#127997;&#129335;&#127997;&#128104;&#127999;&#8205;&#127891;&#127472;&#127479;&#129781;&#127997;&#129781;&#127998;&#129781;&#127999;❤&#65039;&#129505;&#128155;&#128154;&#128153;&#128156;&#128420;&#129293;&#129294;</p><p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
+"), ("", "")
     ];
 
     result.into_iter().map(
@@ -551,7 +557,7 @@ fn mdxt_test() {
     for (md, html) in mdxt_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 
-        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+        if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
             panic!("{} \n\n {}", md, rendered);
         }
 
@@ -621,7 +627,7 @@ fn line_predicate_test() {
         if line.is_header() != predicates[IS_HEADER] {
             let failure = format!(
                 "line: {:?}\npredicate: is_header\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_HEADER],
                 line.is_header()
             );
@@ -632,7 +638,7 @@ fn line_predicate_test() {
         if line.is_empty() != predicates[IS_EMPTY] {
             let failure = format!(
                 "line: {:?}\npredicate: is_empty\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_EMPTY],
                 line.is_empty()
             );
@@ -643,7 +649,7 @@ fn line_predicate_test() {
         if line.is_code_fence_begin() != predicates[IS_CODEFENCE_BEGIN] {
             let failure = format!(
                 "line: {:?}\npredicate: is_code_fence_begin\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_CODEFENCE_BEGIN],
                 line.is_code_fence_begin()
             );
@@ -654,7 +660,7 @@ fn line_predicate_test() {
         if line.is_code_fence_end() != predicates[IS_CODEFENCE_END] {
             let failure = format!(
                 "line: {:?}\npredicate: is_code_fence_end\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_CODEFENCE_END],
                 line.is_code_fence_end()
             );
@@ -665,7 +671,7 @@ fn line_predicate_test() {
         if line.is_table_row() != predicates[IS_TABLE_ROW] {
             let failure = format!(
                 "line: {:?}\npredicate: is_table_row\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_TABLE_ROW],
                 line.is_table_row()
             );
@@ -676,7 +682,7 @@ fn line_predicate_test() {
         if line.is_table_delimiter() != predicates[IS_TABLE_DELIMITER] {
             let failure = format!(
                 "line: {:?}\npredicate: is_table_delimiter\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_TABLE_DELIMITER],
                 line.is_table_delimiter()
             );
@@ -687,7 +693,7 @@ fn line_predicate_test() {
         if line.is_thematic_break() != predicates[IS_THEMATIC_BREAK] {
             let failure = format!(
                 "line: {:?}\npredicate: is_thematic_break\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_THEMATIC_BREAK],
                 line.is_thematic_break()
             );
@@ -698,7 +704,7 @@ fn line_predicate_test() {
         if line.is_blockquote() != predicates[IS_BLOCKQUOTE] {
             let failure = format!(
                 "line: {:?}\npredicate: is_blockquote\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_BLOCKQUOTE],
                 line.is_blockquote()
             );
@@ -709,7 +715,7 @@ fn line_predicate_test() {
         if line.is_unordered_list() != predicates[IS_UNORDERED_LIST] {
             let failure = format!(
                 "line: {:?}\npredicate: is_unordered_list\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_UNORDERED_LIST],
                 line.is_unordered_list()
             );
@@ -720,7 +726,7 @@ fn line_predicate_test() {
         if line.is_ordered_list() != predicates[IS_ORDERED_LIST] {
             let failure = format!(
                 "line: {:?}\npredicate: is_ordered_list\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_ORDERED_LIST],
                 line.is_ordered_list()
             );
@@ -731,7 +737,7 @@ fn line_predicate_test() {
         if line.is_link_or_footnote_reference_definition() != predicates[IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION] {
             let failure = format!(
                 "line: {:?}\npredicate: is_link_or_footnote_reference_definition\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION],
                 line.is_link_or_footnote_reference_definition()
             );
@@ -742,7 +748,7 @@ fn line_predicate_test() {
         if line.is_multiline_macro() != predicates[IS_MULTILINE_MACRO] {
             let failure = format!(
                 "line: {:?}\npredicate: is_multiline_macro\ndesired: {}, result: {}",
-                from_v16(&line.to_raw()),
+                from_v32(&line.to_raw()),
                 predicates[IS_MULTILINE_MACRO],
                 line.is_multiline_macro()
             );

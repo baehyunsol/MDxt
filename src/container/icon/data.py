@@ -4,18 +4,19 @@ def main():
     result = [""]
 
     for k, v in icons.items():
-        svg = [ord(c) for c in v]
-        result.append(f'result.insert(into_v16("{k.lower()}"), (vec!{svg}, {sources[k]}));')
+        svg = [ord(c) if ord(c) < 0xd000 else ord(c) - 0xdf00 + 0x600_000 for c in v]
+        result.append(f'result.insert(into_v32("{k.lower()}"), (vec!{svg}, {sources[k]}));')
 
     with open('./template.rs', 'r') as f:
         rust_file = f.read()
 
     ind = rust_file.index('^')
-    rust_file = rust_file[:ind] + '\n'.join(result) + rust_file[ind + 1:] + f'\nconst COLOR: u16 = {hex(color_token)};\nconst SIZE: u16 = {hex(size_token)};\nconst XMLNS: u16 = {hex(xmlns_token)};\npub const EVA_ICON: usize = {hex(EVA)};\npub const MATERIAL_ICON: usize = {hex(MATERIAL)};\npub const DEV_ICON: usize = {hex(DEV)};\npub const ION_ICON: usize = {hex(ION)};\npub const BOOTSTRAP_ICON: usize = {hex(BOOTSTRAP)};\n' + licenses
+    rust_file = rust_file[:ind] + '\n'.join(result) + rust_file[ind + 1:] + f'\nconst COLOR: u32 = {hex(color_token)};\nconst SIZE: u32 = {hex(size_token)};\nconst XMLNS: u32 = {hex(xmlns_token)};\n#[cfg(test)] pub const EVA_ICON: usize = {hex(EVA)};\n#[cfg(test)] pub const MATERIAL_ICON: usize = {hex(MATERIAL)};\n#[cfg(test)] pub const DEV_ICON: usize = {hex(DEV)};\n#[cfg(test)] pub const ION_ICON: usize = {hex(ION)};\n#[cfg(test)] pub const BOOTSTRAP_ICON: usize = {hex(BOOTSTRAP)};\n' + licenses
 
     with open('./render.rs', 'w') as f:
         f.write(rust_file)
 
+    print("Done!")
 
 def get_icons(size, color):
 
@@ -23,9 +24,9 @@ def get_icons(size, color):
     # size = f'width="{size}" height="{size}"'
     # color = f'fill="rgb({color})"'
 
-    xmlns = chr(xmlns_token)
-    size = chr(size_token)
-    color = chr(color_token)
+    xmlns = chr(xmlns_token_chr)
+    size = chr(size_token_chr)
+    color = chr(color_token_chr)
 
     return {
         'Airplane': f"<svg{xmlns} enable-background=\"new 0 0 24 24\" viewBox=\"0 0 24 24\"{size}><path{color} d=\"M21.48,13.7L13.5,9V3.5C13.5,2.67,12.83,2,12,2c-0.83,0-1.5,0.67-1.5,1.5V9l-7.98,4.7C2.2,13.88,2,14.23,2,14.6 c0,0.7,0.67,1.2,1.34,1.01l7.16-2.1V19l-2.26,1.35C8.09,20.44,8,20.61,8,20.78l0,0.5h0v0.08c0,0.33,0.31,0.57,0.62,0.49l2.92-0.73 L12,21l0.38,0.09c0,0,0,0,0,0l0.42,0.11l1.9,0.48l0,0l0.67,0.17c0.32,0.08,0.62-0.16,0.62-0.49v-0.37c0,0,0,0,0,0v-0.21 c0-0.18-0.09-0.34-0.24-0.43L13.5,19v-5.5l7.16,2.1C21.33,15.8,22,15.3,22,14.6C22,14.23,21.8,13.88,21.48,13.7z\"/></svg>",
@@ -159,9 +160,13 @@ def get_sources():
 
     return sources
 
-xmlns_token = 0xd806
-size_token = 0xd807
-color_token = 0xd808
+color_token_chr = 0xdf02
+size_token_chr = 0xdf03
+xmlns_token_chr = 0xdf04
+
+color_token = 0x600_002
+size_token = 0x600_003
+xmlns_token = 0x600_004
 
 EVA = 0x1000
 MATERIAL = 0x1001

@@ -1,19 +1,19 @@
 use crate::ast::doc_data::DocData;
 use crate::inline::{footnote::Footnote, InlineNode};
 use crate::RenderOption;
-use crate::utils::{from_v16, into_v16};
+use crate::utils::{from_v32, into_v32};
 
 // Error message to show when referencing a tooltip that doesn't exist
-pub fn dummy_tooltip(label: &[u16]) -> Footnote {
+pub fn dummy_tooltip(label: &[u32]) -> Footnote {
     Footnote {
         index: 0,
         inverse_index: vec![],
-        content: InlineNode::Raw(into_v16(&format!("Error! Undefined tooltip label: {}", from_v16(label))))
+        content: InlineNode::Raw(into_v32(&format!("Error! Undefined tooltip label: {}", from_v32(label))))
     }
 }
 
-pub fn load_tooltip_message(label: &[u16], doc_data: &mut DocData, render_option: &RenderOption) -> Vec<Box<InlineNode>> {
-    let label_key = vec![into_v16("^"), label.to_vec()].concat();
+pub fn load_tooltip_message(label: &[u32], doc_data: &mut DocData, render_option: &RenderOption) -> Vec<Box<InlineNode>> {
+    let label_key = vec![into_v32("^"), label.to_vec()].concat();
     let mut message = match doc_data.footnote_references.get(&label_key) {
         Some(f) => f.clone(),
         None => dummy_tooltip(&label),  // print error message: "Error! Undefined tooltip label: {}"

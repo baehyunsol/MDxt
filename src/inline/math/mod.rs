@@ -7,8 +7,8 @@ mod testbench;
 
 use super::macros::predicate::read_macro;
 use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin, undo_code_span_escapes};
-use crate::escape::{render_backslash_escapes_raw, undo_html_escapes, BACKSLASH_ESCAPE_MARKER};
-use crate::utils::{get_bracket_end_index, into_v16};
+use crate::escape::{render_backslash_escapes_raw, undo_html_escapes, BACKSLASH_ESCAPE_OFFSET};
+use crate::utils::{get_bracket_end_index, into_v32};
 use entity::Entity;
 use lazy_static::lazy_static;
 use parse::md_to_math;
@@ -16,7 +16,7 @@ use std::collections::HashSet;
 
 lazy_static! {
 
-    pub static ref ZERO_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+    pub static ref ZERO_ARG_FUNCTIONS: HashSet<Vec<u32>> = {
         let vec = vec![
             "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
             "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
@@ -35,7 +35,7 @@ lazy_static! {
         let vec_len = vec.len();
 
         for func in vec.into_iter() {
-            result.insert(into_v16(func));
+            result.insert(into_v32(func));
         }
 
         #[cfg(test)]
@@ -44,7 +44,7 @@ lazy_static! {
         result
     };
 
-    pub static ref ONE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+    pub static ref ONE_ARG_FUNCTIONS: HashSet<Vec<u32>> = {
         let vec = vec![
             "text", "sqrt", "lim", "limit",
             "hat", "bar", "dot", "tilde", "vec"
@@ -52,13 +52,13 @@ lazy_static! {
         let mut result = HashSet::with_capacity(vec.len());
 
         for func in vec.into_iter() {
-            result.insert(into_v16(func));
+            result.insert(into_v32(func));
         }
 
         result
     };
 
-    pub static ref TWO_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+    pub static ref TWO_ARG_FUNCTIONS: HashSet<Vec<u32>> = {
         let vec = vec![
             "sum", "prod", "sqrt", "root",
             "sup", "sub",
@@ -68,33 +68,33 @@ lazy_static! {
         let mut result = HashSet::with_capacity(vec.len());
 
         for func in vec.into_iter() {
-            result.insert(into_v16(func));
+            result.insert(into_v32(func));
         }
 
         result
     };
 
-    pub static ref THREE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+    pub static ref THREE_ARG_FUNCTIONS: HashSet<Vec<u32>> = {
         let vec = vec![
             "subsup"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
         for func in vec.into_iter() {
-            result.insert(into_v16(func));
+            result.insert(into_v32(func));
         }
 
         result
     };
 
-    pub static ref FIVE_ARG_FUNCTIONS: HashSet<Vec<u16>> = {
+    pub static ref FIVE_ARG_FUNCTIONS: HashSet<Vec<u32>> = {
         let vec = vec![
             "multiscript"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
         for func in vec.into_iter() {
-            result.insert(into_v16(func));
+            result.insert(into_v32(func));
         }
 
         result
@@ -108,13 +108,13 @@ pub struct Math {
 
 impl Math {
 
-    pub fn from_mdxt(content: &[u16]) -> Self {
+    pub fn from_mdxt(content: &[u32]) -> Self {
         let entities = md_to_math(&render_backslash_escapes_raw(content));
 
         Math { entities }
     }
 
-    pub fn to_math_ml(&self, xmlns: bool) -> Vec<u16> {
+    pub fn to_math_ml(&self, xmlns: bool) -> Vec<u32> {
         let xmlns = if xmlns {
             " xmlns=\"http://www.w3.org/1998/Math/MathML\""
         } else {
@@ -122,26 +122,25 @@ impl Math {
         };
 
         vec![
-            into_v16(&format!("<math{}>", xmlns)),
+            into_v32(&format!("<math{}>", xmlns)),
             self.entities.iter().map(
                 |entity| entity.to_math_ml()
-            ).collect::<Vec<Vec<u16>>>().concat(),
-            into_v16("</math>")
+            ).collect::<Vec<Vec<u32>>>().concat(),
+            into_v32("</math>")
         ].concat()
     }
 }
 
 // This escape only works inside `[[math]]` macros
 // I don't want other inline elements to interrupt math formulas.
-fn escape_special_characters(content: &[u16]) -> Vec<u16> {
+fn escape_special_characters(content: &[u32]) -> Vec<u32> {
     let content = undo_html_escapes(content);
     let mut result = Vec::with_capacity(content.len() + content.len() / 6);
 
     for c in content.iter() {
 
-        if into_v16("<>*~[|]^`&").contains(c) {
-            result.push(BACKSLASH_ESCAPE_MARKER);
-            result.push(u16::MAX - c);
+        if into_v32("<>*~[|]^`&").contains(c) {
+            result.push(BACKSLASH_ESCAPE_OFFSET + *c);
         }
 
         else {
@@ -153,7 +152,7 @@ fn escape_special_characters(content: &[u16]) -> Vec<u16> {
     undo_code_span_escapes(&result)
 }
 
-pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
+pub fn escape_inside_math_blocks(content: Vec<u32>) -> Vec<u32> {
     let mut result = vec![];
     let mut index = 0;
     let mut last_index = 0;
@@ -168,14 +167,14 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
         match read_macro(&content, index) {
 
             // it met `[[math]]`
-            Some(macro_name) if macro_name == into_v16("math") => {
+            Some(macro_name) if macro_name == into_v32("math") => {
                 let mut end_index = index + 5;
 
                 // seek `[[/math]]`
                 while end_index < content.len() {
 
                     match read_macro(&content, end_index) {
-                        Some(macro_name) if macro_name == into_v16("/math") => {
+                        Some(macro_name) if macro_name == into_v32("/math") => {
                             let math_begin_index = get_bracket_end_index(&content, index).unwrap() + 1;
                             let escaped_math = escape_special_characters(&content[math_begin_index..end_index]);
 
@@ -209,6 +208,6 @@ pub fn escape_inside_math_blocks(content: Vec<u16>) -> Vec<u16> {
     }
 }
 
-pub fn render_math(content: &[u16]) -> Vec<u16> {
+pub fn render_math(content: &[u32]) -> Vec<u32> {
     Math::from_mdxt(content).to_math_ml(true)
 }

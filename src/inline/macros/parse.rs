@@ -1,7 +1,7 @@
 use super::{Macro, MacroType, character::{DIRECT_MAPPINGS, INDIRECT_MAPPINGS}, get_macro_name, tooltip::load_tooltip_message};
 use crate::inline::{DecorationType, InlineNode, InlineMacro};
 use crate::render::render_option::RenderOption;
-use crate::utils::{into_v16, to_int};
+use crate::utils::{into_v32, to_int};
 use crate::ast::doc_data::DocData;
 
 impl Macro {
@@ -10,8 +10,8 @@ impl Macro {
     // this function assumes that everything is valid
     pub fn parse(
         &self,
-        arguments: &Vec<Vec<Vec<u16>>>,
-        content: &[u16],
+        arguments: &Vec<Vec<Vec<u32>>>,
+        content: &[u32],
         doc_data: &mut DocData,
         render_option: &RenderOption
     ) -> InlineNode {
@@ -49,7 +49,7 @@ impl Macro {
 
                     // number or direct_name
                     // &#32; or &infin; 
-                    if arguments[0][1][0] < 'A' as u16 || DIRECT_MAPPINGS.contains(&arguments[0][1]) {
+                    if arguments[0][1][0] < 'A' as u32 || DIRECT_MAPPINGS.contains(&arguments[0][1]) {
                         arguments[0][1].clone()
                     }
 
@@ -135,9 +135,9 @@ impl Macro {
                 deco_type: DecorationType::Macro({
                     let name = arguments[0][1].clone();
                     let size = if arguments.len() > 1 {
-                        to_int(&arguments[1][1]).unwrap().min(u16::MAX as u32) as u16
+                        to_int(&arguments[1][1]).unwrap().min(u32::MAX)
                     } else {
-                        32 as u16
+                        32
                     };
 
                     InlineMacro::Icon { name, size }
@@ -150,18 +150,18 @@ impl Macro {
 
 }
 
-pub fn parse_html_tag(arguments: &Vec<Vec<Vec<u16>>>) -> (Vec<u16>, Vec<u16>, Vec<u16>) {  // (tag, class, id)
+pub fn parse_html_tag(arguments: &Vec<Vec<Vec<u32>>>) -> (Vec<u32>, Vec<u32>, Vec<u32>) {  // (tag, class, id)
     
     let mut classes = vec![];
     let mut ids = vec![];
 
     for argument in arguments[1..].iter() {
 
-        if argument[0] == into_v16("class") {
+        if argument[0] == into_v32("class") {
             classes.push(argument[1].clone());
         }
 
-        else if argument[0] == into_v16("id") {
+        else if argument[0] == into_v32("id") {
             ids.push(argument[1].clone());
         }
 
@@ -171,12 +171,12 @@ pub fn parse_html_tag(arguments: &Vec<Vec<Vec<u16>>>) -> (Vec<u16>, Vec<u16>, Ve
 
     }
 
-    (get_macro_name(arguments), classes.join(&[' ' as u16][..]), ids.join(&[' ' as u16][..]))
+    (get_macro_name(arguments), classes.join(&[' ' as u32][..]), ids.join(&[' ' as u32][..]))
 }
 
 // all the validity checks are done before this function
 // this function assumes that everything is valid
-pub fn parse_box_arguments(arguments: &Vec<Vec<Vec<u16>>>) -> (bool, bool, Vec<u16>, Vec<u16>) {  // (HasBorder, Inline, Width, Height)
+pub fn parse_box_arguments(arguments: &Vec<Vec<Vec<u32>>>) -> (bool, bool, Vec<u32>, Vec<u32>) {  // (HasBorder, Inline, Width, Height)
     let mut no_border = false;
     let mut inline = false;
     let mut width = vec![];
@@ -184,19 +184,19 @@ pub fn parse_box_arguments(arguments: &Vec<Vec<Vec<u16>>>) -> (bool, bool, Vec<u
 
     for argument in arguments[1..].iter() {
 
-        if argument[0] == into_v16("noborder") {
+        if argument[0] == into_v32("noborder") {
             no_border = true;
         }
 
-        else if argument[0] == into_v16("inline") {
+        else if argument[0] == into_v32("inline") {
             inline = true;
         }
 
-        else if argument[0] == into_v16("width") {
+        else if argument[0] == into_v32("width") {
             width = argument[1].clone();
         }
 
-        else if argument[0] == into_v16("height") {
+        else if argument[0] == into_v32("height") {
             height = argument[1].clone();
         }
 

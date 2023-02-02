@@ -26,7 +26,6 @@ I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Beca
 
 ## Contributing
 
-### Why `Vec<u16>`
+### Why `Vec<u32>`
 
-Reading the source code, you'll see tons of `Vec<u16>`. Unlike most other crates, the engine doesn't use `Vec<u8>` for manipulating strings. That's because CJK characters don't fit in `u8` characters. To handle them easily, `Vec<u16>` is the only choice.
-
+It's the only way to index strings (`String` doesn't support indexing) and use emojis (most emojis are greater than `u16::MAX`)

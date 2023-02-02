@@ -1,6 +1,6 @@
 use super::FencedCode;
 use super::syntect::{highlight_syntax, is_syntax_available};
-use crate::utils::{from_v16, into_v16, log10};
+use crate::utils::{from_v32, into_v32, log10};
 use std::collections::HashMap;
 
 // `<` in code, `\` in code
@@ -10,22 +10,22 @@ use std::collections::HashMap;
 
 impl FencedCode {
 
-    pub fn to_html(&self, class_prefix: &str) -> Vec<u16> {
+    pub fn to_html(&self, class_prefix: &str) -> Vec<u32> {
 
         let rows = if is_syntax_available(&self.language) {
             let lines = highlight_syntax(&self.get_raw_content(), &self.language, class_prefix);
 
             lines.iter().enumerate().map(
                 |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
-            ).collect::<Vec<Vec<u16>>>()
+            ).collect::<Vec<Vec<u32>>>()
         } else {
-            self.content.split(|c| *c == '\n' as u16).enumerate().map(
+            self.content.split(|c| *c == '\n' as u32).enumerate().map(
                 |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
-            ).collect::<Vec<Vec<u16>>>()
+            ).collect::<Vec<Vec<u32>>>()
         };
 
         let copy_button = if self.copy_button {
-            into_v16(
+            into_v32(
                 &format!(
                     "<button class=\"{}copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
                     class_prefix,
@@ -43,26 +43,26 @@ impl FencedCode {
         };
 
         vec![
-            into_v16(&format!("<pre class=\"{}fenced-code-block{}\"><code>", class_prefix, line_num_width)),
+            into_v32(&format!("<pre class=\"{}fenced-code-block{}\"><code>", class_prefix, line_num_width)),
             rows.concat(),
-            into_v16("</code>"),
+            into_v32("</code>"),
             copy_button,
-            into_v16("</pre>"),
+            into_v32("</pre>"),
         ].concat()
     }
 
 }
 
-fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, highlights: &Vec<usize>, class_prefix: &str) -> Vec<u16> {
+fn render_line(line: &[u32], mut curr_line: usize, line_num: &Option<usize>, highlights: &Vec<usize>, class_prefix: &str) -> Vec<u32> {
 
     let line_num = match line_num {
         None => {
             curr_line += 1;  // markdown index starts with 1, and Rust starts with 0.
-            into_v16(&format!("<span class=\"{}code-fence-code\">", class_prefix))
+            into_v32(&format!("<span class=\"{}code-fence-code\">", class_prefix))
         },
         Some(n) => {
             curr_line += n;
-            into_v16(&format!("<span class=\"{}code-fence-index\">{}</span><span class=\"{}code-fence-code\">", class_prefix, curr_line, class_prefix))
+            into_v32(&format!("<span class=\"{}code-fence-index\">{}</span><span class=\"{}code-fence-code\">", class_prefix, curr_line, class_prefix))
         }
     };
 
@@ -73,20 +73,20 @@ fn render_line(line: &[u16], mut curr_line: usize, line_num: &Option<usize>, hig
     };
 
     vec![
-        into_v16(&format!("<span{}>", highlight_or_not)),
+        into_v32(&format!("<span{}>", highlight_or_not)),
         line_num,
         line.to_vec(),
-        into_v16("</span></span>\n")
+        into_v32("</span></span>\n")
     ].concat()
 }
 
-pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u16>>) -> String {
+pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u32>>) -> String {
 
     #[cfg(test)]
     assert!(codes.len() > 0);
 
     let codes = codes.iter().map(
-        |(index, code)| (*index, from_v16(code))
+        |(index, code)| (*index, from_v32(code))
     ).collect::<Vec<(usize, String)>>();
 
     let max_index = match codes.iter().map(|(index, _)| index).max() {

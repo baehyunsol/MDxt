@@ -1,7 +1,7 @@
 use super::read_code_fence_info;
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
-use crate::utils::{into_v16, from_v16, remove_whitespaces};
+use crate::utils::{into_v32, from_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn fence_samples() -> Vec<(
@@ -96,8 +96,8 @@ fn fence_test() {
         copy_button_answer,
         is_tilde_fence_answer
     ) in test_cases.iter() {
-        let v16 = into_v16(&case);
-        let line = Line::from_raw(&v16);
+        let v32 = into_v32(&case);
+        let line = Line::from_raw(&v32);
 
         if *is_valid != (line.is_code_fence_begin() || line.is_code_fence_end()) {
             failures.push(format!(
@@ -130,7 +130,7 @@ fn fence_test() {
             is_tilde_fence_actual
         ) = match read_code_fence_info(&line, 0) {
             ParseState::CodeFence { language, line_num, highlights, code_fence_size, copy_button, is_tilde_fence, index: _index } => (
-                from_v16(&language), line_num, highlights, code_fence_size, copy_button, is_tilde_fence
+                from_v32(&language), line_num, highlights, code_fence_size, copy_button, is_tilde_fence
             ),
             _ => panic!("This doesn't make sense at all."),
         };
@@ -199,6 +199,20 @@ fn fence_test() {
 fn code_fence_samples() -> Vec<(String, String)> {
     let result = vec![
         ("
+```rust
+가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
+```
+", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\">
+            <span class=\"code-fence-code\">
+                <span class=\"color-white\">가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎</span>
+            </span>
+        </span>
+    </code>
+</pre>
+"), ("
 ```rust, line_num, highlight(2, 3)
 fn main() {
     println!(\"Hello World!\\n\");
@@ -511,7 +525,7 @@ function copy_code_to_clipboard(index) {
     navigator.clipboard.writeText(fenced_code_block_contents[index]);
 }
 </script>
-")
+"),
     ];
 
     result.into_iter().map(
@@ -524,7 +538,7 @@ fn code_fence_test() {
     for (md, html) in code_fence_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 
-        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+        if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
             panic!("{} \n\n {} \n\n {:?}", md, rendered, rendered);
         }
 

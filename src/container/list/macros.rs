@@ -2,9 +2,9 @@ use crate::inline::macros::{
     parse_arguments,
     predicate::read_macro,
 };
-use crate::utils::{get_bracket_end_index, into_v16, remove_whitespaces, to_int};
+use crate::utils::{get_bracket_end_index, into_v32, remove_whitespaces, to_int};
 
-pub fn try_parse_macro(content: &[u16]) -> (bool, Option<usize>) {  // (no_bullet, Option<start_index>)  // I'll define a struct for it when it gets more complicated
+pub fn try_parse_macro(content: &[u32]) -> (bool, Option<usize>) {  // (no_bullet, Option<start_index>)  // I'll define a struct for it when it gets more complicated
     let mut no_bullet = false;
     let mut start_index = None;
 
@@ -23,11 +23,11 @@ pub fn try_parse_macro(content: &[u16]) -> (bool, Option<usize>) {  // (no_bulle
 
         for argument in arguments.iter() {
 
-            if argument[0] == into_v16("nobullet") {
+            if argument[0] == into_v32("nobullet") {
                 no_bullet = true;
             }
 
-            else if argument.len() == 2 && argument[0] == into_v16("start") {
+            else if argument.len() == 2 && argument[0] == into_v32("start") {
 
                 match to_int(&argument[1]) {
                     Some(n) if n > 0 => { start_index = Some(n as usize); }

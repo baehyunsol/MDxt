@@ -4,15 +4,15 @@ use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct DocData {
-    pub headers: Vec<(usize, Vec<u16>)>,  // (level, content)
-    pub link_references: HashMap<Vec<u16>, Vec<u16>>,  // (label, destination)
-    pub footnote_references: HashMap<Vec<u16>, Footnote>,  // (label, footnote)
+    pub headers: Vec<(usize, Vec<u32>)>,  // (level, content)
+    pub link_references: HashMap<Vec<u32>, Vec<u32>>,  // (label, destination)
+    pub footnote_references: HashMap<Vec<u32>, Footnote>,  // (label, footnote)
     footnote_reference_count: usize,
     pub tooltip_count: usize,
     pub tooltip_enabled: usize,  // it's used to prevent tooltips inside another tooltip
     pub has_toc: bool,
     pub has_collapsible_table: bool,
-    pub fenced_code_contents: HashMap<usize, Vec<u16>>  // HashMap<index, content>
+    pub fenced_code_contents: HashMap<usize, Vec<u32>>  // HashMap<index, content>
 }
 
 impl Default for DocData {
@@ -36,14 +36,14 @@ impl Default for DocData {
 impl DocData {
 
     pub fn new(
-        headers: Vec<(usize, Vec<u16>)>,
-        link_references: HashMap<Vec<u16>, Vec<u16>>,
-        footnote_references: HashMap<Vec<u16>, Footnote>
+        headers: Vec<(usize, Vec<u32>)>,
+        link_references: HashMap<Vec<u32>, Vec<u32>>,
+        footnote_references: HashMap<Vec<u32>, Footnote>
     ) -> Self {
         DocData { headers, link_references, footnote_references, .. Self::default() }
     }
 
-    pub fn add_footnote_inverse_index(&mut self, label: &Vec<u16>) -> usize {
+    pub fn add_footnote_inverse_index(&mut self, label: &Vec<u32>) -> usize {
         let footnote = self.footnote_references.get_mut(label).unwrap();
         footnote.inverse_index.push(self.footnote_reference_count);
         self.footnote_reference_count += 1;

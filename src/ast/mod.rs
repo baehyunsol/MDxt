@@ -14,7 +14,7 @@ use crate::inline::{
 use crate::{collapsible_table_javascript, tooltip_javascript};
 use crate::container::codefence::html::copy_button_javascript;
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 use doc_data::DocData;
 use node::Node;
 use std::collections::HashMap;
@@ -63,7 +63,7 @@ impl AST {
                     footnote_content.parse_raw(&mut doc_data_cloned, &render_option_cloned);
                     (label.clone(), footnote_content)
                 }
-            ).collect::<Vec<(Vec<u16>, InlineNode)>>();
+            ).collect::<Vec<(Vec<u32>, InlineNode)>>();
 
             for (label, content) in footnote_parsed.into_iter() {
                 let mut footnote_reference = self.doc_data.footnote_references.get_mut(&label).unwrap();
@@ -80,7 +80,7 @@ impl AST {
 
     }
 
-    pub fn to_html(&mut self) -> Vec<u16> {
+    pub fn to_html(&mut self) -> Vec<u32> {
 
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
@@ -105,15 +105,15 @@ impl AST {
                 Node::Paragraph { content } => {
                     result.push(
                         vec![
-                            into_v16("<p>"),
+                            into_v32("<p>"),
                             content.to_html(&toc_rendered, class_prefix),
-                            into_v16("</p>")
+                            into_v32("</p>")
                         ].concat()
                     );
                 },
                 Node::ThematicBreak => {
                     result.push(
-                        into_v16("<hr/>")
+                        into_v32("<hr/>")
                     );
                 },
                 Node::Table(table) => {
@@ -132,21 +132,21 @@ impl AST {
 
                     let anchor = if self.render_option.header_anchor && anchor.len() > 0 {
                         vec![
-                            into_v16(&format!(" id=\"")),
+                            into_v32(&format!(" id=\"")),
                             anchor.to_vec(),
-                            into_v16("\"")
+                            into_v32("\"")
                         ].concat()
                     } else {
-                        into_v16("")
+                        into_v32("")
                     };
 
                     result.push(
                         vec![
-                            into_v16(&format!("<h{}", level)),
+                            into_v32(&format!("<h{}", level)),
                             anchor,
-                            into_v16(">"),
+                            into_v32(">"),
                             content.to_html(&toc_rendered, class_prefix),
-                            into_v16(&format!("</h{}>", level)),
+                            into_v32(&format!("</h{}>", level)),
                         ].concat()
                     );
                 },
@@ -167,30 +167,30 @@ impl AST {
         let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_collapsible_tables;
 
         if enable_js_for_copy_buttons || enable_js_for_tables {
-            result.push(into_v16("<script>"));
+            result.push(into_v32("<script>"));
 
             if self.render_option.xml {
-                result.push(into_v16("/*<![CDATA[*/"));
+                result.push(into_v32("/*<![CDATA[*/"));
             }
 
             if enable_js_for_tables {
-                result.push(into_v16(&collapsible_table_javascript()));
+                result.push(into_v32(&collapsible_table_javascript()));
             }
 
             if enable_js_for_copy_buttons {
-                result.push(into_v16(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+                result.push(into_v32(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
             }
 
             if enable_js_for_tooltips {
-                result.push(into_v16(&tooltip_javascript()));
+                result.push(into_v32(&tooltip_javascript()));
             }
 
             // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
             if self.render_option.xml {
-                result.push(into_v16("/*]]>*/"));
+                result.push(into_v32("/*]]>*/"));
             }
 
-            result.push(into_v16("</script>"));
+            result.push(into_v32("</script>"));
         }
 
         result.concat()

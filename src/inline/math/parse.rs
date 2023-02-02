@@ -1,9 +1,9 @@
 use super::entity::{Entity, parse_raw_data};
 use super::validate::is_valid;
 use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
-use crate::utils::{get_curly_brace_end_index, into_v16, is_alphabet, remove_whitespaces};
+use crate::utils::{get_curly_brace_end_index, into_v32, is_alphabet, remove_whitespaces};
 
-pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
+pub fn md_to_math(content: &[u32]) -> Vec<Entity> {
 
     let mut last_index = 0;
     let mut curr_index = 0;
@@ -91,7 +91,7 @@ pub fn md_to_math(content: &[u16]) -> Vec<Entity> {
     result
 }
 
-pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
+pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
 
     if is_space(word) {
         Entity::Space(word.len() - 4)
@@ -99,419 +99,419 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     else if ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0 {
 
-        if *word == into_v16("alpha") {
+        if *word == into_v32("alpha") {
             Entity::new_character(945)
         }
 
-        else if *word == into_v16("beta") {
+        else if *word == into_v32("beta") {
             Entity::new_character(946)
         }
 
-        else if *word == into_v16("gamma") {
+        else if *word == into_v32("gamma") {
             Entity::new_character(947)
         }
 
-        else if *word == into_v16("delta") {
+        else if *word == into_v32("delta") {
             Entity::new_character(948)
         }
 
-        else if *word == into_v16("epsilon") {
+        else if *word == into_v32("epsilon") {
             Entity::new_character(949)
         }
 
-        else if *word == into_v16("zeta") {
+        else if *word == into_v32("zeta") {
             Entity::new_character(950)
         }
 
-        else if *word == into_v16("eta") {
+        else if *word == into_v32("eta") {
             Entity::new_character(951)
         }
 
-        else if *word == into_v16("theta") {
+        else if *word == into_v32("theta") {
             Entity::new_character(952)
         }
 
-        else if *word == into_v16("iota") {
+        else if *word == into_v32("iota") {
             Entity::new_character(953)
         }
 
-        else if *word == into_v16("kappa") {
+        else if *word == into_v32("kappa") {
             Entity::new_character(954)
         }
 
-        else if *word == into_v16("lambda") {
+        else if *word == into_v32("lambda") {
             Entity::new_character(955)
         }
 
-        else if *word == into_v16("mu") {
+        else if *word == into_v32("mu") {
             Entity::new_character(956)
         }
 
-        else if *word == into_v16("nu") {
+        else if *word == into_v32("nu") {
             Entity::new_character(957)
         }
 
-        else if *word == into_v16("xi") {
+        else if *word == into_v32("xi") {
             Entity::new_character(958)
         }
 
-        else if *word == into_v16("omicron") {
+        else if *word == into_v32("omicron") {
             Entity::new_character(959)
         }
 
-        else if *word == into_v16("pi") {
+        else if *word == into_v32("pi") {
             Entity::new_character(960)
         }
 
-        else if *word == into_v16("rho") {
+        else if *word == into_v32("rho") {
             Entity::new_character(961)
         }
 
-        else if *word == into_v16("sigma") {
+        else if *word == into_v32("sigma") {
             Entity::new_character(963)
         }
 
-        else if *word == into_v16("tau") {
+        else if *word == into_v32("tau") {
             Entity::new_character(964)
         }
 
-        else if *word == into_v16("upsilon") {
+        else if *word == into_v32("upsilon") {
             Entity::new_character(965)
         }
 
-        else if *word == into_v16("phi") {
+        else if *word == into_v32("phi") {
             Entity::new_character(966)
         }
 
-        else if *word == into_v16("chi") {
+        else if *word == into_v32("chi") {
             Entity::new_character(967)
         }
 
-        else if *word == into_v16("psi") {
+        else if *word == into_v32("psi") {
             Entity::new_character(968)
         }
 
-        else if *word == into_v16("omega") {
+        else if *word == into_v32("omega") {
             Entity::new_character(969)
         }
 
-        else if *word == into_v16("Alpha") {
+        else if *word == into_v32("Alpha") {
             Entity::new_character(913)
         }
 
-        else if *word == into_v16("Beta") {
+        else if *word == into_v32("Beta") {
             Entity::new_character(914)
         }
 
-        else if *word == into_v16("Gamma") {
+        else if *word == into_v32("Gamma") {
             Entity::new_character(915)
         }
 
-        else if *word == into_v16("Delta") {
+        else if *word == into_v32("Delta") {
             Entity::new_character(916)
         }
 
-        else if *word == into_v16("Epsilon") {
+        else if *word == into_v32("Epsilon") {
             Entity::new_character(917)
         }
 
-        else if *word == into_v16("Zeta") {
+        else if *word == into_v32("Zeta") {
             Entity::new_character(918)
         }
 
-        else if *word == into_v16("Eta") {
+        else if *word == into_v32("Eta") {
             Entity::new_character(919)
         }
 
-        else if *word == into_v16("Theta") {
+        else if *word == into_v32("Theta") {
             Entity::new_character(920)
         }
 
-        else if *word == into_v16("Iota") {
+        else if *word == into_v32("Iota") {
             Entity::new_character(921)
         }
 
-        else if *word == into_v16("Kappa") {
+        else if *word == into_v32("Kappa") {
             Entity::new_character(922)
         }
 
-        else if *word == into_v16("Lambda") {
+        else if *word == into_v32("Lambda") {
             Entity::new_character(923)
         }
 
-        else if *word == into_v16("Mu") {
+        else if *word == into_v32("Mu") {
             Entity::new_character(924)
         }
 
-        else if *word == into_v16("Nu") {
+        else if *word == into_v32("Nu") {
             Entity::new_character(925)
         }
 
-        else if *word == into_v16("Xi") {
+        else if *word == into_v32("Xi") {
             Entity::new_character(926)
         }
 
-        else if *word == into_v16("Omicron") {
+        else if *word == into_v32("Omicron") {
             Entity::new_character(927)
         }
 
-        else if *word == into_v16("Pi") {
+        else if *word == into_v32("Pi") {
             Entity::new_character(928)
         }
 
-        else if *word == into_v16("Rho") {
+        else if *word == into_v32("Rho") {
             Entity::new_character(929)
         }
 
-        else if *word == into_v16("Sigma") {
+        else if *word == into_v32("Sigma") {
             Entity::new_character(931)
         }
 
-        else if *word == into_v16("Tau") {
+        else if *word == into_v32("Tau") {
             Entity::new_character(932)
         }
 
-        else if *word == into_v16("Upsilon") {
+        else if *word == into_v32("Upsilon") {
             Entity::new_character(933)
         }
 
-        else if *word == into_v16("Phi") {
+        else if *word == into_v32("Phi") {
             Entity::new_character(934)
         }
 
-        else if *word == into_v16("Chi") {
+        else if *word == into_v32("Chi") {
             Entity::new_character(935)
         }
 
-        else if *word == into_v16("Psi") {
+        else if *word == into_v32("Psi") {
             Entity::new_character(936)
         }
 
-        else if *word == into_v16("Omega") {
+        else if *word == into_v32("Omega") {
             Entity::new_character(937)
         }
 
-        else if *word == into_v16("lcb") {  // left curly bracket
+        else if *word == into_v32("lcb") {  // left curly bracket
             Entity::new_character(123)
         }
 
-        else if *word == into_v16("rcb") {  // right curly bracket
+        else if *word == into_v32("rcb") {  // right curly bracket
             Entity::new_character(125)
         }
 
-        else if *word == into_v16("pm") {
+        else if *word == into_v32("pm") {
             Entity::new_character(177)
         }
 
-        else if *word == into_v16("times") {
+        else if *word == into_v32("times") {
             Entity::new_character(215)
         }
 
-        else if *word == into_v16("leftarrow") {
+        else if *word == into_v32("leftarrow") {
             Entity::new_character(8592)
         }
 
-        else if *word == into_v16("uparrow") {
+        else if *word == into_v32("uparrow") {
             Entity::new_character(8593)
         }
 
-        else if *word == into_v16("rightarrow") {
+        else if *word == into_v32("rightarrow") {
             Entity::new_character(8594)
         }
 
-        else if *word == into_v16("downarrow") {
+        else if *word == into_v32("downarrow") {
             Entity::new_character(8595)
         }
 
-        else if *word == into_v16("forall") {
+        else if *word == into_v32("forall") {
             Entity::new_character(8704)
         }
 
-        else if *word == into_v16("partial") {
+        else if *word == into_v32("partial") {
             Entity::new_character(8706)
         }
 
-        else if *word == into_v16("exist") {
+        else if *word == into_v32("exist") {
             Entity::new_character(8707)
         }
 
-        else if *word == into_v16("empty") || *word == into_v16("null") {
+        else if *word == into_v32("empty") || *word == into_v32("null") {
             Entity::new_character(8709)
         }
 
-        else if *word == into_v16("triangle") {
+        else if *word == into_v32("triangle") {
             Entity::new_character(8710)
         }
 
-        else if *word == into_v16("nabla") {
+        else if *word == into_v32("nabla") {
             Entity::new_character(8711)
         }
 
-        else if *word == into_v16("in") {
+        else if *word == into_v32("in") {
             Entity::new_character(8712)
         }
 
-        else if *word == into_v16("notin") {
+        else if *word == into_v32("notin") {
             Entity::new_character(8713)
         }
 
-        else if *word == into_v16("ni") {
+        else if *word == into_v32("ni") {
             Entity::new_character(8715)
         }
 
-        else if *word == into_v16("notni") {
+        else if *word == into_v32("notni") {
             Entity::new_character(8716)
         }
 
-        else if *word == into_v16("qed") {
+        else if *word == into_v32("qed") {
             Entity::new_character(8718)
         }
 
-        else if *word == into_v16("mp") {
+        else if *word == into_v32("mp") {
             Entity::new_character(8723)
         }
 
-        else if *word == into_v16("circ") {
+        else if *word == into_v32("circ") {
             Entity::new_character(8728)
         }
 
-        else if *word == into_v16("bullet") {
+        else if *word == into_v32("bullet") {
             Entity::new_character(8729)
         }
 
-        else if *word == into_v16("prop") {
+        else if *word == into_v32("prop") {
             Entity::new_character(8733)
         }
 
-        else if *word == into_v16("inf") || *word == into_v16("infty") || *word == into_v16("infin") {
+        else if *word == into_v32("inf") || *word == into_v32("infty") || *word == into_v32("infin") {
             Entity::new_character(8734)
         }
 
-        else if *word == into_v16("and") {
+        else if *word == into_v32("and") {
             Entity::new_character(8743)
         }
 
-        else if *word == into_v16("or") {
+        else if *word == into_v32("or") {
             Entity::new_character(8744)
         }
 
-        else if *word == into_v16("cap") {
+        else if *word == into_v32("cap") {
             Entity::new_character(8745)
         }
 
-        else if *word == into_v16("cup") {
+        else if *word == into_v32("cup") {
             Entity::new_character(8746)
         }
 
-        else if *word == into_v16("therefore") {
+        else if *word == into_v32("therefore") {
             Entity::new_character(8756)
         }
 
-        else if *word == into_v16("because") {
+        else if *word == into_v32("because") {
             Entity::new_character(8757)
         }
 
-        else if *word == into_v16("simeq") {
+        else if *word == into_v32("simeq") {
             Entity::new_character(8771)
         }
 
-        else if *word == into_v16("asymp") {
+        else if *word == into_v32("asymp") {
             Entity::new_character(8776)
         }
 
-        else if *word == into_v16("ne") || *word == into_v16("neq") {
+        else if *word == into_v32("ne") || *word == into_v32("neq") {
             Entity::new_character(8800)
         }
 
-        else if *word == into_v16("equiv") {
+        else if *word == into_v32("equiv") {
             Entity::new_character(8801)
         }
 
-        else if *word == into_v16("nequiv") {
+        else if *word == into_v32("nequiv") {
             Entity::new_character(8802)
         }
 
-        else if *word == into_v16("lt") {
+        else if *word == into_v32("lt") {
             Entity::new_character(60)
         }
 
-        else if *word == into_v16("gt") {
+        else if *word == into_v32("gt") {
             Entity::new_character(62)
         }
 
-        else if *word == into_v16("le") || *word == into_v16("leq") {
+        else if *word == into_v32("le") || *word == into_v32("leq") {
             Entity::new_character(8804)
         }
 
-        else if *word == into_v16("ge") || *word == into_v16("geq") {
+        else if *word == into_v32("ge") || *word == into_v32("geq") {
             Entity::new_character(8805)
         }
 
-        else if *word == into_v16("llt") {
+        else if *word == into_v32("llt") {
             Entity::new_character(8810)
         }
 
-        else if *word == into_v16("ggt") {
+        else if *word == into_v32("ggt") {
             Entity::new_character(8811)
         }
 
-        else if *word == into_v16("sub") {
+        else if *word == into_v32("sub") {
             Entity::new_character(8834)
         }
 
-        else if *word == into_v16("sup") {
+        else if *word == into_v32("sup") {
             Entity::new_character(8835)
         }
 
-        else if *word == into_v16("nsub") {
+        else if *word == into_v32("nsub") {
             Entity::new_character(8836)
         }
 
-        else if *word == into_v16("nsup") {
+        else if *word == into_v32("nsup") {
             Entity::new_character(8837)
         }
 
-        else if *word == into_v16("sube") {
+        else if *word == into_v32("sube") {
             Entity::new_character(8838)
         }
 
-        else if *word == into_v16("supe") {
+        else if *word == into_v32("supe") {
             Entity::new_character(8839)
         }
 
-        else if *word == into_v16("nsube") {
+        else if *word == into_v32("nsube") {
             Entity::new_character(8840)
         }
 
-        else if *word == into_v16("nsupe") {
+        else if *word == into_v32("nsupe") {
             Entity::new_character(8841)
         }
 
-        else if *word == into_v16("oplus") {
+        else if *word == into_v32("oplus") {
             Entity::new_character(8853)
         }
 
-        else if *word == into_v16("ominus") {
+        else if *word == into_v32("ominus") {
             Entity::new_character(8854)
         }
 
-        else if *word == into_v16("otimes") {
+        else if *word == into_v32("otimes") {
             Entity::new_character(8855)
         }
 
-        else if *word == into_v16("odiv") {
+        else if *word == into_v32("odiv") {
             Entity::new_character(8856)
         }
 
-        else if *word == into_v16("odot") {
+        else if *word == into_v32("odot") {
             Entity::new_character(8857)
         }
 
-        else if *word == into_v16("dot") {
+        else if *word == into_v32("dot") {
             Entity::new_character(8901)
         }
 
-        else if *word == into_v16("star") {
+        else if *word == into_v32("star") {
             Entity::new_character(8902)
         }
 
@@ -523,17 +523,17 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     else if ONE_ARG_FUNCTIONS.contains(word) && arguments.len() == 1 {
 
-        if *word == into_v16("sqrt") {
+        if *word == into_v32("sqrt") {
             Entity::new_root(vec![], md_to_math(&arguments[0]))
         }
 
-        else if *word == into_v16("text") {
+        else if *word == into_v32("text") {
             Entity::RawString(arguments[0].clone())
         }
 
-        else if *word == into_v16("lim") || *word == into_v16("limit") {
+        else if *word == into_v32("lim") || *word == into_v32("limit") {
             Entity::new_underover(
-                vec![Entity::new_identifier(into_v16("lim"))],
+                vec![Entity::new_identifier(into_v32("lim"))],
                 md_to_math(&arguments[0]),
                 vec![],
                 false
@@ -541,15 +541,15 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
         }
 
         else {
-            let operator = if *word == into_v16("hat") {
-                '^' as u16
-            } else if *word == into_v16("bar") {
-                '-' as u16
-            } else if *word == into_v16("dot") {
+            let operator = if *word == into_v32("hat") {
+                '^' as u32
+            } else if *word == into_v32("bar") {
+                '-' as u32
+            } else if *word == into_v32("dot") {
                 8901
-            } else if *word == into_v16("tilde") {
-                '~' as u16
-            } else if *word == into_v16("vec") {
+            } else if *word == into_v32("tilde") {
+                '~' as u32
+            } else if *word == into_v32("vec") {
                 8594
             } else {
                 unreachable!()
@@ -567,11 +567,11 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     else if TWO_ARG_FUNCTIONS.contains(word) && arguments.len() == 2 {
 
-        if *word == into_v16("sqrt") || *word == into_v16("root") {
+        if *word == into_v32("sqrt") || *word == into_v32("root") {
             Entity::new_root(md_to_math(&arguments[0]), md_to_math(&arguments[1]))
         }
 
-        else if *word == into_v16("frac") {
+        else if *word == into_v32("frac") {
             Entity::new_fraction(
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
@@ -580,7 +580,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             )
         }
 
-        else if *word == into_v16("cfrac") {
+        else if *word == into_v32("cfrac") {
             Entity::new_fraction(
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
@@ -589,7 +589,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             )
         }
 
-        else if *word == into_v16("bincoeff") {
+        else if *word == into_v32("bincoeff") {
             Entity::new_fraction(
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
@@ -598,7 +598,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             )
         }
 
-        else if *word == into_v16("sub") {
+        else if *word == into_v32("sub") {
             Entity::new_script(
                 md_to_math(&arguments[0]),
                 vec![],
@@ -608,7 +608,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
             )
         }
 
-        else if *word == into_v16("sup") {
+        else if *word == into_v32("sup") {
             Entity::new_script(
                 md_to_math(&arguments[0]),
                 vec![],
@@ -619,24 +619,24 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
         }
 
         else {
-            let operator = if *word == into_v16("sum") {
+            let operator = if *word == into_v32("sum") {
                 "∑"
-            } else if *word == into_v16("prod") {
+            } else if *word == into_v32("prod") {
                 "∏"
-            } else if *word == into_v16("int") {
+            } else if *word == into_v32("int") {
                 "∫"
-            } else if *word == into_v16("iint") {
+            } else if *word == into_v32("iint") {
                 "∬"
-            } else if *word == into_v16("iiint") {
+            } else if *word == into_v32("iiint") {
                 "∭"
-            } else if *word == into_v16("oint") {
+            } else if *word == into_v32("oint") {
                 "∮"
             } else {
                 unreachable!()
             };
 
             Entity::new_underover(
-                vec![Entity::new_operator(into_v16(operator))],
+                vec![Entity::new_operator(into_v32(operator))],
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
                 true
@@ -647,7 +647,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     else if THREE_ARG_FUNCTIONS.contains(word) && arguments.len() == 3 {
 
-        if *word == into_v16("subsup") {
+        if *word == into_v32("subsup") {
             Entity::new_script(
                 md_to_math(&arguments[0]),
                 vec![],
@@ -665,7 +665,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
     else if FIVE_ARG_FUNCTIONS.contains(word) && arguments.len() == 5 {
 
-        if *word == into_v16("multiscript") {
+        if *word == into_v32("multiscript") {
             Entity::new_script(
                 md_to_math(&arguments[0]),
                 md_to_math(&arguments[1]),
@@ -687,7 +687,7 @@ pub fn parse(word: &[u16], arguments: &Vec<Vec<u16>>) -> Entity {
 
 }
 
-pub fn get_arguments(content: &[u16], mut index: usize) -> (Vec<Vec<u16>>, usize) {  // (Vec<argument>, end_index)
+pub fn get_arguments(content: &[u32], mut index: usize) -> (Vec<Vec<u32>>, usize) {  // (Vec<argument>, end_index)
 
     let mut result = vec![];
 
@@ -697,11 +697,11 @@ pub fn get_arguments(content: &[u16], mut index: usize) -> (Vec<Vec<u16>>, usize
 
     loop {
 
-        while index < content.len() && content[index] == ' ' as u16 {
+        while index < content.len() && content[index] == ' ' as u32 {
             index += 1;
         }
 
-        if index < content.len() && content[index] == '{' as u16  {
+        if index < content.len() && content[index] == '{' as u32  {
             let arg_end_index = match get_curly_brace_end_index(content, index) {
                 Some(end_index) => end_index,
                 None => {
@@ -721,16 +721,16 @@ pub fn get_arguments(content: &[u16], mut index: usize) -> (Vec<Vec<u16>>, usize
 
 }
 
-pub fn is_space(word: &[u16]) -> bool {
+pub fn is_space(word: &[u32]) -> bool {
     word.len() > 4
-    && &word[(word.len() - 5)..(word.len())] == &into_v16("space")
-    && word[0..(word.len() - 5)].iter().all(|c| *c == 's' as u16)
+    && &word[(word.len() - 5)..(word.len())] == &into_v32("space")
+    && word[0..(word.len() - 5)].iter().all(|c| *c == 's' as u32)
 }
 
 #[cfg(test)]
 mod testbench {
     use super::{get_arguments, is_space};
-    use crate::utils::into_v16;
+    use crate::utils::into_v32;
 
     #[test]
     fn get_arguments_test() {
@@ -749,15 +749,15 @@ mod testbench {
         let test_cases = test_cases.into_iter().map(
             |(test_case, start_index, arguments, end_index)|
             (
-                into_v16(&test_case),
+                into_v32(&test_case),
                 start_index,
                 arguments.iter().map(
                     |argument|
-                    into_v16(argument)
+                    into_v32(argument)
                 ).collect(),
                 end_index
             )
-        ).collect::<Vec<(Vec<u16>, usize, Vec<Vec<u16>>, usize)>>();
+        ).collect::<Vec<(Vec<u32>, usize, Vec<Vec<u32>>, usize)>>();
 
         for (test_case, start_index, arguments, end_index) in test_cases.into_iter() {
             assert_eq!(get_arguments(&test_case, start_index), (arguments, end_index));
@@ -767,15 +767,15 @@ mod testbench {
 
     #[test]
     fn space_test() {
-        assert!(is_space(&into_v16("space")));
-        assert!(is_space(&into_v16("sspace")));
-        assert!(is_space(&into_v16("ssspace")));
-        assert!(is_space(&into_v16("sssssssssssssssssspace")));
+        assert!(is_space(&into_v32("space")));
+        assert!(is_space(&into_v32("sspace")));
+        assert!(is_space(&into_v32("ssspace")));
+        assert!(is_space(&into_v32("sssssssssssssssssspace")));
 
-        assert!(!is_space(&into_v16("pace")));
-        assert!(!is_space(&into_v16("espace")));
-        assert!(!is_space(&into_v16("sespace")));
-        assert!(!is_space(&into_v16("")));
+        assert!(!is_space(&into_v32("pace")));
+        assert!(!is_space(&into_v32("espace")));
+        assert!(!is_space(&into_v32("sespace")));
+        assert!(!is_space(&into_v32("")));
     }
 
 }

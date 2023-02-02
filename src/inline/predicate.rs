@@ -1,4 +1,4 @@
-use crate::escape::BACKSLASH_ESCAPE_MARKER;
+use crate::escape::BACKSLASH_ESCAPE_OFFSET;
 use super::parse::{get_code_span_marker_end_index, is_code_span_marker_begin};
 
 // it's always guaranteed that `index < content.len()`
@@ -10,15 +10,15 @@ pub enum Bool {
     True(usize)  // end_index
 }
 
-pub fn is_code_span(content: &[u16], index: usize) -> Bool {
+pub fn is_code_span(content: &[u32], index: usize) -> Bool {
 
-    if content[index] != '`' as u16 {
+    if content[index] != '`' as u32 {
         return Bool::False;
     }
 
     // it should not count a single span multiple times
     // with out this branch, it would return true 5 times for '`````a`````'
-    else if index > 0 && content[index - 1] == '`' as u16 {
+    else if index > 0 && content[index - 1] == '`' as u32 {
         return Bool::False;
     }
 
@@ -38,10 +38,10 @@ pub fn is_code_span(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-pub fn count_code_span_start(content: &[u16], mut index: usize) -> usize {
+pub fn count_code_span_start(content: &[u32], mut index: usize) -> usize {
     let mut result = 0;
 
-    while index != content.len() && content[index] == '`' as u16 {
+    while index != content.len() && content[index] == '`' as u32 {
         index += 1;
         result += 1;
     }
@@ -49,9 +49,10 @@ pub fn count_code_span_start(content: &[u16], mut index: usize) -> usize {
     result
 }
 
-fn count_code_span_end(content: &[u16], mut index: usize) -> (usize, usize) {  // (backtick_string_size, end_index)
+fn count_code_span_end(content: &[u32], mut index: usize) -> (usize, usize) {  // (backtick_string_size, end_index)
 
-    if index > 0 && content[index - 1] == '`' as u16 {
+    // '``' is not a code span, but '`\`' is.
+    if index > 0 && content[index - 1] == '`' as u32 && content[index] != '`' as u32 + BACKSLASH_ESCAPE_OFFSET {
         return (0, 0);
     }
 
@@ -59,14 +60,7 @@ fn count_code_span_end(content: &[u16], mut index: usize) -> (usize, usize) {  /
 
     loop {
 
-        if index == content.len() {
-            break;
-        }
-
-        if content[index] == u16::MAX - '`' as u16 && index > 0 && content[index - 1] == BACKSLASH_ESCAPE_MARKER {
-        }
-
-        else if content[index] != '`' as u16 {
+        if index == content.len() || content[index] != '`' as u32 && content[index] != '`' as u32 + BACKSLASH_ESCAPE_OFFSET {
             break;
         }
 
@@ -77,7 +71,7 @@ fn count_code_span_end(content: &[u16], mut index: usize) -> (usize, usize) {  /
     (result, index - 1)
 }
 
-pub fn is_italic(content: &[u16], index: usize) -> Bool {
+pub fn is_italic(content: &[u32], index: usize) -> Bool {
 
     if !is_italic_start(content, index) {
         return Bool::False;
@@ -102,23 +96,23 @@ pub fn is_italic(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_italic_start(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_italic_start(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index + 1 < content.len()
-    && content[index + 1] != ' ' as u16
-    && content[index + 1] != '*' as u16
-    && (index == 0 || content[index - 1] != '*' as u16)
+    && content[index + 1] != ' ' as u32
+    && content[index + 1] != '*' as u32
+    && (index == 0 || content[index - 1] != '*' as u32)
 }
 
-fn is_italic_end(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_italic_end(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index > 0
-    && content[index - 1] != ' ' as u16
-    && content[index - 1] != '*' as u16
-    && (index + 1 == content.len() || content[index + 1] != '*' as u16)
+    && content[index - 1] != ' ' as u32
+    && content[index - 1] != '*' as u32
+    && (index + 1 == content.len() || content[index + 1] != '*' as u32)
 }
 
-pub fn is_bold(content: &[u16], index: usize) -> Bool {
+pub fn is_bold(content: &[u32], index: usize) -> Bool {
 
     if !is_bold_start(content, index) {
         return Bool::False;
@@ -143,23 +137,23 @@ pub fn is_bold(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_bold_start(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_bold_start(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index + 2 < content.len()
-    && content[index + 1] == '*' as u16
-    && content[index + 2] != ' ' as u16
-    && content[index + 2] != '*' as u16
+    && content[index + 1] == '*' as u32
+    && content[index + 2] != ' ' as u32
+    && content[index + 2] != '*' as u32
 }
 
-fn is_bold_end(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_bold_end(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index > 1
-    && content[index - 1] == '*' as u16
-    && content[index - 2] != ' ' as u16
-    && content[index - 2] != '*' as u16
+    && content[index - 1] == '*' as u32
+    && content[index - 2] != ' ' as u32
+    && content[index - 2] != '*' as u32
 }
 
-pub fn is_bold_italic(content: &[u16], index: usize) -> Bool {
+pub fn is_bold_italic(content: &[u32], index: usize) -> Bool {
 
     if !is_bold_italic_start(content, index) {
         return Bool::False;
@@ -184,25 +178,25 @@ pub fn is_bold_italic(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_bold_italic_start(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_bold_italic_start(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index + 3 < content.len()
-    && content[index + 1] == '*' as u16
-    && content[index + 2] == '*' as u16
-    && content[index + 3] != ' ' as u16
-    && content[index + 3] != '*' as u16
+    && content[index + 1] == '*' as u32
+    && content[index + 2] == '*' as u32
+    && content[index + 3] != ' ' as u32
+    && content[index + 3] != '*' as u32
 }
 
-fn is_bold_italic_end(content: &[u16], index: usize) -> bool {
-    content[index] == '*' as u16
+fn is_bold_italic_end(content: &[u32], index: usize) -> bool {
+    content[index] == '*' as u32
     && index > 2
-    && content[index - 1] == '*' as u16
-    && content[index - 2] == '*' as u16
-    && content[index - 3] != ' ' as u16
-    && content[index - 3] != '*' as u16
+    && content[index - 1] == '*' as u32
+    && content[index - 2] == '*' as u32
+    && content[index - 3] != ' ' as u32
+    && content[index - 3] != '*' as u32
 }
 
-pub fn is_deletion(content: &[u16], index: usize) -> Bool {
+pub fn is_deletion(content: &[u32], index: usize) -> Bool {
 
     if !is_deletion_start(content, index) {
         return Bool::False;
@@ -227,23 +221,23 @@ pub fn is_deletion(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_deletion_start(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_deletion_start(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index + 2 < content.len()
-    && content[index + 1] == '~' as u16
-    && content[index + 2] != ' ' as u16
-    && content[index + 2] != '_' as u16
+    && content[index + 1] == '~' as u32
+    && content[index + 2] != ' ' as u32
+    && content[index + 2] != '_' as u32
 }
 
-fn is_deletion_end(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_deletion_end(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index > 1
-    && content[index - 1] == '~' as u16
-    && content[index - 2] != ' ' as u16
-    && content[index - 2] != '_' as u16
+    && content[index - 1] == '~' as u32
+    && content[index - 2] != ' ' as u32
+    && content[index - 2] != '_' as u32
 }
 
-pub fn is_underline(content: &[u16], index: usize) -> Bool {
+pub fn is_underline(content: &[u32], index: usize) -> Bool {
 
     if !is_underline_start(content, index) {
         return Bool::False;
@@ -268,21 +262,21 @@ pub fn is_underline(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_underline_start(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_underline_start(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index + 2 < content.len()
-    && content[index + 1] == '_' as u16
-    && content[index + 2] != ' ' as u16
+    && content[index + 1] == '_' as u32
+    && content[index + 2] != ' ' as u32
 }
 
-fn is_underline_end(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_underline_end(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index > 1
-    && content[index - 1] == '_' as u16
-    && content[index - 2] != ' ' as u16
+    && content[index - 1] == '_' as u32
+    && content[index - 2] != ' ' as u32
 }
 
-pub fn is_superscript(content: &[u16], index: usize) -> Bool {
+pub fn is_superscript(content: &[u32], index: usize) -> Bool {
 
     if !is_superscript_start(content, index) {
         return Bool::False;
@@ -307,21 +301,21 @@ pub fn is_superscript(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_superscript_start(content: &[u16], index: usize) -> bool {
-    content[index] == '^' as u16
+fn is_superscript_start(content: &[u32], index: usize) -> bool {
+    content[index] == '^' as u32
     && index + 1 < content.len()
-    && content[index + 1] != '^' as u16
-    && content[index + 1] != ' ' as u16
+    && content[index + 1] != '^' as u32
+    && content[index + 1] != ' ' as u32
 }
 
-fn is_superscript_end(content: &[u16], index: usize) -> bool {
-    content[index] == '^' as u16
+fn is_superscript_end(content: &[u32], index: usize) -> bool {
+    content[index] == '^' as u32
     && index > 0
-    && content[index - 1] != '^' as u16
-    && content[index - 1] != ' ' as u16
+    && content[index - 1] != '^' as u32
+    && content[index - 1] != ' ' as u32
 }
 
-pub fn is_subscript(content: &[u16], index: usize) -> Bool {
+pub fn is_subscript(content: &[u32], index: usize) -> Bool {
 
     if !is_subscript_start(content, index) {
         return Bool::False;
@@ -346,23 +340,23 @@ pub fn is_subscript(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_subscript_start(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_subscript_start(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index + 1 < content.len()
-    && content[index + 1] != '~' as u16
-    && content[index + 1] != ' ' as u16
-    && (index == 0 || content[index - 1] != '~' as u16)
+    && content[index + 1] != '~' as u32
+    && content[index + 1] != ' ' as u32
+    && (index == 0 || content[index - 1] != '~' as u32)
 }
 
-fn is_subscript_end(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_subscript_end(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index > 0
-    && content[index - 1] != '~' as u16
-    && content[index - 1] != ' ' as u16
-    && (index == content.len() - 1 || content[index + 1] != '~' as u16)
+    && content[index - 1] != '~' as u32
+    && content[index - 1] != ' ' as u32
+    && (index == content.len() - 1 || content[index + 1] != '~' as u32)
 }
 
-pub fn is_deletion_subscript(content: &[u16], index: usize) -> Bool {
+pub fn is_deletion_subscript(content: &[u32], index: usize) -> Bool {
 
     if !is_deletion_subscript_start(content, index) {
         return Bool::False;
@@ -387,21 +381,21 @@ pub fn is_deletion_subscript(content: &[u16], index: usize) -> Bool {
     Bool::False
 }
 
-fn is_deletion_subscript_start(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_deletion_subscript_start(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index + 3 < content.len()
-    && content[index + 1] == '~' as u16
-    && content[index + 2] == '~' as u16
-    && content[index + 3] != ' ' as u16
-    && content[index + 3] != '~' as u16
-    && content[index + 3] != '_' as u16
+    && content[index + 1] == '~' as u32
+    && content[index + 2] == '~' as u32
+    && content[index + 3] != ' ' as u32
+    && content[index + 3] != '~' as u32
+    && content[index + 3] != '_' as u32
 }
 
-fn is_deletion_subscript_end(content: &[u16], index: usize) -> bool {
-    content[index] == '~' as u16
+fn is_deletion_subscript_end(content: &[u32], index: usize) -> bool {
+    content[index] == '~' as u32
     && index > 2
-    && content[index - 1] == '~' as u16
-    && content[index - 2] == '~' as u16
-    && content[index - 3] != ' ' as u16
-    && content[index - 3] != '~' as u16 && content[index - 3] != '_' as u16
+    && content[index - 1] == '~' as u32
+    && content[index - 2] == '~' as u32
+    && content[index - 3] != ' ' as u32
+    && content[index - 3] != '~' as u32 && content[index - 3] != '_' as u32
 }

@@ -9,12 +9,12 @@ use alignment::parse_alignments;
 use cell::{Cell, get_colspan, row_to_cells};
 use macros::try_parse_macro;
 use crate::ast::{doc_data::DocData, line::Line};
-use crate::escape::BACKSLASH_ESCAPE_MARKER;
+use crate::escape::BACKSLASH_ESCAPE_OFFSET;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
 use crate::inline::macros::predicate::is_special_macro;
 use crate::inline::math::escape_inside_math_blocks;
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct Table {
@@ -92,9 +92,9 @@ impl Table {
 
     }
 
-    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
-        result.push(into_v16("<table>"));
+        result.push(into_v32("<table>"));
 
         let collapsible_head = if self.collapsible {
             let default_value = if self.default_hidden {
@@ -108,17 +108,17 @@ impl Table {
             String::new()
         };
 
-        result.push(into_v16(&format!("<thead{}>", collapsible_head)));
+        result.push(into_v32(&format!("<thead{}>", collapsible_head)));
         self.header.iter().for_each(
             |row| {
-                result.push(into_v16("<tr>"));
+                result.push(into_v32("<tr>"));
                 result.push(row.iter().map(
                     |c| c.to_html(true, toc_rendered, class_prefix)
-                ).collect::<Vec<Vec<u16>>>().concat());
-                result.push(into_v16("</tr>"));
+                ).collect::<Vec<Vec<u32>>>().concat());
+                result.push(into_v32("</tr>"));
             }
         );
-        result.push(into_v16("</thead>"));
+        result.push(into_v32("</thead>"));
 
         let collapsible_body = if self.collapsible {
             let default_value = if self.default_hidden {
@@ -133,27 +133,27 @@ impl Table {
         };
 
         if self.cells.len() > 0 {
-            result.push(into_v16(&format!("<tbody{}>", collapsible_body)));
+            result.push(into_v32(&format!("<tbody{}>", collapsible_body)));
             self.cells.iter().for_each(
                 |row| {
-                    result.push(into_v16("<tr>"));
+                    result.push(into_v32("<tr>"));
                     result.push(row.iter().map(
                         |c| c.to_html(false, toc_rendered, class_prefix)
-                    ).collect::<Vec<Vec<u16>>>().concat());
-                    result.push(into_v16("</tr>"));
+                    ).collect::<Vec<Vec<u32>>>().concat());
+                    result.push(into_v32("</tr>"));
                 }
             );
-            result.push(into_v16("</tbody>"));
+            result.push(into_v32("</tbody>"));
         }
 
-        result.push(into_v16("</table>"));
+        result.push(into_v32("</table>"));
         result.concat()
     }
 
 }
 
 // it does not check whether the row is valid
-pub fn count_cells(row: &[u16], pipes_escaped: bool) -> usize {
+pub fn count_cells(row: &[u32], pipes_escaped: bool) -> usize {
 
     if !pipes_escaped {
         return count_cells(&escape_pipes(row), true);
@@ -161,16 +161,16 @@ pub fn count_cells(row: &[u16], pipes_escaped: bool) -> usize {
 
     // the `.split` method generates 2 extra elements, the trailing and leading empty cells
     // they should be removed
-    row.split(|c| *c == '|' as u16).map(|cell| get_colspan(cell)).sum::<usize>() - 2
+    row.split(|c| *c == '|' as u32).map(|cell| get_colspan(cell)).sum::<usize>() - 2
 }
 
 // it does not check whether the delimiter is valid
-pub fn count_delimiter_cells(delimiter: &[u16]) -> usize {
+pub fn count_delimiter_cells(delimiter: &[u32]) -> usize {
     count_cells(delimiter, true)
 }
 
 // it escapes `|` inside code spans and math macros
-pub fn escape_pipes(content: &[u16]) -> Vec<u16> {
+pub fn escape_pipes(content: &[u32]) -> Vec<u32> {
 
     let mut content = escape_code_spans(content);
     content = escape_inside_math_blocks(content);
@@ -189,9 +189,8 @@ pub fn escape_pipes(content: &[u16]) -> Vec<u16> {
             is_inside_code_span = false;
         }
 
-        if is_inside_code_span && content[index] == '|' as u16 {
-            result.push(BACKSLASH_ESCAPE_MARKER);
-            result.push(u16::MAX - '|' as u16);
+        if is_inside_code_span && content[index] == '|' as u32 {
+            result.push(BACKSLASH_ESCAPE_OFFSET + '|' as u32);
         }
 
         else {

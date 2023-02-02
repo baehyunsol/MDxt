@@ -4,7 +4,7 @@ pub mod predicate;
 mod testbench;
 
 use super::InlineNode;
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 use std::collections::HashMap;
 
 #[derive(Clone)]
@@ -14,14 +14,14 @@ pub struct Footnote {
     pub content: InlineNode
 }
 
-pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
+pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u32>, Footnote>, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
 
     let notes = footnotes.values().map(|x| x.clone()).collect::<Vec<Footnote>>();
 
     let mut result = Vec::with_capacity(3);
-    let mut footnote_cites: Vec<(Vec<u16>, usize)> = Vec::with_capacity(notes.len());
+    let mut footnote_cites: Vec<(Vec<u32>, usize)> = Vec::with_capacity(notes.len());
 
-    result.push(into_v16(&format!("<hr class=\"{}footnote-hr\"/><div class=\"{}mdxt-footnote-cites\"><p>", class_prefix, class_prefix)));
+    result.push(into_v32(&format!("<hr class=\"{}footnote-hr\"/><div class=\"{}mdxt-footnote-cites\"><p>", class_prefix, class_prefix)));
 
     for Footnote {index, inverse_index, content} in notes.into_iter() {
 
@@ -34,15 +34,15 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
 
         let inverse_indexes = inverse_index.iter().map(
             |ind|
-            into_v16(&format!("<a href=\"#footnote-ref-{}\"> [{}]</a> ", ind, ind))
-        ).collect::<Vec<Vec<u16>>>().concat();
+            into_v32(&format!("<a href=\"#footnote-ref-{}\"> [{}]</a> ", ind, ind))
+        ).collect::<Vec<Vec<u32>>>().concat();
 
         footnote_cites.push((
             vec![
-                into_v16(&format!("<div class=\"footnote-cite\"><a id=\"footnote-cite-{}\"></a>", index)),
+                into_v32(&format!("<div class=\"footnote-cite\"><a id=\"footnote-cite-{}\"></a>", index)),
                 inverse_indexes,
                 content.to_html(toc_rendered, class_prefix),
-                into_v16("</div>")
+                into_v32("</div>")
             ].concat(),
             inverse_index[0]
         ));
@@ -56,9 +56,9 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u16>, Footnote>, toc_render
 
     else {
         footnote_cites.sort_unstable_by_key(|(_, i)| *i);
-        result.push(footnote_cites.into_iter().map(|(c, _)| c).collect::<Vec<Vec<u16>>>().concat());
+        result.push(footnote_cites.into_iter().map(|(c, _)| c).collect::<Vec<Vec<u32>>>().concat());
 
-        result.push(into_v16("</p></div>"));
+        result.push(into_v32("</p></div>"));
     }
 
     result.concat()

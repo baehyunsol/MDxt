@@ -1,29 +1,29 @@
-use crate::utils::{get_parenthesis_end_index, into_v16, is_numeric};
+use crate::utils::{get_parenthesis_end_index, into_v32, is_numeric};
 
-pub fn is_valid_info_string(content: &[u16]) -> bool {
+pub fn is_valid_info_string(content: &[u32]) -> bool {
     content.iter().all(is_valid_info_string_character)
 }
 
 // a-z A-Z `,` `(` `)` ` ` `_` `.` `-`
-fn is_valid_info_string_character(chr: &u16) -> bool {
-    '0' as u16 <= *chr && *chr <= '9' as u16
-    || 'a' as u16 <= *chr && *chr <= 'z' as u16
-    || 'A' as u16 <= *chr && *chr <= 'Z' as u16
-    || '(' as u16 == *chr || ')' as u16 == *chr
-    || ' ' as u16 == *chr || ',' as u16 == *chr
-    || '_' as u16 == *chr || '.' as u16 == *chr
-    || '-' as u16 == *chr
+fn is_valid_info_string_character(chr: &u32) -> bool {
+    '0' as u32 <= *chr && *chr <= '9' as u32
+    || 'a' as u32 <= *chr && *chr <= 'z' as u32
+    || 'A' as u32 <= *chr && *chr <= 'Z' as u32
+    || '(' as u32 == *chr || ')' as u32 == *chr
+    || ' ' as u32 == *chr || ',' as u32 == *chr
+    || '_' as u32 == *chr || '.' as u32 == *chr
+    || '-' as u32 == *chr
 }
 
-pub fn is_line_num(content: &[u16]) -> bool {
+pub fn is_line_num(content: &[u32]) -> bool {
 
     if content.len() == 8 {
-        content == into_v16("line_num")
+        content == into_v32("line_num")
     }
 
     else if content.len() > 10 {
-        content[0..9] == into_v16("line_num(")
-        && content[content.len() - 1] == ')' as u16
+        content[0..9] == into_v32("line_num(")
+        && content[content.len() - 1] == ')' as u32
         && content[9..content.len() - 1].iter().all(is_numeric)
     }
 
@@ -33,22 +33,22 @@ pub fn is_line_num(content: &[u16]) -> bool {
 
 }
 
-pub fn is_highlight(content: &[u16]) -> bool {
+pub fn is_highlight(content: &[u32]) -> bool {
     content.len() > 11
-    && content[0..10] == into_v16("highlight(")
-    && content[content.len() - 1] == ')' as u16
-    && content[10..content.len() - 1].iter().all(|c| is_numeric(c) || *c == ',' as u16)
+    && content[0..10] == into_v32("highlight(")
+    && content[content.len() - 1] == ')' as u32
+    && content[10..content.len() - 1].iter().all(|c| is_numeric(c) || *c == ',' as u32)
 }
 
-pub fn is_copy_button(content: &[u16]) -> bool {
-    content == into_v16("copy_button")
-    || content == into_v16("copy_button(true)")
-    || content == into_v16("copy_button(false)")
+pub fn is_copy_button(content: &[u32]) -> bool {
+    content == into_v32("copy_button")
+    || content == into_v32("copy_button(true)")
+    || content == into_v32("copy_button(false)")
 }
 
 // `rust, line_num` -> [`rust`, `line_num`]
 // `rust, highlight(2, 3)` -> [`rust`, `highlight(2, 3)`]
-pub fn parse_arguments(content: &[u16]) -> Vec<Vec<u16>> {
+pub fn parse_arguments(content: &[u32]) -> Vec<Vec<u32>> {
 
     let mut index = 0;
     let mut last_index = 0;
@@ -56,12 +56,12 @@ pub fn parse_arguments(content: &[u16]) -> Vec<Vec<u16>> {
 
     while index < content.len() {
 
-        if content[index] == ',' as u16 {
+        if content[index] == ',' as u32 {
             result.push(content[last_index..index].to_vec());
             last_index = index + 1;
         }
 
-        else if content[index] == '('  as u16 {
+        else if content[index] == '('  as u32 {
 
             match get_parenthesis_end_index(content, index) {
                 Some(n) => {

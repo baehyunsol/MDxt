@@ -9,7 +9,7 @@ use crate::ast::line::{add_br_if_needed, Line};
 use crate::inline::InlineNode;
 use crate::inline::macros::predicate::is_special_macro;
 use crate::render::render_option::RenderOption;
-use crate::utils::{is_numeric, to_int, into_v16};
+use crate::utils::{is_numeric, to_int, into_v32};
 use macros::try_parse_macro;
 use tasklist::{parse_task_list, TaskMarker};
 
@@ -50,7 +50,7 @@ impl List {
         list
     }
 
-    pub fn to_html(&self, toc_rendered: &[u16], class_prefix: &str) -> Vec<u16> {
+    pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
 
         let start_index = if self.start_index != 1 {
             format!(" start=\"{}\"", self.start_index)
@@ -95,42 +95,42 @@ impl List {
 
         let mut result = Vec::with_capacity(self.elements.len() * 3 + 2);
 
-        result.push(into_v16(&opening_tag));
+        result.push(into_v32(&opening_tag));
 
         for element in self.elements.iter() {
 
             match element {
                 ElementOrSublist::Element{ content, task_list } => {
-                    result.push(into_v16("<li>"));
+                    result.push(into_v32("<li>"));
 
                     match task_list {
                         Some(marker) => match marker {
                             TaskMarker::Unchecked => {
-                                result.push(into_v16(&format!("<div class=\"{}unchecked-box\"></div>", class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{}unchecked-box\"></div>", class_prefix)));
                             },
                             TaskMarker::Checked => {
-                                result.push(into_v16(&format!("<div class=\"{}checked-box\"><span class=\"{}checkmark\"></span></div>", class_prefix, class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{}checked-box\"><span class=\"{}checkmark\"></span></div>", class_prefix, class_prefix)));
                             },
                             TaskMarker::Triangle => {
-                                result.push(into_v16(&format!("<div class=\"{}checked-box\"><span class=\"{}triangle\"></span></div>", class_prefix, class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{}checked-box\"><span class=\"{}triangle\"></span></div>", class_prefix, class_prefix)));
                             },
                         },
                         _ => {}
                     }
 
                     result.push(content.to_html(toc_rendered, class_prefix));
-                    result.push(into_v16("</li>"));
+                    result.push(into_v32("</li>"));
                 }
                 ElementOrSublist::Sublist(sublist) => {
                     result.pop().unwrap();  // </li>  // the first element is `ElementOrSublist::Element`
                     result.push(sublist.to_html(toc_rendered, class_prefix));
-                    result.push(into_v16("</li>"));
+                    result.push(into_v32("</li>"));
                 }
             }
 
         }
 
-        result.push(into_v16(&closing_tag));
+        result.push(into_v32(&closing_tag));
 
         result.concat()
     }
@@ -191,7 +191,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
             if curr_element.len() > 0 {
                 elements.push(
                     ElementOrSublist::new_element(
-                        &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                        &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u32>>>().join(&[' ' as u32][..]),
                         curr_task_marker
                     )
                 );
@@ -231,7 +231,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
     if curr_element.len() > 0 {
         elements.push(
             ElementOrSublist::new_element(
-                &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u16>>>().join(&[' ' as u16][..]),
+                &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u32>>>().join(&[' ' as u32][..]),
                 curr_task_marker
             )
         );
@@ -251,23 +251,23 @@ fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
     assert!(line.is_ordered_list() || line.is_unordered_list());
 
     match line.content[0] {
-        x if x == '-' as u16 || x == '*' as u16 => (
+        x if x == '-' as u32 || x == '*' as u32 => (
             ListType::Unordered, 1
         ),
-        x if x == 'a' as u16 => (
+        x if x == 'a' as u32 => (
             ListType::Ordered(Marker::LowerAlpha), 1
         ),
-        x if x == 'A' as u16 => (
+        x if x == 'A' as u32 => (
             ListType::Ordered(Marker::UpperAlpha), 1
         ),
-        x if x == 'i' as u16 => (
+        x if x == 'i' as u32 => (
             ListType::Ordered(Marker::LowerRoman), 1
         ),
-        x if x == 'I' as u16 => (
+        x if x == 'I' as u32 => (
             ListType::Ordered(Marker::UpperRoman), 1
         ),
         x if is_numeric(&x) => {
-            let num_end_index = line.content.iter().position(|c| *c == '.' as u16).unwrap();
+            let num_end_index = line.content.iter().position(|c| *c == '.' as u32).unwrap();
             let num = &line.content[0..num_end_index];
 
             (ListType::Ordered(Marker::Number), to_int(num).unwrap() as usize)
@@ -279,9 +279,9 @@ fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
 
 fn remove_marker(line: &Line) -> Line {
     let content = match line.content[0] {
-        x if x == '-' as u16 || x == '*' as u16 => line.content[2..line.content.len()].to_vec(),
+        x if x == '-' as u32 || x == '*' as u32 => line.content[2..line.content.len()].to_vec(),
         _ => {
-            let marker_end_index = line.content.iter().position(|c| *c == '.' as u16).unwrap();
+            let marker_end_index = line.content.iter().position(|c| *c == '.' as u32).unwrap();
 
             line.content[marker_end_index + 2..line.content.len()].to_vec()
         }
@@ -312,7 +312,7 @@ enum ElementOrSublist {
 
 impl ElementOrSublist {
 
-    fn new_element(content: &[u16], task_list: Option<TaskMarker>) -> Self {
+    fn new_element(content: &[u32], task_list: Option<TaskMarker>) -> Self {
         ElementOrSublist::Element{
             content: InlineNode::Raw(content.to_vec()),
             task_list

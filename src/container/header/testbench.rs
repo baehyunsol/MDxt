@@ -1,4 +1,4 @@
-use crate::utils::{into_v16, remove_whitespaces};
+use crate::utils::{into_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn header_samples() -> Vec<(String, String)> {
@@ -202,7 +202,7 @@ fn header_test() {
     for (md, html) in header_samples().iter() {
         let rendered = render_to_html_with_default_options(md);
 
-        if remove_whitespaces(&into_v16(&rendered)) != remove_whitespaces(&into_v16(html)) {
+        if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
             panic!("{} \n\n {}", md, rendered);
         }
 

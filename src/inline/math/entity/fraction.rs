@@ -1,5 +1,5 @@
 use super::{Entity, vec_to_math_ml};
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct Fraction {
@@ -15,7 +15,7 @@ impl Fraction {
         Fraction { numer, denom, display_style, no_line }
     }
 
-    pub fn to_math_ml(&self) -> Vec<u16> {
+    pub fn to_math_ml(&self) -> Vec<u32> {
         let opening = format!(
             "<mfrac displaystyle=\"{}\"{}>",
             self.display_style,
@@ -26,13 +26,13 @@ impl Fraction {
             }
         );
 
-        let opening = into_v16(&opening);
+        let opening = into_v32(&opening);
 
         vec![
             opening,
             vec_to_math_ml(&self.numer, true),  // `<mfrac>` has exactly two children, so `single_element` is true.
             vec_to_math_ml(&self.denom, true),
-            into_v16("</mfrac>")
+            into_v32("</mfrac>")
         ].concat()
     }
 

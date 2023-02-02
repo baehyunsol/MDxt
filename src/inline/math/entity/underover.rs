@@ -1,5 +1,5 @@
 use super::{Entity, vec_to_math_ml};
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct UnderOver {
@@ -15,7 +15,7 @@ impl UnderOver {
         UnderOver { content, under, over, display_style }
     }
 
-    pub fn to_math_ml(&self) -> Vec<u16> {
+    pub fn to_math_ml(&self) -> Vec<u32> {
 
         let display_style = if self.display_style {
             " displaystyle=\"true\""
@@ -25,29 +25,29 @@ impl UnderOver {
 
         if self.under.len() == 0 {
             vec![
-                into_v16(&format!("<mover{}>", display_style)),
+                into_v32(&format!("<mover{}>", display_style)),
                 vec_to_math_ml(&self.content, true),  // `<mover>` has exactly two children, so `single_element` is true.
                 vec_to_math_ml(&self.over, true),
-                into_v16("</mover>"),
+                into_v32("</mover>"),
             ].concat()
         }
 
         else if self.over.len() == 0 {
             vec![
-                into_v16(&format!("<munder{}>", display_style)),
+                into_v32(&format!("<munder{}>", display_style)),
                 vec_to_math_ml(&self.content, true),  // `<munder>` has exactly two children, so `single_element` is true.
                 vec_to_math_ml(&self.under, true),
-                into_v16("</munder>"),
+                into_v32("</munder>"),
             ].concat()
         }
 
         else {
             vec![
-                into_v16(&format!("<munderover{}>", display_style)),
+                into_v32(&format!("<munderover{}>", display_style)),
                 vec_to_math_ml(&self.content, true),  // `<munderover>` has exactly three children, so `single_element` is true.
                 vec_to_math_ml(&self.under, true),
                 vec_to_math_ml(&self.over, true),
-                into_v16("</munderover>"),
+                into_v32("</munderover>"),
             ].concat()
         }
 

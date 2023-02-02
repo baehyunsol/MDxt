@@ -1,5 +1,5 @@
 use crate::escape::escape_htmls;
-use crate::utils::{from_v16, inclusive_split, into_v16};
+use crate::utils::{from_v32, inclusive_split, into_v32};
 use lazy_static::lazy_static;
 use syntect::easy::HighlightLines;
 use syntect::highlighting::{Color, Style, Theme, ThemeSet};
@@ -26,28 +26,28 @@ lazy_static! {
     };
 }
 
-pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -> Vec<Vec<u16>> {
+pub fn highlight_syntax(content: &[u32], language: &[u32], class_prefix: &str) -> Vec<Vec<u32>> {
 
     #[cfg(test)]
     assert!(is_syntax_available(language));
 
     // it assumes that the given language is available
-    let syntax_reference = SYNTAX_SET.find_syntax_by_token(&from_v16(language)).unwrap();
+    let syntax_reference = SYNTAX_SET.find_syntax_by_token(&from_v32(language)).unwrap();
     let mut highlighter = HighlightLines::new(syntax_reference, &THEME);
     let mut result = vec![];
 
     // it needs `\n` characters to highlight syntax properly (eg: without `\n`, single line comments don't work)
-    for line_u16 in inclusive_split(&content, '\n' as u16).into_iter() {
-        let line_u16 = line_u16.to_vec();
+    for line_u32 in inclusive_split(&content, '\n' as u32).into_iter() {
+        let line_u32 = line_u32.to_vec();
 
-        let curr_line = &from_v16(&line_u16);
+        let curr_line = &from_v32(&line_u32);
 
         match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
             Ok(styled_line) => {
                 result.push(styled_line.iter().map(
                     |(Style {foreground, ..}, content)|
                     classify_style_to_css(&foreground, content, class_prefix)
-                ).collect::<Vec<Vec<u16>>>().concat());
+                ).collect::<Vec<Vec<u32>>>().concat());
             }
             Err(_) => {
                 result.push(classify_style_to_css(&Color::WHITE, curr_line, class_prefix));
@@ -59,11 +59,11 @@ pub fn highlight_syntax(content: &[u16], language: &[u16], class_prefix: &str) -
     result
 }
 
-pub fn is_syntax_available(language: &[u16]) -> bool {
-    SYNTAX_SET.find_syntax_by_token(&from_v16(language)).is_some()
+pub fn is_syntax_available(language: &[u32]) -> bool {
+    SYNTAX_SET.find_syntax_by_token(&from_v32(language)).is_some()
 }
 
-fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Vec<u16> {
+fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Vec<u32> {
 
     // convert syntect's palette to its own
     let color = match color {
@@ -85,27 +85,27 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
         }
     };
 
-    let content_v16 = into_v16(content);
+    let content_v32 = into_v32(content);
 
     // though we've included `\n` characters for the sake of proper syntax highlighting,
     // the characters have to be erased before it's rendered to html.
     // otherwise the result html will have redundant `\n`s.
 
     // it doesn't touch empty pieces
-    if content_v16.len() == 0 {
+    if content_v32.len() == 0 {
         vec![]
     }
 
     // it doesn't touch empty pieces
-    else if content_v16.iter().all(|c| *c == ' ' as u16 || *c == '\n' as u16) {
-        content_v16.into_iter().filter(|c| *c != '\n' as u16).collect()
+    else if content_v32.iter().all(|c| *c == ' ' as u32 || *c == '\n' as u32) {
+        content_v32.into_iter().filter(|c| *c != '\n' as u32).collect()
     }
 
     else {
         vec![
-            into_v16(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
-            escape_htmls(&content_v16).into_iter().filter(|c| *c != '\n' as u16).collect(),
-            into_v16("</span>")
+            into_v32(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
+            escape_htmls(&content_v32).into_iter().filter(|c| *c != '\n' as u32).collect(),
+            into_v32("</span>")
         ].concat()
     }
 

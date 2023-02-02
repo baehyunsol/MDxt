@@ -8,13 +8,13 @@ mod testbench;
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
-use crate::utils::{into_v16, lowercase, remove_whitespaces, take_and_drop_while, to_int};
+use crate::utils::{into_v32, lowercase, remove_whitespaces, take_and_drop_while, to_int};
 use predicate::{is_copy_button, is_highlight, is_line_num, parse_arguments};
 
 #[derive(Clone)]
 pub struct FencedCode {
-    language: Vec<u16>,
-    content: Vec<u16>,
+    language: Vec<u32>,
+    content: Vec<u32>,
     line_num: Option<usize>,
     pub copy_button: bool,
     highlights: Vec<usize>,
@@ -24,8 +24,8 @@ pub struct FencedCode {
 impl FencedCode {
 
     pub fn new(
-        content: Vec<u16>,
-        language: Vec<u16>,
+        content: Vec<u32>,
+        language: Vec<u32>,
         line_num: Option<usize>,
         highlights: Vec<usize>,
         copy_button: bool,
@@ -41,7 +41,7 @@ impl FencedCode {
         }
     }
 
-    pub fn get_raw_content(&self) -> Vec<u16> {
+    pub fn get_raw_content(&self) -> Vec<u32> {
         undo_html_escapes(&self.content)
     }
 
@@ -52,7 +52,7 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
     let (fence, mut info_string) = take_and_drop_while(&line.content, line.content[0]);
     info_string = remove_whitespaces(&info_string).iter().map(lowercase).collect();
 
-    let mut language = into_v16("");
+    let mut language = into_v32("");
     let mut line_num = None;
     let mut highlights = vec![];
     let mut copy_button = None;
@@ -113,7 +113,7 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
         highlights,
         copy_button,
         code_fence_size: fence.len(),
-        is_tilde_fence: line.content[0] == '~' as u16,
+        is_tilde_fence: line.content[0] == '~' as u32,
         index: fenced_code_count
     }
 }

@@ -1,5 +1,5 @@
 use super::{Entity, vec_to_math_ml};
-use crate::utils::into_v16;
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct Script {
@@ -22,35 +22,35 @@ impl Script {
         Script { content, pre_sup, post_sup, pre_sub, post_sub }
     }
 
-    pub fn to_math_ml(&self) -> Vec<u16> {
+    pub fn to_math_ml(&self) -> Vec<u32> {
 
         if self.pre_sup.len() == 0 && self.pre_sub.len() == 0 {
 
             if self.post_sup.len() == 0 {
                 vec![
-                    into_v16("<msub>"),
+                    into_v32("<msub>"),
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sub, true),
-                    into_v16("</msub>")
+                    into_v32("</msub>")
                 ].concat()
             }
 
             else if self.post_sub.len() == 0 {
                 vec![
-                    into_v16("<msup>"),
+                    into_v32("<msup>"),
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sup, true),
-                    into_v16("</msup>")
+                    into_v32("</msup>")
                 ].concat()
             }
 
             else {
                 vec![
-                    into_v16("<msubsup>"),
+                    into_v32("<msubsup>"),
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sub, true),
                     vec_to_math_ml(&self.post_sup, true),
-                    into_v16("</msubsup>")
+                    into_v32("</msubsup>")
                 ].concat()
             }
 
@@ -58,14 +58,14 @@ impl Script {
 
         else {
             vec![
-                into_v16("<mmultiscripts>"),
+                into_v32("<mmultiscripts>"),
                 vec_to_math_ml(&self.content, true),
                 script_or_none(&self.post_sub),
                 script_or_none(&self.post_sup),
-                into_v16("<mprescripts/>"),
+                into_v32("<mprescripts/>"),
                 script_or_none(&self.pre_sub),
                 script_or_none(&self.pre_sup),
-                into_v16("</mmultiscripts>")
+                into_v32("</mmultiscripts>")
             ].concat()
         }
 
@@ -73,10 +73,10 @@ impl Script {
 
 }
 
-fn script_or_none(vec: &Vec<Entity>) -> Vec<u16> {
+fn script_or_none(vec: &Vec<Entity>) -> Vec<u32> {
 
     if vec.len() == 0 {
-        into_v16("<none/>")
+        into_v32("<none/>")
     }
 
     else {

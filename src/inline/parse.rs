@@ -13,7 +13,7 @@ use super::predicate::*;
 use crate::ast::doc_data::DocData;
 use crate::escape::{render_backslash_escapes, undo_backslash_escapes};
 use crate::render::render_option::RenderOption;
-use crate::utils::{from_v16, get_bracket_end_index, into_v16};
+use crate::utils::{from_v32, get_bracket_end_index, into_v32};
 
 impl InlineNode {
 
@@ -32,7 +32,7 @@ impl InlineNode {
 
     }
 
-    pub fn from_mdxt(content: &[u16], doc_data: &mut DocData, render_option: &RenderOption) -> Self {
+    pub fn from_mdxt(content: &[u32], doc_data: &mut DocData, render_option: &RenderOption) -> Self {
         // it prevents inline elements inside code spans from being rendered
         // code spans are rendered later
         let mut content = escape_code_spans(content);
@@ -48,10 +48,10 @@ impl InlineNode {
             }
 
             // it continues if the current character is not a special character
-            if content[index] < '*' as u16
-                || ('*' as u16) < content[index] && content[index] < '[' as u16
-                || ('`' as u16) < content[index] && content[index] < '~' as u16
-                || content[index] > '~' as u16
+            if content[index] < '*' as u32
+                || ('*' as u32) < content[index] && content[index] < '[' as u32
+                || ('`' as u32) < content[index] && content[index] < '~' as u32
+                || content[index] > '~' as u32
             {
                 index += 1;
                 continue;
@@ -262,7 +262,7 @@ impl InlineNode {
                     let mut result = vec![];
                     let mut is_image = false;
 
-                    if index > 0 && content[index - 1] == '!' as u16 {
+                    if index > 0 && content[index - 1] == '!' as u32 {
                         is_image = true;
                         index -= 1;
                     }
@@ -274,14 +274,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
@@ -303,7 +303,7 @@ impl InlineNode {
                     // it clones to result in order to avoid the borrow checker
                     let link_destination = doc_data.link_references.get(&normalize_link_label(&link_label)).unwrap().clone();
 
-                    if index > 0 && content[index - 1] == '!' as u16 {
+                    if index > 0 && content[index - 1] == '!' as u32 {
                         is_image = true;
                         index -= 1;
                     }
@@ -315,14 +315,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
@@ -380,7 +380,7 @@ impl InlineNode {
                     // it clones to result in order to avoid the borrow checker
                     let link_destination = doc_data.link_references.get(&normalize_link_label(&link_text)).unwrap().clone();
 
-                    if index > 0 && content[index - 1] == '!' as u16 {
+                    if index > 0 && content[index - 1] == '!' as u32 {
                         is_image = true;
                         index -= 1;
                     }
@@ -392,14 +392,14 @@ impl InlineNode {
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v16(&render_option.handle_link(&from_v16(&link_destination)))
+                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
                         }));
                     }
 
@@ -456,7 +456,7 @@ impl InlineNode {
 
                         if code_span_end_index > index + 2 {
                             let code_span_code = if code_span_end_index - index > 4 &&
-                            content[index + 2] == ' ' as u16 && content[code_span_end_index - 1] == ' ' as u16 {
+                            content[index + 2] == ' ' as u32 && content[code_span_end_index - 1] == ' ' as u32 {
                                 content[index + 3..code_span_end_index - 1].to_vec()
                             } else {
                                 content[index + 2..code_span_end_index].to_vec()
@@ -514,7 +514,7 @@ impl InlineNode {
 
 }
 
-pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
+pub fn escape_code_spans(content: &[u32]) -> Vec<u32> {
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
     let mut index = 0;
 
@@ -546,14 +546,14 @@ pub fn escape_code_spans(content: &[u16]) -> Vec<u16> {
     result
 }
 
-pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
+pub fn undo_code_span_escapes(content: &[u32]) -> Vec<u32> {
     let mut result = Vec::with_capacity(content.len());
     let mut index = 0;
 
     while index < content.len() {
 
         if is_code_span_marker_begin(content, index) || is_code_span_marker_end(content, index) {
-            result.push('`' as u16);
+            result.push('`' as u32);
             index += 1;
         }
 
@@ -567,19 +567,19 @@ pub fn undo_code_span_escapes(content: &[u16]) -> Vec<u16> {
     result
 }
 
-pub fn is_code_span_marker_begin(content: &[u16], index: usize) -> bool {
+pub fn is_code_span_marker_begin(content: &[u32], index: usize) -> bool {
     content[index] == INLINE_CODE_SPAN_MARKER1
     && index + 1 < content.len()
     && content[index + 1] == INLINE_CODE_SPAN_MARKER2
 }
 
-pub fn is_code_span_marker_end(content: &[u16], index: usize) -> bool {
+pub fn is_code_span_marker_end(content: &[u32], index: usize) -> bool {
     content[index] == INLINE_CODE_SPAN_MARKER3
     && index + 1 < content.len()
     && content[index + 1] == INLINE_CODE_SPAN_MARKER4
 }
 
-pub fn get_code_span_marker_end_index(content: &[u16], mut index: usize) -> usize {
+pub fn get_code_span_marker_end_index(content: &[u32], mut index: usize) -> usize {
 
     while content[index] != INLINE_CODE_SPAN_MARKER3 || content[index + 1] != INLINE_CODE_SPAN_MARKER4 {
         index += 1;
@@ -594,7 +594,7 @@ mod tests {
     #[test]
     fn code_span_escape_test() {
         use super::{escape_code_spans, undo_code_span_escapes};
-        use crate::utils::into_v16;
+        use crate::utils::into_v32;
 
         let cases = vec![
             "``", "`a`", "`code span`",
@@ -603,7 +603,7 @@ mod tests {
             "*`*`*`", "*`*`*`*", "`*`*`*`*", "`*`*`*`*`"
         ];
 
-        let cases = cases.iter().map(|s| into_v16(s)).collect::<Vec<Vec<u16>>>();
+        let cases = cases.iter().map(|s| into_v32(s)).collect::<Vec<Vec<u32>>>();
 
         for case in cases.iter() {
             assert_eq!(case, &undo_code_span_escapes(&escape_code_spans(case)));

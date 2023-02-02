@@ -1,11 +1,11 @@
 use super::normalize_link_label;
 use crate::inline::InlineNode;
-use crate::utils::{into_v16, from_v16};
+use crate::utils::{into_v32, from_v32};
 use crate::escape::{escape_backslashes, render_backslash_escapes};
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
-// 쟤네 말고 render_to_html 써서 escape 제대로 처리하는지도 보자! 주소 안에 `&`가 있으면 걔 제대로 처리하는지.
+// TODO: 쟤네 말고 render_to_html 써서 escape 제대로 처리하는지도 보자! 주소 안에 `&`가 있으면 걔 제대로 처리하는지.
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
@@ -111,28 +111,28 @@ fn link_render_test() {
     let mut render_option = RenderOption::default();
 
     doc_data.link_references.insert(
-        into_v16("link"), into_v16("https://example")
+        into_v32("link"), into_v32("https://example")
     );
 
     doc_data.link_references.insert(
-        into_v16("link2"), into_v16("https://example2")
+        into_v32("link2"), into_v32("https://example2")
     );
 
     for (case, answer) in test_cases.iter() {
         let rendered = render_backslash_escapes(
             &InlineNode::from_mdxt(
-                &escape_backslashes(&into_v16(case)),
+                &escape_backslashes(&into_v32(case)),
                 &mut doc_data,
                 &mut render_option
             ).to_html(&[], "")
         );
 
-        if rendered != into_v16(answer) {
+        if rendered != into_v32(answer) {
             failures.push(format!(
                 "link_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
                 case,
                 answer,
-                from_v16(&rendered)
+                from_v32(&rendered)
             ));
         }
 
@@ -152,8 +152,8 @@ fn link_render_test() {
 #[test]
 fn normalize_link_test() {
     let cases_and_answers = vec![
-        (into_v16("FOO"), into_v16("foo")),
-        (into_v16("  F  OO "), into_v16("f oo"))
+        (into_v32("FOO"), into_v32("foo")),
+        (into_v32("  F  OO "), into_v32("f oo"))
     ];
 
     for (case, answer) in cases_and_answers.into_iter() {

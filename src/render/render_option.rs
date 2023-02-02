@@ -1,6 +1,6 @@
 use crate::container::header::normalize_header;
 use crate::inline::link::predicate::is_valid_link_destination;
-use crate::utils::{from_v16, into_v16};
+use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct RenderOption {
@@ -115,14 +115,14 @@ impl RenderOption {
 // TODO: block javascript execution
 fn default_link_handler(link: &str) -> String {
 
-    let link_v16 = into_v16(link);
+    let link_v32 = into_v32(link);
 
-    if is_valid_link_destination(&link_v16) {
+    if is_valid_link_destination(&link_v32) {
 
-        if link_v16.len() > 0 && link_v16[0] == '#' as u16 {
-            from_v16(&vec![
-                into_v16("#"),
-                normalize_header(&link_v16[1..])
+        if link_v32.len() > 0 && link_v32[0] == '#' as u32 {
+            from_v32(&vec![
+                into_v32("#"),
+                normalize_header(&link_v32[1..])
             ].concat())
         }
 

@@ -1,14 +1,14 @@
 #[inline]
-pub fn into_v16(s: &str) -> Vec<u16> {
-    String::from(s).encode_utf16().collect()
+pub fn into_v32(s: &str) -> Vec<u32> {
+    s.chars().map(|c| c as u32).collect()
 }
 
 #[inline]
-pub fn from_v16(v: &[u16]) -> String {
-    String::from_utf16_lossy(v)
+pub fn from_v32(v: &[u32]) -> String {
+    v.iter().map(|n| char::from_u32(*n).unwrap()).collect()
 }
 
-pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
+pub fn drop_while(v: &[u32], c: u32) -> Vec<u32> {
 
     let mut index = 0;
 
@@ -24,7 +24,7 @@ pub fn drop_while(v: &[u16], c: u16) -> Vec<u16> {
     v[index..].to_vec()
 }
 
-pub fn take_while(v: &[u16], c: u16) -> Vec<u16> {
+pub fn take_while(v: &[u32], c: u32) -> Vec<u32> {
 
     let mut index = 0;
 
@@ -40,7 +40,7 @@ pub fn take_while(v: &[u16], c: u16) -> Vec<u16> {
     v[0..index].to_vec()
 }
 
-pub fn take_and_drop_while(v: &[u16], c: u16) -> (Vec<u16>, Vec<u16>) {
+pub fn take_and_drop_while(v: &[u32], c: u32) -> (Vec<u32>, Vec<u32>) {
 
     let mut index = 0;
 
@@ -56,19 +56,19 @@ pub fn take_and_drop_while(v: &[u16], c: u16) -> (Vec<u16>, Vec<u16>) {
     (v[0..index].to_vec(), v[index..].to_vec())
 }
 
-pub fn get_bracket_end_index(v: &[u16], index: usize) -> Option<usize> {
-    get_partner_index(v, index, '[' as u16, ']' as u16)
+pub fn get_bracket_end_index(v: &[u32], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '[' as u32, ']' as u32)
 }
 
-pub fn get_parenthesis_end_index(v: &[u16], index: usize) -> Option<usize> {
-    get_partner_index(v, index, '(' as u16, ')' as u16)
+pub fn get_parenthesis_end_index(v: &[u32], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '(' as u32, ')' as u32)
 }
 
-pub fn get_curly_brace_end_index(v: &[u16], index: usize) -> Option<usize> {
-    get_partner_index(v, index, '{' as u16, '}' as u16)
+pub fn get_curly_brace_end_index(v: &[u32], index: usize) -> Option<usize> {
+    get_partner_index(v, index, '{' as u32, '}' as u32)
 }
 
-fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<usize> {
+fn get_partner_index(v: &[u32], begin_index: usize, s: u32, p: u32) -> Option<usize> {
 
     let mut stack: i32 = 0;
 
@@ -92,9 +92,9 @@ fn get_partner_index(v: &[u16], begin_index: usize, s: u16, p: u16) -> Option<us
     None
 }
 
-pub fn lowercase(c: &u16) -> u16 {
+pub fn lowercase(c: &u32) -> u32 {
 
-    if 'A' as u16 <= *c && *c <= 'Z' as u16 {
+    if 'A' as u32 <= *c && *c <= 'Z' as u32 {
         c + 32
     }
 
@@ -104,24 +104,24 @@ pub fn lowercase(c: &u16) -> u16 {
 
 }
 
-pub fn is_alphabet(c: &u16) -> bool {
-    'A' as u16 <= *c && *c <= 'Z' as u16 || 'a' as u16 <= *c && *c <= 'z' as u16
+pub fn is_alphabet(c: &u32) -> bool {
+    'A' as u32 <= *c && *c <= 'Z' as u32 || 'a' as u32 <= *c && *c <= 'z' as u32
 }
 
-pub fn is_numeric(c: &u16) -> bool {
-    '0' as u16 <= *c && *c <= '9' as u16
+pub fn is_numeric(c: &u32) -> bool {
+    '0' as u32 <= *c && *c <= '9' as u32
 }
 
-pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
+pub fn collapse_whitespaces(content: &[u32]) -> Vec<u32> {
     let mut result = Vec::with_capacity(content.len());
     let mut consecutive_whitespace = false;
 
     for c in content.iter() {
 
-        if *c == ' ' as u16 {
+        if *c == ' ' as u32 {
 
             if !consecutive_whitespace {
-                result.push(' ' as u16);
+                result.push(' ' as u32);
                 consecutive_whitespace = true;
             }
 
@@ -137,7 +137,7 @@ pub fn collapse_whitespaces(content: &[u16]) -> Vec<u16> {
     result
 }
 
-pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
+pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
 
     if content.len() == 0 {
         return vec![];
@@ -147,7 +147,7 @@ pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
 
     while start_index < content.len() {
 
-        if content[start_index] != ' ' as u16 {
+        if content[start_index] != ' ' as u32 {
             break;
         }
 
@@ -158,7 +158,7 @@ pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
 
     while end_index > 0 {
 
-        if content[end_index] != ' ' as u16 {
+        if content[end_index] != ' ' as u32 {
             break;
         }
 
@@ -175,7 +175,7 @@ pub fn strip_whitespaces(content: &[u16]) -> Vec<u16> {
 
 }
 
-pub fn to_int(string: &[u16]) -> Option<u32> {
+pub fn to_int(string: &[u32]) -> Option<u32> {
 
     if string.len() == 0 {
         return None;
@@ -192,18 +192,18 @@ pub fn to_int(string: &[u16]) -> Option<u32> {
             return None;
         }
 
-        if *c < '0' as u16 || *c > '9' as u16 {
+        if *c < '0' as u32 || *c > '9' as u32 {
             return None;
         }
 
         result *= 10;
-        result += *c as u32 - 48;
+        result += *c - 48;
     }
 
     Some(result)
 }
 
-pub fn inclusive_split(content: &[u16], delim: u16) -> Vec<&[u16]> {
+pub fn inclusive_split(content: &[u32], delim: u32) -> Vec<&[u32]> {
 
     let mut last_index = 0;
     let mut result = vec![];
@@ -229,9 +229,9 @@ pub fn inclusive_split(content: &[u16], delim: u16) -> Vec<&[u16]> {
     result
 }
 
-pub fn remove_whitespaces(line: &[u16]) -> Vec<u16> {
+pub fn remove_whitespaces(line: &[u32]) -> Vec<u32> {
     line.iter().filter(
-        |c| **c != ' ' as u16 && **c != '\n' as u16 && **c != '\t' as u16
+        |c| **c != ' ' as u32 && **c != '\n' as u32 && **c != '\t' as u32
     ).map(|c| *c).collect()
 }
 
@@ -261,14 +261,14 @@ mod tests {
 
     #[test]
     fn partner_test() {
-        let test1 = into_v16("[name](link)");
+        let test1 = into_v32("[name](link)");
 
         assert_eq!(get_bracket_end_index(&test1, 0), Some(5));
         assert_eq!(get_bracket_end_index(&test1, 1), None);
         assert_eq!(get_parenthesis_end_index(&test1, 6), Some(11));
         assert_eq!(get_parenthesis_end_index(&test1, 7), None);
 
-        let test2 = into_v16("[[macro]]");
+        let test2 = into_v32("[[macro]]");
 
         assert_eq!(get_bracket_end_index(&test2, 0), Some(8));
         assert_eq!(get_bracket_end_index(&test2, 1), Some(7));
@@ -277,18 +277,18 @@ mod tests {
 
     #[test]
     fn whitespace_test() {
-        let sample1 = into_v16(" F  OO BA R  ");
-        let sample2 = into_v16("   A    ");
-        let sample3 = into_v16("   ");
+        let sample1 = into_v32(" F  OO BA R  ");
+        let sample2 = into_v32("   A    ");
+        let sample3 = into_v32("   ");
 
-        assert_eq!(collapse_whitespaces(&sample1), into_v16(" F OO BA R "));
-        assert_eq!(strip_whitespaces(&sample1), into_v16("F  OO BA R"));
+        assert_eq!(collapse_whitespaces(&sample1), into_v32(" F OO BA R "));
+        assert_eq!(strip_whitespaces(&sample1), into_v32("F  OO BA R"));
 
-        assert_eq!(collapse_whitespaces(&sample2), into_v16(" A "));
-        assert_eq!(strip_whitespaces(&sample2), into_v16("A"));
+        assert_eq!(collapse_whitespaces(&sample2), into_v32(" A "));
+        assert_eq!(strip_whitespaces(&sample2), into_v32("A"));
 
-        assert_eq!(collapse_whitespaces(&sample3), into_v16(" "));
-        assert_eq!(strip_whitespaces(&sample3), into_v16(""));
+        assert_eq!(collapse_whitespaces(&sample3), into_v32(" "));
+        assert_eq!(strip_whitespaces(&sample3), into_v32(""));
     }
 
     #[test]
@@ -302,8 +302,8 @@ mod tests {
 
         let samples = samples.iter().map(
             |(content, character, take, drop)|
-            (into_v16(content), *character as u16, into_v16(take), into_v16(drop))
-        ).collect::<Vec<(Vec<u16>, u16, Vec<u16>, Vec<u16>)>>();
+            (into_v32(content), *character as u32, into_v32(take), into_v32(drop))
+        ).collect::<Vec<(Vec<u32>, u32, Vec<u32>, Vec<u32>)>>();
 
         for (sample, character, taken_answer, dropped_answer) in samples.iter() {
             let taken_actual = take_while(sample, *character);
@@ -331,13 +331,13 @@ mod tests {
             ("11", '2'),
         ];
 
-        let samples: Vec<(Vec<u16>, u16)> = samples.into_iter().map(
-            |(string, delim)| (into_v16(string), delim as u16)
+        let samples: Vec<(Vec<u32>, u32)> = samples.into_iter().map(
+            |(string, delim)| (into_v32(string), delim as u32)
         ).collect();
 
         for (string, delim) in samples.into_iter() {
-            let splits1: Vec<Vec<u16>> = inclusive_split(&string, delim).into_iter().map(|s| s.to_vec()).collect();
-            let mut splits2: Vec<Vec<u16>> = string.split(|c| *c == delim).map(|s| s.to_vec()).collect();
+            let splits1: Vec<Vec<u32>> = inclusive_split(&string, delim).into_iter().map(|s| s.to_vec()).collect();
+            let mut splits2: Vec<Vec<u32>> = string.split(|c| *c == delim).map(|s| s.to_vec()).collect();
 
             for i in 0..(splits2.len() - 1) {
                 splits2[i].push(delim);
@@ -350,9 +350,9 @@ mod tests {
             if splits1.len() != splits2.len() {
                 panic!(
                     "Assertion error on `splits1.len() == splits2.len()`\nstring: {:?}\nsplits1: {:?}\nsplits2: {:?}",
-                    from_v16(&string),
-                    splits1.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
-                    splits2.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                    from_v32(&string),
+                    splits1.iter().map(|sp| from_v32(sp)).collect::<Vec<String>>(),
+                    splits2.iter().map(|sp| from_v32(sp)).collect::<Vec<String>>(),
                 );
             };
 
@@ -361,9 +361,9 @@ mod tests {
                 if splits1[index] != splits2[index] {
                     panic!(
                         "A failure at `split_test`\nstring: {:?}\nsplits1: {:?}\nsplits2: {:?}",
-                        from_v16(&string),
-                        splits1.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
-                        splits2.iter().map(|sp| from_v16(sp)).collect::<Vec<String>>(),
+                        from_v32(&string),
+                        splits1.iter().map(|sp| from_v32(sp)).collect::<Vec<String>>(),
+                        splits2.iter().map(|sp| from_v32(sp)).collect::<Vec<String>>(),
                     );
                 }
 

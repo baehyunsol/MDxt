@@ -3,7 +3,7 @@ mod testbench;
 
 use crate::ast::line::Line;
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
-use crate::utils::{from_v16, into_v16, strip_whitespaces};
+use crate::utils::{from_v32, into_v32, strip_whitespaces};
 use yaml_rust::{Yaml, YamlLoader};
 
 pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(metadata, end_index)>
@@ -12,7 +12,7 @@ pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(
         return None;
     }
 
-    let yaml_delim = into_v16("---");
+    let yaml_delim = into_v32("---");
 
     if strip_whitespaces(&lines[0].content) != yaml_delim {
         return None;
@@ -30,10 +30,10 @@ pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(
     }
 
     if index != lines.len() {
-        let mut yaml = lines[0..index].iter().map(|line| line.to_raw()).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]);
+        let mut yaml = lines[0..index].iter().map(|line| line.to_raw()).collect::<Vec<Vec<u32>>>().join(&['\n' as u32][..]);
         yaml = undo_backslash_escapes(&undo_html_escapes(&yaml));
 
-        match YamlLoader::load_from_str(&from_v16(&yaml)) {
+        match YamlLoader::load_from_str(&from_v32(&yaml)) {
             Ok(data) if data.len() > 0 => Some((data[0].clone(), index)),
             _ => None
         }

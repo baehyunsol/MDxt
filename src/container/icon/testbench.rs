@@ -3,7 +3,7 @@ fn render_icon_test() {
     use std::fs::File;
     use std::io::{Read, Write};
     use crate::render_to_html_with_default_options;
-    use crate::utils::{from_v16};
+    use crate::utils::{from_v32};
     use super::*;
     use super::render::*;
 
@@ -37,7 +37,7 @@ fn render_icon_test() {
     let mut icons = ICONS.iter().map(
         |(name, (_, src))|
         (name.clone(), src.clone())
-    ).collect::<Vec<(Vec<u16>, usize)>>();  // (Name, Source)
+    ).collect::<Vec<(Vec<u32>, usize)>>();  // (Name, Source)
 
     icons.sort_unstable_by_key(|(name, _)| name.clone());
 
@@ -45,7 +45,7 @@ fn render_icon_test() {
     strings.push(format!("Total {} icons.\n\n", icons.len()));
 
     for (name, _) in icons.iter() {
-        strings.push(format!(" [{}](#icon{}) ", from_v16(name), from_v16(name)));
+        strings.push(format!(" [{}](#icon{}) ", from_v32(name), from_v32(name)));
     }
 
     strings.push(String::from("\n\n"));
@@ -63,9 +63,9 @@ fn render_icon_test() {
 
         strings.push(format!(
             "\n\n[[box, inline, width = medium]]\n\n[[center]]\n\n[[icon = {}, size = 64]][[br]]{}[[br]][[anchor, id=icon{}]][[/anchor]][{}][[br]]{}\n\n[[/center]]\n\n[[/box]]",
-            from_v16(name),
-            from_v16(name),
-            from_v16(name),
+            from_v32(name),
+            from_v32(name),
+            from_v32(name),
             source, license
         ));
     }

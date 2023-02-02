@@ -18,7 +18,7 @@ pub enum Node {
     Header {
         level: usize,
         content: InlineNode,
-        anchor: Vec<u16>
+        anchor: Vec<u32>
     },
     FencedCode(FencedCode),
     Table(Table),
@@ -31,7 +31,7 @@ pub enum Node {
 
 impl Node {
 
-    pub fn new_header(level: usize, content: Vec<u16>) -> Node {
+    pub fn new_header(level: usize, content: Vec<u32>) -> Node {
         Node::Header {
             level,
             anchor: normalize_header(&content),
@@ -45,22 +45,22 @@ impl Node {
                 lines
                     .iter()
                     .map(|line| add_br_if_needed(&line.content))
-                    .collect::<Vec<Vec<u16>>>()
-                    .join(&[' ' as u16][..])
+                    .collect::<Vec<Vec<u32>>>()
+                    .join(&[' ' as u32][..])
             )
         }
     }
 
     pub fn new_code_fence(
         lines: &Vec<Line>,
-        language: &[u16],
+        language: &[u32],
         line_num: &Option<usize>,
         highlights: &Vec<usize>,
         copy_button: bool,
         index: usize
     ) -> Node {
         Node::FencedCode(FencedCode::new(
-            lines.iter().map(|line| line.to_raw()).collect::<Vec<Vec<u16>>>().join(&['\n' as u16][..]),
+            lines.iter().map(|line| line.to_raw()).collect::<Vec<Vec<u32>>>().join(&['\n' as u32][..]),
             language.to_vec(),
             line_num.clone(),
             highlights.clone(),
