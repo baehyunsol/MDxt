@@ -7,7 +7,6 @@ use crate::ast::doc_data::DocData;
 
 fn samples() -> Vec<(String, String)> {  // (test_case, answer)
     let result = vec![
-        ("`\\`", "<code class=\"inline-code-span\">\\</code>"),  // TODO: remove this line
         ("`*`*`*`, *`*`*`*", "<code class=\"inline-code-span\">*</code><em><code class=\"inline-code-span\">*</code>, *<code class=\"inline-code-span\">*</code></em>`*"),
         ("`*italic in a code span, which is not rendered*` *`code span in an italic, which is rendered`*", "<code class=\"inline-code-span\">*italic in a code span, which is not rendered*</code> <em><code class=\"inline-code-span\">code span in an italic, which is rendered</code></em>"),
         ("^^super^^", "^<sup>super</sup>^"),
