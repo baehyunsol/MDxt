@@ -166,7 +166,7 @@ impl AST {
         let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_copy_buttons;
         let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_collapsible_tables;
 
-        if enable_js_for_copy_buttons || enable_js_for_tables {
+        if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips {
             result.push(into_v32("<script>"));
 
             if self.render_option.xml {

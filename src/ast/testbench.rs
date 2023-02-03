@@ -538,12 +538,42 @@ Not a tooltip
       <span class=\"tooltip-message\" id=\"tooltip-message-2\">A tooltip in a tooltip: [[tooltip = tooltip1]]Invalid[[/tooltip]] Suffix</span>
   </span>
 </p>
+
+<script>
+let tooltips = document.querySelectorAll(\".tooltip-container\");
+
+for (let i = 0; i < tooltips.length; i++) {
+    let child = document.getElementById(\"tooltip-message-\" + i);
+
+    document.getElementById(\"tooltip-container-\" + i).addEventListener(\"mousemove\", e => {
+
+        if (e.clientX + child.clientWidth > window.innerWidth) {
+            child.style.left = e.clientX - child.clientWidth + \"px\";
+        }
+
+        else {
+            child.style.left = e.clientX + \"px\";
+        }
+
+        if (e.clientY < child.clientHeight + 8) {
+            child.style.top = e.clientY + 8 + \"px\";
+        }
+
+        else {
+            child.style.top = (e.clientY - child.clientHeight - 8) + \"px\";
+        }
+
+    });
+}
+</script>
 "), ("
 Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
 
 `🦈`, \\🦈
 ", "
-<p>Multibyte characters: 가나다&#127836;&#128065;&#129416;&#129379;&#127834;&#128508;&#127874;&#128141;&#128247;&#127837;&#129425;&#128077;&#127909;&#128117;&#128512;&#129490;&#127997;&#129335;&#127997;&#128104;&#127999;&#8205;&#127891;&#127472;&#127479;&#129781;&#127997;&#129781;&#127998;&#129781;&#127999;❤&#65039;&#129505;&#128155;&#128154;&#128153;&#128156;&#128420;&#129293;&#129294;</p><p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
+<p>Multibyte characters: 가나다&#127836;&#128065;&#129416;&#129379;&#127834;&#128508;&#127874;&#128141;&#128247;&#127837;&#129425;&#128077;&#127909;&#128117;&#128512;&#129490;&#127997;&#129335;&#127997;&#128104;&#127999;&#8205;&#127891;&#127472;&#127479;&#129781;&#127997;&#129781;&#127998;&#129781;&#127999;❤&#65039;&#129505;&#128155;&#128154;&#128153;&#128156;&#128420;&#129293;&#129294;</p>
+
+<p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
 "), ("", "")
     ];
 
