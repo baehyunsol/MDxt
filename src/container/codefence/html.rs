@@ -1,12 +1,11 @@
 use super::FencedCode;
 use super::syntect::{highlight_syntax, is_syntax_available};
+use crate::escape::escape_htmls;
 use crate::utils::{from_v32, into_v32, log10};
 use std::collections::HashMap;
 
 // `<` in code, `\` in code
 // with/without syntax highlights
-
-// TODO: inline::testbench::check_validity_(FencedCode.content) 
 
 impl FencedCode {
 
@@ -20,7 +19,9 @@ impl FencedCode {
             ).collect::<Vec<Vec<u32>>>()
         } else {
             self.content.split(|c| *c == '\n' as u32).enumerate().map(
-                |(index, line)| render_line(line, index, &self.line_num, &self.highlights, class_prefix)
+                |(index, line)| render_line(
+                    &escape_htmls(line),  // see test case A in super::testbench::code_fence_samples()
+                    index, &self.line_num, &self.highlights, class_prefix)
             ).collect::<Vec<Vec<u32>>>()
         };
 

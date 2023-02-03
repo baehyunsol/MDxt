@@ -2,7 +2,7 @@ use crate::escape::escape_htmls;
 use crate::utils::{from_v32, inclusive_split, into_v32};
 use lazy_static::lazy_static;
 use syntect::easy::HighlightLines;
-use syntect::highlighting::{Color, Style, Theme, ThemeSet};
+use syntect::highlighting::{Color, Theme, ThemeSet};
 use syntect::parsing::SyntaxSet;
 
 lazy_static! {
@@ -41,12 +41,35 @@ pub fn highlight_syntax(content: &[u32], language: &[u32], class_prefix: &str) -
         let line_u32 = line_u32.to_vec();
 
         let curr_line = &from_v32(&line_u32);
+        let mut curr_stack = vec![];
 
         match highlighter.highlight_line(curr_line, &SYNTAX_SET) {
             Ok(styled_line) => {
-                result.push(styled_line.iter().map(
-                    |(Style {foreground, ..}, content)|
-                    classify_style_to_css(&foreground, content, class_prefix)
+
+                for (style, content) in styled_line.into_iter() {
+                    let curr_stack_len = curr_stack.len();
+
+                    if curr_stack_len == 0 {
+                        curr_stack.push((style.foreground.clone(), content.to_string()));
+                    }
+
+                    else if curr_stack[curr_stack_len - 1].0 == style.foreground {
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{}", curr_stack[curr_stack_len - 1].1, content);
+                    }
+
+                    else if content.chars().all(|c| c == ' ') {
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{}", curr_stack[curr_stack_len - 1].1, content);
+                    }
+
+                    else {
+                        curr_stack.push((style.foreground.clone(), content.to_string()));
+                    }
+
+                }
+
+                result.push(curr_stack.iter().map(
+                    |(color, content)|
+                    classify_style_to_css(color, content, class_prefix)
                 ).collect::<Vec<Vec<u32>>>().concat());
             }
             Err(_) => {
