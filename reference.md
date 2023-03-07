@@ -313,6 +313,28 @@ It has 5 sizes: tiny, small, medium, big, and giant.
 |\[[big]]big[[/big]]           | <span class="size-big">big</span>              | [[big]]big[[/big]]    |
 |\[[giant]]giant[[/giant]]           | <span class="size-giant">giant</span>              | [[giant]]giant[[/giant]]    |
 
+### Line Heights
+
+It has 5 heights: tiny, small, medium, big and giant.
+
+```
+[[line height = tiny]]
+
+Tiny lines\
+Tiny lines\
+Tiny lines
+
+[[/line height]]
+```
+
+[[line height = tiny]]
+
+Tiny lines\
+Tiny lines\
+Tiny lines
+
+[[/line height]]
+
 ### Alignments
 
 It has 3 alignments: left, right, and center.

@@ -44,6 +44,14 @@ impl Macro {
                 result
             },
 
+            MacroType::LineHeight => arguments.len() == 1 && arguments[0].len() == 2 && [
+                into_v32("tiny"),
+                into_v32("small"),
+                into_v32("medium"),
+                into_v32("big"),
+                into_v32("giant"),
+            ].contains(&arguments[0][1]),
+
             // for `[[tooltip = aabb]]`, it doesn't check whether `aabb` is valid or not,
             // -> it cannot check that
             MacroType::Tooltip => arguments.len() == 1 && arguments[0].len() == 2,

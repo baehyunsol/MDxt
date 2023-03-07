@@ -76,6 +76,6 @@ It supports 4 types of tags and 2 attributes.
 
 Make your own plugins with those macros, CSS and JS.
 
-## Incubator
+## Line Height
 
-### Line Height
+`[[line height = tiny]]`

@@ -75,6 +75,11 @@ impl Macro {
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
             },
 
+            MacroType::LineHeight => InlineNode::Decoration {
+                deco_type: DecorationType::Macro(InlineMacro::LineHeight(arguments[0][1].clone())),
+                content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()
+            },
+
             MacroType::Alignment => InlineNode::Decoration {
                 deco_type: DecorationType::Macro(InlineMacro::Alignment(get_macro_name(arguments))),
                 content: InlineNode::from_mdxt(content, doc_data, render_option).to_vec()

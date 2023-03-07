@@ -22,6 +22,7 @@ enum MultiLineMacroType {
     },
     Color(Vec<u32>),
     Size(Vec<u32>),
+    LineHeight(Vec<u32>),
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
     HTML {
@@ -70,6 +71,20 @@ impl MultiLineMacro {
             },
             MacroType::Size => MultiLineMacro {
                 macro_type: MultiLineMacroType::Size(macro_name.to_vec()),
+                is_closing
+            },
+            MacroType::LineHeight => MultiLineMacro {
+                macro_type: MultiLineMacroType::LineHeight(
+
+                    if is_closing {
+                        vec![]
+                    }
+
+                    else {
+                        macro_arguments[0][1].clone()
+                    }
+
+                ),
                 is_closing
             },
             MacroType::Alignment => MultiLineMacro {
@@ -161,6 +176,11 @@ impl MultiLineMacro {
                 MultiLineMacroType::Size(size) => vec![
                     into_v32(&format!("<div class=\"{}size-", class_prefix)),
                     size.clone(),
+                    into_v32("\">")
+                ].concat(),
+                MultiLineMacroType::LineHeight(height) => vec![
+                    into_v32(&format!("<div class=\"{}line-height-", class_prefix)),
+                    height.clone(),
                     into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Alignment(align) => vec![

@@ -43,6 +43,7 @@ pub enum InlineMacro {
     Alignment(Vec<u32>),
     Color(Vec<u32>),
     Size(Vec<u32>),
+    LineHeight(Vec<u32>),
     Highlight(Vec<u32>),
 
     // `[[char = 32]]` -> `32` -> `&#32;`
@@ -164,6 +165,15 @@ impl InlineNode {
                     InlineMacro::Color(color) => vec![
                         into_v32(&format!("<span class=\"{}color-", class_prefix)),
                         color.clone(),
+                        into_v32("\">"),
+                        content.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u32>>>().concat(),
+                        into_v32("</span>")
+                    ].concat(),
+                    InlineMacro::LineHeight(height) => vec![
+                        into_v32(&format!("<span class=\"{}line-height-", class_prefix)),
+                        height.clone(),
                         into_v32("\">"),
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
@@ -413,6 +423,15 @@ impl InlineNode {
                         into_v32("[[/"),
                         name.clone(),
                         into_v32("]]")
+                    ].concat(),
+                    InlineMacro::LineHeight(height) => vec![
+                        into_v32("[[lineheight="),
+                        height.clone(),
+                        into_v32("]]"),
+                        content.iter().map(
+                            |node| node.to_mdxt()
+                        ).collect::<Vec<Vec<u32>>>().concat(),
+                        into_v32("[[/lineheight]]")
                     ].concat(),
                     InlineMacro::Highlight(color) => vec![
                         into_v32("[[highlight="),
