@@ -422,6 +422,10 @@ body .markdown {
         }
     }
 
+    .line-height-tiny {
+        line-height: $line-height-tiny;
+    }
+
     .box.width-tiny {
         width: $box-tiny;
     }
@@ -437,6 +441,10 @@ body .markdown {
             max-width: $image-small;
             max-height: $image-small;
         }
+    }
+
+    .line-height-small {
+        line-height: $line-height-small;
     }
 
     .box.width-small {
@@ -456,6 +464,10 @@ body .markdown {
         }
     }
 
+    .line-height-medium {
+        line-height: $line-height-medium;
+    }
+
     .box.width-medium {
         width: $box-medium;
     }
@@ -473,6 +485,10 @@ body .markdown {
         }
     }
 
+    .line-height-big {
+        line-height: $line-height-big;
+    }
+
     .box.width-big {
         width: $box-big;
     }
@@ -488,6 +504,10 @@ body .markdown {
             max-width: $image-giant;
             max-height: $image-giant;
         }
+    }
+
+    .line-height-giant {
+        line-height: $line-height-giant;
     }
 
     .box.width-giant {
@@ -616,6 +636,7 @@ body .markdown {
         border-radius: $round-border-medium;
         padding: $padding-small;
         background-color: var(--gray);
+        max-width: 80%;
         opacity: 0;
         transition: opacity 0.5s;
     }
