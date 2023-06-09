@@ -20,7 +20,7 @@ body .markdown {
         text-decoration-color: var(--white-compl);
     }
 
-    img {
+    img, video, iframe {
         max-width: $image-medium;
         max-height: $image-medium;
     }
@@ -416,7 +416,7 @@ body .markdown {
     .size-tiny {
         font-size: $font-tiny;
 
-        img {
+        img, video, iframe {
             max-width: $image-tiny;
             max-height: $image-tiny;
         }
@@ -437,7 +437,7 @@ body .markdown {
     .size-small {
         font-size: $font-small;
 
-        img {
+        img, video, iframe {
             max-width: $image-small;
             max-height: $image-small;
         }
@@ -458,7 +458,7 @@ body .markdown {
     .size-medium {
         font-size: $font-medium;
 
-        img {
+        img, video, iframe {
             max-width: $image-medium;
             max-height: $image-medium;
         }
@@ -479,7 +479,7 @@ body .markdown {
     .size-big {
         font-size: $font-big;
 
-        img {
+        img, video, iframe {
             max-width: $image-big;
             max-height: $image-big;
         }
@@ -500,7 +500,7 @@ body .markdown {
     .size-giant {
         font-size: $font-giant;
 
-        img {
+        img, video, iframe {
             max-width: $image-giant;
             max-height: $image-giant;
         }
@@ -527,7 +527,7 @@ body .markdown {
     .align-center {
         text-align: center;
 
-        table, img, .box, blockquote, svg {
+        table, img, video, iframe, .box, blockquote, svg {
             margin-left: auto;
             margin-right: auto;
         }
@@ -537,7 +537,7 @@ body .markdown {
     .align-right {
         text-align: right;
 
-        table, img, .box, blockquote, svg {
+        table, img, video, iframe, .box, blockquote, svg {
             margin-left: auto;
             margin-right: 0;
         }
@@ -547,7 +547,7 @@ body .markdown {
     .align-left {
         text-align: left;
 
-        table, img, .box, blockquote, svg {
+        table, img, video, iframe, .box, blockquote, svg {
             margin-left: 0;
             margin-right: auto;
         }
