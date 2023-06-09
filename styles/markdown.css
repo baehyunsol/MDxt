@@ -569,6 +569,7 @@ body .markdown img {
   width: 90%;
   overflow: auto;
   line-height: 1;
+  /* TODO: it's not affected by [[line height]], but I want it to */
   margin-top: 1.571rem;
   margin-bottom: 1.571rem;
   /* Not affected by themes */
@@ -672,6 +673,8 @@ body .markdown img {
 .markdown pre.fenced-code-block span.code-fence-row {
   display: inline-block;
   width: 100%;
+  min-width: max-content;
+  /* Thank you Chat GPT */
 }
 .markdown pre.fenced-code-block span.code-fence-row:hover {
   background-color: #404040;
@@ -766,6 +769,9 @@ body .markdown img {
 }
 
 /* Table */
+.markdown table.headless-table {
+  border: 0.143rem solid var(--white);
+}
 .markdown table {
   border-collapse: collapse;
   margin: 1.571rem 1rem;

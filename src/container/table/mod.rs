@@ -22,6 +22,7 @@ pub struct Table {
     cells: Vec<Vec<Cell>>,
     collapsible: bool,
     default_hidden: bool,
+    headless: bool,
     index: usize
 }
 
@@ -42,16 +43,17 @@ impl Table {
         ).collect::<Vec<Vec<Cell>>>();
 
         // configured by table-wide macros
-        let (mut collapsible, mut default_hidden) = (false, false);
+        let (mut collapsible, mut default_hidden, mut headless) = (false, false, false);
 
         // if rows[0] is `|!![[whatever macro ...]] [[another macro...]]|`
         if rows.len() > 0
             && rows[0].content.len() > 0
             && is_special_macro(&rows[0].content[1..(rows[0].content.len() - 1)])
         {
-            let (collapsible_, default_hidden_) = try_parse_macro(&rows[0].content);
+            let (collapsible_, default_hidden_, headless_) = try_parse_macro(&rows[0].content);
             collapsible = collapsible_;
             default_hidden = default_hidden_;
+            headless = headless_;
 
             rows = &rows[1..];
         }
@@ -62,7 +64,7 @@ impl Table {
 
         Table {
             header, cells,
-            collapsible, default_hidden,
+            collapsible, default_hidden, headless,
             index
         }
     }
@@ -94,7 +96,14 @@ impl Table {
 
     pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
-        result.push(into_v32("<table>"));
+
+        if self.headless {
+            result.push(into_v32("<table class=\"headless-table\">"));
+        }
+
+        else {
+            result.push(into_v32("<table>"));
+        }
 
         let collapsible_head = if self.collapsible {
             let default_value = if self.default_hidden {
@@ -108,17 +117,19 @@ impl Table {
             String::new()
         };
 
-        result.push(into_v32(&format!("<thead{}>", collapsible_head)));
-        self.header.iter().for_each(
-            |row| {
-                result.push(into_v32("<tr>"));
-                result.push(row.iter().map(
-                    |c| c.to_html(true, toc_rendered, class_prefix)
-                ).collect::<Vec<Vec<u32>>>().concat());
-                result.push(into_v32("</tr>"));
-            }
-        );
-        result.push(into_v32("</thead>"));
+        if !self.headless {
+            result.push(into_v32(&format!("<thead{}>", collapsible_head)));
+            self.header.iter().for_each(
+                |row| {
+                    result.push(into_v32("<tr>"));
+                    result.push(row.iter().map(
+                        |c| c.to_html(true, toc_rendered, class_prefix)
+                    ).collect::<Vec<Vec<u32>>>().concat());
+                    result.push(into_v32("</tr>"));
+                }
+            );
+            result.push(into_v32("</thead>"));
+        }
 
         let collapsible_body = if self.collapsible {
             let default_value = if self.default_hidden {

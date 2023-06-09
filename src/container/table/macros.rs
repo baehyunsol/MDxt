@@ -18,10 +18,11 @@ use crate::inline::macros::{
 };
 use crate::utils::{get_bracket_end_index, into_v32, remove_whitespaces};
 
-pub fn try_parse_macro(content: &[u32]) -> (bool, bool) {  // (collapsible, default_hidden)  // I'll define a struct for it when it gets more complicated
+pub fn try_parse_macro(content: &[u32]) -> (bool, bool, bool) {  // (collapsible, default_hidden, headless)  // I'll define a struct for it when it gets more complicated
 
     let mut collapsible = false;
     let mut default_hidden = false;
+    let mut headless = false;
 
     let macros = remove_whitespaces(content);
     let macros = macros[3..macros.len() - 1].to_vec();  // remove `!`s and `|`s.
@@ -42,6 +43,10 @@ pub fn try_parse_macro(content: &[u32]) -> (bool, bool) {  // (collapsible, defa
                 collapsible = true;
             }
 
+            else if argument[0] == into_v32("headless") {
+                headless = true;
+            }
+
             else if argument.len() == 2 && argument[0] == into_v32("default") {
 
                 if argument[1] == into_v32("shown") {
@@ -59,7 +64,12 @@ pub fn try_parse_macro(content: &[u32]) -> (bool, bool) {  // (collapsible, defa
         index = get_bracket_end_index(&macros, index).unwrap() + 1;
     }
 
-    (collapsible, default_hidden)
+    // if both `collapsible` and `headless` are set, `headless` is ignored
+    if collapsible && headless {
+        headless = false;
+    }
+
+    (collapsible, default_hidden, headless)
 }
 
 /// You can also write your own.

@@ -426,7 +426,19 @@ cut
     var content = document.getElementById(\"collapsible-table-\" + n);
     content.classList.toggle(\"invisible\");
 }</script>
-")
+"), ("
+| This table head is not shown.      |
+|------------------------------------|
+|!![[headless]]                      |
+| This is a headless table.          |
+| This is another row of the table.  |
+", "
+<table class=\"headless-table\">
+    <tbody>
+        <tr><td>This is a headless table.</td></tr>
+        <tr><td>This is another row of the table.</td></tr>
+    </tbody>
+</table>")
     ];
 
     result.into_iter().map(

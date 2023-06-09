@@ -58,40 +58,6 @@ TOC
 
 ---
 
-from gitlab
-
-1. diagram
-  - fenced code block 안에 diagram을 그려줌. language 설정을 mermaid, plantuml, kroki 등으로 해주면 됨.
-  - 내가 직접 diagram language 구현하는 건 빡센데 쟤넨 전부 js로 돼 있어서 내 엔진에 넣기 애매함
-    - 직접 만들자!
-  - 굳이 diagram이 아니더라도 fenced code block에 특별한 language 주면 특별한 동작하도록 하는 건 좋은 아이디어인 듯!
-    - 얘는 math도 fenced code block에 `math`라는 language를 줘서 구현함
-  - language를 json으로 넣어서 table로 만드는 것도 있네..!!
-1. emoji
-  - 얘는 `:monkey:` 이런 식으로 emoji를 넣음
-1. front matter
-  - metadata block을 front matter라고 하네.
-  - metadata를 어느 언어(json, yaml, toml등)로 쓰냐에 따라서 fence의 모양이 다름
-1. task list
-  - `[~]`도 있음.
-  - 내 추가 아이디어: `[!]`도 넣을까?
-1. multiline blockquote
-  - fenced code block이랑 비슷한 blockquote
-  - fence로 `>>>`를 씀.
-  - 이러면 blockquote 안에 표, 리스트 등등을 넣을 수 있음!
-  - list 안에다가 표/fencedcode 넣고 싶은데 이건 어떻게 할까??
-1. underscore로 emphasis하는 것도 넣을까..??
-
----
-
-math에 있는 기호들 웬만해선 char에도 넣자!
-
-곱셈, rightarrow
-
-음표도 추가 ㄱㄱ
-
----
-
 underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
 
 ---
@@ -223,4 +189,18 @@ ordered, unordered list도 collapsible하게 하자!
 - 6
 ```
 
-저러면 2, 3, 4가 default로 안 보임
+저러면 2, 3, 4가 default로 안 보임 -> 1~6이 다 안 보여야 하는 거 아님?
+
+---
+
+asciigraph inside fenced code blocks
+
+diagrams inside fenced code blocks
+
+---
+
+`[Wikipedia: Polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science))`
+
+---
+
+refactor -> `if let` 사용

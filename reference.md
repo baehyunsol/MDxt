@@ -1,5 +1,5 @@
 ---
-date: [2023, 1, 16]
+date: [2023, 6, 9]
 tags: [mdxt, reference, documentation]
 preview: MDxt Reference
 ---
@@ -47,11 +47,15 @@ MDxt is an extended version of Markdown.
 
 ### Links
 
+The link syntaxes resemble that of [GFM]'s.
+
 ### Images
 
 A valid link after a bang(!) character is rendered to an `img` tag.
 
 `![abc](def)` is rendered to `<img src="def" alt="abc">`.
+
+#### Multimedia types
 
 ### Footnotes
 
@@ -84,6 +88,10 @@ This is another footnote.[^B]
 ### Tables
 
 #### Column Alignments
+
+Syntaxes of column alignments resemble that of [GFM]'s.
+
+[GFM]: https://github.github.com/gfm/
 
 #### Multiline Table Head
 
@@ -127,6 +135,24 @@ This is another footnote.[^B]
 |---------------------------------------|
 |!![[collapsible, default=hidden]]      |
 | Hi, there!                            |
+
+#### Headless
+
+```
+| This table head is not shown.      |
+|------------------------------------|
+|!![[headless]]                      |
+| This is a headless table.          |
+| This is another row of the table.  |
+```
+
+| This table head is not shown.      |
+|------------------------------------|
+|!![[headless]]                      |
+| This is a headless table.          |
+| This is another row of the table.  |
+
+If both `headless` and `collapsible` are enabled, `headless` is ignored.
 
 ### Lists
 
