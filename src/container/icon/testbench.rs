@@ -76,7 +76,11 @@ fn render_icon_test() {
     strings.push(String::from("\n[BOOTSTRAP]: https://icons.getbootstrap.com"));
     strings.push(String::from("\n[MATERIAL]: https://fonts.google.com/icons"));
 
-    let raw_html = render_to_html_with_default_options(&strings.concat());
+    let raw_md = strings.concat();
+
+    if crate::PRINT_TEST_PAGES { println!("\n\n{raw_md}\n\n"); }
+
+    let raw_html = render_to_html_with_default_options(&raw_md);
 
     let mut f = File::open("./styles/markdown.css").unwrap();
     let mut css = String::new();

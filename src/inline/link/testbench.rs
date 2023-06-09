@@ -91,6 +91,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[link]![link2][link][link2]", "<a href=\"https://example\">link</a><img src=\"https://example\" alt=\"link2\"/><a href=\"https://example2\">link2</a>"),
         ("[[[char=9650]]](#top)[[[char=9660]]](#bottom)", "<a href=\"#top\">&#9650;</a><a href=\"#bottom\">&#9660;</a>"),
 
+        ("[Wikipedia: Polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science))", "<a href=\"https://en.wikipedia.org/wiki/Polymorphism_(computer_science)\">Wikipedia: Polymorphism</a>"),
+
         ("[[br]][link][[br]]", "<br/><a href=\"https://example\">link</a><br/>")
     ];
 

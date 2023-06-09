@@ -12,6 +12,8 @@ lazy_static! {
         (into_v32("because"), into_v32("8757")),
         (into_v32("nsup"), into_v32("8837")),
         (into_v32("star"), into_v32("8902")),
+        (into_v32("music"), into_v32("9834")),
+        (into_v32("inf"), into_v32("infin")),
         (into_v32("bigalpha"), into_v32("Alpha")),
         (into_v32("bigbeta"), into_v32("Beta")),
         (into_v32("biggamma"), into_v32("Gamma")),
@@ -61,6 +63,8 @@ lazy_static! {
             into_v32("prod"),
             into_v32("sum"),
             into_v32("prop"),
+            into_v32("times"),
+            into_v32("divide"),
             into_v32("infin"),
             into_v32("and"),
             into_v32("or"),
@@ -106,8 +110,9 @@ lazy_static! {
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
-        for d in vec.iter() {
-            result.insert(d.clone());
+        for d in vec.into_iter() {
+            #[cfg(test)] assert!(!result.contains(&d));
+            result.insert(d);
         }
 
         result
@@ -117,6 +122,7 @@ lazy_static! {
         let mut result = HashSet::with_capacity(INDIRECT_MAPPINGS_VEC.len());
 
         for (i, _) in INDIRECT_MAPPINGS_VEC.iter() {
+            #[cfg(test)] assert!(!result.contains(i));
             result.insert(i.clone());
         }
 
@@ -127,6 +133,7 @@ lazy_static! {
         let mut result = HashMap::with_capacity(INDIRECT_MAPPINGS_VEC.len());
 
         for (key, value) in INDIRECT_MAPPINGS_VEC.iter() {
+            #[cfg(test)] assert!(!result.contains_key(key));
             result.insert(key.clone(), value.clone());
         }
 

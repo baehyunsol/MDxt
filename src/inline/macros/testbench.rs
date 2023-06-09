@@ -92,6 +92,8 @@ fn render_to_html() {
 
     let md = render_character_reference();
 
+    if crate::PRINT_TEST_PAGES { println!("\n\n{}\n\n", from_v32(&md)); }
+
     let md = from_v32(&md);
 
     let mut f = File::open("./styles/markdown.css").unwrap();
@@ -102,7 +104,7 @@ fn render_to_html() {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MDxt Math Reference</title>
+    <title>MDxt Character Reference</title>
     <style>{}</style>
 </head>
 <body>

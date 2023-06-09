@@ -11,6 +11,9 @@ mod utils;
 #[cfg(test)]
 mod testbench;
 
+#[cfg(test)]
+pub const PRINT_TEST_PAGES: bool = true;
+
 pub use render::{
     render_to_html,
     render_to_html_with_default_options,

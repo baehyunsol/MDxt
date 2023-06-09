@@ -421,6 +421,8 @@ fn render_to_html() {
 
     let md = render_math_reference();
 
+    if crate::PRINT_TEST_PAGES { println!("\n\n{}\n\n", from_v32(&md)); }
+
     let md = from_v32(&md);
 
     let mut f = File::open("./styles/markdown.css").unwrap();

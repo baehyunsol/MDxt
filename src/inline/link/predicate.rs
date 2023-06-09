@@ -262,5 +262,6 @@ fn is_valid_url_character(character: &u32) -> bool {
     || '+' as u32 == *character || '&' as u32 == *character
     || '%' as u32 == *character || '_' as u32 == *character
     || '#' as u32 == *character || '$' as u32 == *character
-    || '+' as u32 == *character
+    || '+' as u32 == *character || '(' as u32 == *character 
+    || ')' as u32 == *character
 }
