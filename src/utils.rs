@@ -92,6 +92,7 @@ fn get_partner_index(v: &[u32], begin_index: usize, s: u32, p: u32) -> Option<us
     None
 }
 
+#[inline]
 pub fn lowercase(c: &u32) -> u32 {
 
     if 'A' as u32 <= *c && *c <= 'Z' as u32 {

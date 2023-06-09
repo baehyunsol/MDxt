@@ -57,6 +57,26 @@ A valid link after a bang(!) character is rendered to an `img` tag.
 
 #### Multimedia types
 
+The engine tries to figure out the type of the image. If the file extension is `mp4` or `webm`, it'd generate a `<video>` tag. If the extension is `mp3`, `ogg`, `m4a`, or `wav`, it'd be `<audio>` tag. Otherwise it's an `<img>` or a youtube video.
+
+If the file destination meets the below conditions, the engine will embed a youtube video.
+
+- It starts with 10 ~ 12 characters of `[0-9A-Za-z_-]`, which is a video id.
+- A query for time may follow the video id. The query starts with `?t=`, and ends with an integer.
+
+Only insert the video id, not the full url.
+
+- Valid examples
+  - `![an example video](bwxglJEpuDc)`
+    - Only an id
+    - ![an example video](bwxglJEpuDc)
+  - `![another example video](x02eGI-O9WY?t=20)`
+    - id + time
+    - ![another example video](x02eGI-O9WY?t=20)
+- Invalid examples
+  - `![another example video](https://www.youtube.com/watch?v=QEnuzwCWpgQ)`
+    - full url
+
 ### Footnotes
 
 Links whose names begin with `^` are rendered to footnotes. A footnote may have multiple lines, but it can have only 1 paragraph. Don't ref another footnote inside a footnote.
@@ -87,6 +107,10 @@ This is another footnote.[^B]
 
 ### Tables
 
+Table cells and table itself can have a macro. A table cell with a macro must start with the macro. For example, `|[[colspan=3]] valid cell|` is a valid table cell with a macro, but `|invalid macro [[colspan=3]]|` is a valid cell without a macro.
+
+Macros applied table-wide come at the first row of a table. The row shall have only one cell. The cell contains only macros and whitespaces. Each table-wide macro must be prefixed by `!!`. See the examples below.
+
 #### Column Alignments
 
 Syntaxes of column alignments resemble that of [GFM]'s.
@@ -112,6 +136,8 @@ Syntaxes of column alignments resemble that of [GFM]'s.
 | Foo   | [[colspan = 4]] *Bar*         |
 
 #### Colspan
+
+The previous example contains colspan macros.
 
 #### Collapsible Tables
 

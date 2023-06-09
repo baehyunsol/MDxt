@@ -1,5 +1,5 @@
 use super::{
-    InlineNode, DecorationType, InlineMacro,
+    InlineNode, DecorationType, InlineMacro, MediaType,
     INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4
 };
 use super::footnote::predicate::read_footnote;
@@ -271,17 +271,20 @@ impl InlineNode {
                         result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
+                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
+                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            address: handled_link
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            destination: handled_link
                         }));
                     }
 
@@ -312,17 +315,20 @@ impl InlineNode {
                         result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
+                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
+                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            address: handled_link
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            destination: handled_link
                         }));
                     }
 
@@ -389,17 +395,20 @@ impl InlineNode {
                         result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
                     }
 
+                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
                     if is_image {
                         result.push(Box::new(InlineNode::Image {
+                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
                             description: undo_code_span_escapes(&link_text),
-                            address: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            address: handled_link
                         }));
                     }
 
                     else {
                         result.push(Box::new(InlineNode::Link {
                             text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: into_v32(&render_option.handle_link(&from_v32(&link_destination)))
+                            destination: handled_link
                         }));
                     }
 
@@ -506,7 +515,7 @@ impl InlineNode {
                 text: text.into_iter().map(|node| Box::new(node.render_code_spans())).collect(),
                 destination
             },
-            InlineNode::Image {description, address} => InlineNode::Image {description, address},
+            InlineNode::Image { .. } => self,
             InlineNode::CodeSpan(_) => self,
             InlineNode::Footnote(_) => self
         }

@@ -1,7 +1,8 @@
 mod ast;
-mod escape;
 mod container;
 mod color;
+mod escape;
+mod file_ext;
 mod inline;
 // mod obfuscate;  // WIP
 mod render;

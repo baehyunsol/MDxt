@@ -4,14 +4,15 @@ use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct RenderOption {
-    pub link_handler: fn(&str) -> String,
+    pub class_prefix: String,
+    pub enable_youtube: bool,
+    pub footnote_tooltip: bool,
     pub header_anchor: bool,
-    pub parse_metadata: bool,
     pub javascript_collapsible_tables: bool,
     pub javascript_copy_buttons: bool,
     pub javascript_tooltips: bool,
-    pub class_prefix: String,
-    pub footnote_tooltip: bool,
+    pub link_handler: fn(&str) -> String,
+    pub parse_metadata: bool,
     pub xml: bool
 }
 
@@ -19,14 +20,15 @@ impl Default for RenderOption {
 
     fn default() -> Self {
         RenderOption {
-            link_handler: |s| s.to_string(),
+            class_prefix: String::new(),
+            enable_youtube: true,
+            footnote_tooltip: false,
             header_anchor: true,
-            parse_metadata: true,
             javascript_collapsible_tables: true,
             javascript_copy_buttons: true,
             javascript_tooltips: true,
-            class_prefix: String::new(),
-            footnote_tooltip: false,
+            link_handler: |s| s.to_string(),
+            parse_metadata: true,
             xml: false
         }
     }

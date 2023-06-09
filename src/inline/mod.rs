@@ -10,7 +10,43 @@ mod testbench;
 
 use crate::container::icon::get_icon;
 use crate::utils::{from_v32, into_v32};
+use crate::file_ext::{FileExt, read_file_extension};
+use link::is_youtube;
 use math::render_math;
+
+#[derive(Clone)]
+pub enum MediaType {
+    Image,
+    Video(FileExt),
+    Audio(FileExt),
+    Youtube
+}
+
+impl MediaType {
+
+    pub fn from_url(v: &[u32], enable_youtube: bool) -> Self {
+
+        if let Some(ext) = read_file_extension(v) {
+
+            match ext {
+                FileExt::Mp4 | FileExt::Webm => MediaType::Video(ext),
+                FileExt::Mp3 | FileExt::Wav | FileExt::Ogg | FileExt::M4a => MediaType::Audio(ext),
+                _ => MediaType::Image
+            }
+
+        }
+
+        else if enable_youtube && is_youtube(v) {
+            MediaType::Youtube
+        }
+
+        else {
+            MediaType::Image
+        }
+
+    }
+
+}
 
 #[derive(Clone)]
 pub enum InlineNode {
@@ -23,6 +59,7 @@ pub enum InlineNode {
         destination: Vec<u32>
     },
     Image {
+        media_type: MediaType,
         description: Vec<u32>,
         address: Vec<u32>
     },
@@ -110,13 +147,40 @@ impl InlineNode {
                 into_v32("</a>")
             ].concat(),
 
-            InlineNode::Image {description, address} => vec![
-                into_v32("<img src=\""),
-                address.clone(),
-                into_v32("\" alt=\""),
-                description.clone(),
-                into_v32("\"/>")
-            ].concat(),
+            InlineNode::Image {description, address, media_type} => match media_type {
+                MediaType::Image => vec![
+                    into_v32("<img src=\""),
+                    address.clone(),
+                    into_v32("\" alt=\""),
+                    description.clone(),
+                    into_v32("\"/>")
+                ].concat(),
+                MediaType::Video(ext) => vec![
+                    into_v32("<video controls>"),
+                    into_v32("<source src=\""),
+                    address.clone(),
+                    into_v32("\" type=\"video/"),
+                    ext.mime_type(),
+                    into_v32("\"/>"),
+                    description.clone(),
+                    into_v32("</video>"),
+                ].concat(),
+                MediaType::Audio(ext) => vec![
+                    into_v32("<audio controls>"),
+                    into_v32("<source src=\""),
+                    address.clone(),
+                    into_v32("\" type=\"audio/"),
+                    ext.mime_type(),
+                    into_v32("\"/>"),
+                    description.clone(),
+                    into_v32("</audio>"),
+                ].concat(),
+                MediaType::Youtube => vec![
+                    into_v32("<iframe src=\"https://www.youtube.com/embed/"),
+                    address.clone(),
+                    into_v32("\"></iframe>")
+                ].concat(),
+            },
 
             InlineNode::Decoration {deco_type, content} => match deco_type {
                 DecorationType::Italic => vec![
@@ -361,7 +425,7 @@ impl InlineNode {
                 into_v32(")")
             ].concat(),
 
-            InlineNode::Image {description, address} => vec![
+            InlineNode::Image {description, address, ..} => vec![
                 into_v32("!["),
                 description.clone(),
                 into_v32("]("),
