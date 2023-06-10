@@ -62,37 +62,6 @@ underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 
 
 ---
 
-아래의 md를 gfm이랑 mdxt에서 둘다 해보셈. 첫번째랑 두번째 code fence가 다른데 rendering된 결과는 같음...(gfm 기준) mdxt도 같을 듯?
-
-일단 gfm spec 뒤져보자
-
-````
-
-abc
-
-```c
-int a = 3;
-```
-
-abc
-
-```c
-int a = 3;
-
-```
-
-abc
-
-```c
-int a = 3;
-
-
-```
-
-````
-
----
-
 list/table/blockquote 안에 list/table/blockquote/fenced_code_block 넣기! ...how?
 
 `[[define, id = table1]]`이랑 `[[reference, id = table1]]`를 만들까? `[[define]]` 안에서 table을 만들고 `[[reference]]`로 그 table을 재활용하는 거임. 이러면 table in table 등등도 전부 구현 가능!
@@ -199,8 +168,20 @@ diagrams inside fenced code blocks
 
 ---
 
-`[Wikipedia: Polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science))`
+refactor -> `if let` 사용
 
 ---
 
-refactor -> `if let` 사용
+collapsible sidebar -> `~/Documents/web`에 만들어 놓았음!
+
+근데 multiline macro를 어떻게 쓰지...?? 지금 multiline macro로 된 Node는 시작 node와 끝 Node의 정보만 있고 안의 내용은 없음
+
+1. AST 만들 때 multiline macro를 찾으면 일단 걔의 종류를 확인 -> 만약 sidebar면 그 안의 Line들 통째로 갖고 가!
+  - line 통째로 갖고 가면 AST 또 만들어..?? 그거 살짝 애매함
+  - 그럼 DocData가 2개 나오는데 둘이 합쳐야 하나?? 어떻게 합침??
+
+이거 구현하면 이거 이용해서 collapsible도 구현하자! 표나 list를 collapse하는게 아니고 arbitrary MD를 collapse 할 수 있게!!
+
+저거 되면 toc 구현도 고칠까? 지금 toc도 너무 더럽게 돼 있음...
+
+저거 하면 위에서 말한 reference도 구현할 수 있음!

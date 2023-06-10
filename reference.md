@@ -1,7 +1,6 @@
 ---
 date: [2023, 6, 9]
-tags: [mdxt, reference, documentation]
-preview: MDxt Reference
+hide: true
 ---
 
 # MDxt Reference

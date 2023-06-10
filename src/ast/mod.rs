@@ -81,7 +81,6 @@ impl AST {
     }
 
     pub fn to_html(&mut self) -> Vec<u32> {
-
         self.parse_inlines();
         let mut result = Vec::with_capacity(self.nodes.len());
         let class_prefix = &self.render_option.class_prefix;

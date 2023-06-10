@@ -156,7 +156,7 @@ impl InlineNode {
                     into_v32("\"/>")
                 ].concat(),
                 MediaType::Video(ext) => vec![
-                    into_v32("<video controls>"),
+                    into_v32("<video controls=\"controls\">"),  // `<video controls>` is not compatible with my HXML lib
                     into_v32("<source src=\""),
                     address.clone(),
                     into_v32("\" type=\"video/"),
@@ -166,7 +166,7 @@ impl InlineNode {
                     into_v32("</video>"),
                 ].concat(),
                 MediaType::Audio(ext) => vec![
-                    into_v32("<audio controls>"),
+                    into_v32("<audio controls=\"controls\">"),  // `<audio controls>` is not compatible with my HXML lib
                     into_v32("<source src=\""),
                     address.clone(),
                     into_v32("\" type=\"audio/"),

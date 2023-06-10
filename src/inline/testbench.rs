@@ -105,8 +105,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[[icon = invalid icon]]", "[[icon = invalid icon]]"),
         ("[[icon = github, size = invalid size]]", "[[icon = github, size = invalid size]]"),
 
-        ("![foo.mp4](foo.mp4)", "<video controls><source src=\"foo.mp4\" type=\"video/mp4\"/>foo.mp4</video>"),
-        ("![foo.mp3](foo.mp3)", "<audio controls><source src=\"foo.mp3\" type=\"audio/mpeg\"/>foo.mp3</audio>"),
+        ("![foo.mp4](foo.mp4)", "<video controls=\"controls\"><source src=\"foo.mp4\" type=\"video/mp4\"/>foo.mp4</video>"),
+        ("![foo.mp3](foo.mp3)", "<audio controls=\"controls\"><source src=\"foo.mp3\" type=\"audio/mpeg\"/>foo.mp3</audio>"),
     ];
 
     result.iter().map(|(case, answer)| (case.to_string(), answer.to_string())).collect()
