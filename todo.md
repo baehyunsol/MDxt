@@ -39,25 +39,6 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 
 ---
 
-TOC
-
-```markdown
-- !![[no bullet]]
-- 1. h1
-  - 1.1. h2
-  - 1.2. h2
-    - 1.2.1. h3
-  - 1.3. h2
-- 2. h1
-  - 2.1. h2
-```
-
-저런 식으로 하고 index에다가만 링크를 걸어야 header에 inline decoration 넣기 수월함.
-
-여러 방식의 link/index 넣을 생각하지 말고 저 방식으로 통일하자! inline::macros::toc.rs만 고치면 됨.
-
----
-
 underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
 
 ---

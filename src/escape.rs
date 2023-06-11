@@ -96,6 +96,7 @@ pub fn escape_backslashes(content: &[u32]) -> Vec<u32> {
             result.push('\\' as u32);
         }
 
+        // already escaped by `escape_htmls`
         else if HTML_ESCAPE_OFFSET <= content[index + 1] && content[index + 1] < BACKSLASH_ESCAPE_OFFSET {
             result.push(content[index + 1] - HTML_ESCAPE_OFFSET + BACKSLASH_ESCAPE_OFFSET);
             index += 1;

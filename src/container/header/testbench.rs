@@ -91,7 +91,7 @@ Valid header
 
 ## Header 1-2
 
-##### Header 1-2-1
+##### Header 1-2-1-1-1
 
 ## Header 1-3
 
@@ -107,88 +107,153 @@ Valid header
 
 Another [[toc]]
 ", "
-
 <h1 id=\"toc-test\">TOC test</h1>
 
-<p><div class=\"toc\">
-<ol type=\"1\">
-    <li><a href=\"#toc-test\">TOC test</a>
-        <ol type=\"1\">
-            <li><a href=\"#header-1-1\">Header 1-1</a></li>
-            <li><a href=\"#header-1-2\">Header 1-2</a>
-                <ol type=\"1\">
-                    <li><a href=\"#header-1-2-1\">Header 1-2-1</a></li>
-                </ol>
+<p>
+    <div class=\"toc\">
+        <ul class=\"no-bullet-list\">
+            <li><a href=\"#toc-test\">1.</a> TOC test
+                <ul class=\"no-bullet-list\">
+                    <li><a href=\"#header-1-1\">1.1.</a> Header 1-1</li>
+                    <li><a href=\"#header-1-2\">1.2.</a> Header 1-2
+                        <ul class=\"no-bullet-list\">
+                            <li><a href=\"#header-1-2-1-1-1\">1.2.1.1.1.</a> Header 1-2-1-1-1</li>
+                        </ul>
+                    </li>
+                    <li><a href=\"#header-1-3\">1.3.</a> Header 1-3</li>
+                    <li><a href=\"#italic-and-red-red-red\">1.4.</a> <em>Italic</em> and <span class=\"color-red\"> red </span></li>
+                    <li><a href=\"#---valid-link\">1.5.</a> ] &lt;- valid link?</li>
+                    <li><a href=\"#footnotes-a\">1.6.</a> Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-1\"><a href=\"#footnote-cite-0\">[1]</a></span></li>
+                    <li><a href=\"#recursive-toc\">1.7.</a> Recursive &#91;[toc]]</li>
+                </ul>
             </li>
-            <li><a href=\"#header-1-3\">Header 1-3</a></li>
-            <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-            <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
-            <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
-            <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
-        </ol>
-    </li>
-</ol>
-</div></p>
+        </ul>
+    </div>
+</p>
 
 <h2 id=\"header-1-1\">Header 1-1</h2>
+
 <h2 id=\"header-1-2\">Header 1-2</h2>
-<h5 id=\"header-1-2-1\">Header 1-2-1</h5>
+
+<h5 id=\"header-1-2-1-1-1\">Header 1-2-1-1-1</h5>
+
 <h2 id=\"header-1-3\">Header 1-3</h2>
+
 <h2 id=\"italic-and-red-red-red\"><em>Italic</em> and <span class=\"color-red\"> red </span></h2>
+
 <h2 id=\"---valid-link\">] &lt;- valid link?</h2>
+
 <h2 id=\"footnotes-a\">Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-0\"><a href=\"#footnote-cite-0\">[0]</a></span></h2>
+
 <h2 id=\"recursive-toc\">Recursive
-<div class=\"toc\">
-    <ol type=\"1\">
-        <li><a href=\"#toc-test\">TOC test</a>
-            <ol type=\"1\">
-                <li><a href=\"#header-1-1\">Header 1-1</a></li>
-                <li><a href=\"#header-1-2\">Header 1-2</a>
-                    <ol type=\"1\">
-                        <li><a href=\"#header-1-2-1\">Header 1-2-1</a></li>
-                    </ol>
-                </li>
-                <li><a href=\"#header-1-3\">Header 1-3</a></li>
-                <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-                <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
-                <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
-                <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
-            </ol>
-        </li>
-    </ol>
-</div>
+    <div class=\"toc\">
+        <ul class=\"no-bullet-list\">
+            <li><a href=\"#toc-test\">1.</a> TOC test
+                <ul class=\"no-bullet-list\">
+                    <li><a href=\"#header-1-1\">1.1.</a> Header 1-1</li>
+                    <li><a href=\"#header-1-2\">1.2.</a> Header 1-2
+                        <ul class=\"no-bullet-list\">
+                            <li><a href=\"#header-1-2-1-1-1\">1.2.1.1.1.</a> Header 1-2-1-1-1</li>
+                        </ul>
+                    </li>
+                    <li><a href=\"#header-1-3\">1.3.</a> Header 1-3</li>
+                    <li><a href=\"#italic-and-red-red-red\">1.4.</a> <em>Italic</em> and <span class=\"color-red\"> red </span></li>
+                    <li><a href=\"#---valid-link\">1.5.</a> ] &lt;- valid link?</li>
+                    <li><a href=\"#footnotes-a\">1.6.</a> Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-1\"><a href=\"#footnote-cite-0\">[1]</a></span></li>
+                    <li><a href=\"#recursive-toc\">1.7.</a> Recursive &#91;[toc]]</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </h2>
 
-<p>
-Another <div class=\"toc\">
-<ol type=\"1\">
-    <li><a href=\"#toc-test\">TOC test</a>
-        <ol type=\"1\">
-            <li><a href=\"#header-1-1\">Header 1-1</a></li>
-            <li><a href=\"#header-1-2\">Header 1-2</a>
-                <ol type=\"1\">
-                    <li><a href=\"#header-1-2-1\">Header 1-2-1</a></li>
-                </ol>
+<p>Another
+    <div class=\"toc\">
+        <ul class=\"no-bullet-list\">
+            <li><a href=\"#toc-test\">1.</a> TOC test
+                <ul class=\"no-bullet-list\">
+                    <li><a href=\"#header-1-1\">1.1.</a> Header 1-1</li>
+                    <li><a href=\"#header-1-2\">1.2.</a> Header 1-2
+                        <ul class=\"no-bullet-list\">
+                            <li><a href=\"#header-1-2-1-1-1\">1.2.1.1.1.</a> Header 1-2-1-1-1</li>
+                        </ul>
+                    </li>
+                    <li><a href=\"#header-1-3\">1.3.</a> Header 1-3</li>
+                    <li><a href=\"#italic-and-red-red-red\">1.4.</a> <em>Italic</em> and <span class=\"color-red\"> red </span></li>
+                    <li><a href=\"#---valid-link\">1.5.</a> ] &lt;- valid link?</li>
+                    <li><a href=\"#footnotes-a\">1.6.</a> Footnotes <span class=\"footnote-ref\" id=\"footnote-ref-1\"><a href=\"#footnote-cite-0\">[1]</a></span></li>
+                    <li><a href=\"#recursive-toc\">1.7.</a> Recursive &#91;[toc]]</li>
+                </ul>
             </li>
-            <li><a href=\"#header-1-3\">Header 1-3</a></li>
-            <li><a href=\"#italic-and-red-red-red\"><em>Italic</em> and &#91;&#91;red&#93;&#93; red &#91;&#91;/red&#93;&#93;</a></li>
-            <li><a href=\"#---valid-link\">&#93; &lt;- valid link?</a></li>
-            <li><a href=\"#footnotes-a\">Footnotes &#91;^A&#93;</a></li>
-            <li><a href=\"#recursive-toc\">Recursive &#91;&#91;toc&#93;&#93;</a></li>
-        </ol>
-    </li>
-</ol>
-</div></p>
+        </ul>
+    </div>
+</p>
 
 <hr class=\"footnote-hr\"/>
 
 <div class=\"mdxt-footnote-cites\">
+    <p>
+        <div class=\"footnote-cite\">
+            <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> <a href=\"#footnote-ref-1\"> [1]</a> This is a footnote.
+        </div>
+    </p>
+</div>
+"), (
+"
+# Header 1
+
+# Header 2
+
+## Header 2.1
+
+## Header 2.2
+
+## Header 2.3
+
+### Header 2.3.1
+
+## Header 2.4
+
+# Header 3
+
+[[toc]]
+", "
+<h1 id=\"header-1\">Header 1</h1>
+
+<h1 id=\"header-2\">Header 2</h1>
+
+<h2 id=\"header-21\">Header 2.1</h2>
+
+<h2 id=\"header-22\">Header 2.2</h2>
+
+<h2 id=\"header-23\">Header 2.3</h2>
+
+<h3 id=\"header-231\">Header 2.3.1</h3>
+
+<h2 id=\"header-24\">Header 2.4</h2>
+
+<h1 id=\"header-3\">Header 3</h1>
+
 <p>
-    <div class=\"footnote-cite\">
-        <a id=\"footnote-cite-0\"></a><a href=\"#footnote-ref-0\"> [0]</a> This is a footnote.
+    <div class=\"toc\">
+        <ul class=\"no-bullet-list\">
+            <li><a href=\"#header-1\">1.</a> Header 1</li>
+            <li><a href=\"#header-2\">2.</a> Header 2
+                <ul class=\"no-bullet-list\">
+                    <li><a href=\"#header-21\">2.1.</a> Header 2.1</li>
+                    <li><a href=\"#header-22\">2.2.</a> Header 2.2</li>
+                    <li><a href=\"#header-23\">2.3.</a> Header 2.3
+                        <ul class=\"no-bullet-list\">
+                            <li><a href=\"#header-231\">2.3.1.</a> Header 2.3.1</li>
+                        </ul>
+                    </li>
+                    <li><a href=\"#header-24\">2.4.</a> Header 2.4</li>
+                </ul>
+            </li>
+            <li><a href=\"#header-3\">3.</a> Header 3</li>
+        </ul>
     </div>
 </p>
-</div>
 ")
     ];
 

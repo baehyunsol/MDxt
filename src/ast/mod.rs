@@ -44,6 +44,7 @@ impl AST {
                 Node::Blockquote(blockquote) => { blockquote.parse_inlines(&mut self.doc_data, &self.render_option); },
                 Node::Empty | Node::ThematicBreak | Node::MultiLineMacro(_) => {},
 
+                // TODO
                 // this branch is ugly...
                 // it doesn't `parse_inline` inside the `parse_inlines` function
                 // but this is the only point where the `FencedCode` instances and `doc_data` meet

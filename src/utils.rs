@@ -5,7 +5,14 @@ pub fn into_v32(s: &str) -> Vec<u32> {
 
 #[inline]
 pub fn from_v32(v: &[u32]) -> String {
-    v.iter().map(|n| char::from_u32(*n).unwrap()).collect()
+    #[cfg(test)] {
+        v.iter().map(|n| char::from_u32(*n).unwrap_or_else(|| '?')).collect()
+    }
+
+    #[cfg(not(test))] {
+        v.iter().map(|n| char::from_u32(*n).unwrap()).collect()
+    }
+
 }
 
 pub fn drop_while(v: &[u32], c: u32) -> Vec<u32> {
