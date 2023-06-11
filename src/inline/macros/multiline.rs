@@ -25,7 +25,7 @@ enum MultiLineMacroType {
     LineHeight(Vec<u32>),
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
-    Math(Vec<u32>),
+    // Math(Vec<u32>),
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,

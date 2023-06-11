@@ -567,11 +567,6 @@ for (let i = 0; i < tooltips.length; i++) {
 }
 </script>
 "), ("
-[[tooltip = foo]] nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] [[/tooltip]]
-
-[^foo]: tooltip foo
-[^bar]: tooltip bar
-", ""), ("
 Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
 
 `🦈`, \\🦈
@@ -580,6 +575,11 @@ Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍�
 
 <p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
 "), ("
+[[tooltip = foo]] nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] [[/tooltip]]
+
+[^foo]: tooltip foo
+[^bar]: tooltip bar
+", ""), ("
 # Multiline Math macro
 
 [[math]]
