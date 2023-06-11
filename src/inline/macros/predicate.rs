@@ -72,8 +72,9 @@ pub fn check_and_parse_macro_inline(
 
                         while curr_index < content.len() {
 
-                            match read_macro(content, curr_index) {
-                                Some(macro_content) => if macro_content == closing_macro {
+                            if let Some(macro_content) = read_macro(content, curr_index) {
+
+                                if macro_content == closing_macro {
 
                                     if macro_nest_stack == 0 {
                                         return Some(
@@ -93,7 +94,9 @@ pub fn check_and_parse_macro_inline(
                                         macro_nest_stack -= 1;
                                     }
 
-                                } else {
+                                }
+
+                                else {
                                     let inner_macro_arguments = parse_arguments(&macro_content);
                                     let inner_macro_name = get_macro_name(&inner_macro_arguments);
 
@@ -101,8 +104,8 @@ pub fn check_and_parse_macro_inline(
                                         macro_nest_stack += 1;
                                     }
 
-                                },
-                                _ => {}
+                                }
+
                             }
 
                             curr_index += 1;

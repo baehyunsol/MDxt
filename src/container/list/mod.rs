@@ -103,8 +103,9 @@ impl List {
                 ElementOrSublist::Element{ content, task_list } => {
                     result.push(into_v32("<li>"));
 
-                    match task_list {
-                        Some(marker) => match marker {
+                    if let Some(marker) = task_list {
+
+                        match marker {
                             TaskMarker::Unchecked => {
                                 result.push(into_v32(&format!("<div class=\"{}unchecked-box\"></div>", class_prefix)));
                             },
@@ -114,8 +115,8 @@ impl List {
                             TaskMarker::Triangle => {
                                 result.push(into_v32(&format!("<div class=\"{}checked-box\"><span class=\"{}triangle\"></span></div>", class_prefix, class_prefix)));
                             },
-                        },
-                        _ => {}
+                        }
+
                     }
 
                     result.push(content.to_html(toc_rendered, class_prefix));

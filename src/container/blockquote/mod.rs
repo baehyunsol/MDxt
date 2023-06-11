@@ -42,11 +42,9 @@ impl Blockquote {
 
         for element in self.elements.iter_mut() {
 
-            match element {
-                ElementOrIndent::Element(content) => {content.parse_raw(doc_data, options);}
-                _ => {}
+            if let ElementOrIndent::Element(content) = element {
+                content.parse_raw(doc_data, options);
             }
-
         }
 
     }

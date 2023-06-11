@@ -63,12 +63,9 @@ pub fn parse_arguments(content: &[u32]) -> Vec<Vec<u32>> {
 
         else if content[index] == '('  as u32 {
 
-            match get_parenthesis_end_index(content, index) {
-                Some(n) => {
-                    index = n;
-                    continue;
-                }
-                _ => {}
+            if let Some(n) = get_parenthesis_end_index(content, index) {
+                index = n;
+                continue;
             }
 
         }

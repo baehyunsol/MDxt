@@ -22,12 +22,9 @@ pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResu
 
     if options.parse_metadata {
 
-        match parse_metadata(&lines) {
-            Some((parsed_metadata, end_index)) => {
-                metadata = Some(parsed_metadata);
-                lines = lines[end_index + 1..].to_vec();
-            },
-            _ => {}
+        if let Some((parsed_metadata, end_index)) = parse_metadata(&lines) {
+            metadata = Some(parsed_metadata);
+            lines = lines[end_index + 1..].to_vec();
         }
 
     }

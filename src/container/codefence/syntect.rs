@@ -10,11 +10,8 @@ lazy_static! {
         let default_set = SyntaxSet::load_defaults_newlines();
         let mut syntax_set_builder = default_set.into_builder();
 
-        match syntax_set_builder.add_from_folder("./extra_syntaxes", true) {
-            Err(e) => {
-                println!("Error while reading `./extra_syntaxes`: {:?}", e);
-            }
-            _ => {}
+        if let Err(e) = syntax_set_builder.add_from_folder("./extra_syntaxes", true) {
+            println!("Error while reading `./extra_syntaxes`: {:?}", e);
         }
 
         syntax_set_builder.build()

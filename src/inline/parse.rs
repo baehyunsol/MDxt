@@ -23,11 +23,9 @@ impl InlineNode {
         render_option: &RenderOption
     ) {
 
-        match self {
-            InlineNode::Raw(content) => {
-                *self = Self::from_mdxt(&content, doc_data, render_option);
-            }
-            _ => {}  // it's already parsed
+        // otherwise, it's already parsed
+        if let InlineNode::Raw(content) = self {
+            *self = Self::from_mdxt(&content, doc_data, render_option);
         }
 
     }
@@ -57,387 +55,348 @@ impl InlineNode {
                 continue;
             }
 
-            match is_bold_italic(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
+            if let Bool::True(end) = is_bold_italic(&content, index) {
+                let mut result = vec![];
 
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
 
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Italic,
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Italic,
 
-                        content: vec![Box::new(InlineNode::Decoration{
-                            deco_type: DecorationType::Bold,
-
-                            // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
-                        })]
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_deletion_subscript(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Deletion,
-
-                        content: vec![Box::new(InlineNode::Decoration{
-                            deco_type: DecorationType::Subscript,
-
-                            // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                            content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
-                        })]
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_italic(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Italic,
-
-                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_bold(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
+                    content: vec![Box::new(InlineNode::Decoration{
                         deco_type: DecorationType::Bold,
 
                         // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
-                    }));
+                        content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
+                    })]
+                }));
 
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
 
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
+                return InlineNode::Complex(result).render_code_spans();
             }
 
-            match is_deletion(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
+            if let Bool::True(end) = is_deletion_subscript(&content, index) {
+                let mut result = vec![];
 
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
 
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Deletion,
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Deletion,
 
-                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_underline(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Underline,
-
-                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_superscript(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
-                        deco_type: DecorationType::Superscript,
-
-                        // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
-                    }));
-
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match is_subscript(&content, index) {
-                Bool::True(end) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(InlineNode::Decoration {
+                    content: vec![Box::new(InlineNode::Decoration{
                         deco_type: DecorationType::Subscript,
 
                         // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
-                        content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
-                    }));
+                        content: Self::from_mdxt(&content[index + 3..end - 2], doc_data, render_option).to_vec()
+                    })]
+                }));
 
-                    if end + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match read_direct_link(&content, index, &doc_data.link_references) {
-                Some((link_text, link_destination, last_index)) => {
-                    let mut result = vec![];
-                    let mut is_image = false;
-
-                    if index > 0 && content[index - 1] == '!' as u32 {
-                        is_image = true;
-                        index -= 1;
-                    }
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
-
-                    if is_image {
-                        result.push(Box::new(InlineNode::Image {
-                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
-                            description: undo_code_span_escapes(&link_text),
-                            address: handled_link
-                        }));
-                    }
-
-                    else {
-                        result.push(Box::new(InlineNode::Link {
-                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: handled_link
-                        }));
-                    }
-
-                    if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match read_reference_link(&content, index, &doc_data.link_references) {
-                Some((link_text, link_label, last_index)) => {
-                    let mut result = vec![];
-                    let mut is_image = false;
-
-                    // the existence of the link reference was tested by the `read_reference_link` function
-                    // it clones to result in order to avoid the borrow checker
-                    let link_destination = doc_data.link_references.get(&normalize_link_label(&link_label)).unwrap().clone();
-
-                    if index > 0 && content[index - 1] == '!' as u32 {
-                        is_image = true;
-                        index -= 1;
-                    }
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
-
-                    if is_image {
-                        result.push(Box::new(InlineNode::Image {
-                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
-                            description: undo_code_span_escapes(&link_text),
-                            address: handled_link
-                        }));
-                    }
-
-                    else {
-                        result.push(Box::new(InlineNode::Link {
-                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: handled_link
-                        }));
-                    }
-
-                    if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match read_footnote(&content, index, &doc_data.footnote_references) {
-                Some(footnote_index) => {
-                    let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
-                    let footnote_label = normalize_link_label(&content[index + 1..bracket_end_index]);
-                    let mut result = vec![];
-
-                    let inverse_index = doc_data.add_footnote_inverse_index(&footnote_label);
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    if render_option.footnote_tooltip {
-                        result.push(Box::new(InlineNode::Decoration {
-                            deco_type: DecorationType::Macro(InlineMacro::Tooltip {
-                                label: footnote_label[1..].to_vec(),
-                                message: load_tooltip_message(&footnote_label[1..], doc_data, render_option),
-                                index: doc_data.add_tooltip()
-                            }),
-                            content: vec![Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label)))]
-                        }));
-                    }
-
-                    else {
-                        result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
-                    }
-
-                    if bracket_end_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match read_shortcut_reference_link(&content, index, &doc_data.link_references) {
-                Some((link_text, last_index)) => {
-                    let mut result = vec![];
-                    let mut is_image = false;
-
-                    // the existence of the link reference was tested by the `read_reference_link` function
-                    // it clones to result in order to avoid the borrow checker
-                    let link_destination = doc_data.link_references.get(&normalize_link_label(&link_text)).unwrap().clone();
-
-                    if index > 0 && content[index - 1] == '!' as u32 {
-                        is_image = true;
-                        index -= 1;
-                    }
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
-
-                    if is_image {
-                        result.push(Box::new(InlineNode::Image {
-                            media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
-                            description: undo_code_span_escapes(&link_text),
-                            address: handled_link
-                        }));
-                    }
-
-                    else {
-                        result.push(Box::new(InlineNode::Link {
-                            text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
-                            destination: handled_link
-                        }));
-                    }
-
-                    if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
-                },
-                _ => {}
-            }
-
-            match check_and_parse_macro_inline(&content, index, doc_data, render_option) {
-                Some((parsed, last_index)) => {
-                    let mut result = vec![];
-
-                    if index > 0 {
-                        result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
-                    }
-
-                    result.push(Box::new(parsed));
-
-                    if last_index + 1 < content.len() {
-                        result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
-                    }
-
-                    return InlineNode::Complex(result).render_code_spans();
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
                 }
-                _ => {}
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_italic(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Italic,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_bold(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Bold,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_deletion(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Deletion,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_underline(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Underline,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 2..end - 1], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_superscript(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Superscript,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Bool::True(end) = is_subscript(&content, index) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(InlineNode::Decoration {
+                    deco_type: DecorationType::Subscript,
+
+                    // `Self::from_mdxt` always returns `InlineNode::Raw` or `InlineNode::Complex`, both of which can be converted to a Vec<Box<InlineNode>>
+                    content: Self::from_mdxt(&content[index + 1..end], doc_data, render_option).to_vec()
+                }));
+
+                if end + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Some((link_text, link_destination, last_index)) = read_direct_link(&content, index, &doc_data.link_references) {
+                let mut result = vec![];
+                let mut is_image = false;
+
+                if index > 0 && content[index - 1] == '!' as u32 {
+                    is_image = true;
+                    index -= 1;
+                }
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
+                if is_image {
+                    result.push(Box::new(InlineNode::Image {
+                        media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
+                        description: undo_code_span_escapes(&link_text),
+                        address: handled_link
+                    }));
+                }
+
+                else {
+                    result.push(Box::new(InlineNode::Link {
+                        text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
+                        destination: handled_link
+                    }));
+                }
+
+                if last_index + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Some((link_text, link_label, last_index)) = read_reference_link(&content, index, &doc_data.link_references) {
+                let mut result = vec![];
+                let mut is_image = false;
+
+                // the existence of the link reference was tested by the `read_reference_link` function
+                // it clones to result in order to avoid the borrow checker
+                let link_destination = doc_data.link_references.get(&normalize_link_label(&link_label)).unwrap().clone();
+
+                if index > 0 && content[index - 1] == '!' as u32 {
+                    is_image = true;
+                    index -= 1;
+                }
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
+                if is_image {
+                    result.push(Box::new(InlineNode::Image {
+                        media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
+                        description: undo_code_span_escapes(&link_text),
+                        address: handled_link
+                    }));
+                }
+
+                else {
+                    result.push(Box::new(InlineNode::Link {
+                        text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
+                        destination: handled_link
+                    }));
+                }
+
+                if last_index + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Some(footnote_index) = read_footnote(&content, index, &doc_data.footnote_references) {
+                let bracket_end_index = get_bracket_end_index(&content, index).unwrap();
+                let footnote_label = normalize_link_label(&content[index + 1..bracket_end_index]);
+                let mut result = vec![];
+
+                let inverse_index = doc_data.add_footnote_inverse_index(&footnote_label);
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                if render_option.footnote_tooltip {
+                    result.push(Box::new(InlineNode::Decoration {
+                        deco_type: DecorationType::Macro(InlineMacro::Tooltip {
+                            label: footnote_label[1..].to_vec(),
+                            message: load_tooltip_message(&footnote_label[1..], doc_data, render_option),
+                            index: doc_data.add_tooltip()
+                        }),
+                        content: vec![Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label)))]
+                    }));
+                }
+
+                else {
+                    result.push(Box::new(InlineNode::Footnote((footnote_index, inverse_index, footnote_label))));
+                }
+
+                if bracket_end_index + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Some((link_text, last_index)) = read_shortcut_reference_link(&content, index, &doc_data.link_references) {
+                let mut result = vec![];
+                let mut is_image = false;
+
+                // the existence of the link reference was tested by the `read_reference_link` function
+                // it clones to result in order to avoid the borrow checker
+                let link_destination = doc_data.link_references.get(&normalize_link_label(&link_text)).unwrap().clone();
+
+                if index > 0 && content[index - 1] == '!' as u32 {
+                    is_image = true;
+                    index -= 1;
+                }
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                let handled_link = into_v32(&render_option.handle_link(&from_v32(&link_destination)));
+
+                if is_image {
+                    result.push(Box::new(InlineNode::Image {
+                        media_type: MediaType::from_url(&handled_link, render_option.enable_youtube),
+                        description: undo_code_span_escapes(&link_text),
+                        address: handled_link
+                    }));
+                }
+
+                else {
+                    result.push(Box::new(InlineNode::Link {
+                        text: Self::from_mdxt(&link_text, doc_data, render_option).to_vec(),
+                        destination: handled_link
+                    }));
+                }
+
+                if last_index + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            }
+
+            if let Some((parsed, last_index)) = check_and_parse_macro_inline(&content, index, doc_data, render_option) {
+                let mut result = vec![];
+
+                if index > 0 {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&content[0..index]))));
+                }
+
+                result.push(Box::new(parsed));
+
+                if last_index + 1 < content.len() {
+                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
             }
 
             index += 1;

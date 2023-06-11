@@ -130,9 +130,8 @@ pub fn read_shortcut_reference_link(content: &[u32], index: usize, link_referenc
 
                 else if content[bracket_end_index + 1] == '(' as u32 {
 
-                    match get_parenthesis_end_index(content, bracket_end_index + 1) {
-                        Some(_) => {return None;}
-                        _ => {},
+                    if let Some(_) = get_parenthesis_end_index(content, bracket_end_index + 1) {
+                        return None;
                     }
 
                 }
@@ -140,22 +139,19 @@ pub fn read_shortcut_reference_link(content: &[u32], index: usize, link_referenc
                 else {  // content[bracket_end_index + 1] == '[' as u32
 
                     // `[link][[br]]` is a shortcut reference link followed by a macro
-                    match get_bracket_end_index(content, bracket_end_index + 1) {
-                        Some(second_bracket_end_index) => {
+                    if let Some(second_bracket_end_index) = get_bracket_end_index(content, bracket_end_index + 1) {
 
-                            if second_bracket_end_index == bracket_end_index + 2 || content[bracket_end_index + 2] != '[' as u32 {
-                                return None;
-                            }
-
-                            match get_bracket_end_index(content, bracket_end_index + 2) {
-                                Some(second_inner_bracket_end_index) if second_inner_bracket_end_index + 1 == second_bracket_end_index => {
-                                    // may be a shortcut reference link
-                                }
-                                _ => { return None; }
-                            }
-
+                        if second_bracket_end_index == bracket_end_index + 2 || content[bracket_end_index + 2] != '[' as u32 {
+                            return None;
                         }
-                        _ => {},
+
+                        match get_bracket_end_index(content, bracket_end_index + 2) {
+                            Some(second_inner_bracket_end_index) if second_inner_bracket_end_index + 1 == second_bracket_end_index => {
+                                // may be a shortcut reference link
+                            }
+                            _ => { return None; }
+                        }
+
                     }
 
                 }
