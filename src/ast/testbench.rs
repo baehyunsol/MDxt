@@ -567,6 +567,11 @@ for (let i = 0; i < tooltips.length; i++) {
 }
 </script>
 "), ("
+[[tooltip = foo]] nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] [[/tooltip]]
+
+[^foo]: tooltip foo
+[^bar]: tooltip bar
+", ""), ("
 Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
 
 `🦈`, \\🦈
@@ -574,7 +579,63 @@ Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍�
 <p>Multibyte characters: 가나다&#127836;&#128065;&#129416;&#129379;&#127834;&#128508;&#127874;&#128141;&#128247;&#127837;&#129425;&#128077;&#127909;&#128117;&#128512;&#129490;&#127997;&#129335;&#127997;&#128104;&#127999;&#8205;&#127891;&#127472;&#127479;&#129781;&#127997;&#129781;&#127998;&#129781;&#127999;❤&#65039;&#129505;&#128155;&#128154;&#128153;&#128156;&#128420;&#129293;&#129294;</p>
 
 <p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
-"), ("", "")
+"), ("
+# Multiline Math macro
+
+[[math]]
+
+sqrt{2 + 2} = 2
+
+sqrt{3 + 3 + 3} = 3
+
+[[/math]]
+
+## nested multiline math macros
+
+[[math]]
+
+sqrt{2 + 2} = 2
+
+sqrt{3 + 3 + 3} = 3
+
+[[math]]
+
+sqrt{2 + 2} = 2
+
+sqrt{3 + 3 + 3} = 3
+
+[[/math]]
+
+sqrt{2 + 2} = 2
+
+sqrt{3 + 3 + 3} = 3
+
+[[/math]]
+
+## another macro inside a math macro
+
+[[math]]
+
+[[center]]
+
+sqrt{2 + 2} = 2
+
+sqrt{3 + 3 + 3} = 3
+
+[[/center]]
+
+[[/math]]
+
+", ""), ("# Multiline tooltips
+
+[[tooltip = abc]]
+
+Hover over me!
+
+Hover over me!
+
+[[/tooltip]]
+", ""), ("", "")
     ];
 
     result.into_iter().map(

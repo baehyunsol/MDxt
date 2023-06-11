@@ -20,7 +20,7 @@ impl TableAlignment {
     pub fn closing_tag(&self) -> Vec<u32> {
         match self {
             TableAlignment::None => vec![],
-            _ => into_v32("</div>")
+            TableAlignment::Left | TableAlignment::Center | TableAlignment::Right => into_v32("</div>")
         }
     }
 

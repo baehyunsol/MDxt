@@ -31,7 +31,7 @@ impl MediaType {
             match ext {
                 FileExt::Mp4 | FileExt::Webm => MediaType::Video(ext),
                 FileExt::Mp3 | FileExt::Wav | FileExt::Ogg | FileExt::M4a => MediaType::Audio(ext),
-                _ => MediaType::Image
+                FileExt::Jpg | FileExt::Png | FileExt::Svg | FileExt::Gif => MediaType::Image
             }
 
         }
@@ -613,7 +613,7 @@ impl InlineNode {
         match self {
             InlineNode::Raw(_) => vec![Box::new(self)],
             InlineNode::Complex(vec) => vec,
-            _ => panic!("oh no!")
+            _ => unreachable!()
         }
 
     }

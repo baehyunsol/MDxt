@@ -53,12 +53,12 @@ fn render_icon_test() {
     for (name, src) in icons.iter() {
 
         let (source, license) = match src {
-            _s if *_s == EVA_ICON => ("EVA", "MIT"),
-            _s if *_s == MATERIAL_ICON => ("MATERIAL", "Apache 2.0"),
-            _s if *_s == DEV_ICON => ("DEV", "MIT"),
-            _s if *_s == ION_ICON => ("ION", "MIT"),
-            _s if *_s == BOOTSTRAP_ICON => ("BOOTSTRAP", "MIT"),
-            _ => panic!()
+            src if *src == EVA_ICON => ("EVA", "MIT"),
+            src if *src == MATERIAL_ICON => ("MATERIAL", "Apache 2.0"),
+            src if *src == DEV_ICON => ("DEV", "MIT"),
+            src if *src == ION_ICON => ("ION", "MIT"),
+            src if *src == BOOTSTRAP_ICON => ("BOOTSTRAP", "MIT"),
+            _ => unreachable!()
         };
 
         strings.push(format!(

@@ -60,7 +60,7 @@ impl AST {
                     if lines[index].is_code_fence_end() {
                         let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index], fenced_code_count) {
                             ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => (code_fence_size, is_tilde_fence),
-                            _ => panic!("unreachable code")
+                            _ => unreachable!()
                         };
 
                         if end_code_fence_size >= *code_fence_size && is_tilde_end_fence == *is_tilde_fence {

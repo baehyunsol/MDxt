@@ -25,6 +25,7 @@ enum MultiLineMacroType {
     LineHeight(Vec<u32>),
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
+    Math(Vec<u32>),
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,
@@ -119,9 +120,10 @@ impl MultiLineMacro {
                     is_closing
                 }
             },
-            _ => {
-                unreachable!()
-            }
+            // macros that do not have closing tags
+            MacroType::Toc | MacroType::Blank | MacroType::Br
+            | MacroType::Char | MacroType::Icon | MacroType::Math
+            | MacroType::Tooltip => unreachable!()
         }
 
     }
@@ -136,7 +138,9 @@ impl MultiLineMacro {
                     tag.clone(),
                     into_v32(">")
                 ].concat(),
-                _ => into_v32("</div>")
+                MultiLineMacroType::Box { .. } | MultiLineMacroType::Color(_)
+                | MultiLineMacroType::Size(_) | MultiLineMacroType::LineHeight(_)
+                | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_) => into_v32("</div>")
             }
 
         }

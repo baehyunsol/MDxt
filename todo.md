@@ -102,18 +102,6 @@ column이나 row는 어디서 선언해야해?
 
 ---
 
-github이나 youtube 같은 거 macro로 지원할까? [linus.dev](https://linus.dev)에 있는 거 같은 github 카드!
-- `<iframe width="420" height="315"src="https://www.youtube.com/embed/W_xYzhjIEV8"></iframe>`
-- 간단하구먼.
-- github는 3rd party js lib 써야함... https://github.com/lepture/github-cards 같은 거??? 별루...
-
-emoji도 지원했으면 좋겠음...
-- https://www.w3schools.com/charsets/ref_emoji.asp
-- https://www.alt-codes.net/flags
-- char랑 겹치는 건 빼자!
-
----
-
 table에 rowspan도 추가하자!
 
 ```
@@ -149,10 +137,6 @@ diagrams inside fenced code blocks
 
 ---
 
-refactor -> `if let` 사용
-
----
-
 collapsible sidebar -> `~/Documents/web`에 만들어 놓았음!
 
 근데 multiline macro를 어떻게 쓰지...?? 지금 multiline macro로 된 Node는 시작 node와 끝 Node의 정보만 있고 안의 내용은 없음
@@ -166,3 +150,26 @@ collapsible sidebar -> `~/Documents/web`에 만들어 놓았음!
 저거 되면 toc 구현도 고칠까? 지금 toc도 너무 더럽게 돼 있음...
 
 저거 하면 위에서 말한 reference도 구현할 수 있음!
+
+---
+
+multiline math랑 multiline tooltip이 문제가 있거든?? 쟤네 해결하면 그걸로 multiline collapsible도 똑같이 구현 가능!
+
+---
+
+lines를 Node로 쭉 바꾼 다음에, multiline macro (math, tooltip, collapsible, sidebar, reference 등등) 사이에 낀 Node만 따로 뽑는 건 어렵지 않을 듯?
+
+모든 multiline macro에 각각 id 부여 -> opening과 closing은 같은 id 갖도록!
+
+나중에 Node들 보면서 저 multiline macro 안에 낀 Node들은 따로 빼기
+
+여기까진 쉬운데, Node를 html로 바꾸는게 빡셈...
+
+1. reference는 일단 구현 보류
+2. tooltip 구현하고 그거랑 동일하게 collapsible 구현
+3. math -> 안에 있는 Node를 다시 mdxt로 바꾼 다음에, 거기서 나온 Vec<u32>를 통째로 math로 변환
+4. sidebar -> 이것도 collapsible이랑 동일하게 구현???
+
+신경써야 할 것들...
+
+1. footnote 등장하면 (정의말고 ref), 걔네 어떻게 셀지가 막막...

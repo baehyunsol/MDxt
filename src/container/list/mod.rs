@@ -273,7 +273,7 @@ fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
 
             (ListType::Ordered(Marker::Number), to_int(num).unwrap() as usize)
         }
-        _ => panic!()
+        _ => unreachable!()
     }
 
 }

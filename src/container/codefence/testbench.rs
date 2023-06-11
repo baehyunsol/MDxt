@@ -132,7 +132,7 @@ fn fence_test() {
             ParseState::CodeFence { language, line_num, highlights, code_fence_size, copy_button, is_tilde_fence, index: _index } => (
                 from_v32(&language), line_num, highlights, code_fence_size, copy_button, is_tilde_fence
             ),
-            _ => panic!("This doesn't make sense at all."),
+            _ => unreachable!(),
         };
 
         if language_answer != &language_actual {
