@@ -791,49 +791,50 @@ fn mdxt_test() {
 
 }
 
-const IS_HEADER: usize = 0;
-const IS_EMPTY: usize = 1;
-const IS_CODEFENCE_BEGIN: usize = 2;
-const IS_CODEFENCE_END: usize = 3;
-const IS_TABLE_ROW: usize = 4;
-const IS_TABLE_DELIMITER: usize = 5;
-const IS_THEMATIC_BREAK: usize = 6;
-const IS_BLOCKQUOTE: usize = 7;
-const IS_UNORDERED_LIST: usize = 8;
-const IS_ORDERED_LIST: usize = 9;
-const IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION: usize = 10;
-const IS_MULTILINE_MACRO: usize = 11;
+const IS_HEADER: u32 = 1;
+const IS_EMPTY: u32 = 2;
+const IS_CODEFENCE_BEGIN: u32 = 4;
+const IS_CODEFENCE_END: u32 = 8;
+const IS_TABLE_ROW: u32 = 16;
+const IS_TABLE_DELIMITER: u32 = 32;
+const IS_THEMATIC_BREAK: u32 = 64;
+const IS_BLOCKQUOTE: u32 = 128;
+const IS_UNORDERED_LIST: u32 = 256;
+const IS_ORDERED_LIST: u32 = 512;
+const IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION: u32 = 1024;
+const IS_MULTILINE_MACRO: u32 = 2048;
 
-fn line_samples() -> Vec<(Line, Vec<usize>)> {
+fn line_samples() -> Vec<(Line, u32)> {
     vec![
-        (Line::from_raw_string("# Header"), vec![IS_HEADER]),
-        (Line::from_raw_string(""), vec![IS_EMPTY]),
-        (Line::from_raw_string(" "), vec![IS_EMPTY]),
-        (Line::from_raw_string("```"), vec![IS_CODEFENCE_BEGIN, IS_CODEFENCE_END]),
-        (Line::from_raw_string("```rust"), vec![IS_CODEFENCE_BEGIN]),
-        (Line::from_raw_string("[[box]]"), vec![IS_MULTILINE_MACRO]),
-        (Line::from_raw_string("[[box]] box"), vec![]),
-        (Line::from_raw_string("[[char = big sigma]]: a finite set of symbols."), vec![]),
-        (Line::from_raw_string("---"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string(" ---"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("  ---"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("    ---"), vec![]),
-        (Line::from_raw_string("***"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string(" ***"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("  ***"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("    ***"), vec![]),
-        (Line::from_raw_string("___"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string(" ___"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("  ___"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("    ___"), vec![]),
-        (Line::from_raw_string(" - - -"), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string(" - - - "), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string(" - * - "), vec![IS_UNORDERED_LIST]),
-        (Line::from_raw_string(" -           -         - "), vec![IS_THEMATIC_BREAK]),
-        (Line::from_raw_string("-"), vec![IS_UNORDERED_LIST]),
-        (Line::from_raw_string("- "), vec![IS_UNORDERED_LIST]),
-        (Line::from_raw_string("- abc"), vec![IS_UNORDERED_LIST]),
-        (Line::from_raw_string("-abc"), vec![]),
+        (Line::from_raw_string("# Header"), IS_HEADER),
+        (Line::from_raw_string("    # Header"), 0),
+        (Line::from_raw_string(""), IS_EMPTY),
+        (Line::from_raw_string(" "), IS_EMPTY),
+        (Line::from_raw_string("```"), IS_CODEFENCE_BEGIN | IS_CODEFENCE_END),
+        (Line::from_raw_string("```rust"), IS_CODEFENCE_BEGIN),
+        (Line::from_raw_string("[[box]]"), IS_MULTILINE_MACRO),
+        (Line::from_raw_string("[[box]] box"), 0),
+        (Line::from_raw_string("[[char = big sigma]]: a finite set of symbols."), 0),
+        (Line::from_raw_string("---"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string(" ---"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("  ---"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("    ---"), 0),
+        (Line::from_raw_string("***"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string(" ***"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("  ***"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("    ***"), 0),
+        (Line::from_raw_string("___"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string(" ___"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("  ___"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("    ___"), 0),
+        (Line::from_raw_string(" - - -"), IS_THEMATIC_BREAK),
+        (Line::from_raw_string(" - - - "), IS_THEMATIC_BREAK),
+        (Line::from_raw_string(" - * - "), IS_UNORDERED_LIST),
+        (Line::from_raw_string(" -           -         - "), IS_THEMATIC_BREAK),
+        (Line::from_raw_string("-"), IS_UNORDERED_LIST),
+        (Line::from_raw_string("- "), IS_UNORDERED_LIST),
+        (Line::from_raw_string("- abc"), IS_UNORDERED_LIST),
+        (Line::from_raw_string("-abc"), 0),
     ]
 }
 
@@ -843,143 +844,27 @@ fn line_predicate_test() {
     let mut failures = vec![];
     let samples = line_samples();
 
-    for (line, trues) in samples.iter() {
-        let mut predicates = vec![false; IS_MULTILINE_MACRO + 1];
+    for (line, predicates) in samples.iter() {
+        let result = line.is_header() as u32 * IS_HEADER
+        | line.is_empty() as u32 * IS_EMPTY
+        | line.is_code_fence_begin() as u32 * IS_CODEFENCE_BEGIN
+        | line.is_code_fence_end() as u32 * IS_CODEFENCE_END
+        | line.is_table_row() as u32 * IS_TABLE_ROW
+        | line.is_table_delimiter() as u32 * IS_TABLE_DELIMITER
+        | line.is_thematic_break() as u32 * IS_THEMATIC_BREAK
+        | line.is_blockquote() as u32 * IS_BLOCKQUOTE
+        | line.is_unordered_list() as u32 * IS_UNORDERED_LIST
+        | line.is_ordered_list() as u32 * IS_ORDERED_LIST
+        | line.is_link_or_footnote_reference_definition() as u32 * IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION
+        | line.is_multiline_macro() as u32 * IS_MULTILINE_MACRO;
 
-        for true_ in trues {
-            predicates[*true_] = true;
-        }
-
-        if line.is_header() != predicates[IS_HEADER] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_header\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_HEADER],
-                line.is_header()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_empty() != predicates[IS_EMPTY] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_empty\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_EMPTY],
-                line.is_empty()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_code_fence_begin() != predicates[IS_CODEFENCE_BEGIN] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_code_fence_begin\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_CODEFENCE_BEGIN],
-                line.is_code_fence_begin()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_code_fence_end() != predicates[IS_CODEFENCE_END] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_code_fence_end\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_CODEFENCE_END],
-                line.is_code_fence_end()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_table_row() != predicates[IS_TABLE_ROW] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_table_row\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_TABLE_ROW],
-                line.is_table_row()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_table_delimiter() != predicates[IS_TABLE_DELIMITER] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_table_delimiter\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_TABLE_DELIMITER],
-                line.is_table_delimiter()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_thematic_break() != predicates[IS_THEMATIC_BREAK] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_thematic_break\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_THEMATIC_BREAK],
-                line.is_thematic_break()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_blockquote() != predicates[IS_BLOCKQUOTE] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_blockquote\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_BLOCKQUOTE],
-                line.is_blockquote()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_unordered_list() != predicates[IS_UNORDERED_LIST] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_unordered_list\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_UNORDERED_LIST],
-                line.is_unordered_list()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_ordered_list() != predicates[IS_ORDERED_LIST] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_ordered_list\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_ORDERED_LIST],
-                line.is_ordered_list()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_link_or_footnote_reference_definition() != predicates[IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_link_or_footnote_reference_definition\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_LINK_OR_FOOTNOTE_REFERENCE_DEFINITION],
-                line.is_link_or_footnote_reference_definition()
-            );
-
-            failures.push(failure);
-        }
-
-        if line.is_multiline_macro() != predicates[IS_MULTILINE_MACRO] {
-            let failure = format!(
-                "line: {:?}\npredicate: is_multiline_macro\ndesired: {}, result: {}",
-                from_v32(&line.to_raw()),
-                predicates[IS_MULTILINE_MACRO],
-                line.is_multiline_macro()
-            );
-
-            failures.push(failure);
+        if result != *predicates {
+            failures.push(format!(
+                "line: {:?}, actual: {}, desired: {}",
+                from_v32(&line.content),
+                result,
+                predicates
+            ));
         }
 
     }
@@ -988,7 +873,7 @@ fn line_predicate_test() {
         panic!(
             "{} out of {} line_predicate_test case(s) have failed!\n{}",
             failures.len(),
-            (IS_MULTILINE_MACRO + 1) * samples.len(),
+            samples.len(),
             failures.join("\n\n-----------------------------------\n")
         );
     }
