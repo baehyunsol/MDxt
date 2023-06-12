@@ -81,19 +81,22 @@ impl Node {
         Node::Blockquote(Blockquote::from_lines(lines))
     }
 
-    pub fn new_macro(line: &Line) -> Node {
-        Node::MultiLineMacro(MultiLineMacro::from_line(line))
+    pub fn new_macro(line: &Line, macro_id: u64) -> Node {
+        Node::MultiLineMacro(MultiLineMacro::from_line(line, macro_id))
     }
 
-    pub fn new_math_ml(lines: &Vec<Line>) -> Node {
-        Node::MultiLineMacro(MultiLineMacro {
-            macro_type: MultiLineMacroType::Math(
-                lines.iter().map(
-                    |line| line.to_raw()
-                ).collect::<Vec<Vec<u32>>>().join(&['\n' as u32][..])
-            ),
-            is_closing: false
-        })
+    pub fn new_math_ml(lines: &Vec<Line>, macro_id: u64) -> Node {
+        Node::MultiLineMacro(
+            MultiLineMacro {
+                macro_type: MultiLineMacroType::Math(
+                    lines.iter().map(
+                        |line| line.to_raw()
+                    ).collect::<Vec<Vec<u32>>>().join(&['\n' as u32][..])
+                ),
+                is_closing: false,
+                id: macro_id
+            },
+        )
     }
 
 }

@@ -4,13 +4,16 @@ use super::{
     predicate::read_macro, parse::{parse_html_tag, parse_box_arguments},
     super::math::render_math
 };
-use crate::ast::line::Line;
+use crate::ast::{line::Line, node::Node};
 use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct MultiLineMacro {
     pub macro_type: MultiLineMacroType,
-    pub is_closing: bool
+    pub is_closing: bool,
+
+    // all the multiline-macros have a unique id: a pair of opening and closing macro have the same id
+    pub id: u64
 }
 
 #[derive(Clone)]
@@ -27,6 +30,7 @@ pub enum MultiLineMacroType {
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
     Math(Vec<u32>),
+    Tooltip(Vec<Node>),
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,
@@ -38,7 +42,7 @@ impl MultiLineMacro {
 
     // all the validity checks are done before this function
     // this function assumes that everything is valid
-    pub fn from_line(line: &Line) -> Self {
+    pub fn from_line(line: &Line, id: u64) -> Self {
         let macro_content = read_macro(&line.content, 0).unwrap();
         let macro_arguments = parse_arguments(&macro_content);
         let mut macro_name = get_macro_name(&macro_arguments);
@@ -65,15 +69,18 @@ impl MultiLineMacro {
 
                     MultiLineMacroType::Box { border, inline, width, height }
                 },
-                is_closing
+                is_closing,
+                id
             },
             MacroType::Color => MultiLineMacro {
                 macro_type: MultiLineMacroType::Color(macro_name.to_vec()),
-                is_closing
+                is_closing,
+                id
             },
             MacroType::Size => MultiLineMacro {
                 macro_type: MultiLineMacroType::Size(macro_name.to_vec()),
-                is_closing
+                is_closing,
+                id
             },
             MacroType::LineHeight => MultiLineMacro {
                 macro_type: MultiLineMacroType::LineHeight(
@@ -87,11 +94,13 @@ impl MultiLineMacro {
                     }
 
                 ),
-                is_closing
+                is_closing,
+                id
             },
             MacroType::Alignment => MultiLineMacro {
                 macro_type: MultiLineMacroType::Alignment(macro_name.to_vec()),
-                is_closing
+                is_closing,
+                id
             },
             MacroType::Highlight => MultiLineMacro {
                 macro_type: MultiLineMacroType::Highlight(
@@ -105,10 +114,11 @@ impl MultiLineMacro {
                     }
 
                 ),
-                is_closing
+                is_closing,
+                id
             },
             MacroType::HTML => {
-                let (tag, class, id) = if is_closing {
+                let (tag, class, html_id) = if is_closing {
                     (macro_name.clone(), vec![], vec![])
                 }
                 
@@ -117,13 +127,24 @@ impl MultiLineMacro {
                 };
 
                 MultiLineMacro {
-                    macro_type: MultiLineMacroType::HTML { tag, class, id },
-                    is_closing
+                    macro_type: MultiLineMacroType::HTML { tag, class, id: html_id },
+                    is_closing,
+                    id
                 }
             },
+
+            MacroType::Tooltip => MultiLineMacro {
+                macro_type: MultiLineMacroType::Tooltip(vec![]),  // will be handled by another function
+                is_closing,
+                id
+            },
+
+            // it's handled by another ParseState
+            MacroType::Math => unreachable!(),
+
             // macros that do not have closing tags
-            MacroType::Toc | MacroType::Blank | MacroType::Br | MacroType::Math
-            | MacroType::Char | MacroType::Icon | MacroType::Tooltip => unreachable!("{macro_type:?}")
+            MacroType::Toc | MacroType::Blank | MacroType::Br
+            | MacroType::Char | MacroType::Icon => unreachable!("{macro_type:?}")
         }
 
     }
@@ -138,9 +159,11 @@ impl MultiLineMacro {
                     tag.clone(),
                     into_v32(">")
                 ].concat(),
+
                 MultiLineMacroType::Box { .. } | MultiLineMacroType::Color(_)
                 | MultiLineMacroType::Size(_) | MultiLineMacroType::LineHeight(_)
-                | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_) => into_v32("</div>"),
+                | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_)
+                | MultiLineMacroType::Tooltip(_) => into_v32("</div>"),
 
                 // it doesn't need any closing tag because `render_math` generates both opening and closing tags
                 MultiLineMacroType::Math(_) => vec![]
@@ -200,6 +223,7 @@ impl MultiLineMacro {
                     highlight.clone(),
                     into_v32("\">")
                 ].concat(),
+                MultiLineMacroType::Tooltip(nodes) => todo!(),  // what do I do...
                 MultiLineMacroType::HTML{ tag, class, id } => {
                     let mut result = vec![];
 

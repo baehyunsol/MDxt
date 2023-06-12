@@ -761,7 +761,37 @@ sqrt{3 + 3 + 3} = 3 br br
 
 [^foo]: tooltip foo
 [^bar]: tooltip bar
-", ""), ("# Multiline tooltips
+", "
+<p>
+    <span class=\"tooltip-container\" id=\"tooltip-container-0\"> nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] <span class=\"tooltip-message\" id=\"tooltip-message-0\">tooltip foo</span></span>
+</p>
+
+<script>let tooltips = document.querySelectorAll(\".tooltip-container\");
+
+for (let i = 0; i < tooltips.length; i++) {
+    let child = document.getElementById(\"tooltip-message-\" + i);
+
+    document.getElementById(\"tooltip-container-\" + i).addEventListener(\"mousemove\", e => {
+
+        if (e.clientX + child.clientWidth > window.innerWidth) {
+            child.style.left = e.clientX - child.clientWidth + \"px\";
+        }
+
+        else {
+            child.style.left = e.clientX + \"px\";
+        }
+
+        if (e.clientY < child.clientHeight + 8) {
+            child.style.top = e.clientY + 8 + \"px\";
+        }
+
+        else {
+            child.style.top = (e.clientY - child.clientHeight - 8) + \"px\";
+        }
+
+    });
+}</script>
+"), ("# Multiline tooltips
 
 [[tooltip = abc]]
 
@@ -791,6 +821,7 @@ fn mdxt_test() {
 
 }
 
+const IS_PARAGRAPH: u32 = 0;
 const IS_HEADER: u32 = 1;
 const IS_EMPTY: u32 = 2;
 const IS_CODEFENCE_BEGIN: u32 = 4;
@@ -807,26 +838,26 @@ const IS_MULTILINE_MACRO: u32 = 2048;
 fn line_samples() -> Vec<(Line, u32)> {
     vec![
         (Line::from_raw_string("# Header"), IS_HEADER),
-        (Line::from_raw_string("    # Header"), 0),
+        (Line::from_raw_string("    # Header"), IS_PARAGRAPH),
         (Line::from_raw_string(""), IS_EMPTY),
         (Line::from_raw_string(" "), IS_EMPTY),
         (Line::from_raw_string("```"), IS_CODEFENCE_BEGIN | IS_CODEFENCE_END),
         (Line::from_raw_string("```rust"), IS_CODEFENCE_BEGIN),
         (Line::from_raw_string("[[box]]"), IS_MULTILINE_MACRO),
-        (Line::from_raw_string("[[box]] box"), 0),
-        (Line::from_raw_string("[[char = big sigma]]: a finite set of symbols."), 0),
+        (Line::from_raw_string("[[box]] box"), IS_PARAGRAPH),
+        (Line::from_raw_string("[[char = big sigma]]: a finite set of symbols."), IS_PARAGRAPH),
         (Line::from_raw_string("---"), IS_THEMATIC_BREAK),
         (Line::from_raw_string(" ---"), IS_THEMATIC_BREAK),
         (Line::from_raw_string("  ---"), IS_THEMATIC_BREAK),
-        (Line::from_raw_string("    ---"), 0),
+        (Line::from_raw_string("    ---"), IS_PARAGRAPH),
         (Line::from_raw_string("***"), IS_THEMATIC_BREAK),
         (Line::from_raw_string(" ***"), IS_THEMATIC_BREAK),
         (Line::from_raw_string("  ***"), IS_THEMATIC_BREAK),
-        (Line::from_raw_string("    ***"), 0),
+        (Line::from_raw_string("    ***"), IS_PARAGRAPH),
         (Line::from_raw_string("___"), IS_THEMATIC_BREAK),
         (Line::from_raw_string(" ___"), IS_THEMATIC_BREAK),
         (Line::from_raw_string("  ___"), IS_THEMATIC_BREAK),
-        (Line::from_raw_string("    ___"), 0),
+        (Line::from_raw_string("    ___"), IS_PARAGRAPH),
         (Line::from_raw_string(" - - -"), IS_THEMATIC_BREAK),
         (Line::from_raw_string(" - - - "), IS_THEMATIC_BREAK),
         (Line::from_raw_string(" - * - "), IS_UNORDERED_LIST),
@@ -834,7 +865,7 @@ fn line_samples() -> Vec<(Line, u32)> {
         (Line::from_raw_string("-"), IS_UNORDERED_LIST),
         (Line::from_raw_string("- "), IS_UNORDERED_LIST),
         (Line::from_raw_string("- abc"), IS_UNORDERED_LIST),
-        (Line::from_raw_string("-abc"), 0),
+        (Line::from_raw_string("-abc"), IS_PARAGRAPH),
     ]
 }
 

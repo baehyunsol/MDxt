@@ -51,7 +51,8 @@ impl AST {
         let mut table_count = 0;
         let mut fenced_code_count = 0;
 
-        let mut macro_closing_indexes = vec![];
+        // HashMap<index, macro_id>
+        let mut macro_closing_indexes = HashMap::new();
 
         let mut index = 0;
 
@@ -80,10 +81,11 @@ impl AST {
                 },
                 ParseState::Paragraph | ParseState::None => {
 
-                    if macro_closing_indexes.contains(&index) {
+                    if macro_closing_indexes.contains_key(&index) {
+                        let macro_id = *macro_closing_indexes.get(&index).unwrap();
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                        curr_nodes.push(Node::new_macro(&lines[index]));
-                        macro_closing_indexes = macro_closing_indexes.into_iter().filter(|i| *i != index).collect();
+                        curr_nodes.push(Node::new_macro(&lines[index], macro_id));
+                        macro_closing_indexes.remove(&index);
                         index += 1;
                         continue;
                     }
@@ -233,14 +235,15 @@ impl AST {
 
                                             if inner_macro_stack.len() == 0 {
                                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                                                macro_closing_indexes.push(macro_closing_index);
+                                                let macro_id = rand::random::<u64>();
 
                                                 if macro_name == into_v32("math") {
                                                     curr_parse_state = ParseState::Math { end_index: macro_closing_index };
                                                 }
 
                                                 else {
-                                                    curr_nodes.push(Node::new_macro(&lines[index]));
+                                                    macro_closing_indexes.insert(macro_closing_index, macro_id);
+                                                    curr_nodes.push(Node::new_macro(&lines[index], macro_id));
                                                     curr_parse_state = ParseState::Paragraph;
                                                 }
 
@@ -411,13 +414,18 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             panic!("What should I do?");
         },
         ParseState::Math { .. } => {
-            curr_nodes.push(Node::new_math_ml(curr_lines));
+            // Don't worry, it's not gonna collide
+            let macro_id = rand::random::<u64>();
+            curr_nodes.push(Node::new_math_ml(curr_lines, macro_id));
 
             // since the above line only generates an opening macro, it adds a closing one
-            curr_nodes.push(Node::MultiLineMacro(MultiLineMacro {
-                macro_type: MultiLineMacroType::Math(into_v32("[[/math]]")),
-                is_closing: true,
-            }));
+            curr_nodes.push(Node::MultiLineMacro(
+                MultiLineMacro {
+                    macro_type: MultiLineMacroType::Math(into_v32("[[/math]]")),
+                    is_closing: true,
+                    id: macro_id
+                }
+            ));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         }
