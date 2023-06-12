@@ -3,7 +3,7 @@ use crate::inline::{
     footnote::{Footnote, predicate::is_valid_footnote_label},
     InlineNode,
     link::{normalize_link_label, predicate::read_link_reference},
-    macros::{get_macro_name, parse_arguments, predicate::read_macro, MACROS}
+    macros::{get_macro_name, parse_arguments, predicate::read_macro, MACROS, multiline::{MultiLineMacro, MultiLineMacroType}}
 };
 use crate::container::{
     codefence::read_code_fence_info,
@@ -30,6 +30,9 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         header_lines: Vec<Line>,
         alignments: Line,
         index: usize  // index is used when making collapsible tables
+    },
+    Math {  // multiline [[math]] macro
+        end_index: usize
     },
     Blockquote,
     List,
@@ -230,9 +233,17 @@ impl AST {
 
                                             if inner_macro_stack.len() == 0 {
                                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                                                curr_parse_state = ParseState::Paragraph;
-                                                curr_nodes.push(Node::new_macro(&lines[index]));
                                                 macro_closing_indexes.push(macro_closing_index);
+
+                                                if macro_name == into_v32("math") {
+                                                    curr_parse_state = ParseState::Math { end_index: macro_closing_index };
+                                                }
+
+                                                else {
+                                                    curr_nodes.push(Node::new_macro(&lines[index]));
+                                                    curr_parse_state = ParseState::Paragraph;
+                                                }
+
                                                 index += 1;
                                                 continue 'outer_loop;
                                             }
@@ -296,6 +307,13 @@ impl AST {
                         curr_parse_state = ParseState::Paragraph;
                     }
 
+                },
+                ParseState::Math { end_index } => if index == *end_index {
+                    add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                }
+
+                else {
+                    curr_lines.push(lines[index].clone());
                 },
                 ParseState::Table { .. } => {
 
@@ -389,12 +407,19 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
-        ParseState::None => {
+        ParseState::None => if curr_lines.len() != 0 {
+            panic!("What should I do?");
+        },
+        ParseState::Math { .. } => {
+            curr_nodes.push(Node::new_math_ml(curr_lines));
 
-            if curr_lines.len() != 0 {
-                panic!("What should I do?");
-            }
-
+            // since the above line only generates an opening macro, it adds a closing one
+            curr_nodes.push(Node::MultiLineMacro(MultiLineMacro {
+                macro_type: MultiLineMacroType::Math(into_v32("[[/math]]")),
+                is_closing: true,
+            }));
+            *curr_lines = vec![];
+            *curr_parse_state = ParseState::None;
         }
     }
 

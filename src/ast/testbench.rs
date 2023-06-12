@@ -567,6 +567,22 @@ for (let i = 0; i < tooltips.length; i++) {
 }
 </script>
 "), ("
+[[red]]
+
+[[red]]
+
+nested red
+
+[[/red]]
+
+[[/red]]
+", "
+<div class=\"color-red\">
+    <div class=\"color-red\">
+        <p>nested red</p>
+    </div>
+</div>
+"), ("
 Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍🎥👵😀🧒🏽🤷🏽👨🏿‍🎓🇰🇷🫵🏽🫵🏾🫵🏿❤️🧡💛💚💙💜🖤🤍🤎
 
 `🦈`, \\🦈
@@ -575,18 +591,13 @@ Multibyte characters: 가나다🍜👁🦈🥣🍚🗼🎂💍📷🍝🦑👍�
 
 <p><code class=\"inline-code-span\">&#129416;</code>, &#129416;</p>
 "), ("
-[[tooltip = foo]] nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] [[/tooltip]]
-
-[^foo]: tooltip foo
-[^bar]: tooltip bar
-", ""), ("
 # Multiline Math macro
 
 [[math]]
 
-sqrt{2 + 2} = 2
+sqrt{2 + 2} = 2 br br
 
-sqrt{3 + 3 + 3} = 3
+sqrt{3 + 3 + 3} = 3 br br
 
 [[/math]]
 
@@ -594,21 +605,21 @@ sqrt{3 + 3 + 3} = 3
 
 [[math]]
 
-sqrt{2 + 2} = 2
+sqrt{2 + 2} = 2 br br
 
-sqrt{3 + 3 + 3} = 3
+sqrt{3 + 3 + 3} = 3 br br
 
 [[math]]
 
-sqrt{2 + 2} = 2
+sqrt{2 + 2} = 2 br br
 
-sqrt{3 + 3 + 3} = 3
+sqrt{3 + 3 + 3} = 3 br br
 
 [[/math]]
 
-sqrt{2 + 2} = 2
+sqrt{2 + 2} = 2 br br
 
-sqrt{3 + 3 + 3} = 3
+sqrt{3 + 3 + 3} = 3 br br
 
 [[/math]]
 
@@ -618,14 +629,138 @@ sqrt{3 + 3 + 3} = 3
 
 [[center]]
 
-sqrt{2 + 2} = 2
+sqrt{2 + 2} = 2 br br
 
-sqrt{3 + 3 + 3} = 3
+sqrt{3 + 3 + 3} = 3 br br
 
 [[/center]]
 
 [[/math]]
 
+", "
+<h1 id=\"multiline-math-macro\">Multiline Math macro</h1>
+
+<math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+    <msqrt>
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>2</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <msqrt>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>3</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+</math>
+
+<h2 id=\"nested-multiline-math-macros\">nested multiline math macros</h2>
+
+<math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+    <msqrt>
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>2</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <msqrt>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>3</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <mo>[</mo><mo>[</mo><mi>math</mi><mo>]</mo><mo>]</mo>
+    <msqrt>
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>2</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <msqrt>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>3</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <mo>[</mo><mo>[</mo><mo>/</mo><mi>math</mi><mo>]</mo><mo>]</mo>
+    <msqrt>
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>2</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <msqrt>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>3</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+</math>
+
+<h2 id=\"another-macro-inside-a-math-macro\">another macro inside a math macro</h2>
+
+<math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+    <mo>[</mo><mo>[</mo><mi>center</mi><mo>]</mo><mo>]</mo>
+    <msqrt>
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>2</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <msqrt>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+        <mo>+</mo>
+        <mn>3</mn>
+    </msqrt>
+    <mo>=</mo>
+    <mn>3</mn>
+    <mspace linebreak=\"newline\"/>
+    <mspace linebreak=\"newline\"/>
+    <mo>[</mo><mo>[</mo><mo>/</mo><mi>center</mi><mo>]</mo><mo>]</mo>
+</math>
+"), ("
+[[tooltip = foo]] nested tooltips? [[tooltip = bar]] nested tooltips...?? [[/tooltip]] [[/tooltip]]
+
+[^foo]: tooltip foo
+[^bar]: tooltip bar
 ", ""), ("# Multiline tooltips
 
 [[tooltip = abc]]

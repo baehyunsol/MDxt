@@ -27,7 +27,7 @@ lazy_static! {
             "equiv", "nequiv", "lt", "gt", "le", "leq", "ge", "geq", "llt", "ggt",
             "sub", "sup", "nsub", "nsup", "sube", "supe", "nsube", "nsupe",
             "oplus", "ominus", "otimes", "odiv", "odot", "dot", "star",
-            "lcb", "rcb"
+            "lcb", "rcb", "br"
         ];
         let mut result = HashSet::with_capacity(vec.len());
 

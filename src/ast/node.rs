@@ -1,7 +1,7 @@
 use super::line::add_br_if_needed;
 use crate::ast::line::Line;
 use crate::inline::InlineNode;
-use crate::inline::macros::multiline::MultiLineMacro;
+use crate::inline::macros::multiline::{MultiLineMacro, MultiLineMacroType};
 use crate::container::{
     blockquote::Blockquote,
     codefence::FencedCode,
@@ -83,6 +83,17 @@ impl Node {
 
     pub fn new_macro(line: &Line) -> Node {
         Node::MultiLineMacro(MultiLineMacro::from_line(line))
+    }
+
+    pub fn new_math_ml(lines: &Vec<Line>) -> Node {
+        Node::MultiLineMacro(MultiLineMacro {
+            macro_type: MultiLineMacroType::Math(
+                lines.iter().map(
+                    |line| line.to_raw()
+                ).collect::<Vec<Vec<u32>>>().join(&['\n' as u32][..])
+            ),
+            is_closing: false
+        })
     }
 
 }

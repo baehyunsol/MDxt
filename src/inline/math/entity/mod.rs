@@ -17,6 +17,7 @@ pub enum Entity {
     Script(Box<Script>),
     UnderOver(Box<UnderOver>),
     Space(usize),
+    Br,
     Identifier(Vec<u32>),    // <mi>
     Operator(Vec<u32>),      // <mo>
     Number(Vec<u32>),        // <mn>
@@ -32,6 +33,10 @@ impl Entity {
 
     pub fn new_fraction(numer: Vec<Entity>, denom: Vec<Entity>, display_style: bool, no_line: bool) -> Self {
         Entity::Fraction(Box::new(Fraction::new(numer, denom, display_style, no_line)))
+    }
+
+    pub fn new_br() -> Self {
+        Entity::Br
     }
 
     pub fn new_script(
@@ -92,6 +97,7 @@ impl Entity {
                 number.clone(),
                 into_v32("</mn>"),
             ].concat(),
+            Entity::Br => into_v32("<mspace linebreak=\"newline\"/>"),
             // `++` -> `<mo>+</mo><mo>+</mo>`
             // `>`  -> `<mo>&gt;</mo>`
             Entity::Operator(operator) => {

@@ -182,7 +182,7 @@ impl InlineNode {
                 ].concat(),
             },
 
-            InlineNode::Decoration {deco_type, content} => match deco_type {
+            InlineNode::Decoration { deco_type, content } => match deco_type {
                 DecorationType::Italic => vec![
                     into_v32("<em>"),
                     content.iter().map(

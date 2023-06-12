@@ -2,18 +2,19 @@ use super::{
     get_macro_name, parse_arguments,
     Macro, MACROS, MacroType,
     predicate::read_macro, parse::{parse_html_tag, parse_box_arguments},
+    super::math::render_math
 };
 use crate::ast::line::Line;
 use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct MultiLineMacro {
-    macro_type: MultiLineMacroType,
-    is_closing: bool
+    pub macro_type: MultiLineMacroType,
+    pub is_closing: bool
 }
 
 #[derive(Clone)]
-enum MultiLineMacroType {
+pub enum MultiLineMacroType {
     Box {
         border: bool,
         inline: bool,
@@ -25,7 +26,7 @@ enum MultiLineMacroType {
     LineHeight(Vec<u32>),
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
-    // Math(Vec<u32>),
+    Math(Vec<u32>),
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,
@@ -121,9 +122,8 @@ impl MultiLineMacro {
                 }
             },
             // macros that do not have closing tags
-            MacroType::Toc | MacroType::Blank | MacroType::Br
-            | MacroType::Char | MacroType::Icon | MacroType::Math
-            | MacroType::Tooltip => unreachable!()
+            MacroType::Toc | MacroType::Blank | MacroType::Br | MacroType::Math
+            | MacroType::Char | MacroType::Icon | MacroType::Tooltip => unreachable!("{macro_type:?}")
         }
 
     }
@@ -140,7 +140,10 @@ impl MultiLineMacro {
                 ].concat(),
                 MultiLineMacroType::Box { .. } | MultiLineMacroType::Color(_)
                 | MultiLineMacroType::Size(_) | MultiLineMacroType::LineHeight(_)
-                | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_) => into_v32("</div>")
+                | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_) => into_v32("</div>"),
+
+                // it doesn't need any closing tag because `render_math` generates both opening and closing tags
+                MultiLineMacroType::Math(_) => vec![]
             }
 
         }
@@ -219,6 +222,9 @@ impl MultiLineMacro {
 
                     result.concat()
                 },
+                MultiLineMacroType::Math(math) => {
+                    render_math(math)
+                }
             }
 
         }

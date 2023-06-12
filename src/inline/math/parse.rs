@@ -99,6 +99,7 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
 
     else if ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0 {
 
+        // TODO: it obviously has to be cached
         if *word == into_v32("alpha") {
             Entity::new_character(945)
         }
@@ -515,8 +516,12 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
             Entity::new_character(8902)
         }
 
+        else if *word == into_v32("br") {
+            Entity::new_br()
+        }
+
         else {
-            todo!()
+            unreachable!()
         }
 
     }
@@ -676,7 +681,7 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
         }
 
         else {
-            todo!()
+            unreachable!()
         }
 
     }
