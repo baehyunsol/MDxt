@@ -21,7 +21,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u32>, Footnote>, toc_render
     let mut result = Vec::with_capacity(3);
     let mut footnote_cites: Vec<(Vec<u32>, usize)> = Vec::with_capacity(notes.len());
 
-    result.push(into_v32(&format!("<hr class=\"{}footnote-hr\"/><div class=\"{}mdxt-footnote-cites\"><p>", class_prefix, class_prefix)));
+    result.push(into_v32(&format!("<hr class=\"{class_prefix}footnote-hr\"/><div class=\"{class_prefix}mdxt-footnote-cites\"><p>")));
 
     for Footnote {index, inverse_index, content} in notes.into_iter() {
 
@@ -34,12 +34,12 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u32>, Footnote>, toc_render
 
         let inverse_indexes = inverse_index.iter().map(
             |ind|
-            into_v32(&format!("<a href=\"#footnote-ref-{}\"> [{}]</a> ", ind, ind))
+            into_v32(&format!("<a href=\"#footnote-ref-{ind}\"> [{ind}]</a> "))
         ).collect::<Vec<Vec<u32>>>().concat();
 
         footnote_cites.push((
             vec![
-                into_v32(&format!("<div class=\"footnote-cite\"><a id=\"footnote-cite-{}\"></a>", index)),
+                into_v32(&format!("<div class=\"footnote-cite\"><a id=\"footnote-cite-{index}\"></a>")),
                 inverse_indexes,
                 content.to_html(toc_rendered, class_prefix),
                 into_v32("</div>")

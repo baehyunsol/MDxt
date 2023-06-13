@@ -61,7 +61,7 @@ pub fn render_html_escapes(content: &[u32]) -> Vec<u32> {
                 n => {
                     result.push('#' as u32);
 
-                    for ch in format!("{}", n).chars() {
+                    for ch in format!("{n}").chars() {
                         result.push(ch as u32);
                     }
 

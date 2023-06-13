@@ -85,7 +85,7 @@ impl Entity {
                 } else {
                     "mo"
                 };
-                into_v32(&format!("<{}>&#{};</{}>", tag, character, tag))
+                into_v32(&format!("<{tag}>&#{character};</{tag}>"))
             }
             Entity::Identifier(identifier) => vec![
                 into_v32("<mi>"),

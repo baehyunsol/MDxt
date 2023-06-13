@@ -66,28 +66,28 @@ impl List {
 
         let (opening_tag, closing_tag) = match &self.list_type {
             ListType::Unordered => (
-                format!("<ul{}{}>", start_index, no_bullet),
+                format!("<ul{start_index}{no_bullet}>"),
                 "</ul>".to_string()
             ),
             ListType::Ordered(marker) => match marker {
                 Marker::Number => (
-                    format!("<ol type=\"1\"{}{}>", start_index, no_bullet),
+                    format!("<ol type=\"1\"{start_index}{no_bullet}>"),
                     "</ol>".to_string()
                 ),
                 Marker::UpperAlpha => (
-                    format!("<ol type=\"A\"{}{}>", start_index, no_bullet),
+                    format!("<ol type=\"A\"{start_index}{no_bullet}>"),
                     "</ol>".to_string()
                 ),
                 Marker::LowerAlpha => (
-                    format!("<ol type=\"a\"{}{}>", start_index, no_bullet),
+                    format!("<ol type=\"a\"{start_index}{no_bullet}>"),
                     "</ol>".to_string()
                 ),
                 Marker::UpperRoman => (
-                    format!("<ol type=\"I\"{}{}>", start_index, no_bullet),
+                    format!("<ol type=\"I\"{start_index}{no_bullet}>"),
                     "</ol>".to_string()
                 ),
                 Marker::LowerRoman => (
-                    format!("<ol type=\"i\"{}{}>", start_index, no_bullet),
+                    format!("<ol type=\"i\"{start_index}{no_bullet}>"),
                     "</ol>".to_string()
                 ),
             }
@@ -107,13 +107,13 @@ impl List {
 
                         match marker {
                             TaskMarker::Unchecked => {
-                                result.push(into_v32(&format!("<div class=\"{}unchecked-box\"></div>", class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{class_prefix}unchecked-box\"></div>")));
                             },
                             TaskMarker::Checked => {
-                                result.push(into_v32(&format!("<div class=\"{}checked-box\"><span class=\"{}checkmark\"></span></div>", class_prefix, class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{class_prefix}checked-box\"><span class=\"{class_prefix}checkmark\"></span></div>")));
                             },
                             TaskMarker::Triangle => {
-                                result.push(into_v32(&format!("<div class=\"{}checked-box\"><span class=\"{}triangle\"></span></div>", class_prefix, class_prefix)));
+                                result.push(into_v32(&format!("<div class=\"{class_prefix}checked-box\"><span class=\"{class_prefix}triangle\"></span></div>")));
                             },
                         }
 

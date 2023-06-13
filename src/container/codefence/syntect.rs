@@ -11,7 +11,7 @@ lazy_static! {
         let mut syntax_set_builder = default_set.into_builder();
 
         if let Err(e) = syntax_set_builder.add_from_folder("./extra_syntaxes", true) {
-            println!("Error while reading `./extra_syntaxes`: {:?}", e);
+            println!("Error while reading `./extra_syntaxes`: {e:?}");
         }
 
         syntax_set_builder.build()
@@ -51,11 +51,11 @@ pub fn highlight_syntax(content: &[u32], language: &[u32], class_prefix: &str) -
                     }
 
                     else if curr_stack[curr_stack_len - 1].0 == style.foreground {
-                        curr_stack[curr_stack_len - 1].1 = format!("{}{}", curr_stack[curr_stack_len - 1].1, content);
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack[curr_stack_len - 1].1);
                     }
 
                     else if content.chars().all(|c| c == ' ') {
-                        curr_stack[curr_stack_len - 1].1 = format!("{}{}", curr_stack[curr_stack_len - 1].1, content);
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack[curr_stack_len - 1].1);
                     }
 
                     else {
@@ -99,7 +99,7 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
         Color { r: 210, g: 123, b: 83, .. } => "pink",
         Color { r: 255, g: 204, b: 102, .. } => "grassgreen",
         Color { r, g, b, .. } => if cfg!(test) {
-            panic!("Uninitialized Color: (r: {} g: {} b: {})", r, g, b)
+            panic!("Uninitialized Color: (r: {r} g: {g} b: {b})")
         } else {
             "white"
         }
@@ -123,7 +123,7 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
 
     else {
         vec![
-            into_v32(&format!("<span class=\"{}color-{}\">", class_prefix, color)),
+            into_v32(&format!("<span class=\"{class_prefix}color-{color}\">")),
             escape_htmls(&content_v32).into_iter().filter(|c| *c != '\n' as u32).collect(),
             into_v32("</span>")
         ].concat()

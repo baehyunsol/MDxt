@@ -101,8 +101,8 @@ fn fence_test() {
 
         if *is_valid != (line.is_code_fence_begin() || line.is_code_fence_end()) {
             failures.push(format!(
-                "case: {}\nis_valid: answer: {}, actual: {}",
-                case, is_valid, line.is_code_fence_begin() || line.is_code_fence_end()
+                "case: {case}\nis_valid: answer: {is_valid}, actual: {}",
+                line.is_code_fence_begin() || line.is_code_fence_end()
             ));
             continue;
         }
@@ -113,10 +113,11 @@ fn fence_test() {
 
         if *is_code_fence_begin != line.is_code_fence_begin() || *is_code_fence_end != line.is_code_fence_end() {
             failures.push(format!(
-                "case: {}\nis_code_fence_begin: answer: {}, actual: {}\nis_code_fence_end: answer: {}, actual: {}",
-                case,
-                is_code_fence_begin, line.is_code_fence_begin(),
-                is_code_fence_end, line.is_code_fence_end()
+                "case: {case}
+is_code_fence_begin: answer: {is_code_fence_begin}, actual: {}
+is_code_fence_end: answer: {is_code_fence_end}, actual: {}",
+                line.is_code_fence_begin(),
+                line.is_code_fence_end()
             ));
             continue;
         }
@@ -137,48 +138,42 @@ fn fence_test() {
 
         if language_answer != &language_actual {
             failures.push(format!(
-                "case: {}\nlanguage: answer: {:?}, actual: {:?}",
-                case, language_answer, language_actual
+                "case: {case}\nlanguage: answer: {language_answer:?}, actual: {language_actual:?}"
             ));
             continue;
         }
 
         if line_num_answer != &line_num_actual {
             failures.push(format!(
-                "case: {}\nline_num: answer: {:?}, actual: {:?}",
-                case, line_num_answer, line_num_actual
+                "case: {case}\nline_num: answer: {line_num_answer:?}, actual: {line_num_actual:?}"
             ));
             continue;
         }
 
         if highlights_answer != &highlights_actual {
             failures.push(format!(
-                "case: {}\nhighlights: answer: {:?}, actual: {:?}",
-                case, highlights_answer, highlights_actual
+                "case: {case}\nhighlights: answer: {highlights_answer:?}, actual: {highlights_actual:?}",
             ));
             continue;
         }
 
         if fence_size_answer != &fence_size_actual {
             failures.push(format!(
-                "case: {}\nfence_size: answer: {:?}, actual: {:?}",
-                case, fence_size_answer, fence_size_actual
+                "case: {case}\nfence_size: answer: {fence_size_answer:?}, actual: {fence_size_actual:?}"
             ));
             continue;
         }
 
         if copy_button_answer != &copy_button_actual {
             failures.push(format!(
-                "case: {}\ncopy_button: answer: {:?}, actual: {:?}",
-                case, copy_button_answer, copy_button_actual
+                "case: {case}\ncopy_button: answer: {copy_button_answer:?}, actual: {copy_button_actual:?}"
             ));
             continue;
         }
 
         if is_tilde_fence_answer != &is_tilde_fence_actual {
             failures.push(format!(
-                "case: {}\nis_tilde_fence: answer: {:?}, actual: {:?}",
-                case, is_tilde_fence_answer, is_tilde_fence_actual
+                "case: {case}\nis_tilde_fence: answer: {is_tilde_fence_answer:?}, actual: {is_tilde_fence_actual:?}",
             ));
             continue;
         }
@@ -585,7 +580,7 @@ fn code_fence_test() {
         let rendered = render_to_html_with_default_options(md);
 
         if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
-            panic!("{} \n\n {} \n\n {:?}", md, rendered, rendered);
+            panic!("{md} \n\n {rendered} \n\n {rendered:?}");
         }
 
     }

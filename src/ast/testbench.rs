@@ -832,7 +832,7 @@ fn mdxt_test() {
         let rendered = render_to_html_with_default_options(md);
 
         if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
-            panic!("{} \n\n {}", md, rendered);
+            panic!("{md} \n\n {rendered}");
         }
 
     }
@@ -909,10 +909,8 @@ fn line_predicate_test() {
 
         if result != *predicates {
             failures.push(format!(
-                "line: {:?}, actual: {}, desired: {}",
+                "line: {:?}, actual: {result}, desired: {predicates}",
                 from_v32(&line.content),
-                result,
-                predicates
             ));
         }
 

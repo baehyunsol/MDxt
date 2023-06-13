@@ -191,3 +191,5 @@ math 안에 다른 macro 못 쓴다고 언급하기!
 newline도 다 무시된다고 언급하기! 줄바꿈 하려면 `br` 쓰라고 하자 -> 스펙엔 있는데 아직 웹브라우저가 지원을 안 하는 듯?? ㅠㅠㅠ
 
 nested tooltip 안된다고 언급하기!
+
+extra syntax set 관련된 것도 언급 ㄱㄱ

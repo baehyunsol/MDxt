@@ -10,9 +10,9 @@ impl TableAlignment {
 
     pub fn opening_tag(&self, class_prefix: &str) -> Vec<u32> {
         match self {
-            TableAlignment::Left => into_v32(&format!("<div class=\"{}align-left\">", class_prefix)),
-            TableAlignment::Center => into_v32(&format!("<div class=\"{}align-center\">", class_prefix)),
-            TableAlignment::Right => into_v32(&format!("<div class=\"{}align-right\">", class_prefix)),
+            TableAlignment::Left => into_v32(&format!("<div class=\"{class_prefix}align-left\">")),
+            TableAlignment::Center => into_v32(&format!("<div class=\"{class_prefix}align-center\">")),
+            TableAlignment::Right => into_v32(&format!("<div class=\"{class_prefix}align-right\">")),
             TableAlignment::None => vec![]
         }
     }

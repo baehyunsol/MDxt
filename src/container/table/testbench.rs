@@ -457,8 +457,7 @@ fn cell_count_test() {
 
             if cell_count != 0 || is_delimiter {
                 failures.push(format!(
-                    "row: {}\nIt's a valid row, but `.is_table_row()` is false.",
-                    row
+                    "row: {row}\nIt's a valid row, but `.is_table_row()` is false.",
                 ));
             }
 
@@ -466,17 +465,15 @@ fn cell_count_test() {
 
         else if line.is_table_delimiter() != is_delimiter {
             failures.push(format!(
-                "row: {}\n`line.is_table_delimiter()`: {}, `is_delimiter`: {}",
-                row,
+                "row: {row}\n`line.is_table_delimiter()`: {}, `is_delimiter`: {is_delimiter}",
                 line.is_table_delimiter(),
-                is_delimiter
             ));
         }
 
         else if cell_count != count_cells(&into_v32(&row), false) {
             failures.push(format!(
-                "row: {}\nIt has {} cells, but `count_cells` says it's {}",
-                row, cell_count, count_cells(&into_v32(&row), false)
+                "row: {row}\nIt has {cell_count} cells, but `count_cells` says it's {}",
+                count_cells(&into_v32(&row), false)
             ));
         }
 
@@ -502,7 +499,7 @@ fn table_test() {
         let html_v32 = into_v32(html);
 
         if remove_whitespaces(&rendered_v32) != remove_whitespaces(&html_v32) {
-            panic!("{} \n\n {}", md, rendered);
+            panic!("{md} \n\n {rendered}");
         }
 
         if rendered.contains("<td> ")
@@ -510,7 +507,7 @@ fn table_test() {
             || rendered.contains("<th> ")
             || rendered.contains(" </th>")
         {
-            panic!("A table's trailing whitespaces are not trimmed properly: {}", rendered);
+            panic!("A table's trailing whitespaces are not trimmed properly: {rendered}");
         }
 
     }

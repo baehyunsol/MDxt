@@ -128,9 +128,7 @@ fn inline_render_test() {
 
         if rendered != into_v32(answer) {
             failures.push(format!(
-                "inline_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
-                case,
-                answer,
+                "inline_test: failed!! given md:  {case}\ndesired html:  {answer}\nactual result:  {}",
                 from_v32(&rendered)
             ));
         }
@@ -168,10 +166,8 @@ fn inline_inversion_test() {
 
         if into_v32(&html) != inverted_html {
             failures.push(format!(
-                "inline_test: failed!! given md:  {}\ninverted md:  {}\ngiven html:  {}\ninverted html:  {}",
-                case,
+                "inline_test: failed!! given md:  {case}\ninverted md:  {}\ngiven html:  {html}\ninverted html:  {}",
                 from_v32(&inverted),
-                html,
                 from_v32(&inverted_html)
             ));
         }
@@ -202,7 +198,7 @@ fn predicate_test() {
         let tested = is_code_span(&into_v32(sample), 0);
 
         if &tested != answer {
-            panic!("{} {:?} {:?}", sample, tested, answer);
+            panic!("{sample} {tested:?} {answer:?}");
         }
 
     }

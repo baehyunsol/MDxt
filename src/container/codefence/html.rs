@@ -28,8 +28,7 @@ impl FencedCode {
         let copy_button = if self.copy_button {
             into_v32(
                 &format!(
-                    "<button class=\"{}copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
-                    class_prefix,
+                    "<button class=\"{class_prefix}copy-fenced-code\" onclick=\"copy_code_to_clipboard({})\">Copy</button>",
                     self.index
                 )
             )
@@ -40,11 +39,11 @@ impl FencedCode {
         // so that each index has the same width
         let line_num_width = match self.line_num {
             None => String::new(),
-            Some(n) => format!(" {}line-num-width-{}", class_prefix, log10(n + rows.len()))
+            Some(n) => format!(" {class_prefix}line-num-width-{}", log10(n + rows.len()))
         };
 
         vec![
-            into_v32(&format!("<pre class=\"{}fenced-code-block{}\"><code>", class_prefix, line_num_width)),
+            into_v32(&format!("<pre class=\"{class_prefix}fenced-code-block{line_num_width}\"><code>")),
             rows.concat(),
             into_v32("</code>"),
             copy_button,
@@ -59,22 +58,22 @@ fn render_line(line: &[u32], mut curr_line: usize, line_num: &Option<usize>, hig
     let line_num = match line_num {
         None => {
             curr_line += 1;  // markdown index starts with 1, and Rust starts with 0.
-            into_v32(&format!("<span class=\"{}code-fence-code\">", class_prefix))
+            into_v32(&format!("<span class=\"{class_prefix}code-fence-code\">"))
         },
         Some(n) => {
             curr_line += n;
-            into_v32(&format!("<span class=\"{}code-fence-index\">{}</span><span class=\"{}code-fence-code\">", class_prefix, curr_line, class_prefix))
+            into_v32(&format!("<span class=\"{class_prefix}code-fence-index\">{curr_line}</span><span class=\"{class_prefix}code-fence-code\">"))
         }
     };
 
     let highlight_or_not = if highlights.contains(&curr_line) {
-        format!(" class=\"{}highlight code-fence-row\"", class_prefix)
+        format!(" class=\"{class_prefix}highlight code-fence-row\"")
     } else {
-        format!(" class=\"{}code-fence-row\"", class_prefix)
+        format!(" class=\"{class_prefix}code-fence-row\"")
     };
 
     vec![
-        into_v32(&format!("<span{}>", highlight_or_not)),
+        into_v32(&format!("<span{highlight_or_not}>")),
         line_num,
         line.to_vec(),
         into_v32("</span></span>\n")
@@ -107,12 +106,11 @@ pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u32>>) -> String {
     );
 
     let result = format!("
-const fenced_code_block_contents = {};
+const fenced_code_block_contents = {codes_array_formatted};
 
 function copy_code_to_clipboard(index) {}
     navigator.clipboard.writeText(fenced_code_block_contents[index]);
-{}",
-    codes_array_formatted, "{", "}"
+{}", "{", "}"
     );
 
     result

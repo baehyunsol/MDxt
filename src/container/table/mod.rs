@@ -112,13 +112,13 @@ impl Table {
                 ""
             };
 
-            format!(" id=\"table-collapse-toggle-{}\" class=\"{}collapsible{}\" onclick =\"collapse_table('{}')\"", self.index, class_prefix, default_value, self.index)
+            format!(" id=\"table-collapse-toggle-{}\" class=\"{class_prefix}collapsible{default_value}\" onclick =\"collapse_table('{}')\"", self.index, self.index)
         } else {
             String::new()
         };
 
         if !self.headless {
-            result.push(into_v32(&format!("<thead{}>", collapsible_head)));
+            result.push(into_v32(&format!("<thead{collapsible_head}>")));
             self.header.iter().for_each(
                 |row| {
                     result.push(into_v32("<tr>"));
@@ -133,18 +133,18 @@ impl Table {
 
         let collapsible_body = if self.collapsible {
             let default_value = if self.default_hidden {
-                format!(" class=\"{}invisible\"", class_prefix)
+                format!(" class=\"{class_prefix}invisible\"")
             } else {
                 String::new()
             };
 
-            format!(" id=\"collapsible-table-{}\"{}", self.index, default_value)
+            format!(" id=\"collapsible-table-{}\"{default_value}", self.index)
         } else {
             String::new()
         };
 
         if self.cells.len() > 0 {
-            result.push(into_v32(&format!("<tbody{}>", collapsible_body)));
+            result.push(into_v32(&format!("<tbody{collapsible_body}>")));
             self.cells.iter().for_each(
                 |row| {
                     result.push(into_v32("<tr>"));

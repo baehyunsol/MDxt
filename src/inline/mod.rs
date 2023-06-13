@@ -120,17 +120,13 @@ impl InlineNode {
             InlineNode::Raw(content) => content.clone(),
 
             InlineNode::CodeSpan(content) => vec![
-                into_v32(&format!("<code class=\"{}inline-code-span\">", class_prefix)),
+                into_v32(&format!("<code class=\"{class_prefix}inline-code-span\">")),
                 content.clone(),
                 into_v32("</code>")
             ].concat(),
 
             InlineNode::Footnote((index, inverse_index, _)) => into_v32(&format!(
-                "<span class=\"{}footnote-ref\" id=\"footnote-ref-{}\"><a href=\"#footnote-cite-{}\">[{}]</a></span>",
-                class_prefix,
-                inverse_index,
-                index,
-                inverse_index
+                "<span class=\"{class_prefix}footnote-ref\" id=\"footnote-ref-{inverse_index}\"><a href=\"#footnote-cite-{index}\">[{inverse_index}]</a></span>",
             )),
 
             InlineNode::Complex(content) => content.iter().map(
@@ -227,7 +223,7 @@ impl InlineNode {
                 ].concat(),
                 DecorationType::Macro(macro_type) => match macro_type {
                     InlineMacro::Color(color) => vec![
-                        into_v32(&format!("<span class=\"{}color-", class_prefix)),
+                        into_v32(&format!("<span class=\"{class_prefix}color-")),
                         color.clone(),
                         into_v32("\">"),
                         content.iter().map(
@@ -236,7 +232,7 @@ impl InlineNode {
                         into_v32("</span>")
                     ].concat(),
                     InlineMacro::LineHeight(height) => vec![
-                        into_v32(&format!("<span class=\"{}line-height-", class_prefix)),
+                        into_v32(&format!("<span class=\"{class_prefix}line-height-")),
                         height.clone(),
                         into_v32("\">"),
                         content.iter().map(
@@ -245,7 +241,7 @@ impl InlineNode {
                         into_v32("</span>")
                     ].concat(),
                     InlineMacro::Size(size) => vec![
-                        into_v32(&format!("<span class=\"{}size-", class_prefix)),
+                        into_v32(&format!("<span class=\"{class_prefix}size-")),
                         size.clone(),
                         into_v32("\">"),
                         content.iter().map(
@@ -263,7 +259,7 @@ impl InlineNode {
                         into_v32("</span>")
                     ].concat(),
                     InlineMacro::Alignment(alignment) => vec![
-                        into_v32(&format!("<span class=\"{}align-", class_prefix)),
+                        into_v32(&format!("<span class=\"{class_prefix}align-")),
                         alignment.clone(),
                         into_v32("\">"),
                         content.iter().map(
@@ -273,25 +269,24 @@ impl InlineNode {
                     ].concat(),
                     InlineMacro::Box { border, inline, width, height } => vec![
                         into_v32(&format!(
-                            "<span class=\"{}box{}{}{}{}\">",
-                            class_prefix,
+                            "<span class=\"{class_prefix}box{}{}{}{}\">",
                             if !border {
-                                format!(" {}no-border", class_prefix)
+                                format!(" {class_prefix}no-border")
                             } else {
                                 String::new()
                             },
                             if *inline {
-                                format!(" {}inline", class_prefix)
+                                format!(" {class_prefix}inline")
                             } else {
                                 String::new()
                             },
                             if width.len() > 0 {
-                                format!(" {}width-{}", class_prefix, from_v32(&width))
+                                format!(" {class_prefix}width-{}", from_v32(&width))
                             } else {
                                 String::new()
                             },
                             if height.len() > 0 {
-                                format!(" {}height-{}", class_prefix, from_v32(&height))
+                                format!(" {class_prefix}height-{}", from_v32(&height))
                             } else {
                                 String::new()
                             }
@@ -315,7 +310,7 @@ impl InlineNode {
                         }
 
                         if class.len() > 0 {
-                            result.push(into_v32(&format!(" class=\"{}", class_prefix)));
+                            result.push(into_v32(&format!(" class=\"{class_prefix}")));
                             result.push(class.clone());
                             result.push(into_v32("\""));
                         }
@@ -346,17 +341,13 @@ impl InlineNode {
                     }
                     InlineMacro::Tooltip { message, index, .. } => vec![
                         into_v32(&format!(
-                            "<span class=\"{}tooltip-container\" id=\"tooltip-container-{}\">",
-                            class_prefix,
-                            index
+                            "<span class=\"{class_prefix}tooltip-container\" id=\"tooltip-container-{index}\">",
                         )),
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
                         into_v32(&format!(
-                            "<span class=\"{}tooltip-message\" id=\"tooltip-message-{}\">",
-                            class_prefix,
-                            index
+                            "<span class=\"{class_prefix}tooltip-message\" id=\"tooltip-message-{index}\">",
                         )),
                         message.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
@@ -590,18 +581,18 @@ impl InlineNode {
                     InlineMacro::Br { repeat } => if *repeat == 1 {
                         into_v32("[[br]]")
                     } else {
-                        into_v32(&format!("[[br={}]]", repeat))
+                        into_v32(&format!("[[br={repeat}]]"))
                     },
                     InlineMacro::Blank { repeat } => if *repeat == 1 {
                         into_v32("[[blank]]")
                     } else {
-                        into_v32(&format!("[[blank={}]]", repeat))
+                        into_v32(&format!("[[blank={repeat}]]"))
                     },
                     InlineMacro::Toc => into_v32("[[toc]]"),
                     InlineMacro::Icon { name, size } => vec![
                         into_v32("[[icon="),
                         name.clone(),
-                        into_v32(&format!(",size={}]]", size))
+                        into_v32(&format!(",size={size}]]"))
                     ].concat()
                 }
             }

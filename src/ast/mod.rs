@@ -142,11 +142,11 @@ impl AST {
 
                     result.push(
                         vec![
-                            into_v32(&format!("<h{}", level)),
+                            into_v32(&format!("<h{level}")),
                             anchor,
                             into_v32(">"),
                             content.to_html(&toc_rendered, class_prefix),
-                            into_v32(&format!("</h{}>", level)),
+                            into_v32(&format!("</h{level}>")),
                         ].concat()
                     );
                 },

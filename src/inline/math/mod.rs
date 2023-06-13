@@ -122,7 +122,7 @@ impl Math {
         };
 
         vec![
-            into_v32(&format!("<math{}>", xmlns)),
+            into_v32(&format!("<math{xmlns}>")),
             self.entities.iter().map(
                 |entity| entity.to_math_ml()
             ).collect::<Vec<Vec<u32>>>().concat(),

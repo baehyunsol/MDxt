@@ -100,8 +100,8 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
 
     result.iter().map(
         |(case, answer)| (
-            format!("{}{}", case, links),
-            format!("<p>{}</p>", answer),
+            format!("{case}{links}"),
+            format!("<p>{answer}</p>"),
         )
     ).collect()
 }
@@ -116,9 +116,7 @@ fn link_render_test() {
 
         if rendered != into_v32(answer) {
             failures.push(format!(
-                "link_test: failed!! given md:  {}\ndesired html:  {}\nactual result:  {}",
-                case,
-                answer,
+                "link_test: failed!! given md:  {case}\ndesired html:  {answer}\nactual result:  {}",
                 from_v32(&rendered)
             ));
         }

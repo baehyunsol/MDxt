@@ -542,7 +542,7 @@ fn list_test() {
         let rendered = render_to_html_with_default_options(md);
 
         if remove_whitespaces(&into_v32(&rendered)) != remove_whitespaces(&into_v32(html)) {
-            panic!("{} \n\n {}", md, rendered);
+            panic!("{md} \n\n {rendered}");
         }
 
     }

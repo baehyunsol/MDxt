@@ -137,11 +137,11 @@ fn format_xmlns(standalone: bool) -> Vec<u32> {
 }
 
 fn format_size(n: usize) -> Vec<u32> {
-    into_v32(&format!(" width=\"{}\" height=\"{}\"", n, n))
+    into_v32(&format!(" width=\"{n}\" height=\"{n}\""))
 }
 
 fn format_color(r: u8, g: u8, b: u8) -> Vec<u32> {
-    into_v32(&format!(" fill=\"rgb({}, {}, {})\"", r, g, b))
+    into_v32(&format!(" fill=\"rgb({r}, {g}, {b})\""))
 }
 
 pub fn format(icon: &Vec<u32>, size: usize, color: Option<(u8, u8, u8)>, standalone: bool) -> Vec<u32> {

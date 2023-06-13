@@ -25,7 +25,7 @@ impl UnderOver {
 
         if self.under.len() == 0 {
             vec![
-                into_v32(&format!("<mover{}>", display_style)),
+                into_v32(&format!("<mover{display_style}>")),
                 vec_to_math_ml(&self.content, true),  // `<mover>` has exactly two children, so `single_element` is true.
                 vec_to_math_ml(&self.over, true),
                 into_v32("</mover>"),
@@ -34,7 +34,7 @@ impl UnderOver {
 
         else if self.over.len() == 0 {
             vec![
-                into_v32(&format!("<munder{}>", display_style)),
+                into_v32(&format!("<munder{display_style}>")),
                 vec_to_math_ml(&self.content, true),  // `<munder>` has exactly two children, so `single_element` is true.
                 vec_to_math_ml(&self.under, true),
                 into_v32("</munder>"),
@@ -43,7 +43,7 @@ impl UnderOver {
 
         else {
             vec![
-                into_v32(&format!("<munderover{}>", display_style)),
+                into_v32(&format!("<munderover{display_style}>")),
                 vec_to_math_ml(&self.content, true),  // `<munderover>` has exactly three children, so `single_element` is true.
                 vec_to_math_ml(&self.under, true),
                 vec_to_math_ml(&self.over, true),

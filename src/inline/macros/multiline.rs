@@ -208,51 +208,50 @@ impl MultiLineMacro {
 
             match &self.macro_type {
                 MultiLineMacroType::Box { border, inline, width, height } => into_v32(&format!(
-                    "<div class=\"{}box{}{}{}{}\">",
-                    class_prefix,
+                    "<div class=\"{class_prefix}box{}{}{}{}\">",
                     if !border {
-                        format!(" {}no-border", class_prefix)
+                        format!(" {class_prefix}no-border")
                     } else {
                         String::new()
                     },
                     if *inline {
-                        format!(" {}inline", class_prefix)
+                        format!(" {class_prefix}inline")
                     } else {
                         String::new()
                     },
                     if width.len() > 0 {
-                        format!(" {}width-{}", class_prefix, from_v32(&width))
+                        format!(" {class_prefix}width-{}", from_v32(&width))
                     } else {
                         String::new()
                     },
                     if height.len() > 0 {
-                        format!(" {}height-{}", class_prefix, from_v32(&height))
+                        format!(" {class_prefix}height-{}", from_v32(&height))
                     } else {
                         String::new()
                     }
                 )),
                 MultiLineMacroType::Color(color) => vec![
-                    into_v32(&format!("<div class=\"{}color-", class_prefix)),
+                    into_v32(&format!("<div class=\"{class_prefix}color-")),
                     color.clone(),
                     into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Size(size) => vec![
-                    into_v32(&format!("<div class=\"{}size-", class_prefix)),
+                    into_v32(&format!("<div class=\"{class_prefix}size-")),
                     size.clone(),
                     into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::LineHeight(height) => vec![
-                    into_v32(&format!("<div class=\"{}line-height-", class_prefix)),
+                    into_v32(&format!("<div class=\"{class_prefix}line-height-")),
                     height.clone(),
                     into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Alignment(align) => vec![
-                    into_v32(&format!("<div class=\"{}align-", class_prefix)),
+                    into_v32(&format!("<div class=\"{class_prefix}align-")),
                     align.clone(),
                     into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Highlight(highlight) => vec![
-                    into_v32(&format!("<div class=\"{}highlight-", class_prefix)),
+                    into_v32(&format!("<div class=\"{class_prefix}highlight-")),
                     highlight.clone(),
                     into_v32("\">")
                 ].concat(),
@@ -264,7 +263,7 @@ impl MultiLineMacro {
                     result.push(tag.clone());
 
                     if class.len() > 0 {
-                        result.push(into_v32(&format!(" class=\"{}", class_prefix)));
+                        result.push(into_v32(&format!(" class=\"{class_prefix}")));
                         result.push(class.clone());
                         result.push(into_v32("\""));
                     }

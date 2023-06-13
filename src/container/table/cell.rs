@@ -41,7 +41,7 @@ impl Cell {
 
         if is_header {
             vec![
-                into_v32(&format!("<th{}>", colspan_attr)),
+                into_v32(&format!("<th{colspan_attr}>")),
                 self.alignment.opening_tag(class_prefix),
                 self.content.to_html(toc_rendered, class_prefix),
                 self.alignment.closing_tag(),
@@ -51,7 +51,7 @@ impl Cell {
 
         else {
             vec![
-                into_v32(&format!("<td{}>", colspan_attr)),
+                into_v32(&format!("<td{colspan_attr}>")),
                 self.alignment.opening_tag(class_prefix),
                 self.content.to_html(toc_rendered, class_prefix),
                 self.alignment.closing_tag(),
