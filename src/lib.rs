@@ -21,7 +21,7 @@ pub use render::{
     render_result::RenderResult
 };
 
-// Don't hide these!
+// Don't hide these: see commit 4a01db5
 pub use color::{Color, colors};
 
 pub use container::table::macros::collapsible_table_javascript;
