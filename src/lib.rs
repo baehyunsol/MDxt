@@ -12,7 +12,7 @@ mod utils;
 mod testbench;
 
 #[cfg(test)]
-pub const PRINT_TEST_PAGES: bool = true;
+pub const PRINT_TEST_PAGES: bool = false;  // use it only when you need `.md` files
 
 pub use render::{
     render_to_html,
@@ -21,7 +21,9 @@ pub use render::{
     render_result::RenderResult
 };
 
-use color::{COLORS, Color};
+// Don't hide these!
+pub use color::{Color, colors};
+
 pub use container::table::macros::collapsible_table_javascript;
 pub use inline::macros::tooltip::tooltip_javascript;
 
@@ -51,10 +53,9 @@ pub fn render_reference() -> String {
     <style>{css}</style>
 </head>
 <body>
-    <article class=\"markdown\">{}</article>
+    <article class=\"markdown\">{raw_html}</article>
 </body>
 </html>
 ",
-        raw_html
     )
 }

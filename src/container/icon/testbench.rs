@@ -95,11 +95,10 @@ fn render_icon_test() {
     <style>{css}</style>
 </head>
 <body>
-    <article class=\"markdown\">{}</article>
+    <article class=\"markdown\">{raw_html}</article>
 </body>
 </html>
 ",
-        raw_html
     );
 
     let mut f = File::create("icon_test.html").unwrap();

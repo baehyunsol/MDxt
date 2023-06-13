@@ -11,7 +11,13 @@ pub struct Color {
     pub b: u8
 }
 
+/// It returns the default colors and their names used by the engine.
+pub fn colors() -> Vec<Color> {
+    COLORS.to_vec()
+}
+
 impl Color {
+
     pub fn new(name: &str, r: u8, g: u8, b: u8) -> Self {
         Color {
             name: name.to_string(), r, g, b
@@ -39,6 +45,7 @@ impl Color {
             from_v32(&into_v32(&format!("{:#04x}", self.b))[2..4])
         )
     }
+
 }
 
 lazy_static! {
