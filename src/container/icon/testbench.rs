@@ -45,7 +45,8 @@ fn render_icon_test() {
     strings.push(format!("Total {} icons.\n\n", icons.len()));
 
     for (name, _) in icons.iter() {
-        strings.push(format!(" [{}](#icon{}) ", from_v32(name), from_v32(name)));
+        let name = from_v32(name);
+        strings.push(format!(" [{name}](#icon{name}) "));
     }
 
     strings.push(String::from("\n\n"));
@@ -62,11 +63,10 @@ fn render_icon_test() {
         };
 
         strings.push(format!(
-            "\n\n[[box, inline, width = medium]]\n\n[[center]]\n\n[[icon = {}, size = 64]][[br]]{}[[br]][[anchor, id=icon{}]][[/anchor]][{}][[br]]{}\n\n[[/center]]\n\n[[/box]]",
+            "\n\n[[box, inline, width = medium]]\n\n[[center]]\n\n[[icon = {}, size = 64]][[br]]{}[[br]][[anchor, id=icon{}]][[/anchor]][{source}][[br]]{license}\n\n[[/center]]\n\n[[/box]]",
             from_v32(name),
             from_v32(name),
             from_v32(name),
-            source, license
         ));
     }
 
@@ -92,14 +92,13 @@ fn render_icon_test() {
 <html>
 <head>
     <title>MDxt Icon Reference</title>
-    <style>{}</style>
+    <style>{css}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
-        css,
         raw_html
     );
 

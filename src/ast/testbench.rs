@@ -800,6 +800,24 @@ Hover over me!
 Hover over me!
 
 [[/tooltip]]
+", ""), ("
+[[collapsible]]
+
+Do you see me?
+
+[[/collapsible]]
+", ""), ("
+[[collapsible]]
+
+Do you see me?
+
+[[collapsible]]
+
+collapsiblable
+
+[[/collapsible]]
+
+[[/collapsible]]
 ", ""), ("", "")
     ];
 

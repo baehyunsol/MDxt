@@ -348,10 +348,12 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {}\n\n`[[math]]{}[[/math]]` -> [[math]]{}[[/math]]",
-            entity,
-            entity,
-            entity
+            "\n\n### {entity}\n\n{}`[[math]]{entity}[[/math]]` -> [[math]]{entity}[[/math]]",
+            if entity == "br" {
+                "TODO: This entity may not be seen on some browsers.\n\n"
+            } else {
+                ""
+            }
         )));
     }
 
@@ -362,10 +364,9 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {}\n\n`[[math]]123{}{}456{}789[[/math]]` -> [[math]]123{}{}456{}789[[/math]]",
-            entity,
-            entity, '{', '}',
-            entity, '{', '}'
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}789[[/math]]` -> [[math]]123{entity}{}456{}789[[/math]]",
+            '{', '}',
+            '{', '}'
         )));
     }
 
@@ -376,10 +377,9 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}012[[/math]]` -> [[math]]123{}{}456{}{}789{}012[[/math]]",
-            entity,
-            entity, '{', '}', '{', '}',
-            entity, '{', '}', '{', '}'
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}012[[/math]]` -> [[math]]123{entity}{}456{}{}789{}012[[/math]]",
+            '{', '}', '{', '}',
+            '{', '}', '{', '}'
         )));
     }
 
@@ -390,10 +390,9 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}{}012{}345[[/math]]` -> [[math]]123{}{}456{}{}789{}{}012{}345[[/math]]",
-            entity,
-            entity, '{', '}', '{', '}', '{', '}',
-            entity, '{', '}', '{', '}', '{', '}'
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]` -> [[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]",
+            '{', '}', '{', '}', '{', '}',
+            '{', '}', '{', '}', '{', '}'
         )));
     }
 
@@ -404,10 +403,9 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {}\n\n`[[math]]123{}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]` -> [[math]]123{}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]",
-            entity,
-            entity, '{', '}', '{', '}', '{', '}', '{', '}', '{', '}',
-            entity, '{', '}', '{', '}', '{', '}', '{', '}', '{', '}'
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]` -> [[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]",
+            '{', '}', '{', '}', '{', '}', '{', '}', '{', '}',
+            '{', '}', '{', '}', '{', '}', '{', '}', '{', '}'
         )));
     }
 
@@ -434,14 +432,13 @@ fn render_to_html() {
 <html>
 <head>
     <title>MDxt Math Reference</title>
-    <style>{}</style>
+    <style>{css}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
-        css,
         render_to_html_with_default_options(&md)
     );
 

@@ -48,14 +48,13 @@ pub fn render_reference() -> String {
 <html>
 <head>
     <title>MDxt Reference</title>
-    <style>{}</style>
+    <style>{css}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
-        css,
         raw_html
     )
 }

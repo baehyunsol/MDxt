@@ -31,6 +31,17 @@ pub enum Node {
 
 impl Node {
 
+    pub fn set_inner_nodes(&mut self, nodes: Vec<Node>) {
+
+        match self {
+            Node::MultiLineMacro(mm) => {
+                mm.macro_type.set_inner_nodes(nodes);
+            },
+            _ => unreachable!()
+        }
+
+    }
+
     pub fn new_header(level: usize, content: Vec<u32>) -> Node {
         Node::Header {
             level,

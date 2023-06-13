@@ -38,6 +38,39 @@ pub enum MultiLineMacroType {
     }
 }
 
+impl MultiLineMacroType {
+
+    pub fn has_inner_nodes(&self) -> bool {
+
+        // don't use wildcard character
+        match self {
+            MultiLineMacroType::Tooltip(_) => true,
+            MultiLineMacroType::Box{ .. } |
+            MultiLineMacroType::Color(_) |
+            MultiLineMacroType::Size(_) |
+            MultiLineMacroType::LineHeight(_) |
+            MultiLineMacroType::Highlight(_) |
+            MultiLineMacroType::Alignment(_) |
+            MultiLineMacroType::Math(_) |
+            MultiLineMacroType::HTML{ .. } => false
+        }
+
+    }
+
+    pub fn set_inner_nodes(&mut self, nodes: Vec<Node>) {
+
+        // it's okay to use wildcard character because the above function is not using it
+        match self {
+            MultiLineMacroType::Tooltip(nodes_) => {
+                *nodes_ = nodes;
+            }
+            _ => {}
+        }
+
+    }
+
+}
+
 impl MultiLineMacro {
 
     // all the validity checks are done before this function
@@ -223,7 +256,7 @@ impl MultiLineMacro {
                     highlight.clone(),
                     into_v32("\">")
                 ].concat(),
-                MultiLineMacroType::Tooltip(nodes) => todo!(),  // what do I do...
+                MultiLineMacroType::Tooltip(nodes) => todo!("{:?}", nodes.len()),  // what do I do...
                 MultiLineMacroType::HTML{ tag, class, id } => {
                     let mut result = vec![];
 

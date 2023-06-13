@@ -51,6 +51,8 @@ impl AST {
         let mut table_count = 0;
         let mut fenced_code_count = 0;
 
+        let mut has_multiline_macro = false;
+
         // HashMap<index, macro_id>
         let mut macro_closing_indexes = HashMap::new();
 
@@ -248,6 +250,7 @@ impl AST {
                                                 }
 
                                                 index += 1;
+                                                has_multiline_macro = true;
                                                 continue 'outer_loop;
                                             }
 
@@ -371,9 +374,16 @@ impl AST {
 
         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
+        let mut doc_data = DocData::new(headers, link_references, footnote_references);
+
+        // some multiline macros (tooltip, sidebar, collapsible) have to know their inner content
+        if has_multiline_macro {
+            collect_nodes_for_multiline_macros(&mut curr_nodes, &mut doc_data);
+        }
+
         AST {
             nodes: curr_nodes,
-            doc_data: DocData::new(headers, link_references, footnote_references),
+            doc_data,
             toc: vec![],  // if needed, will be rendered later
             render_option: options.clone(),
             is_inline_parsed: false
@@ -429,6 +439,61 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         }
+    }
+
+}
+
+/*
+```
+[[collapsible]]
+
+foo
+
+bar
+
+[[/collapsible]]
+```
+
+in the above mdxt, `foo` and `bar` has to be children of `[[collapsible]]`, not the main AST
+*/
+fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, doc_data: &mut DocData) {
+    let mut index = 0;
+    let mut stack_of_nodes = vec![];
+
+    while index < nodes.len() {
+
+        if let Node::MultiLineMacro(MultiLineMacro { macro_type, is_closing, .. }) = &nodes[index] {
+
+            if macro_type.has_inner_nodes() {
+
+                if *is_closing {
+                    // `nodes[index - 1]` must be the opening multiline-macro 
+                    nodes[index - 1].set_inner_nodes(stack_of_nodes.pop().unwrap());
+                }
+
+                else {
+                    stack_of_nodes.push(vec![]);
+                    index += 1;
+                    continue;
+                }
+
+            }
+
+        }
+
+        if stack_of_nodes.len() > 0 {
+            let last_index = stack_of_nodes.len() - 1;
+
+            // TODO: this is O(n^2)
+            // I can think of O(n) alternatives, but the code would get uglier...
+            // the number of inner nodes must be very small, so why don't we just keep this solution?
+            stack_of_nodes[last_index].push(nodes.remove(index));
+        }
+
+        else {
+            index += 1;
+        }
+
     }
 
 }

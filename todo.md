@@ -135,6 +135,16 @@ asciigraph inside fenced code blocks
 
 diagrams inside fenced code blocks
 
+````
+
+```math
+sqrt{3 + 3 + 3} = 3
+```
+
+````
+
+저거도 `[[math]]`처럼 작동하게 할까?
+
 ---
 
 collapsible sidebar -> `~/Documents/web`에 만들어 놓았음!

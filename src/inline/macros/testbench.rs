@@ -79,7 +79,8 @@ fn render_character_reference() -> Vec<u32> {
     md_lines.push(String::from("|------|--------|\n"));
 
     for char_name in char_names {
-        md_lines.push(format!("| \\[[char={}]] | [[char={}]] |\n", from_v32(&char_name), from_v32(&char_name)));
+        let char_name = from_v32(&char_name);
+        md_lines.push(format!("| \\[[char={char_name}]] | [[char={char_name}]] |\n"));
     }
 
     into_v32(&md_lines.concat())
@@ -105,14 +106,13 @@ fn render_to_html() {
 <html>
 <head>
     <title>MDxt Character Reference</title>
-    <style>{}</style>
+    <style>{css}</style>
 </head>
 <body>
     <article class=\"markdown\">{}</article>
 </body>
 </html>
 ",
-        css,
         render_to_html_with_default_options(&md),
     );
 
