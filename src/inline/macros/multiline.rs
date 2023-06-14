@@ -37,6 +37,7 @@ pub enum MultiLineMacroType {
         label: Vec<u32>,  // inside, the actual message, which is `Vec<Box<InlineNode>>` will be loaded later
         index: usize
     },
+    Sidebar,
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,
@@ -50,7 +51,7 @@ impl MultiLineMacroType {
 
         // don't use wildcard character
         match self {
-            MultiLineMacroType::Tooltip { .. } => true,
+            MultiLineMacroType::Tooltip { .. } | MultiLineMacroType::Sidebar => true,
             MultiLineMacroType::Box{ .. } |
             MultiLineMacroType::Color(_) |
             MultiLineMacroType::Size(_) |
@@ -59,6 +60,15 @@ impl MultiLineMacroType {
             MultiLineMacroType::Alignment(_) |
             MultiLineMacroType::Math(_) |
             MultiLineMacroType::HTML{ .. } => false
+        }
+
+    }
+
+    pub fn is_sidebar(&self) -> bool {
+
+        match self {
+            MultiLineMacroType::Sidebar => true,
+            _ => false
         }
 
     }
@@ -118,6 +128,11 @@ impl MultiLineMacro {
             },
             MacroType::Size => MultiLineMacro {
                 macro_type: MultiLineMacroType::Size(macro_name.to_vec()),
+                is_closing,
+                id
+            },
+            MacroType::Sidebar => MultiLineMacro {
+                macro_type: MultiLineMacroType::Sidebar,
                 is_closing,
                 id
             },
@@ -221,7 +236,10 @@ impl MultiLineMacro {
                 | MultiLineMacroType::Tooltip { .. } => into_v32("</div>"),
 
                 // it doesn't need any closing tag because `render_math` generates both opening and closing tags
-                MultiLineMacroType::Math(_) => vec![]
+                MultiLineMacroType::Math(_) => vec![],
+
+                // this variant should be completely ignored by this function!
+                MultiLineMacroType::Sidebar => vec![]
             }
 
         }
@@ -325,6 +343,10 @@ impl MultiLineMacro {
                 },
                 MultiLineMacroType::Math(math) => {
                     render_math(math)
+                },
+                MultiLineMacroType::Sidebar => {
+                    // handled by AST::to_html
+                    vec![]
                 }
             }
 

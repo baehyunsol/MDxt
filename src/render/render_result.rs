@@ -4,11 +4,14 @@ use yaml_rust::Yaml;
 pub struct RenderResult {
     pub content: String,
 
-    /// This flag tells you if the document has a collapsible table.
+    /// This flag tells you if the document has collapsible tables.
     pub has_collapsible_table: bool,
 
-    /// This flag tells you if the document has a tooltip.
+    /// This flag tells you if the document has tooltips.
     pub has_tooltip: bool,
+
+    /// This flag tells you if the document has a sidebar.
+    pub has_sidebar: bool,
 
     pub metadata: Option<Yaml>,
 

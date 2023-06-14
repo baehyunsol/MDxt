@@ -47,6 +47,7 @@ impl AST {
         let mut curr_parse_state = ParseState::None;
         let mut table_count = 0;
         let mut fenced_code_count = 0;
+        let mut sidebar = vec![];
         let mut doc_data = DocData::default();
 
         let mut has_multiline_macro = false;
@@ -374,13 +375,14 @@ impl AST {
 
         // some multiline macros (tooltip, sidebar, collapsible) have to know their inner content
         if has_multiline_macro {
-            collect_nodes_for_multiline_macros(&mut curr_nodes);
+            collect_nodes_for_multiline_macros(&mut curr_nodes, &mut sidebar, options, &mut doc_data);
         }
 
         AST {
             nodes: curr_nodes,
             doc_data,
             toc: vec![],  // if needed, will be rendered later
+            sidebar,
             render_option: options.clone(),
             is_inline_parsed: false
         }
@@ -452,7 +454,7 @@ bar
 
 in the above mdxt, `foo` and `bar` has to be children of `[[collapsible]]`, not the main AST
 */
-fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>) {
+fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<Node>, render_option: &RenderOption, doc_data: &mut DocData) {
     let mut index = 0;
     let mut stack_of_nodes = vec![];
 
@@ -463,8 +465,18 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>) {
             if macro_type.has_inner_nodes() {
 
                 if *is_closing {
-                    // `nodes[index - 1]` must be the opening multiline-macro 
-                    nodes[index - 1].set_inner_nodes(stack_of_nodes.pop().unwrap());
+
+                    // contents of a sidebar is stored in AST, not in the MacroType
+                    // `MultiLineMacroType::Sidebar` is ignored by Node::to_html
+                    if macro_type.is_sidebar() {
+                        *sidebar = stack_of_nodes.pop().unwrap();
+                    }
+
+                    else {
+                        // `nodes[index - 1]` must be the opening multiline-macro 
+                        nodes[index - 1].set_inner_nodes(stack_of_nodes.pop().unwrap());
+                    }
+
                 }
 
                 else {
@@ -483,7 +495,10 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>) {
             // TODO: this is O(n^2)
             // I can think of O(n) alternatives, but the code would get uglier...
             // the number of inner nodes must be very small, so why don't we just keep this solution?
-            stack_of_nodes[last_index].push(nodes.remove(index));
+            let mut node = nodes.remove(index);
+            node.parse_inlines(render_option, doc_data);
+
+            stack_of_nodes[last_index].push(node);
         }
 
         else {

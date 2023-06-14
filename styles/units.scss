@@ -55,3 +55,7 @@ $h4-margin: 2.571rem;  // 54px;
 $h5-margin: 2.286rem;  // 48px;
 
 $header-height: $font-big + $padding-big * 2 + $border-big;
+
+:root {
+    --sidebar-width: min($image-medium, 60%);
+}

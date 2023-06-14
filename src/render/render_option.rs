@@ -8,9 +8,10 @@ pub struct RenderOption {
     pub enable_youtube: bool,
     pub footnote_tooltip: bool,
     pub header_anchor: bool,
-    pub javascript_collapsible_tables: bool,
-    pub javascript_copy_buttons: bool,
-    pub javascript_tooltips: bool,
+    pub javascript_for_collapsible_tables: bool,
+    pub javascript_for_copy_buttons: bool,
+    pub javascript_for_tooltips: bool,
+    pub javascript_for_sidebar: bool,
     pub link_handler: fn(&str) -> String,
     pub parse_metadata: bool,
     pub xml: bool
@@ -24,9 +25,10 @@ impl Default for RenderOption {
             enable_youtube: true,
             footnote_tooltip: false,
             header_anchor: true,
-            javascript_collapsible_tables: true,
-            javascript_copy_buttons: true,
-            javascript_tooltips: true,
+            javascript_for_collapsible_tables: true,
+            javascript_for_copy_buttons: true,
+            javascript_for_tooltips: true,
+            javascript_for_sidebar: true,
             link_handler: |s| s.to_string(),
             parse_metadata: true,
             xml: false
@@ -76,26 +78,33 @@ impl RenderOption {
 
     /// It embeds javascript for collapsible tables in a `<script>`.
     pub fn embed_js_for_collapsible_tables(&mut self, javascript: bool) -> &mut Self {
-        self.javascript_collapsible_tables = javascript;
+        self.javascript_for_collapsible_tables = javascript;
+        self
+    }
+
+    /// It embeds javascript for a sidebar in a `<script>`.
+    pub fn embed_js_for_sidebar(&mut self, javascript: bool) -> &mut Self {
+        self.javascript_for_sidebar = javascript;
         self
     }
 
     /// It embeds javascript for copy buttons of fenced code blocks in a `<script>`.
     pub fn embed_js_for_copy_buttons(&mut self, javascript: bool) -> &mut Self {
-        self.javascript_copy_buttons = javascript;
+        self.javascript_for_copy_buttons = javascript;
         self
     }
 
     /// It embeds javascript for tooltips in a `<script>`.
     pub fn embed_js_for_tooltips(&mut self, javascript: bool) -> &mut Self {
-        self.javascript_tooltips = javascript;
+        self.javascript_for_tooltips = javascript;
         self
     }
 
     pub fn embed_js_all(&mut self, javascript: bool) -> &mut Self {
-        self.javascript_collapsible_tables = javascript;
-        self.javascript_copy_buttons = javascript;
-        self.javascript_tooltips = javascript;
+        self.javascript_for_collapsible_tables = javascript;
+        self.javascript_for_copy_buttons = javascript;
+        self.javascript_for_tooltips = javascript;
+        self.javascript_for_sidebar = javascript;
 
         self
     }

@@ -148,7 +148,13 @@ impl Macro {
                     InlineMacro::Icon { name, size }
                 }),
                 content: vec![]
-            }
+            },
+
+            // an inline sidebar is ignored
+            MacroType::Sidebar => InlineNode::Decoration {
+                deco_type: DecorationType::None,
+                content: vec![]
+            },
         }
 
     }

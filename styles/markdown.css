@@ -868,3 +868,47 @@ body .markdown img, body .markdown video, body .markdown iframe {
   border-right: 0.3333333333rem solid #0000;
   border-bottom: 0.3333333333rem solid var(--white);
 }
+
+#mdxt-sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;  /* I want it to be above the header (in my personal blog) */
+  top: 0;
+  left: 0;
+  background-color: var(--black);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+#mdxt-sidebar-close-button {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+#mdxt-sidebar-content {
+  padding: 32px;
+}
+
+#mdxt-sidebar-toggle {
+  background-color: var(--gray);
+  position: fixed;
+  top: 15%;
+  height: 70%;
+  left: 0;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+#mdxt-sidebar-button-content {
+  display: block;
+  padding: 24px 6px 0px 6px;
+}
+
+:root {
+    --sidebar-width: min(450px, 60%);
+}

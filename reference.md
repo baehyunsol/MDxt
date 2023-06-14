@@ -1,5 +1,5 @@
 ---
-date: [2023, 6, 9]
+date: [2023, 6, 14]
 hide: true
 ---
 
@@ -535,6 +535,26 @@ You can embed SVG icons using the `[[icon]]` macro. The full documentation can b
 
 To see the list of available math elements, visit [here](MDxt-Math-Reference.html).
 
+### Sidebar
+
+```
+[[sidebar]]
+
+[[toc]]
+
+[[/sidebar]]
+```
+
+[[sidebar]]
+
+[[toc]]
+
+[[/sidebar]]
+
+`[[sidebar]]` macro generates a sidebar. It only works as a [multiline-macro](#multiline-macro). If multiple sidebars are declared, it only accepts the last one. In order for it to work properly, it requires a css and js. Check the css files in its [repo](https://github.com/baehyunsol/MDxt).
+
+It takes one optional argument: `default`. If `[[sidebar, default = shown]]`, the sidebar is shown by default. If you wanna hide it by default, do `[[sidebar, default = hidden]]`. If no argument is given, it's hidden by default.
+
 ### Multiline Macro
 
 If a paragraph has a macro and no other contents at all, the paragraph is rendered to a multiline macro.
@@ -552,6 +572,8 @@ red texts.
 ```
 
 As you see above, the first and the last paragraph only consist of a macro. The macro will be rendered to `<div class="color-red">`.
+
+If an opening macro is declared as a multiline-macro, the closing one must also be multiline.
 
 [multiline macro]: #multiline-macro
 

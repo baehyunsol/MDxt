@@ -795,7 +795,7 @@ for (let i = 0; i < tooltips.length; i++) {
 
 [[tooltip = abc]]
 
-Hover over me!
+Hover over *me*!
 
 Hover over me!
 
@@ -807,7 +807,7 @@ Hover over me!
 
 <div class=\"tooltip-container\" id=\"tooltip-container-0\">
 
-    <p>Hover over me!</p>
+    <p>Hover over <em>me</em>!</p>
 
     <p>Hover over me!</p>
 
@@ -847,7 +847,115 @@ for (let i = 0; i < tooltips.length; i++) {
 Sidebar!!
 
 [[/sidebar]]
-", ""), ("
+", "
+<div id=\"mdxt-sidebar-toggle\" onclick=\"mdxt_toggle_sidebar()\">
+    <span id=\"mdxt-sidebar-button-content\">≫</span>
+</div>
+
+<div id=\"mdxt-sidebar\">
+    <div id=\"mdxt-sidebar-close-button\" onclick=\"mdxt_close_sidebar()\">&times;</div>
+    <div id=\"mdxt-sidebar-content\">
+        <p>Sidebar!!</p>
+    </div>
+</div>
+
+<script>
+
+var mdxt_sidebar_open = false;
+function mdxt_toggle_sidebar() {
+
+  if (mdxt_sidebar_open) {
+    mdxt_close_sidebar();
+  }
+
+  else {
+    document.getElementById(\"mdxt-sidebar\").style.width = \"var(--sidebar-width)\";
+    document.getElementById(\"mdxt-sidebar-toggle\").style.left = \"var(--sidebar-width)\";
+    document.getElementById(\"mdxt-sidebar-button-content\").innerHTML = \"≪\";
+    mdxt_sidebar_open = true;
+  }
+
+}
+
+function mdxt_close_sidebar() {
+  document.getElementById(\"mdxt-sidebar\").style.width = \"0\";
+  document.getElementById(\"mdxt-sidebar-toggle\").style.left = \"0\";
+  document.getElementById(\"mdxt-sidebar-button-content\").innerHTML = \"≫\";
+  mdxt_sidebar_open = false;
+}</script>
+"), ("
+[[sidebar]]
+
+If
+
+there
+
+are
+
+multiple
+
+sidebar
+
+definitions,
+
+[[/sidebar]]
+
+[[sidebar]]
+
+only
+
+the
+
+last
+
+one
+
+is
+
+[[giant]]valid.[[/giant]]
+
+[[/sidebar]]
+", "
+<div id=\"mdxt-sidebar-toggle\" onclick=\"mdxt_toggle_sidebar()\"><span id=\"mdxt-sidebar-button-content\">≫</span></div>
+
+<div id=\"mdxt-sidebar\">
+    <div id=\"mdxt-sidebar-close-button\" onclick=\"mdxt_close_sidebar()\">&times;</div>
+    <div id=\"mdxt-sidebar-content\">
+        <p>only</p>
+        <p>the</p>
+        <p>last</p>
+        <p>one</p>
+        <p>is</p>
+        <p><span class=\"size-giant\">valid.</span></p>
+    </div>
+</div>
+
+<script>
+var mdxt_sidebar_open = false;
+function mdxt_toggle_sidebar() {
+
+  if (mdxt_sidebar_open) {
+    mdxt_close_sidebar();
+  }
+
+  else {
+    document.getElementById(\"mdxt-sidebar\").style.width = \"var(--sidebar-width)\";
+    document.getElementById(\"mdxt-sidebar-toggle\").style.left = \"var(--sidebar-width)\";
+    document.getElementById(\"mdxt-sidebar-button-content\").innerHTML = \"≪\";
+    mdxt_sidebar_open = true;
+  }
+
+}
+
+function mdxt_close_sidebar() {
+  document.getElementById(\"mdxt-sidebar\").style.width = \"0\";
+  document.getElementById(\"mdxt-sidebar-toggle\").style.left = \"0\";
+  document.getElementById(\"mdxt-sidebar-button-content\").innerHTML = \"≫\";
+  mdxt_sidebar_open = false;
+}</script>
+"), ("
+[[sidebar]] inline sidebar? [[/sidebar]]
+", "<p></p>"), ("
 [[collapsible]]
 
 Do you see me?

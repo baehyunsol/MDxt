@@ -12,7 +12,10 @@ use crate::inline::{
     footnote::{footnotes_to_html, Footnote}
 };
 use crate::{collapsible_table_javascript, tooltip_javascript};
-use crate::container::codefence::html::copy_button_javascript;
+use crate::container::{
+    codefence::html::copy_button_javascript,
+    sidebar::{sidebar_to_html, sidebar_javascript}
+};
 use crate::render::render_option::RenderOption;
 use crate::utils::into_v32;
 use doc_data::DocData;
@@ -24,6 +27,7 @@ pub struct AST {
     pub doc_data: DocData,
     pub nodes: Vec<Node>,
     pub toc: Vec<Node>,
+    pub sidebar: Vec<Node>,
     is_inline_parsed: bool
 }
 
@@ -36,20 +40,7 @@ impl AST {
         }
 
         self.nodes.iter_mut().for_each(
-            |node| match node {
-                Node::Paragraph { content } | Node::Header { content, .. } => { content.parse_raw(&mut self.doc_data, &self.render_option); },
-                Node::Table(table) => { table.parse_inlines(&mut self.doc_data, &self.render_option); },
-                Node::List(list) => { list.parse_inlines(&mut self.doc_data, &self.render_option); },
-                Node::Blockquote(blockquote) => { blockquote.parse_inlines(&mut self.doc_data, &self.render_option); },
-                Node::Empty | Node::ThematicBreak | Node::MultiLineMacro(_) => {},
-
-                // TODO
-                // this branch is ugly...
-                // it doesn't `parse_inline` inside the `parse_inlines` function
-                // but this is the only point where the `FencedCode` instances and `doc_data` meet
-                // I should call this function when the fenced_codes are initialized, but `doc_data` doesn't exist at that timing
-                Node::FencedCode(fenced_code) => { self.doc_data.add_fenced_code_content(fenced_code); },
-            }
+            |node| node.parse_inlines(&self.render_option, &mut self.doc_data)
         );
 
         // I couldn't find any better way to avoid the borrow checker
@@ -111,13 +102,20 @@ impl AST {
             buffer.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
 
-        // 4. It appends scripts if needed
+        // 4. It renders a sidebar if exists
 
-        let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_collapsible_tables;
-        let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_copy_buttons;
-        let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_collapsible_tables;
+        if self.sidebar.len() > 0 {
+            buffer.push(sidebar_to_html(&self.sidebar, &toc_rendered, &self.render_option, &mut self.doc_data));
+        }
 
-        if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips {
+        // 5. It appends scripts if needed
+
+        let enabel_js_for_sidebar = self.sidebar.len() > 0 && self.render_option.javascript_for_sidebar;
+        let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_for_collapsible_tables;
+        let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_for_copy_buttons;
+        let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_for_collapsible_tables;
+
+        if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips || enabel_js_for_sidebar {
             buffer.push(into_v32("<script>"));
 
             if self.render_option.xml {
@@ -134,6 +132,10 @@ impl AST {
 
             if enable_js_for_tooltips {
                 buffer.push(into_v32(&tooltip_javascript()));
+            }
+
+            if enabel_js_for_sidebar {
+                buffer.push(into_v32(&sidebar_javascript()));
             }
 
             // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work

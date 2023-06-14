@@ -112,6 +112,25 @@ impl Node {
         )
     }
 
+    pub fn parse_inlines(&mut self, render_option: &RenderOption, doc_data: &mut DocData) {
+
+        match self {
+            Node::Paragraph { content } | Node::Header { content, .. } => { content.parse_raw(doc_data, render_option); },
+            Node::Table(table) => { table.parse_inlines(doc_data, render_option); },
+            Node::List(list) => { list.parse_inlines(doc_data, render_option); },
+            Node::Blockquote(blockquote) => { blockquote.parse_inlines(doc_data, render_option); },
+            Node::Empty | Node::ThematicBreak | Node::MultiLineMacro(_) => {},
+
+            // TODO
+            // this branch is ugly...
+            // it doesn't `parse_inline` inside the `parse_inlines` function
+            // but this is the only point where the `FencedCode` instances and `doc_data` meet
+            // I should call this function when the fenced_codes are initialized, but `doc_data` doesn't exist at that timing
+            Node::FencedCode(fenced_code) => { doc_data.add_fenced_code_content(fenced_code); },
+        }
+
+    }
+
     pub fn to_html(&self, toc_rendered: &Vec<u32>, render_option: &RenderOption, doc_data: &mut DocData, buffer: &mut Vec<Vec<u32>>) {
         let class_prefix = &render_option.class_prefix;
 

@@ -21,10 +21,17 @@ impl Macro {
                 )
             },
 
-            MacroType::Box => (arguments[0].len() == 1) && is_valid_box_arguments(&arguments),
+            MacroType::Box => arguments[0].len() == 1 && is_valid_box_arguments(&arguments),
 
             MacroType::Char => arguments.len() == 1 && arguments[0].len() == 2 && (
                 to_int(&arguments[0][1]).is_some() || CHAR_NAMES.contains(&arguments[0][1])
+            ),
+
+            MacroType::Sidebar => arguments.len() == 1 || (
+                arguments.len() == 2 && arguments[1][0] == into_v32("default") && (
+                    arguments[1][1] == into_v32("hidden") ||
+                    arguments[1][1] == into_v32("shown")
+                )
             ),
 
             MacroType::HTML => {

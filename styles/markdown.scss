@@ -1128,3 +1128,34 @@ body .markdown {
         border-bottom: $font-medium / 3 solid var(--white);
     }
 }
+
+/*
+----- Sidebar -----
+*/
+
+#mdxt-sidebar-close-button {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    cursor: pointer;
+}
+
+#mdxt-sidebar-content {
+    padding: 32px;
+}
+
+#mdxt-sidebar-toggle {
+    background-color: var(--gray);
+    position: fixed;
+    top: 15%;
+    height: 70%;
+    left: 0;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+#mdxt-sidebar-button-content {
+    display: block;
+    padding: 24px 6px 0px 6px;
+}

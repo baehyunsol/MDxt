@@ -52,7 +52,7 @@ pub fn render_reference() -> String {
     <title>MDxt Reference</title>
     <style>{css}</style>
 </head>
-<body>
+<body style=\"padding-left: 16px\">
     <article class=\"markdown\">{raw_html}</article>
 </body>
 </html>

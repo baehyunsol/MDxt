@@ -72,7 +72,7 @@ pub enum InlineNode {
 #[derive(Clone)]
 pub enum DecorationType {
     Bold, Italic, Underline, Deletion, Subscript, Superscript,
-    Macro(InlineMacro)
+    Macro(InlineMacro), None
 }
 
 #[derive(Clone)]
@@ -221,6 +221,11 @@ impl InlineNode {
                     ).collect::<Vec<Vec<u32>>>().concat(),
                     into_v32("</sup>")
                 ].concat(),
+                DecorationType::None => {
+                    #[cfg(test)] assert!(content.len() == 0);
+
+                    vec![]
+                }
                 DecorationType::Macro(macro_type) => match macro_type {
                     InlineMacro::Color(color) => vec![
                         into_v32(&format!("<span class=\"{class_prefix}color-")),
@@ -468,6 +473,11 @@ impl InlineNode {
                     ).collect::<Vec<Vec<u32>>>().concat(),
                     into_v32("^")
                 ].concat(),
+                DecorationType::None => {
+                    #[cfg(test)] assert!(content.len() == 0);
+
+                    vec![]
+                }
                 DecorationType::Macro(macro_type) => match macro_type {
                     InlineMacro::Color(name) | InlineMacro::Size(name) | InlineMacro::Alignment(name) => vec![
                         into_v32("[["),
@@ -594,7 +604,7 @@ impl InlineNode {
                         into_v32("[[icon="),
                         name.clone(),
                         into_v32(&format!(",size={size}]]"))
-                    ].concat()
+                    ].concat(),
                 }
             }
         }
