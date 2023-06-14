@@ -1133,16 +1133,29 @@ body .markdown {
 ----- Sidebar -----
 */
 
+#mdxt-sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2;  /* I want it to be above the header (in my personal blog) */
+  top: 0;
+  left: 0;
+  background-color: var(--black);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
 #mdxt-sidebar-close-button {
     position: absolute;
     top: 0;
-    right: 25px;
-    font-size: 36px;
+    right: $margin-medium;
+    font-size: $font-giant;
     cursor: pointer;
 }
 
 #mdxt-sidebar-content {
-    padding: 32px;
+    padding: $padding-giant;
 }
 
 #mdxt-sidebar-toggle {
@@ -1157,5 +1170,5 @@ body .markdown {
 
 #mdxt-sidebar-button-content {
     display: block;
-    padding: 24px 6px 0px 6px;
+    padding: $padding-big $padding-small 0px $padding-small;
 }

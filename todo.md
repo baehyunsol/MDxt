@@ -37,18 +37,6 @@ fn main() {
 
 ---
 
-footnote 안에 다른 footnote를 넣으면 어떻게 됨? 자기자신을 ref하면?
-
-```
-[^aa]: This is aa.[^aa][^bb]
-
-[^bb]: This is bb.[^bb][^aa]
-```
-
-저러면 footnote 내용 안의 footnote는 인식이 안됨 (번호는 붙는데 link가 안 생김). 그냥 레퍼런스에 저런 거 하지 말라고 적어놨음
-
----
-
 list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으로 들어가버림. 아마 blockquote도 동일할 듯. table도 실험해보셈. 저게 맞는 동작인지 아닌지는 고민을 좀 해보자
 
 ---
@@ -167,49 +155,16 @@ sqrt{3 + 3 + 3} = 3
 
 ---
 
-collapsible sidebar -> `~/Documents/web`에 만들어 놓았음!
+collapsible
 
-근데 multiline macro를 어떻게 쓰지...?? 지금 multiline macro로 된 Node는 시작 node와 끝 Node의 정보만 있고 안의 내용은 없음
-
-1. AST 만들 때 multiline macro를 찾으면 일단 걔의 종류를 확인 -> 만약 sidebar면 그 안의 Line들 통째로 갖고 가!
-  - line 통째로 갖고 가면 AST 또 만들어..?? 그거 살짝 애매함
-  - 그럼 DocData가 2개 나오는데 둘이 합쳐야 하나?? 어떻게 합침??
-
-이거 구현하면 이거 이용해서 collapsible도 구현하자! 표나 list를 collapse하는게 아니고 arbitrary MD를 collapse 할 수 있게!!
-
-저거 되면 toc 구현도 고칠까? 지금 toc도 너무 더럽게 돼 있음...
-
-저거 하면 위에서 말한 reference도 구현할 수 있음!
+... 어떻게 구현?
 
 ---
 
-multiline math랑 multiline tooltip이 문제가 있거든?? 쟤네 해결하면 그걸로 multiline collapsible도 똑같이 구현 가능!
+multiline macro에 id 부여한다고 까불던 거 없애기! -> dependency에서 rand를 통째로 없애기!
 
 ---
-
-lines를 Node로 쭉 바꾼 다음에, multiline macro (math, tooltip, collapsible, sidebar, reference 등등) 사이에 낀 Node만 따로 뽑는 건 어렵지 않을 듯?
-
-모든 multiline macro에 각각 id 부여 -> opening과 closing은 같은 id 갖도록!
-
-나중에 Node들 보면서 저 multiline macro 안에 낀 Node들은 따로 빼기
-
-여기까진 쉬운데, Node를 html로 바꾸는게 빡셈...
-
-1. reference는 일단 구현 보류
-2. tooltip 구현하고 그거랑 동일하게 collapsible 구현
-3. math -> 안에 있는 Node를 다시 mdxt로 바꾼 다음에, 거기서 나온 Vec<u32>를 통째로 math로 변환
-4. sidebar -> 이것도 collapsible이랑 동일하게 구현???
-
-신경써야 할 것들...
-
-1. footnote 등장하면 (정의말고 ref), 걔네 어떻게 셀지가 막막...
-
----
-
-math 안에 다른 macro 못 쓴다고 언급하기!
-
-newline도 다 무시된다고 언급하기! 줄바꿈 하려면 `br` 쓰라고 하자 -> 스펙엔 있는데 아직 웹브라우저가 지원을 안 하는 듯?? ㅠㅠㅠ
-
-nested tooltip 안된다고 언급하기!
 
 extra syntax set 관련된 것도 언급 ㄱㄱ
+
+sidebar default visibility -> 까먹고 아직 구현 안함! ㅋㅋㅋ

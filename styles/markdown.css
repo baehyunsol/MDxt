@@ -62,6 +62,10 @@ CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
   --gold-compl-trans: #003fbf60;
 }
 
+:root {
+  --sidebar-width: min(450px, 60%);
+}
+
 body .markdown {
   background-color: var(--dark);
   color: var(--white);
@@ -869,11 +873,15 @@ body .markdown img, body .markdown video, body .markdown iframe {
   border-bottom: 0.3333333333rem solid var(--white);
 }
 
+/*
+----- Sidebar -----
+*/
 #mdxt-sidebar {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 2;  /* I want it to be above the header (in my personal blog) */
+  z-index: 2;
+  /* I want it to be above the header (in my personal blog) */
   top: 0;
   left: 0;
   background-color: var(--black);
@@ -885,13 +893,13 @@ body .markdown img, body .markdown video, body .markdown iframe {
 #mdxt-sidebar-close-button {
   position: absolute;
   top: 0;
-  right: 25px;
-  font-size: 36px;
+  right: 1rem;
+  font-size: 1.571rem;
   cursor: pointer;
 }
 
 #mdxt-sidebar-content {
-  padding: 32px;
+  padding: 1.524rem;
 }
 
 #mdxt-sidebar-toggle {
@@ -906,9 +914,5 @@ body .markdown img, body .markdown video, body .markdown iframe {
 
 #mdxt-sidebar-button-content {
   display: block;
-  padding: 24px 6px 0px 6px;
-}
-
-:root {
-    --sidebar-width: min(450px, 60%);
+  padding: 0.857rem 0.286rem 0px 0.286rem;
 }
