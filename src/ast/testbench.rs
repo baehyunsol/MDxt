@@ -842,6 +842,12 @@ for (let i = 0; i < tooltips.length; i++) {
 }
 </script>
 "), ("
+[[sidebar]]
+
+Sidebar!!
+
+[[/sidebar]]
+", ""), ("
 [[collapsible]]
 
 Do you see me?

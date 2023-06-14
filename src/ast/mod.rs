@@ -17,7 +17,6 @@ use crate::render::render_option::RenderOption;
 use crate::utils::into_v32;
 use doc_data::DocData;
 use node::Node;
-use std::collections::HashMap;
 
 #[derive(Clone)]
 pub struct AST {
@@ -86,26 +85,33 @@ impl AST {
         let mut buffer = Vec::with_capacity(self.nodes.len());
         let class_prefix = &self.render_option.class_prefix;
 
-        // TODO: this block is to ugly
-        let toc_rendered = if self.doc_data.has_toc {
-            let mut tmp_ast_for_toc = self.clone();
-            tmp_ast_for_toc.nodes = tmp_ast_for_toc.toc.clone();
-            tmp_ast_for_toc.doc_data.has_toc = false;  // to prevent infinite recursion
-            tmp_ast_for_toc.doc_data.footnote_references = HashMap::new();  // not to render it multiple times
-            tmp_ast_for_toc.render_option.javascript_collapsible_tables = false;  // not to render it multiple times
-            tmp_ast_for_toc.render_option.javascript_copy_buttons = false;  // not to render it multiple times
-            tmp_ast_for_toc.to_html()
-        } else {
-            vec![]
-        };
+        // 1. It renderes the toc_data into a raw html string
+
+        let mut toc_buffer = vec![];
+
+        if self.doc_data.has_toc {
+
+            for node in self.toc.iter() {
+                node.to_html(&vec![], &self.render_option, &mut self.doc_data, &mut toc_buffer);
+            }
+
+        }
+
+        let toc_rendered = toc_buffer.concat();
+
+        // 2. It renders all the inner nodes to raw html strings
 
         for node in self.nodes.iter() {
             node.to_html(&toc_rendered, &self.render_option, &mut self.doc_data, &mut buffer);
         }
 
+        // 3. It renders footnote_references
+
         if self.doc_data.footnote_references.len() > 0 {
             buffer.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
+
+        // 4. It appends scripts if needed
 
         let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_collapsible_tables;
         let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_copy_buttons;

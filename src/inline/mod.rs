@@ -377,6 +377,7 @@ impl InlineNode {
         }
     }
 
+    #[cfg(test)]  // it's used for roundtrip tests
     pub fn to_mdxt(&self) -> Vec<u32> {
         match self {
             InlineNode::Raw(content) => content.clone(),

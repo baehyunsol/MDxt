@@ -31,6 +31,7 @@ pub fn drop_while(v: &[u32], c: u32) -> Vec<u32> {
     v[index..].to_vec()
 }
 
+#[cfg(test)]  // for now, it's only used by test functions
 pub fn take_while(v: &[u32], c: u32) -> Vec<u32> {
 
     let mut index = 0;
