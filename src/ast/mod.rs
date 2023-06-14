@@ -83,7 +83,7 @@ impl AST {
 
     pub fn to_html(&mut self) -> Vec<u32> {
         self.parse_inlines();
-        let mut result = Vec::with_capacity(self.nodes.len());
+        let mut buffer = Vec::with_capacity(self.nodes.len());
         let class_prefix = &self.render_option.class_prefix;
 
         // TODO: this block is to ugly
@@ -100,66 +100,11 @@ impl AST {
         };
 
         for node in self.nodes.iter() {
-
-            match node {
-                Node::Paragraph { content } => {
-                    result.push(
-                        vec![
-                            into_v32("<p>"),
-                            content.to_html(&toc_rendered, class_prefix),
-                            into_v32("</p>")
-                        ].concat()
-                    );
-                },
-                Node::ThematicBreak => {
-                    result.push(
-                        into_v32("<hr/>")
-                    );
-                },
-                Node::Table(table) => {
-                    result.push(table.to_html(&toc_rendered, class_prefix));
-                }
-                Node::List(list) => {
-                    result.push(list.to_html(&toc_rendered, class_prefix));
-                }
-                Node::Blockquote(blockquote) => {
-                    result.push(blockquote.to_html(&toc_rendered, class_prefix));
-                }
-                Node::MultiLineMacro(multiline_macro) => {
-                    result.push(multiline_macro.to_html(class_prefix));
-                }
-                Node::Header { level, content, anchor } => {
-
-                    let anchor = if self.render_option.header_anchor && anchor.len() > 0 {
-                        vec![
-                            into_v32(&format!(" id=\"")),
-                            anchor.to_vec(),
-                            into_v32("\"")
-                        ].concat()
-                    } else {
-                        into_v32("")
-                    };
-
-                    result.push(
-                        vec![
-                            into_v32(&format!("<h{level}")),
-                            anchor,
-                            into_v32(">"),
-                            content.to_html(&toc_rendered, class_prefix),
-                            into_v32(&format!("</h{level}>")),
-                        ].concat()
-                    );
-                },
-                Node::FencedCode(fenced_code) => {
-                    result.push(fenced_code.to_html(class_prefix));
-                }
-                Node::Empty => {}
-            }
-
+            node.to_html(&toc_rendered, &self.render_option, &mut self.doc_data, &mut buffer);
         }
 
         if self.doc_data.footnote_references.len() > 0 {
-            result.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
+            buffer.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
 
         let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_collapsible_tables;
@@ -167,33 +112,33 @@ impl AST {
         let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_collapsible_tables;
 
         if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips {
-            result.push(into_v32("<script>"));
+            buffer.push(into_v32("<script>"));
 
             if self.render_option.xml {
-                result.push(into_v32("/*<![CDATA[*/"));
+                buffer.push(into_v32("/*<![CDATA[*/"));
             }
 
             if enable_js_for_tables {
-                result.push(into_v32(&collapsible_table_javascript()));
+                buffer.push(into_v32(&collapsible_table_javascript()));
             }
 
             if enable_js_for_copy_buttons {
-                result.push(into_v32(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
+                buffer.push(into_v32(&copy_button_javascript(&self.doc_data.fenced_code_contents)));
             }
 
             if enable_js_for_tooltips {
-                result.push(into_v32(&tooltip_javascript()));
+                buffer.push(into_v32(&tooltip_javascript()));
             }
 
             // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
             if self.render_option.xml {
-                result.push(into_v32("/*]]>*/"));
+                buffer.push(into_v32("/*]]>*/"));
             }
 
-            result.push(into_v32("</script>"));
+            buffer.push(into_v32("</script>"));
         }
 
-        result.concat()
+        buffer.concat()
     }
 
 }

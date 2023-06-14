@@ -23,6 +23,20 @@ fn custom_macro(arguments: &Vec<Vec<Vec<u16>>>, content: &Vec<u16>) -> Option<Ve
 
 ---
 
+````md
+
+```rust, id(7)
+fn main() {
+  println!("Hello World!");
+}
+```
+
+````
+
+저렇게 하면 저 id로 codefence in table도 구현할 수 있고, 저 codefence의 특정 줄을 highlight하는 버튼을 만들 수도 있음!
+
+---
+
 footnote 안에 다른 footnote를 넣으면 어떻게 됨? 자기자신을 ref하면?
 
 ```
@@ -40,6 +54,12 @@ list 다음에 줄바꿈 없이 multiline macro가 오면 macro가 list 안으�
 ---
 
 underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 많이 만든 다음에 gfm이랑 동일하게 동작하도록 구현하면 될 듯?
+
+---
+
+indented code blocks -> why not?
+
+https://github.github.com/gfm/#indented-code-blocks
 
 ---
 

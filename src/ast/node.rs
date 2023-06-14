@@ -1,5 +1,6 @@
 use super::line::add_br_if_needed;
-use crate::ast::line::Line;
+use crate::RenderOption;
+use crate::ast::{doc_data::DocData, line::Line};
 use crate::inline::InlineNode;
 use crate::inline::macros::multiline::{MultiLineMacro, MultiLineMacroType};
 use crate::container::{
@@ -9,6 +10,7 @@ use crate::container::{
     list::List,
     table::Table,
 };
+use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub enum Node {
@@ -92,8 +94,8 @@ impl Node {
         Node::Blockquote(Blockquote::from_lines(lines))
     }
 
-    pub fn new_macro(line: &Line, macro_id: u64) -> Node {
-        Node::MultiLineMacro(MultiLineMacro::from_line(line, macro_id))
+    pub fn new_macro(line: &Line, macro_id: u64, doc_data: &mut DocData) -> Node {
+        Node::MultiLineMacro(MultiLineMacro::from_line(line, macro_id, doc_data))
     }
 
     pub fn new_math_ml(lines: &Vec<Line>, macro_id: u64) -> Node {
@@ -108,6 +110,66 @@ impl Node {
                 id: macro_id
             },
         )
+    }
+
+    pub fn to_html(&self, toc_rendered: &Vec<u32>, render_option: &RenderOption, doc_data: &mut DocData, buffer: &mut Vec<Vec<u32>>) {
+        let class_prefix = &render_option.class_prefix;
+
+        match self {
+            Node::Paragraph { content } => {
+                buffer.push(
+                    vec![
+                        into_v32("<p>"),
+                        content.to_html(toc_rendered, class_prefix),
+                        into_v32("</p>")
+                    ].concat()
+                );
+            },
+            Node::ThematicBreak => {
+                buffer.push(
+                    into_v32("<hr/>")
+                );
+            },
+            Node::Table(table) => {
+                buffer.push(table.to_html(toc_rendered, class_prefix));
+            }
+            Node::List(list) => {
+                buffer.push(list.to_html(toc_rendered, class_prefix));
+            }
+            Node::Blockquote(blockquote) => {
+                buffer.push(blockquote.to_html(toc_rendered, class_prefix));
+            }
+            Node::MultiLineMacro(multiline_macro) => {
+                buffer.push(multiline_macro.to_html(toc_rendered, render_option, doc_data));
+            }
+            Node::Header { level, content, anchor } => {
+
+                let anchor = if render_option.header_anchor && anchor.len() > 0 {
+                    vec![
+                        into_v32(&format!(" id=\"")),
+                        anchor.to_vec(),
+                        into_v32("\"")
+                    ].concat()
+                } else {
+                    into_v32("")
+                };
+
+                buffer.push(
+                    vec![
+                        into_v32(&format!("<h{level}")),
+                        anchor,
+                        into_v32(">"),
+                        content.to_html(toc_rendered, class_prefix),
+                        into_v32(&format!("</h{level}>")),
+                    ].concat()
+                );
+            },
+            Node::FencedCode(fenced_code) => {
+                buffer.push(fenced_code.to_html(class_prefix));
+            }
+            Node::Empty => {}
+        }
+
     }
 
 }

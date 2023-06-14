@@ -8,7 +8,7 @@ pub fn random(mut seed: usize) -> usize {
 }
 
 #[test]
-fn renderer() {
+fn render_reference_test() {
     use crate::render_reference;
     use std::fs::File;
     use std::io::Write;

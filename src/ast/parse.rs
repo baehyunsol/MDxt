@@ -45,11 +45,9 @@ impl AST {
         let mut curr_nodes = Vec::with_capacity(lines.len());
         let mut curr_lines = vec![];
         let mut curr_parse_state = ParseState::None;
-        let mut link_references = HashMap::new();
-        let mut footnote_references: HashMap<Vec<u32>, Footnote> = HashMap::new();
-        let mut headers = vec![];
         let mut table_count = 0;
         let mut fenced_code_count = 0;
+        let mut doc_data = DocData::default();
 
         let mut has_multiline_macro = false;
 
@@ -86,7 +84,7 @@ impl AST {
                     if macro_closing_indexes.contains_key(&index) {
                         let macro_id = *macro_closing_indexes.get(&index).unwrap();
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                        curr_nodes.push(Node::new_macro(&lines[index], macro_id));
+                        curr_nodes.push(Node::new_macro(&lines[index], macro_id, &mut doc_data));
                         macro_closing_indexes.remove(&index);
                         index += 1;
                         continue;
@@ -101,7 +99,7 @@ impl AST {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
                         let (level, content) = parse_header(&lines[index]);
-                        headers.push((level, content.clone()));
+                        doc_data.headers.push((level, content.clone()));
                         curr_nodes.push(Node::new_header(level, content));
                         curr_parse_state = ParseState::None;
                     }
@@ -192,12 +190,12 @@ impl AST {
                         if is_valid_footnote_label(&link_label) {
                             let footnote_label = normalize_link_label(&link_label);
 
-                            let footnote_index = match footnote_references.get(&footnote_label) {
+                            let footnote_index = match doc_data.footnote_references.get(&footnote_label) {
                                 Some(f) => f.index,
-                                None => footnote_references.len()
+                                None => doc_data.footnote_references.len()
                             };
 
-                            footnote_references.insert(
+                            doc_data.footnote_references.insert(
                                 footnote_label,
                                 Footnote {
                                     index: footnote_index,
@@ -208,7 +206,7 @@ impl AST {
                         }
 
                         else {
-                            link_references.insert(normalize_link_label(&link_label), into_v32(&options.handle_link(&from_v32(&link_destination))));
+                            doc_data.link_references.insert(normalize_link_label(&link_label), into_v32(&options.handle_link(&from_v32(&link_destination))));
                         }
 
                     }
@@ -245,7 +243,7 @@ impl AST {
 
                                                 else {
                                                     macro_closing_indexes.insert(macro_closing_index, macro_id);
-                                                    curr_nodes.push(Node::new_macro(&lines[index], macro_id));
+                                                    curr_nodes.push(Node::new_macro(&lines[index], macro_id, &mut doc_data));
                                                     curr_parse_state = ParseState::Paragraph;
                                                 }
 
@@ -374,11 +372,9 @@ impl AST {
 
         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
-        let mut doc_data = DocData::new(headers, link_references, footnote_references);
-
         // some multiline macros (tooltip, sidebar, collapsible) have to know their inner content
         if has_multiline_macro {
-            collect_nodes_for_multiline_macros(&mut curr_nodes, &mut doc_data);
+            collect_nodes_for_multiline_macros(&mut curr_nodes);
         }
 
         AST {
@@ -456,7 +452,7 @@ bar
 
 in the above mdxt, `foo` and `bar` has to be children of `[[collapsible]]`, not the main AST
 */
-fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, doc_data: &mut DocData) {
+fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>) {
     let mut index = 0;
     let mut stack_of_nodes = vec![];
 

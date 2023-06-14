@@ -800,7 +800,48 @@ Hover over me!
 Hover over me!
 
 [[/tooltip]]
-", ""), ("
+
+[^abc]: Do you hear me?
+", "
+<h1 id=\"multiline-tooltips\">Multiline tooltips</h1>
+
+<div class=\"tooltip-container\" id=\"tooltip-container-0\">
+
+    <p>Hover over me!</p>
+
+    <p>Hover over me!</p>
+
+    <div class=\"tooltip-message\" id=\"tooltip-message-0\">Do you hear me?</div>
+
+</div>
+
+<script>let tooltips = document.querySelectorAll(\".tooltip-container\");
+
+for (let i = 0; i < tooltips.length; i++) {
+    let child = document.getElementById(\"tooltip-message-\" + i);
+
+    document.getElementById(\"tooltip-container-\" + i).addEventListener(\"mousemove\", e => {
+
+        if (e.clientX + child.clientWidth > window.innerWidth) {
+            child.style.left = e.clientX - child.clientWidth + \"px\";
+        }
+
+        else {
+            child.style.left = e.clientX + \"px\";
+        }
+
+        if (e.clientY < child.clientHeight + 8) {
+            child.style.top = e.clientY + 8 + \"px\";
+        }
+
+        else {
+            child.style.top = (e.clientY - child.clientHeight - 8) + \"px\";
+        }
+
+    });
+}
+</script>
+"), ("
 [[collapsible]]
 
 Do you see me?

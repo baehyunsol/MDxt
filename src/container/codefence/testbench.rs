@@ -521,6 +521,25 @@ function copy_code_to_clipboard(index) {
 }
 </script>
 "), ("
+```copy_button
+\"
+```
+", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">&quot;</span></span>
+    </code>
+    <button class=\"copy-fenced-code\" onclick=\"copy_code_to_clipboard(0)\">Copy</button>
+</pre>
+
+<script>
+const fenced_code_block_contents = [\"\\\"\"];
+
+function copy_code_to_clipboard(index) {
+    navigator.clipboard.writeText(fenced_code_block_contents[index]);
+}
+</script> 
+"), ("
 ```
 <
 \\

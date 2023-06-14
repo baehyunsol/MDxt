@@ -4,7 +4,9 @@ use super::{
     predicate::read_macro, parse::{parse_html_tag, parse_box_arguments},
     super::math::render_math
 };
-use crate::ast::{line::Line, node::Node};
+use crate::RenderOption;
+use crate::ast::{doc_data::DocData, line::Line, node::Node};
+use crate::inline::macros::tooltip::load_tooltip_message;
 use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
@@ -30,7 +32,11 @@ pub enum MultiLineMacroType {
     Alignment(Vec<u32>),
     Highlight(Vec<u32>),
     Math(Vec<u32>),
-    Tooltip(Vec<Node>),
+    Tooltip {
+        container: Vec<Node>,  // outside
+        label: Vec<u32>,  // inside, the actual message, which is `Vec<Box<InlineNode>>` will be loaded later
+        index: usize
+    },
     HTML {
         tag: Vec<u32>,
         class: Vec<u32>,
@@ -44,7 +50,7 @@ impl MultiLineMacroType {
 
         // don't use wildcard character
         match self {
-            MultiLineMacroType::Tooltip(_) => true,
+            MultiLineMacroType::Tooltip { .. } => true,
             MultiLineMacroType::Box{ .. } |
             MultiLineMacroType::Color(_) |
             MultiLineMacroType::Size(_) |
@@ -61,8 +67,8 @@ impl MultiLineMacroType {
 
         // it's okay to use wildcard character because the above function is not using it
         match self {
-            MultiLineMacroType::Tooltip(nodes_) => {
-                *nodes_ = nodes;
+            MultiLineMacroType::Tooltip{ container, .. } => {
+                *container = nodes;
             }
             _ => {}
         }
@@ -75,7 +81,7 @@ impl MultiLineMacro {
 
     // all the validity checks are done before this function
     // this function assumes that everything is valid
-    pub fn from_line(line: &Line, id: u64) -> Self {
+    pub fn from_line(line: &Line, id: u64, doc_data: &mut DocData) -> Self {
         let macro_content = read_macro(&line.content, 0).unwrap();
         let macro_arguments = parse_arguments(&macro_content);
         let mut macro_name = get_macro_name(&macro_arguments);
@@ -167,7 +173,22 @@ impl MultiLineMacro {
             },
 
             MacroType::Tooltip => MultiLineMacro {
-                macro_type: MultiLineMacroType::Tooltip(vec![]),  // will be handled by another function
+                macro_type: if !is_closing {
+                    let label = macro_arguments[0][1].clone();
+                    let index = doc_data.add_tooltip();
+
+                    MultiLineMacroType::Tooltip {
+                        container: vec![],  // will be handled by another function
+                        label,
+                        index
+                    }
+                } else {
+                    MultiLineMacroType::Tooltip {
+                        container: vec![],
+                        label: vec![],
+                        index: 0
+                    }
+                },
                 is_closing,
                 id
             },
@@ -182,8 +203,9 @@ impl MultiLineMacro {
 
     }
 
-    pub fn to_html(&self, class_prefix: &str) -> Vec<u32> {
-        
+    pub fn to_html(&self, toc_rendered: &Vec<u32>, render_option: &RenderOption, doc_data: &mut DocData) -> Vec<u32> {
+        let class_prefix = &render_option.class_prefix;
+
         if self.is_closing {
 
             match &self.macro_type {
@@ -196,7 +218,7 @@ impl MultiLineMacro {
                 MultiLineMacroType::Box { .. } | MultiLineMacroType::Color(_)
                 | MultiLineMacroType::Size(_) | MultiLineMacroType::LineHeight(_)
                 | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_)
-                | MultiLineMacroType::Tooltip(_) => into_v32("</div>"),
+                | MultiLineMacroType::Tooltip { .. } => into_v32("</div>"),
 
                 // it doesn't need any closing tag because `render_math` generates both opening and closing tags
                 MultiLineMacroType::Math(_) => vec![]
@@ -255,7 +277,30 @@ impl MultiLineMacro {
                     highlight.clone(),
                     into_v32("\">")
                 ].concat(),
-                MultiLineMacroType::Tooltip(nodes) => todo!("{:?}", nodes.len()),  // what do I do...
+                // Node::to_html requires (toc_rendered: Vec<u32>) and (render_option: RenderOption)
+                MultiLineMacroType::Tooltip { container, index, label } => {
+                    let mut inner_html_buffer = vec![];
+
+                    for node in container.iter() {
+                        node.to_html(toc_rendered, render_option, doc_data, &mut inner_html_buffer);
+                    }
+
+                    let message = load_tooltip_message(&label, doc_data, render_option);
+
+                    vec![
+                        into_v32(&format!(
+                            "<div class=\"{class_prefix}tooltip-container\" id=\"tooltip-container-{index}\">",
+                        )),
+                        inner_html_buffer.concat(),
+                        into_v32(&format!(
+                            "<div class=\"{class_prefix}tooltip-message\" id=\"tooltip-message-{index}\">",
+                        )),
+                        message.iter().map(
+                            |node| node.to_html(toc_rendered, class_prefix)
+                        ).collect::<Vec<Vec<u32>>>().concat(),
+                        into_v32("</div>")  // the closing tag is handled by another MultiLineMacroType::Tooltip
+                    ].concat()
+                },
                 MultiLineMacroType::HTML{ tag, class, id } => {
                     let mut result = vec![];
 
