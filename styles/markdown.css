@@ -24,26 +24,38 @@ CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
   --white-compl: #000000;
   --white-trans: #ffffff60;
   --white-compl-trans: #00000060;
-  --red: #c04040;
-  --red-compl: #3fbfbf;
-  --red-trans: #c0404060;
-  --red-compl-trans: #3fbfbf60;
-  --green: #40c040;
-  --green-compl: #bf3fbf;
-  --green-trans: #40c04060;
-  --green-compl-trans: #bf3fbf60;
-  --blue: #4040c0;
-  --blue-compl: #bfbf3f;
-  --blue-trans: #4040c060;
-  --blue-compl-trans: #bfbf3f60;
+  --red: #c02020;
+  --red-compl: #3fdfdf;
+  --red-trans: #c0202060;
+  --red-compl-trans: #3fdfdf60;
+  --green: #20c020;
+  --green-compl: #df3fdf;
+  --green-trans: #20c02060;
+  --green-compl-trans: #df3fdf60;
+  --slateblue: #4040c0;
+  --slateblue-compl: #bfbf3f;
+  --slateblue-trans: #4040c060;
+  --slateblue-compl-trans: #bfbf3f60;
+  --blue: #2020c0;
+  --blue-compl: #dfdf3f;
+  --blue-trans: #2020c060;
+  --blue-compl-trans: #dfdf3f60;
   --aqua: #40c0ff;
   --aqua-compl: #bf3f00;
   --aqua-trans: #40c0ff60;
   --aqua-compl-trans: #bf3f0060;
-  --emerald: #40ffc0;
-  --emerald-compl: #bf003f;
-  --emerald-trans: #40ffc060;
-  --emerald-compl-trans: #bf003f60;
+  --emerald: #40c040;
+  --emerald-compl: #bf3fbf;
+  --emerald-trans: #40c04060;
+  --emerald-compl-trans: #bf3fbf60;
+  --turquoise: #40ffc0;
+  --turquoise-compl: #bf003f;
+  --turquoise-trans: #40ffc060;
+  --turquoise-compl-trans: #bf003f60;
+  --seagreen: #20c0c0;
+  --seagreen-compl: #df3f3f;
+  --seagreen-trans: #20c0c060;
+  --seagreen-compl-trans: #df3f3f60;
   --violet: #c040ff;
   --violet-compl: #3fbf00;
   --violet-trans: #c040ff60;
@@ -60,6 +72,10 @@ CSS variables (`var(--black)`) are affected by scripts. (Everywhere else.)
   --gold-compl: #003fbf;
   --gold-trans: #ffc04060;
   --gold-compl-trans: #003fbf60;
+  --brown: #c08020;
+  --brown-compl: #3f7fdf;
+  --brown-trans: #c0802060;
+  --brown-compl-trans: #3f7fdf60;
 }
 
 :root {
@@ -221,6 +237,21 @@ body .markdown img, body .markdown video, body .markdown iframe {
 .markdown .color-green svg path, .markdown .color-green svg rect, .markdown .color-green svg circle {
   fill: var(--green);
 }
+.markdown .color-slateblue {
+  color: var(--slateblue);
+}
+.markdown .color-slateblue::selection, .markdown .color-slateblue ::selection {
+  color: var(--slateblue-compl);
+}
+.markdown .highlight-slateblue {
+  background-color: var(--slateblue);
+}
+.markdown .highlight-slateblue::selection {
+  background-color: var(--slateblue-compl);
+}
+.markdown .color-slateblue svg path, .markdown .color-slateblue svg rect, .markdown .color-slateblue svg circle {
+  fill: var(--slateblue);
+}
 .markdown .color-blue {
   color: var(--blue);
 }
@@ -265,6 +296,36 @@ body .markdown img, body .markdown video, body .markdown iframe {
 }
 .markdown .color-emerald svg path, .markdown .color-emerald svg rect, .markdown .color-emerald svg circle {
   fill: var(--emerald);
+}
+.markdown .color-turquoise {
+  color: var(--turquoise);
+}
+.markdown .color-turquoise::selection, .markdown .color-turquoise ::selection {
+  color: var(--turquoise-compl);
+}
+.markdown .highlight-turquoise {
+  background-color: var(--turquoise);
+}
+.markdown .highlight-turquoise::selection {
+  background-color: var(--turquoise-compl);
+}
+.markdown .color-turquoise svg path, .markdown .color-turquoise svg rect, .markdown .color-turquoise svg circle {
+  fill: var(--turquoise);
+}
+.markdown .color-seagreen {
+  color: var(--seagreen);
+}
+.markdown .color-seagreen::selection, .markdown .color-seagreen ::selection {
+  color: var(--seagreen-compl);
+}
+.markdown .highlight-seagreen {
+  background-color: var(--seagreen);
+}
+.markdown .highlight-seagreen::selection {
+  background-color: var(--seagreen-compl);
+}
+.markdown .color-seagreen svg path, .markdown .color-seagreen svg rect, .markdown .color-seagreen svg circle {
+  fill: var(--seagreen);
 }
 .markdown .color-violet {
   color: var(--violet);
@@ -325,6 +386,21 @@ body .markdown img, body .markdown video, body .markdown iframe {
 }
 .markdown .color-gold svg path, .markdown .color-gold svg rect, .markdown .color-gold svg circle {
   fill: var(--gold);
+}
+.markdown .color-brown {
+  color: var(--brown);
+}
+.markdown .color-brown::selection, .markdown .color-brown ::selection {
+  color: var(--brown-compl);
+}
+.markdown .highlight-brown {
+  background-color: var(--brown);
+}
+.markdown .highlight-brown::selection {
+  background-color: var(--brown-compl);
+}
+.markdown .color-brown svg path, .markdown .color-brown svg rect, .markdown .color-brown svg circle {
+  fill: var(--brown);
 }
 .markdown svg path, .markdown svg rect, .markdown svg circle {
   fill: var(--white);
@@ -612,22 +688,28 @@ body .markdown img, body .markdown video, body .markdown iframe {
   color: #000000;
 }
 .markdown pre.fenced-code-block code .color-red {
-  color: #c04040;
+  color: #c02020;
 }
 .markdown pre.fenced-code-block code .color-red::selection {
-  color: #3fbfbf;
+  color: #3fdfdf;
 }
 .markdown pre.fenced-code-block code .color-green {
-  color: #40c040;
+  color: #20c020;
 }
 .markdown pre.fenced-code-block code .color-green::selection {
-  color: #bf3fbf;
+  color: #df3fdf;
 }
-.markdown pre.fenced-code-block code .color-blue {
+.markdown pre.fenced-code-block code .color-slateblue {
   color: #4040c0;
 }
-.markdown pre.fenced-code-block code .color-blue::selection {
+.markdown pre.fenced-code-block code .color-slateblue::selection {
   color: #bfbf3f;
+}
+.markdown pre.fenced-code-block code .color-blue {
+  color: #2020c0;
+}
+.markdown pre.fenced-code-block code .color-blue::selection {
+  color: #dfdf3f;
 }
 .markdown pre.fenced-code-block code .color-aqua {
   color: #40c0ff;
@@ -636,10 +718,22 @@ body .markdown img, body .markdown video, body .markdown iframe {
   color: #bf3f00;
 }
 .markdown pre.fenced-code-block code .color-emerald {
-  color: #40ffc0;
+  color: #40c040;
 }
 .markdown pre.fenced-code-block code .color-emerald::selection {
+  color: #bf3fbf;
+}
+.markdown pre.fenced-code-block code .color-turquoise {
+  color: #40ffc0;
+}
+.markdown pre.fenced-code-block code .color-turquoise::selection {
   color: #bf003f;
+}
+.markdown pre.fenced-code-block code .color-seagreen {
+  color: #20c0c0;
+}
+.markdown pre.fenced-code-block code .color-seagreen::selection {
+  color: #df3f3f;
 }
 .markdown pre.fenced-code-block code .color-violet {
   color: #c040ff;
@@ -665,9 +759,15 @@ body .markdown img, body .markdown video, body .markdown iframe {
 .markdown pre.fenced-code-block code .color-gold::selection {
   color: #003fbf;
 }
+.markdown pre.fenced-code-block code .color-brown {
+  color: #c08020;
+}
+.markdown pre.fenced-code-block code .color-brown::selection {
+  color: #3f7fdf;
+}
 .markdown pre.fenced-code-block span.code-fence-index {
   display: inline-block;
-  border-right: 0.143rem solid #40ffc0;
+  border-right: 0.143rem solid #40c040;
   text-align: right;
   padding-right: 0.571rem;
   margin-right: 1rem;
@@ -693,7 +793,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   color: #000000;
 }
 .markdown pre.fenced-code-block span.highlight.code-fence-row span.code-fence-index {
-  border-right: 0.143rem solid #bf003f;
+  border-right: 0.143rem solid #bf3fbf;
 }
 .markdown pre.fenced-code-block span.highlight.code-fence-row:hover {
   background-color: #ffffff60;
@@ -714,19 +814,28 @@ body .markdown img, body .markdown video, body .markdown iframe {
   color: #000000;
 }
 .markdown pre.fenced-code-block span.highlight span .color-red {
-  color: #3fbfbf;
+  color: #3fdfdf;
 }
 .markdown pre.fenced-code-block span.highlight span .color-green {
-  color: #bf3fbf;
+  color: #df3fdf;
+}
+.markdown pre.fenced-code-block span.highlight span .color-slateblue {
+  color: #bfbf3f;
 }
 .markdown pre.fenced-code-block span.highlight span .color-blue {
-  color: #bfbf3f;
+  color: #dfdf3f;
 }
 .markdown pre.fenced-code-block span.highlight span .color-aqua {
   color: #bf3f00;
 }
 .markdown pre.fenced-code-block span.highlight span .color-emerald {
+  color: #bf3fbf;
+}
+.markdown pre.fenced-code-block span.highlight span .color-turquoise {
   color: #bf003f;
+}
+.markdown pre.fenced-code-block span.highlight span .color-seagreen {
+  color: #df3f3f;
 }
 .markdown pre.fenced-code-block span.highlight span .color-violet {
   color: #3fbf00;
@@ -739,6 +848,9 @@ body .markdown img, body .markdown video, body .markdown iframe {
 }
 .markdown pre.fenced-code-block span.highlight span .color-gold {
   color: #003fbf;
+}
+.markdown pre.fenced-code-block span.highlight span .color-brown {
+  color: #3f7fdf;
 }
 .markdown button.copy-fenced-code {
   background-color: #404040;

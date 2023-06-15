@@ -30,30 +30,45 @@ $white-compl: #000000;
 $white-trans: #ffffff60;
 $white-compl-trans: #00000060;
 
-$red: #c04040;
-$red-compl: #3fbfbf;
-$red-trans: #c0404060;
-$red-compl-trans: #3fbfbf60;
+$red: #c02020;
+$red-compl: #3fdfdf;
+$red-trans: #c0202060;
+$red-compl-trans: #3fdfdf60;
 
-$green: #40c040;
-$green-compl: #bf3fbf;
-$green-trans: #40c04060;
-$green-compl-trans: #bf3fbf60;
+$green: #20c020;
+$green-compl: #df3fdf;
+$green-trans: #20c02060;
+$green-compl-trans: #df3fdf60;
 
-$blue: #4040c0;
-$blue-compl: #bfbf3f;
-$blue-trans: #4040c060;
-$blue-compl-trans: #bfbf3f60;
+$slateblue: #4040c0;
+$slateblue-compl: #bfbf3f;
+$slateblue-trans: #4040c060;
+$slateblue-compl-trans: #bfbf3f60;
+
+$blue: #2020c0;
+$blue-compl: #dfdf3f;
+$blue-trans: #2020c060;
+$blue-compl-trans: #dfdf3f60;
 
 $aqua: #40c0ff;
 $aqua-compl: #bf3f00;
 $aqua-trans: #40c0ff60;
 $aqua-compl-trans: #bf3f0060;
 
-$emerald: #40ffc0;
-$emerald-compl: #bf003f;
-$emerald-trans: #40ffc060;
-$emerald-compl-trans: #bf003f60;
+$emerald: #40c040;
+$emerald-compl: #bf3fbf;
+$emerald-trans: #40c04060;
+$emerald-compl-trans: #bf3fbf60;
+
+$turquoise: #40ffc0;
+$turquoise-compl: #bf003f;
+$turquoise-trans: #40ffc060;
+$turquoise-compl-trans: #bf003f60;
+
+$seagreen: #20c0c0;
+$seagreen-compl: #df3f3f;
+$seagreen-trans: #20c0c060;
+$seagreen-compl-trans: #df3f3f60;
 
 $violet: #c040ff;
 $violet-compl: #3fbf00;
@@ -74,6 +89,11 @@ $gold: #ffc040;
 $gold-compl: #003fbf;
 $gold-trans: #ffc04060;
 $gold-compl-trans: #003fbf60;
+
+$brown: #c08020;
+$brown-compl: #3f7fdf;
+$brown-trans: #c0802060;
+$brown-compl-trans: #3f7fdf60;
 
 
 :root {
@@ -103,30 +123,45 @@ $gold-compl-trans: #003fbf60;
     --white-trans: #ffffff60;
     --white-compl-trans: #00000060;
     
-    --red: #c04040;
-    --red-compl: #3fbfbf;
-    --red-trans: #c0404060;
-    --red-compl-trans: #3fbfbf60;
+    --red: #c02020;
+    --red-compl: #3fdfdf;
+    --red-trans: #c0202060;
+    --red-compl-trans: #3fdfdf60;
     
-    --green: #40c040;
-    --green-compl: #bf3fbf;
-    --green-trans: #40c04060;
-    --green-compl-trans: #bf3fbf60;
+    --green: #20c020;
+    --green-compl: #df3fdf;
+    --green-trans: #20c02060;
+    --green-compl-trans: #df3fdf60;
     
-    --blue: #4040c0;
-    --blue-compl: #bfbf3f;
-    --blue-trans: #4040c060;
-    --blue-compl-trans: #bfbf3f60;
+    --slateblue: #4040c0;
+    --slateblue-compl: #bfbf3f;
+    --slateblue-trans: #4040c060;
+    --slateblue-compl-trans: #bfbf3f60;
+    
+    --blue: #2020c0;
+    --blue-compl: #dfdf3f;
+    --blue-trans: #2020c060;
+    --blue-compl-trans: #dfdf3f60;
     
     --aqua: #40c0ff;
     --aqua-compl: #bf3f00;
     --aqua-trans: #40c0ff60;
     --aqua-compl-trans: #bf3f0060;
     
-    --emerald: #40ffc0;
-    --emerald-compl: #bf003f;
-    --emerald-trans: #40ffc060;
-    --emerald-compl-trans: #bf003f60;
+    --emerald: #40c040;
+    --emerald-compl: #bf3fbf;
+    --emerald-trans: #40c04060;
+    --emerald-compl-trans: #bf3fbf60;
+    
+    --turquoise: #40ffc0;
+    --turquoise-compl: #bf003f;
+    --turquoise-trans: #40ffc060;
+    --turquoise-compl-trans: #bf003f60;
+    
+    --seagreen: #20c0c0;
+    --seagreen-compl: #df3f3f;
+    --seagreen-trans: #20c0c060;
+    --seagreen-compl-trans: #df3f3f60;
     
     --violet: #c040ff;
     --violet-compl: #3fbf00;
@@ -147,5 +182,10 @@ $gold-compl-trans: #003fbf60;
     --gold-compl: #003fbf;
     --gold-trans: #ffc04060;
     --gold-compl-trans: #003fbf60;
+    
+    --brown: #c08020;
+    --brown-compl: #3f7fdf;
+    --brown-trans: #c0802060;
+    --brown-compl-trans: #3f7fdf60;
     
 }

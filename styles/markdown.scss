@@ -221,6 +221,28 @@ body .markdown {
         }
     }
     
+    .color-slateblue {
+        color: var(--slateblue);
+    }
+
+    .color-slateblue::selection, .color-slateblue ::selection {
+        color: var(--slateblue-compl);
+    }
+
+    .highlight-slateblue {
+        background-color: var(--slateblue);
+    }
+
+    .highlight-slateblue::selection {
+        background-color: var(--slateblue-compl);
+    }
+
+    .color-slateblue svg {
+        path, rect, circle {
+            fill: var(--slateblue);
+        }
+    }
+    
     .color-blue {
         color: var(--blue);
     }
@@ -284,6 +306,50 @@ body .markdown {
     .color-emerald svg {
         path, rect, circle {
             fill: var(--emerald);
+        }
+    }
+    
+    .color-turquoise {
+        color: var(--turquoise);
+    }
+
+    .color-turquoise::selection, .color-turquoise ::selection {
+        color: var(--turquoise-compl);
+    }
+
+    .highlight-turquoise {
+        background-color: var(--turquoise);
+    }
+
+    .highlight-turquoise::selection {
+        background-color: var(--turquoise-compl);
+    }
+
+    .color-turquoise svg {
+        path, rect, circle {
+            fill: var(--turquoise);
+        }
+    }
+    
+    .color-seagreen {
+        color: var(--seagreen);
+    }
+
+    .color-seagreen::selection, .color-seagreen ::selection {
+        color: var(--seagreen-compl);
+    }
+
+    .highlight-seagreen {
+        background-color: var(--seagreen);
+    }
+
+    .highlight-seagreen::selection {
+        background-color: var(--seagreen-compl);
+    }
+
+    .color-seagreen svg {
+        path, rect, circle {
+            fill: var(--seagreen);
         }
     }
     
@@ -372,6 +438,28 @@ body .markdown {
     .color-gold svg {
         path, rect, circle {
             fill: var(--gold);
+        }
+    }
+    
+    .color-brown {
+        color: var(--brown);
+    }
+
+    .color-brown::selection, .color-brown ::selection {
+        color: var(--brown-compl);
+    }
+
+    .highlight-brown {
+        background-color: var(--brown);
+    }
+
+    .highlight-brown::selection {
+        background-color: var(--brown-compl);
+    }
+
+    .color-brown svg {
+        path, rect, circle {
+            fill: var(--brown);
         }
     }
     
@@ -792,6 +880,14 @@ body .markdown {
                 color: $green-compl;
             }
             
+            .color-slateblue {
+                color: $slateblue;
+            }
+        
+            .color-slateblue::selection {
+                color: $slateblue-compl;
+            }
+            
             .color-blue {
                 color: $blue;
             }
@@ -814,6 +910,22 @@ body .markdown {
         
             .color-emerald::selection {
                 color: $emerald-compl;
+            }
+            
+            .color-turquoise {
+                color: $turquoise;
+            }
+        
+            .color-turquoise::selection {
+                color: $turquoise-compl;
+            }
+            
+            .color-seagreen {
+                color: $seagreen;
+            }
+        
+            .color-seagreen::selection {
+                color: $seagreen-compl;
             }
             
             .color-violet {
@@ -846,6 +958,14 @@ body .markdown {
         
             .color-gold::selection {
                 color: $gold-compl;
+            }
+            
+            .color-brown {
+                color: $brown;
+            }
+        
+            .color-brown::selection {
+                color: $brown-compl;
             }
             
         }
@@ -919,6 +1039,10 @@ body .markdown {
             color: $green-compl;
         }
         
+        span.highlight span .color-slateblue {
+            color: $slateblue-compl;
+        }
+        
         span.highlight span .color-blue {
             color: $blue-compl;
         }
@@ -929,6 +1053,14 @@ body .markdown {
         
         span.highlight span .color-emerald {
             color: $emerald-compl;
+        }
+        
+        span.highlight span .color-turquoise {
+            color: $turquoise-compl;
+        }
+        
+        span.highlight span .color-seagreen {
+            color: $seagreen-compl;
         }
         
         span.highlight span .color-violet {
@@ -945,6 +1077,10 @@ body .markdown {
         
         span.highlight span .color-gold {
             color: $gold-compl;
+        }
+        
+        span.highlight span .color-brown {
+            color: $brown-compl;
         }
         
 
