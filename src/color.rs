@@ -55,15 +55,19 @@ lazy_static! {
         Color::new("gray", 128, 128, 128),
         Color::new("lightgray", 192, 192, 192),
         Color::new("white", 255, 255, 255),
-        Color::new("red", 192, 64, 64),
-        Color::new("green", 64, 192, 64),
-        Color::new("blue", 64, 64, 192),
+        Color::new("red", 192, 32, 32),
+        Color::new("green", 32, 192, 32),
+        Color::new("slateblue", 64, 64, 192),
+        Color::new("blue", 32, 32, 192),
         Color::new("aqua", 64, 192, 255),
-        Color::new("emerald", 64, 255, 192),
+        Color::new("emerald", 64, 192, 64),
+        Color::new("turquoise", 64, 255, 192),
+        Color::new("seagreen", 32, 192, 192),
         Color::new("violet", 192, 64, 255),
         Color::new("pink", 255, 64, 192),
         Color::new("grassgreen", 192, 255, 64),
         Color::new("gold", 255, 192, 64),
+        Color::new("brown", 192, 128, 32),
     ];
 
     pub static ref COLOR_NAMES: Vec<Vec<u32>> = COLORS.iter().map(

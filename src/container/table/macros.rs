@@ -73,6 +73,7 @@ pub fn try_parse_macro(content: &[u32]) -> (bool, bool, bool) {  // (collapsible
 }
 
 /// You can also write your own.
+///
 /// ```javascript
 /// function collapse_table(n) {
 ///     var head = document.getElementById("table-collapse-toggle-" + n);

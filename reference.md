@@ -1,5 +1,5 @@
 ---
-date: [2023, 6, 14]
+date: [2023, 6, 15]
 hide: true
 ---
 
@@ -331,24 +331,28 @@ A valid macro consists of `A-Z`, `a-z`, `0-9`, `=`, `,`, `_`, and ` `. If a doub
 
 ### Colors
 
-It has 14 colors: black, dark, gray, lightgray, white, red, green, blue, aqua, emerald, violet, pink, grassgreen, and gold.
+It has 18 colors: black, dark, gray, lightgray, white, red, green, blue, brown, slateblue, seagreen, aqua, emerald, violet, turquoise, pink, grassgreen, and gold.
 
-| MDxt                                 | html                                              | output                              |
-|--------------------------------------|---------------------------------------------------|-------------------------------------|
-|\[[black]]black[[/black]]          | <span class="color-black">black</span>          | [[black]]black[[/black]]         |
-|\[[dark]]dark[[/dark]]              | <span class="color-dark">dark</span>             | [[dark]]dark[[/dark]]             |
-|\[[gray]]gray[[/gray]]              | <span class="color-gray">gray</span>             | [[gray]]gray[[/gray]]             |
-|\[[lightgray]]lightgray[[/lightgray]]    | <span class="color-lightgray">lightgray</span>        | [[lightgray]]lightgray[[/lightgray]]   |
-|\[[white]]white[[/white]]            | <span class="color-white">white</span>            | [[white]]white[[/white]]           |
-|\[[red]]red[[/red]]                | <span class="color-red">red</span>              | [[red]]red[[/red]]               |
-|\[[green]]green[[/green]]            | <span class="color-green">green</span>            | [[green]]green[[/green]]           |
-|\[[blue]]blue[[/blue]]              | <span class="color-blue">blue</span>             | [[blue]]blue[[/blue]]             |
-|\[[aqua]]aqua[[/aqua]]              | <span class="color-aqua">aqua</span>             | [[aqua]]aqua[[/aqua]]             |
-|\[[emerald]]emerald[[/emerald]]        | <span class="color-emerald">emerald</span>          | [[emerald]]emerald[[/emerald]]       |
-|\[[violet]]violet[[/violet]]          | <span class="color-violet">violet</span>           | [[violet]]violet[[/violet]]         |
-|\[[pink]]pink[[/pink]]              | <span class="color-pink">pink</span>             | [[pink]]pink[[/pink]]             |
+| MDxt                                 | html                                              | output                               |
+|--------------------------------------|---------------------------------------------------|--------------------------------------|
+|\[[black]]black[[/black]]             | <span class="color-black">black</span>            | [[black]]black[[/black]]             |
+|\[[dark]]dark[[/dark]]                | <span class="color-dark">dark</span>              | [[dark]]dark[[/dark]]                |
+|\[[gray]]gray[[/gray]]                | <span class="color-gray">gray</span>              | [[gray]]gray[[/gray]]                |
+|\[[lightgray]]lightgray[[/lightgray]] | <span class="color-lightgray">lightgray</span>    | [[lightgray]]lightgray[[/lightgray]] |
+|\[[white]]white[[/white]]             | <span class="color-white">white</span>            | [[white]]white[[/white]]             |
+|\[[red]]red[[/red]]                   | <span class="color-red">red</span>                | [[red]]red[[/red]]                   |
+|\[[green]]green[[/green]]             | <span class="color-green">green</span>            | [[green]]green[[/green]]             |
+|\[[blue]]blue[[/blue]]                | <span class="color-blue">blue</span>              | [[blue]]blue[[/blue]]                |
+|\[[brown]]brown[[/brown]]             | <span class="color-brown">brown</span>            | [[brown]]brown[[/brown]]             |
+|\[[slateblue]]slateblue[[/slateblue]] | <span class="color-slateblue">slateblue</span>    | [[slateblue]]slateblue[[/slateblue]] |
+|\[[seagreen]]seagreen[[/seagreen]]    | <span class="color-seagreen">seagreen</span>      | [[seagreen]]seagreen[[/seagreen]]    |
+|\[[aqua]]aqua[[/aqua]]                | <span class="color-aqua">aqua</span>              | [[aqua]]aqua[[/aqua]]                |
+|\[[emerald]]emerald[[/emerald]]       | <span class="color-emerald">emerald</span>        | [[emerald]]emerald[[/emerald]]       |
+|\[[violet]]violet[[/violet]]          | <span class="color-violet">violet</span>          | [[violet]]violet[[/violet]]          |
+|\[[turquoise]]turquoise[[/turquoise]] | <span class="color-turquoise">turquoise</span>    | [[turquoise]]turquoise[[/turquoise]] |
+|\[[pink]]pink[[/pink]]                | <span class="color-pink">pink</span>              | [[pink]]pink[[/pink]]                |
 |\[[grassgreen]]grassgreen[[/grassgreen]]  | <span class="color-grassgreen">grassgreen</span>       | [[grassgreen]]grassgreen[[/grassgreen]] |
-|\[[gold]]gold[[/gold]]              | <span class="color-gold">gold</span>             | [[gold]]gold [[/gold]]              |
+|\[[gold]]gold[[/gold]]                | <span class="color-gold">gold</span>              | [[gold]]gold [[/gold]]               |
 
 ### Sizes
 
@@ -356,13 +360,13 @@ It has 5 sizes: tiny, small, medium, big, and giant.
 
 `[[tiny]] tiny [[/tiny]]` is rendered to `<span class="size-tiny"> tiny </span>`. The same rule is applied to the other sizes.
 
-| MDxt                            | html                                             | output                       |
-|---------------------------------|--------------------------------------------------|------------------------------|
-|\[[tiny]]tiny[[/tiny]]           | <span class="size-tiny">tiny</span>              | [[tiny]]tiny[[/tiny]]        |
-|\[[small]]small[[/small]]        | <span class="size-small">small</span>            | [[small]]small[[/small]]     |
-|\[[medium]]medium[[/medium]]     | <span class="size-medium">medium</span>          | [[medium]]medium[[/medium]]  |
-|\[[big]]big[[/big]]           | <span class="size-big">big</span>              | [[big]]big[[/big]]    |
-|\[[giant]]giant[[/giant]]           | <span class="size-giant">giant</span>              | [[giant]]giant[[/giant]]    |
+| MDxt                          | html                                       | output                       |
+|-------------------------------|--------------------------------------------|------------------------------|
+|\[[tiny]]tiny[[/tiny]]         | <span class="size-tiny">tiny</span>        | [[tiny]]tiny[[/tiny]]        |
+|\[[small]]small[[/small]]      | <span class="size-small">small</span>      | [[small]]small[[/small]]     |
+|\[[medium]]medium[[/medium]]   | <span class="size-medium">medium</span>    | [[medium]]medium[[/medium]]  |
+|\[[big]]big[[/big]]            | <span class="size-big">big</span>          | [[big]]big[[/big]]           |
+|\[[giant]]giant[[/giant]]      | <span class="size-giant">giant</span>      | [[giant]]giant[[/giant]]     |
 
 ### Line Heights
 
@@ -525,6 +529,8 @@ To see the list of available characters, visit [here](MDxt-Character-Reference.h
 
 ### Icons
 
+[[icon = star]][[icon = tree]][[icon = terminal]]
+
 You can embed SVG icons using the `[[icon]]` macro. The full documentation can be found [here](MDxt-Icon-Reference.html).
 
 ### Math
@@ -552,8 +558,6 @@ To see the list of available math elements, visit [here](MDxt-Math-Reference.htm
 [[/sidebar]]
 
 `[[sidebar]]` macro generates a sidebar. It only works as a [multiline-macro](#multiline-macro). If multiple sidebars are declared, it only accepts the last one. In order for it to work properly, it requires a css and js. Check the css files in its [repo](https://github.com/baehyunsol/MDxt).
-
-It takes one optional argument: `default`. If `[[sidebar, default = shown]]`, the sidebar is shown by default. If you wanna hide it by default, do `[[sidebar, default = hidden]]`. If no argument is given, it's hidden by default.
 
 ### Multiline Macro
 

@@ -348,7 +348,7 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {entity}\n\n{}`[[math]]{entity}[[/math]]` -> [[math]]{entity}[[/math]]",
+            "\n\n### {entity}\n\n{}`[[math]]{entity}[[/math]]` [[char=rarr]] [[math]]{entity}[[/math]]",
             if entity == "br" {
                 "TODO: This entity may not be seen on some browsers.\n\n"
             } else {
@@ -364,7 +364,7 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}789[[/math]]` -> [[math]]123{entity}{}456{}789[[/math]]",
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}789[[/math]]` [[char=rarr]] [[math]]123{entity}{}456{}789[[/math]]",
             '{', '}',
             '{', '}'
         )));
@@ -377,7 +377,7 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}012[[/math]]` -> [[math]]123{entity}{}456{}{}789{}012[[/math]]",
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}012[[/math]]` [[char=rarr]] [[math]]123{entity}{}456{}{}789{}012[[/math]]",
             '{', '}', '{', '}',
             '{', '}', '{', '}'
         )));
@@ -390,7 +390,7 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]` -> [[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]",
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]` [[char=rarr]] [[math]]123{entity}{}456{}{}789{}{}012{}345[[/math]]",
             '{', '}', '{', '}', '{', '}',
             '{', '}', '{', '}', '{', '}'
         )));
@@ -403,7 +403,7 @@ fn render_math_reference() -> Vec<u32> {
 
     for entity in entities.iter() {
         result.push(into_v32(&format!(
-            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]` -> [[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]",
+            "\n\n### {entity}\n\n`[[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]` [[char=rarr]] [[math]]123{entity}{}456{}{}789{}{}012{}{}345{}{}678{}901[[/math]]",
             '{', '}', '{', '}', '{', '}', '{', '}', '{', '}',
             '{', '}', '{', '}', '{', '}', '{', '}', '{', '}'
         )));
