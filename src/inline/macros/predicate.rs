@@ -54,14 +54,17 @@ pub fn check_and_parse_macro_inline(
 
                     if !macro_.has_closing {
 
-                        if macro_name == into_v32("toc") {
+                        if macro_name == &[116, 111, 99] {  // [116, 111, 99] = into_v32("toc")
                             doc_data.has_toc = true;
                         }
 
                         Some((macro_.parse(&macro_arguments, &vec![], doc_data, render_option), macro_end_index))
                     }
 
-                    else if doc_data.tooltip_enabled > 0 && (macro_name == into_v32("tooltip") || macro_name == into_v32("/tooltip")) {
+                    else if doc_data.tooltip_enabled > 0 && (
+                        macro_name == &[116, 111, 111, 108, 116, 105, 112]  // into_v32("tooltip")
+                        || macro_name == &[47, 116, 111, 111, 108, 116, 105, 112]  // into_v32("/tooltip")
+                    ) {
                         None
                     }
 

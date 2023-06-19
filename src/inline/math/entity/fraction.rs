@@ -32,7 +32,7 @@ impl Fraction {
             opening,
             vec_to_math_ml(&self.numer, true),  // `<mfrac>` has exactly two children, so `single_element` is true.
             vec_to_math_ml(&self.denom, true),
-            into_v32("</mfrac>")
+            vec![60, 47, 109, 102, 114, 97, 99, 62],  // into_v32("</mfrac>")
         ].concat()
     }
 

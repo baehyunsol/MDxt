@@ -126,7 +126,7 @@ impl Math {
             self.entities.iter().map(
                 |entity| entity.to_math_ml()
             ).collect::<Vec<Vec<u32>>>().concat(),
-            into_v32("</math>")
+            vec![60, 47, 109, 97, 116, 104, 62],  // into_v32("</math>")
         ].concat()
     }
 }
@@ -139,7 +139,8 @@ fn escape_special_characters(content: &[u32]) -> Vec<u32> {
 
     for c in content.iter() {
 
-        if into_v32("<>*~[|]^`&").contains(c) {
+        // into_v32("<>*~[|]^`&")
+        if [60, 62, 42, 126, 91, 124, 93, 94, 96, 38].contains(c) {
             result.push(BACKSLASH_ESCAPE_OFFSET + *c);
         }
 
@@ -175,7 +176,7 @@ pub fn escape_inside_math_blocks(content: Vec<u32>) -> Vec<u32> {
                 while end_index < content.len() {
 
                     match read_macro(&content, end_index) {
-                        Some(macro_name) if macro_name == into_v32("/math") => {
+                        Some(macro_name) if macro_name == &[47, 109, 97, 116, 104] => {  // into_v32("/math") -> [47, 109, 97, 116, 104]
                             let math_begin_index = get_bracket_end_index(&content, index).unwrap() + 1;
                             let escaped_math = escape_special_characters(&content[math_begin_index..end_index]);
 

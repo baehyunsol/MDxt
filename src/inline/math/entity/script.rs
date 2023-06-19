@@ -28,29 +28,29 @@ impl Script {
 
             if self.post_sup.len() == 0 {
                 vec![
-                    into_v32("<msub>"),
+                    vec![60, 109, 115, 117, 98, 62],  // into_v32("<msub>")
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sub, true),
-                    into_v32("</msub>")
+                    vec![60, 47, 109, 115, 117, 98, 62],  // into_v32("</msub>")
                 ].concat()
             }
 
             else if self.post_sub.len() == 0 {
                 vec![
-                    into_v32("<msup>"),
+                    vec![60, 109, 115, 117, 112, 62],  // into_v32("<msup>")
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sup, true),
-                    into_v32("</msup>")
+                    vec![60, 47, 109, 115, 117, 112, 62],  // into_v32("</msup>")
                 ].concat()
             }
 
             else {
                 vec![
-                    into_v32("<msubsup>"),
+                    vec![60, 109, 115, 117, 98, 115, 117, 112, 62],  // into_v32("<msubsup>")
                     vec_to_math_ml(&self.content, true),
                     vec_to_math_ml(&self.post_sub, true),
                     vec_to_math_ml(&self.post_sup, true),
-                    into_v32("</msubsup>")
+                    vec![60, 47, 109, 115, 117, 98, 115, 117, 112, 62],  // into_v32("</msubsup>")
                 ].concat()
             }
 
@@ -76,7 +76,7 @@ impl Script {
 fn script_or_none(vec: &Vec<Entity>) -> Vec<u32> {
 
     if vec.len() == 0 {
-        into_v32("<none/>")
+        vec![60, 110, 111, 110, 101, 47, 62]  // into_v32("<none/>")
     }
 
     else {

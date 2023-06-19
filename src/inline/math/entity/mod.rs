@@ -88,14 +88,14 @@ impl Entity {
                 into_v32(&format!("<{tag}>&#{character};</{tag}>"))
             }
             Entity::Identifier(identifier) => vec![
-                into_v32("<mi>"),
+                vec![60, 109, 105, 62],  // into_v32("<mi>")
                 identifier.clone(),
-                into_v32("</mi>"),
+                vec![60, 47, 109, 105, 62],  // into_v32("</mi>")
             ].concat(),
             Entity::Number(number) => vec![
-                into_v32("<mn>"),
+                vec![60, 109, 110, 62],  // into_v32("<mn>")
                 number.clone(),
-                into_v32("</mn>"),
+                vec![60, 47, 109, 110, 62],  // into_v32("</mn>")
             ].concat(),
             Entity::Br => into_v32("<mspace linebreak=\"newline\"/>"),
             // `++` -> `<mo>+</mo><mo>+</mo>`
@@ -104,9 +104,9 @@ impl Entity {
                 operator.iter().map(
                     |op|
                     vec![
-                        into_v32("<mo>"),
+                        vec![60, 109, 111, 62],  // into_v32("<mo>")
                         render_html_escapes(&escape_htmls(&vec![*op])),
-                        into_v32("</mo>"),
+                        vec![60, 47, 109, 111, 62],  // into_v32("</mo>")
                     ].concat()
                 ).collect::<Vec<Vec<u32>>>().concat()
             },
@@ -114,9 +114,9 @@ impl Entity {
                 let escaped_string = escape_htmls(&string);
 
                 vec![
-                    into_v32("<mtext>"),
+                    vec![60, 109, 116, 101, 120, 116, 62],  // into_v32("<mtext>")
                     escaped_string,
-                    into_v32("</mtext>"),
+                    vec![60, 47, 109, 116, 101, 120, 116, 62],  // into_v32("</mtext>")
                 ].concat()
             },
         }
@@ -225,14 +225,14 @@ pub fn vec_to_math_ml(vec: &Vec<Entity>, single_element: bool) -> Vec<u32> {
 
     if count_entity(vec) > 1 && single_element {
         vec![
-            into_v32("<mrow>"),
+            vec![60, 109, 114, 111, 119, 62],  // into_v32("<mrow>")
             result,
-            into_v32("</mrow>")
+            vec![60, 47, 109, 114, 111, 119, 62],  // into_v32("</mrow>")
         ].concat()
     }
 
     else if count_entity(vec) == 0 {
-        into_v32("<mo>&nbsp;</mo>")
+        vec![60, 109, 111, 62, 38, 110, 98, 115, 112, 59, 60, 47, 109, 111, 62]  // into_v32("<mo>&nbsp;</mo>")
     }
 
     else {
