@@ -13,9 +13,6 @@ use crate::utils::{from_v32, into_v32};
 pub struct MultiLineMacro {
     pub macro_type: MultiLineMacroType,
     pub is_closing: bool,
-
-    // all the multiline-macros have a unique id: a pair of opening and closing macro have the same id
-    pub id: u64
 }
 
 #[derive(Clone)]
@@ -91,7 +88,7 @@ impl MultiLineMacro {
 
     // all the validity checks are done before this function
     // this function assumes that everything is valid
-    pub fn from_line(line: &Line, id: u64, doc_data: &mut DocData) -> Self {
+    pub fn from_line(line: &Line, doc_data: &mut DocData) -> Self {
         let macro_content = read_macro(&line.content, 0).unwrap();
         let macro_arguments = parse_arguments(&macro_content);
         let mut macro_name = get_macro_name(&macro_arguments);
@@ -119,22 +116,18 @@ impl MultiLineMacro {
                     MultiLineMacroType::Box { border, inline, width, height }
                 },
                 is_closing,
-                id
             },
             MacroType::Color => MultiLineMacro {
                 macro_type: MultiLineMacroType::Color(macro_name.to_vec()),
                 is_closing,
-                id
             },
             MacroType::Size => MultiLineMacro {
                 macro_type: MultiLineMacroType::Size(macro_name.to_vec()),
                 is_closing,
-                id
             },
             MacroType::Sidebar => MultiLineMacro {
                 macro_type: MultiLineMacroType::Sidebar,
                 is_closing,
-                id
             },
             MacroType::LineHeight => MultiLineMacro {
                 macro_type: MultiLineMacroType::LineHeight(
@@ -149,12 +142,10 @@ impl MultiLineMacro {
 
                 ),
                 is_closing,
-                id
             },
             MacroType::Alignment => MultiLineMacro {
                 macro_type: MultiLineMacroType::Alignment(macro_name.to_vec()),
                 is_closing,
-                id
             },
             MacroType::Highlight => MultiLineMacro {
                 macro_type: MultiLineMacroType::Highlight(
@@ -169,7 +160,6 @@ impl MultiLineMacro {
 
                 ),
                 is_closing,
-                id
             },
             MacroType::HTML => {
                 let (tag, class, html_id) = if is_closing {
@@ -183,7 +173,6 @@ impl MultiLineMacro {
                 MultiLineMacro {
                     macro_type: MultiLineMacroType::HTML { tag, class, id: html_id },
                     is_closing,
-                    id
                 }
             },
 
@@ -205,7 +194,6 @@ impl MultiLineMacro {
                     }
                 },
                 is_closing,
-                id
             },
 
             // it's handled by another ParseState

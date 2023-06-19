@@ -12,7 +12,7 @@ use crate::container::{
 };
 use crate::render::render_option::RenderOption;
 use crate::utils::{from_v32, into_v32};
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 #[derive(PartialEq, Debug)]
 pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
@@ -52,8 +52,7 @@ impl AST {
 
         let mut has_multiline_macro = false;
 
-        // HashMap<index, macro_id>
-        let mut macro_closing_indexes = HashMap::new();
+        let mut macro_closing_indexes = HashSet::new();
 
         let mut index = 0;
 
@@ -82,10 +81,9 @@ impl AST {
                 },
                 ParseState::Paragraph | ParseState::None => {
 
-                    if macro_closing_indexes.contains_key(&index) {
-                        let macro_id = *macro_closing_indexes.get(&index).unwrap();
+                    if macro_closing_indexes.contains(&index) {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                        curr_nodes.push(Node::new_macro(&lines[index], macro_id, &mut doc_data));
+                        curr_nodes.push(Node::new_macro(&lines[index], &mut doc_data));
                         macro_closing_indexes.remove(&index);
                         index += 1;
                         continue;
@@ -236,7 +234,6 @@ impl AST {
 
                                             if inner_macro_stack.len() == 0 {
                                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                                                let macro_id = rand::random::<u64>();
 
                                                 // into_v32("math") -> [109, 97, 116, 104]
                                                 if macro_name == &[109, 97, 116, 104] {
@@ -244,8 +241,8 @@ impl AST {
                                                 }
 
                                                 else {
-                                                    macro_closing_indexes.insert(macro_closing_index, macro_id);
-                                                    curr_nodes.push(Node::new_macro(&lines[index], macro_id, &mut doc_data));
+                                                    macro_closing_indexes.insert(macro_closing_index);
+                                                    curr_nodes.push(Node::new_macro(&lines[index], &mut doc_data));
                                                     curr_parse_state = ParseState::Paragraph;
                                                 }
 
@@ -423,16 +420,13 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             panic!("What should I do?");
         },
         ParseState::Math { .. } => {
-            // Don't worry, it's not gonna collide
-            let macro_id = rand::random::<u64>();
-            curr_nodes.push(Node::new_math_ml(curr_lines, macro_id));
+            curr_nodes.push(Node::new_math_ml(curr_lines));
 
             // since the above line only generates an opening macro, it adds a closing one
             curr_nodes.push(Node::MultiLineMacro(
                 MultiLineMacro {
                     macro_type: MultiLineMacroType::Math(into_v32("[[/math]]")),
                     is_closing: true,
-                    id: macro_id
                 }
             ));
             *curr_lines = vec![];
