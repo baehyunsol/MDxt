@@ -165,6 +165,4 @@ multiline macro에 id 부여한다고 까불던 거 없애기! -> dependency에�
 
 ---
 
-extra syntax set 관련된 것도 언급 ㄱㄱ
-
-sidebar default visibility -> 까먹고 아직 구현 안함! ㅋㅋㅋ
+reference에 extra syntax set 관련된 것도 언급 ㄱㄱ

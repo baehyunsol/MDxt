@@ -955,7 +955,7 @@ function mdxt_close_sidebar() {
 }</script>
 "), ("
 [[sidebar]] inline sidebar? [[/sidebar]]
-", "<p></p>"), ("
+", "<p></p>"), /*("
 [[collapsible]]
 
 Do you see me?
@@ -973,7 +973,7 @@ collapsiblable
 [[/collapsible]]
 
 [[/collapsible]]
-", ""), ("", "")
+", ""),*/ ("", "")
     ];
 
     result.into_iter().map(

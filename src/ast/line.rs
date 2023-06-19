@@ -1,8 +1,9 @@
 use crate::utils::into_v32;
+use std::rc::Rc;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Line {
-    pub content: Vec<u32>,
+    pub content: Rc<Vec<u32>>,
     pub indent: usize
 }
 
@@ -10,11 +11,10 @@ pub struct Line {
 impl Line {
 
     pub fn new(content: Vec<u32>, indent: usize) -> Line {
-        Line { content, indent }
+        Line { content: Rc::new(content), indent }
     }
 
     pub fn from_raw(raw: &[u32]) -> Line {
-
         let mut indent = 0;
         let mut index = 0;
 
@@ -36,14 +36,14 @@ impl Line {
         }
 
         Line {
-            content: raw[index..].to_vec(),
+            content: Rc::new(raw[index..].to_vec()),
             indent
         }
 
     }
 
     pub fn to_raw(&self) -> Vec<u32> {
-        vec![vec![' ' as u32; self.indent], self.content.clone()].concat()
+        vec![vec![' ' as u32; self.indent], self.content.to_vec()].concat()
     }
 
     #[cfg(test)]
