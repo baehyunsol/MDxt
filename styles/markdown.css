@@ -433,7 +433,10 @@ body .markdown img, body .markdown video, body .markdown iframe {
   max-height: 11.9rem;
 }
 .markdown .line-height-tiny {
-  line-height: 0.7;
+  line-height: 0.6;
+}
+.markdown .line-height-tiny pre.fenced-code-block {
+  line-height: 0.6;
 }
 .markdown .box.width-tiny {
   width: 7.143rem;
@@ -451,6 +454,9 @@ body .markdown img, body .markdown video, body .markdown iframe {
 .markdown .line-height-small {
   line-height: 0.85;
 }
+.markdown .line-height-small pre.fenced-code-block {
+  line-height: 0.85;
+}
 .markdown .box.width-small {
   width: 10rem;
 }
@@ -465,7 +471,10 @@ body .markdown img, body .markdown video, body .markdown iframe {
   max-height: 21.43rem;
 }
 .markdown .line-height-medium {
-  line-height: 1;
+  line-height: 1.1;
+}
+.markdown .line-height-medium pre.fenced-code-block {
+  line-height: 1.1;
 }
 .markdown .box.width-medium {
   width: 12.86rem;
@@ -481,7 +490,10 @@ body .markdown img, body .markdown video, body .markdown iframe {
   max-height: 28.57rem;
 }
 .markdown .line-height-big {
-  line-height: 1.15;
+  line-height: 1.35;
+}
+.markdown .line-height-big pre.fenced-code-block {
+  line-height: 1.35;
 }
 .markdown .box.width-big {
   width: 17.14rem;
@@ -497,7 +509,10 @@ body .markdown img, body .markdown video, body .markdown iframe {
   max-height: 34.29rem;
 }
 .markdown .line-height-giant {
-  line-height: 1.3;
+  line-height: 1.6;
+}
+.markdown .line-height-giant pre.fenced-code-block {
+  line-height: 1.6;
 }
 .markdown .box.width-giant {
   width: 20.57rem;
@@ -552,8 +567,8 @@ body .markdown img, body .markdown video, body .markdown iframe {
 }
 .markdown h3 {
   font-size: 2rem;
-  margin-top: 3.429rem;
-  margin-bottom: 1.7145rem;
+  margin-top: 3.143rem;
+  margin-bottom: 1.5715rem;
   transition: color 0.3s;
 }
 .markdown h3:hover {
@@ -561,9 +576,9 @@ body .markdown img, body .markdown video, body .markdown iframe {
   transition: color 0.3s;
 }
 .markdown h4 {
-  font-size: 1.714rem;
-  margin-top: 2.571rem;
-  margin-bottom: 1.2855rem;
+  font-size: 1.571rem;
+  margin-top: 2.429rem;
+  margin-bottom: 1.2145rem;
   transition: color 0.3s;
 }
 .markdown h4:hover {
@@ -571,12 +586,22 @@ body .markdown img, body .markdown video, body .markdown iframe {
   transition: color 0.3s;
 }
 .markdown h5 {
-  font-size: 1.286rem;
-  margin-top: 2.286rem;
-  margin-bottom: 1.143rem;
+  font-size: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   transition: color 0.3s;
 }
 .markdown h5:hover {
+  color: var(--white-trans);
+  transition: color 0.3s;
+}
+.markdown h6 {
+  font-size: 0.762rem;
+  margin-top: 1.571rem;
+  margin-bottom: 0.7855rem;
+  transition: color 0.3s;
+}
+.markdown h6:hover {
   color: var(--white-trans);
   transition: color 0.3s;
 }

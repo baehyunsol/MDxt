@@ -512,6 +512,10 @@ body .markdown {
 
     .line-height-tiny {
         line-height: $line-height-tiny;
+
+        pre.fenced-code-block {
+            line-height: $line-height-tiny;
+        }
     }
 
     .box.width-tiny {
@@ -533,6 +537,10 @@ body .markdown {
 
     .line-height-small {
         line-height: $line-height-small;
+
+        pre.fenced-code-block {
+            line-height: $line-height-small;
+        }
     }
 
     .box.width-small {
@@ -554,6 +562,10 @@ body .markdown {
 
     .line-height-medium {
         line-height: $line-height-medium;
+
+        pre.fenced-code-block {
+            line-height: $line-height-medium;
+        }
     }
 
     .box.width-medium {
@@ -575,6 +587,10 @@ body .markdown {
 
     .line-height-big {
         line-height: $line-height-big;
+
+        pre.fenced-code-block {
+            line-height: $line-height-big;
+        }
     }
 
     .box.width-big {
@@ -596,6 +612,10 @@ body .markdown {
 
     .line-height-giant {
         line-height: $line-height-giant;
+
+        pre.fenced-code-block {
+            line-height: $line-height-giant;
+        }
     }
 
     .box.width-giant {
@@ -703,6 +723,18 @@ body .markdown {
     }
 
     h5:hover {
+        color: var(--white-trans);
+        transition: color 0.3s;
+    }
+    
+    h6 {
+        font-size: $h6-font-size;
+        margin-top: $h6-margin;
+        margin-bottom: $h6-margin / 2;
+        transition: color 0.3s;
+    }
+
+    h6:hover {
         color: var(--white-trans);
         transition: color 0.3s;
     }
