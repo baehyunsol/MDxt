@@ -125,7 +125,7 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
         vec![
             into_v32(&format!("<span class=\"{class_prefix}color-{color}\">")),
             escape_htmls(&content_v32).into_iter().filter(|c| *c != '\n' as u32).collect(),
-            into_v32("</span>")
+            vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
         ].concat()
     }
 

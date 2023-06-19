@@ -167,7 +167,8 @@ pub fn escape_inside_math_blocks(content: Vec<u32>) -> Vec<u32> {
         match read_macro(&content, index) {
 
             // it met `[[math]]`
-            Some(macro_name) if macro_name == into_v32("math") => {
+            // into_v32("math") -> [109, 97, 116, 104]
+            Some(macro_name) if macro_name == &[109, 97, 116, 104] => {
                 let mut end_index = index + 5;
 
                 // seek `[[/math]]`

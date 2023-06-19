@@ -45,7 +45,7 @@ impl Cell {
                 self.alignment.opening_tag(class_prefix),
                 self.content.to_html(toc_rendered, class_prefix),
                 self.alignment.closing_tag(),
-                into_v32("</th>")
+                vec![60, 47, 116, 104, 62],  // into_v32("</th>")
             ].concat()
         }
 
@@ -55,7 +55,7 @@ impl Cell {
                 self.alignment.opening_tag(class_prefix),
                 self.content.to_html(toc_rendered, class_prefix),
                 self.alignment.closing_tag(),
-                into_v32("</td>")
+                vec![60, 47, 116, 100, 62],  // into_v32("</td>")
             ].concat()
         }
 
@@ -136,7 +136,7 @@ pub fn remove_colspan_macro(content: &[u32]) -> Vec<u32> {
 
             if macro_arguments.len() == 1 
                 && macro_arguments[0].len() == 2
-                && macro_name == into_v32("colspan")
+                && macro_name == &[99, 111, 108, 115, 112, 97, 110]  // into_v32("colspan") -> [99, 111, 108, 115, 112, 97, 110]
             {
 
                 match to_int(&macro_arguments[0][1]) {

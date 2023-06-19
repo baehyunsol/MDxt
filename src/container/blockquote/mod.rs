@@ -6,7 +6,6 @@ use crate::ast::line::{add_br_if_needed, Line};
 use crate::escape::HTML_ESCAPE_OFFSET;
 use crate::inline::InlineNode;
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v32;
 
 #[derive(Clone)]
 pub struct Blockquote {
@@ -23,18 +22,23 @@ impl Blockquote {
 
             match element {
                 ElementOrIndent::Indent(n) => {
-                    result.push(vec![into_v32("<blockquote>"); *n].concat());
+                    // into_v32("<blockquote>") -> [60, 98, 108, 111, 99, 107, 113, 117, 111, 116, 101, 62]
+                    result.push(vec![vec![60, 98, 108, 111, 99, 107, 113, 117, 111, 116, 101, 62]; *n].concat());
                     level += *n;
                 },
                 ElementOrIndent::Element(element) => {
                     result.push(element.to_html(toc_rendered, class_prefix));
-                    result.push(into_v32(" "));  // `\n` is converted to ` `
+
+                    // `\n` is converted to ` `
+                    // into_v32(" ") -> vec![32]
+                    result.push(vec![32]);  
                 }
             }
 
         }
 
-        result.push(vec![into_v32("</blockquote>"); level].concat());
+        // into_v32("</blockquote>") -> [60, 47, 98, 108, 111, 99, 107, 113, 117, 111, 116, 101, 62]
+        result.push(vec![vec![60, 47, 98, 108, 111, 99, 107, 113, 117, 111, 116, 101, 62]; level].concat());
         result.concat()
     }
 

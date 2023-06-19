@@ -1,8 +1,7 @@
-use crate::utils::into_v32;
-
 pub fn escape_htmls(content: &[u32]) -> Vec<u32> {
     content.iter().map(
-        |c| if into_v32("&<>\"\'").contains(c) {
+        // into_v32("&<>\"\'") -> [38, 60, 62, 34, 39]
+        |c| if [38, 60, 62, 34, 39].contains(c) {
             *c + HTML_ESCAPE_OFFSET
         }
 

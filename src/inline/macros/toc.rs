@@ -27,7 +27,15 @@ fn headers_to_toc_mdxt(headers: &Vec<(usize, Vec<u32>)>, has_anchors: bool) -> V
     let mut cursor = 0;
 
     let mut result = vec![];
-    result.push(into_v32("[[div, class=toc]]\n\n- !![[no bullet]]\n"));
+
+    // into_v32("[[div, class=toc]]\n\n- !![[no bullet]]\n")
+    result.push(vec![
+        91, 91, 100, 105, 118, 44, 32,
+        99, 108, 97, 115, 115, 61, 116, 111, 99, 93, 93,
+        10, 10, 45, 32, 33, 33,
+        91, 91, 110, 111, 32,
+        98, 117, 108, 108, 101, 116, 93, 93, 10
+    ]);
 
     for (level, content) in headers.iter() {
         let level = *level - 1;  // header's level starts with 1, but stack's index starts with 0
@@ -44,7 +52,7 @@ fn headers_to_toc_mdxt(headers: &Vec<(usize, Vec<u32>)>, has_anchors: bool) -> V
             }
 
             result.push(vec![' ' as u32; level * 2]);
-            result.push(into_v32("- !![[no bullet]]\n"));
+            result.push(vec![45, 32, 33, 33, 91, 91, 110, 111, 32, 98, 117, 108, 108, 101, 116, 93, 93, 10]);  // into_v32("- !![[no bullet]]\n")
         }
 
         else {
@@ -59,11 +67,11 @@ fn headers_to_toc_mdxt(headers: &Vec<(usize, Vec<u32>)>, has_anchors: bool) -> V
 
         let index_anchor = if has_anchors {
             vec![
-                into_v32("["),
+                vec![91],  // into_v32("["),
                 stack_to_index(&stack),
-                into_v32("](#"),
+                vec![93, 40, 35],  // into_v32("](#"),
                 normalize_header(&content),
-                into_v32(")"),
+                vec![41],  // into_v32(")"),
             ].concat()
         }
 
@@ -73,17 +81,17 @@ fn headers_to_toc_mdxt(headers: &Vec<(usize, Vec<u32>)>, has_anchors: bool) -> V
 
         let element = vec![
             vec![' ' as u32; level * 2],
-            into_v32("- "),
+            vec![45, 32],  // into_v32("- "),
             index_anchor,
-            into_v32(" "),
+            vec![32],  // into_v32(" ")
             remove_recursive_toc(&content),
-            into_v32("\n"),
+            vec![10],  // into_v32("\n")
         ].concat();
 
         result.push(element);
     }
 
-    result.push(into_v32("\n[[/div]]\n"));
+    result.push(vec![10, 91, 91, 47, 100, 105, 118, 93, 93, 10]);  // into_v32("\n[[/div]]\n")
     result.concat()
 }
 
@@ -108,7 +116,8 @@ fn remove_recursive_toc(content: &[u32]) -> Vec<u32> {
 
             if let Some(inner_macro) = read_macro(content, index) {
 
-                if inner_macro == into_v32("toc") {
+                // into_v32("toc") -> [116, 111, 99]
+                if inner_macro == &[116, 111, 99] {
                     result.push(*c + BACKSLASH_ESCAPE_OFFSET);
                 }
 

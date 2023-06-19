@@ -238,7 +238,8 @@ impl AST {
                                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                                                 let macro_id = rand::random::<u64>();
 
-                                                if macro_name == into_v32("math") {
+                                                // into_v32("math") -> [109, 97, 116, 104]
+                                                if macro_name == &[109, 97, 116, 104] {
                                                     curr_parse_state = ParseState::Math { end_index: macro_closing_index };
                                                 }
 

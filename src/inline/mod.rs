@@ -122,7 +122,7 @@ impl InlineNode {
             InlineNode::CodeSpan(content) => vec![
                 into_v32(&format!("<code class=\"{class_prefix}inline-code-span\">")),
                 content.clone(),
-                into_v32("</code>")
+                vec![60, 47, 99, 111, 100, 101, 62]  // into_v32("</code>")
             ].concat(),
 
             InlineNode::Footnote((index, inverse_index, _)) => into_v32(&format!(
@@ -134,22 +134,22 @@ impl InlineNode {
             ).collect::<Vec<Vec<u32>>>().concat(),
 
             InlineNode::Link {text, destination} => vec![
-                into_v32("<a href=\""),
+                vec![60, 97, 32, 104, 114, 101, 102, 61, 34],  // into_v32("<a href=\""),
                 destination.clone(),
-                into_v32("\">"),
+                vec![34, 62],  // into_v32("\">")
                 text.iter().map(
                     |node| node.to_html(toc_rendered, class_prefix)
                 ).collect::<Vec<Vec<u32>>>().concat(),
-                into_v32("</a>")
+                vec![60, 47, 97, 62],  // into_v32("</a>")
             ].concat(),
 
             InlineNode::Image {description, address, media_type} => match media_type {
                 MediaType::Image => vec![
-                    into_v32("<img src=\""),
+                    vec![60, 105, 109, 103, 32, 115, 114, 99, 61, 34],  // into_v32("<img src=\""),
                     address.clone(),
-                    into_v32("\" alt=\""),
+                    vec![34, 32, 97, 108, 116, 61, 34],  // into_v32("\" alt=\""),
                     description.clone(),
-                    into_v32("\"/>")
+                    vec![34, 47, 62],  // into_v32("\"/>")
                 ].concat(),
                 MediaType::Video(ext) => vec![
                     into_v32("<video controls=\"controls\">"),  // `<video controls>` is not compatible with my HXML lib
@@ -157,7 +157,7 @@ impl InlineNode {
                     address.clone(),
                     into_v32("\" type=\"video/"),
                     ext.mime_type(),
-                    into_v32("\"/>"),
+                    vec![34, 47, 62],  // into_v32("\"/>")
                     description.clone(),
                     into_v32("</video>"),
                 ].concat(),
@@ -167,7 +167,7 @@ impl InlineNode {
                     address.clone(),
                     into_v32("\" type=\"audio/"),
                     ext.mime_type(),
-                    into_v32("\"/>"),
+                    vec![34, 47, 62],  // into_v32("\"/>")
                     description.clone(),
                     into_v32("</audio>"),
                 ].concat(),
@@ -230,47 +230,47 @@ impl InlineNode {
                     InlineMacro::Color(color) => vec![
                         into_v32(&format!("<span class=\"{class_prefix}color-")),
                         color.clone(),
-                        into_v32("\">"),
+                        vec![34, 62],  // into_v32("\">")
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::LineHeight(height) => vec![
                         into_v32(&format!("<span class=\"{class_prefix}line-height-")),
                         height.clone(),
-                        into_v32("\">"),
+                        vec![34, 62],  // into_v32("\">")
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::Size(size) => vec![
                         into_v32(&format!("<span class=\"{class_prefix}size-")),
                         size.clone(),
-                        into_v32("\">"),
+                        vec![34, 62],  // into_v32("\">")
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::Highlight(color) => vec![
                         into_v32(&format!("<span class=\"{}highlight-", class_prefix)),
                         color.clone(),
-                        into_v32("\">"),
+                        vec![34, 62],  // into_v32("\">")
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::Alignment(alignment) => vec![
                         into_v32(&format!("<span class=\"{class_prefix}align-")),
                         alignment.clone(),
-                        into_v32("\">"),
+                        vec![34, 62],  // into_v32("\">")
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::Box { border, inline, width, height } => vec![
                         into_v32(&format!(
@@ -299,7 +299,7 @@ impl InlineNode {
                         content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span>")
+                        vec![60, 47, 115, 112, 97, 110, 62],  // into_v32("</span>")
                     ].concat(),
                     InlineMacro::HTML { tag, class, id } => {
                         let mut result = vec![];
@@ -326,11 +326,11 @@ impl InlineNode {
                             result.push(into_v32("\""));
                         }
 
-                        result.push(into_v32(">"));
+                        result.push(vec![62]);  // into_v32(">")
                         result.push(content.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat());
-                        result.push(into_v32("</"));
+                        result.push(vec![60, 47]);  // into_v32("</")
 
                         if tag == &into_v32("anchor") {
                             result.push(into_v32("a"));
@@ -357,7 +357,9 @@ impl InlineNode {
                         message.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</span></span>")
+
+                        // into_v32("</span></span>\n") -> [60, 47, 115, 112, 97, 110, 62, 60, 47, 115, 112, 97, 110, 62, 10]
+                        vec![60, 47, 115, 112, 97, 110, 62, 60, 47, 115, 112, 97, 110, 62, 10]
                     ].concat(),
                     InlineMacro::Char(character) => if character[0] < 'A' as u32 {
                         vec![

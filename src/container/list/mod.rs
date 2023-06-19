@@ -101,7 +101,7 @@ impl List {
 
             match element {
                 ElementOrSublist::Element{ content, task_list } => {
-                    result.push(into_v32("<li>"));
+                    result.push(vec![60, 108, 105, 62]);  // into_v32("<li>")
 
                     if let Some(marker) = task_list {
 
@@ -120,12 +120,12 @@ impl List {
                     }
 
                     result.push(content.to_html(toc_rendered, class_prefix));
-                    result.push(into_v32("</li>"));
+                    result.push(vec![60, 47, 108, 105, 62]);  // into_v32("</li>")
                 }
                 ElementOrSublist::Sublist(sublist) => {
                     result.pop().unwrap();  // </li>  // the first element is `ElementOrSublist::Element`
                     result.push(sublist.to_html(toc_rendered, class_prefix));
-                    result.push(into_v32("</li>"));
+                    result.push(vec![60, 47, 108, 105, 62]);  // into_v32("</li>")
                 }
             }
 

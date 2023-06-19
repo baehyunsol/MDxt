@@ -8,7 +8,7 @@ mod testbench;
 use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
-use crate::utils::{into_v32, lowercase, remove_whitespaces, take_and_drop_while, to_int};
+use crate::utils::{lowercase, remove_whitespaces, take_and_drop_while, to_int};
 use predicate::{is_copy_button, is_highlight, is_line_num, parse_arguments};
 
 #[derive(Clone)]
@@ -52,7 +52,7 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
     let (fence, mut info_string) = take_and_drop_while(&line.content, line.content[0]);
     info_string = remove_whitespaces(&info_string).iter().map(lowercase).collect();
 
-    let mut language = into_v32("");
+    let mut language = vec![];  // into_v32("")
     let mut line_num = None;
     let mut highlights = vec![];
     let mut copy_button = None;

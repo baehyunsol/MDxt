@@ -138,15 +138,15 @@ impl Node {
             Node::Paragraph { content } => {
                 buffer.push(
                     vec![
-                        into_v32("<p>"),
+                        vec![60, 112, 62],  // into_v32("<p>")
                         content.to_html(toc_rendered, class_prefix),
-                        into_v32("</p>")
+                        vec![60, 47, 112, 62],  // into_v32("</p>")
                     ].concat()
                 );
             },
             Node::ThematicBreak => {
                 buffer.push(
-                    into_v32("<hr/>")
+                    vec![60, 104, 114, 47, 62]  // into_v32("<hr/>")
                 );
             },
             Node::Table(table) => {
@@ -165,19 +165,19 @@ impl Node {
 
                 let anchor = if render_option.header_anchor && anchor.len() > 0 {
                     vec![
-                        into_v32(&format!(" id=\"")),
+                        vec![32, 105, 100, 61, 34],  // into_v32(&format!(" id=\"")),
                         anchor.to_vec(),
-                        into_v32("\"")
+                        vec![34],  // into_v32("\"")
                     ].concat()
                 } else {
-                    into_v32("")
+                    vec![]
                 };
 
                 buffer.push(
                     vec![
                         into_v32(&format!("<h{level}")),
                         anchor,
-                        into_v32(">"),
+                        vec![62],  // into_v32(">"),
                         content.to_html(toc_rendered, class_prefix),
                         into_v32(&format!("</h{level}>")),
                     ].concat()

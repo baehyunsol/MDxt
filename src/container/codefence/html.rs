@@ -45,9 +45,9 @@ impl FencedCode {
         vec![
             into_v32(&format!("<pre class=\"{class_prefix}fenced-code-block{line_num_width}\"><code>")),
             rows.concat(),
-            into_v32("</code>"),
+            vec![60, 47, 99, 111, 100, 101, 62],  // into_v32("</code>"),
             copy_button,
-            into_v32("</pre>"),
+            vec![60, 47, 112, 114, 101, 62],  // into_v32("</pre>"),
         ].concat()
     }
 
@@ -76,7 +76,9 @@ fn render_line(line: &[u32], mut curr_line: usize, line_num: &Option<usize>, hig
         into_v32(&format!("<span{highlight_or_not}>")),
         line_num,
         line.to_vec(),
-        into_v32("</span></span>\n")
+
+        // into_v32("</span></span>\n") -> [60, 47, 115, 112, 97, 110, 62, 60, 47, 115, 112, 97, 110, 62, 10]
+        vec![60, 47, 115, 112, 97, 110, 62, 60, 47, 115, 112, 97, 110, 62, 10]
     ].concat()
 }
 

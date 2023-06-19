@@ -225,15 +225,15 @@ impl MultiLineMacro {
 
             match &self.macro_type {
                 MultiLineMacroType::HTML { tag, .. } => vec![
-                    into_v32("</"),
+                    vec![60, 47],  // into_v32("</")
                     tag.clone(),
-                    into_v32(">")
+                    vec![62],  // into_v32(">")
                 ].concat(),
 
                 MultiLineMacroType::Box { .. } | MultiLineMacroType::Color(_)
                 | MultiLineMacroType::Size(_) | MultiLineMacroType::LineHeight(_)
                 | MultiLineMacroType::Alignment(_) | MultiLineMacroType::Highlight(_)
-                | MultiLineMacroType::Tooltip { .. } => into_v32("</div>"),
+                | MultiLineMacroType::Tooltip { .. } => vec![60, 47, 100, 105, 118, 62],  // into_v32("</div>")
 
                 // it doesn't need any closing tag because `render_math` generates both opening and closing tags
                 MultiLineMacroType::Math(_) => vec![],
@@ -273,27 +273,27 @@ impl MultiLineMacro {
                 MultiLineMacroType::Color(color) => vec![
                     into_v32(&format!("<div class=\"{class_prefix}color-")),
                     color.clone(),
-                    into_v32("\">")
+                    vec![34, 62],  // into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Size(size) => vec![
                     into_v32(&format!("<div class=\"{class_prefix}size-")),
                     size.clone(),
-                    into_v32("\">")
+                    vec![34, 62],  // into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::LineHeight(height) => vec![
                     into_v32(&format!("<div class=\"{class_prefix}line-height-")),
                     height.clone(),
-                    into_v32("\">")
+                    vec![34, 62],  // into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Alignment(align) => vec![
                     into_v32(&format!("<div class=\"{class_prefix}align-")),
                     align.clone(),
-                    into_v32("\">")
+                    vec![34, 62],  // into_v32("\">")
                 ].concat(),
                 MultiLineMacroType::Highlight(highlight) => vec![
                     into_v32(&format!("<div class=\"{class_prefix}highlight-")),
                     highlight.clone(),
-                    into_v32("\">")
+                    vec![34, 62],  // into_v32("\">")
                 ].concat(),
                 // Node::to_html requires (toc_rendered: Vec<u32>) and (render_option: RenderOption)
                 MultiLineMacroType::Tooltip { container, index, label } => {
@@ -316,28 +316,31 @@ impl MultiLineMacro {
                         message.iter().map(
                             |node| node.to_html(toc_rendered, class_prefix)
                         ).collect::<Vec<Vec<u32>>>().concat(),
-                        into_v32("</div>")  // the closing tag is handled by another MultiLineMacroType::Tooltip
+
+                        // the closing tag is handled by another MultiLineMacroType::Tooltip
+                        // into_v32("</div>") -> [60, 47, 100, 105, 118, 62]
+                        vec![60, 47, 100, 105, 118, 62],
                     ].concat()
                 },
                 MultiLineMacroType::HTML{ tag, class, id } => {
                     let mut result = vec![];
 
-                    result.push(into_v32("<"));
+                    result.push(vec![60]);  // into_v32("<") -> [60]
                     result.push(tag.clone());
 
                     if class.len() > 0 {
                         result.push(into_v32(&format!(" class=\"{class_prefix}")));
                         result.push(class.clone());
-                        result.push(into_v32("\""));
+                        result.push(vec![34]);  // into_v32("\"") -> [34]
                     }
 
                     if id.len() > 0 {
-                        result.push(into_v32(" id=\""));
+                        result.push(vec![32, 105, 100, 61, 34]);  // into_v32(" id=\"") -> [32, 105, 100, 61, 34]
                         result.push(id.clone());
-                        result.push(into_v32("\""));
+                        result.push(vec![34]);  // into_v32("\"") -> [34]
                     }
 
-                    result.push(into_v32(">"));
+                    result.push(vec![62]);  // into_v32(">") -> [62]
 
                     result.concat()
                 },

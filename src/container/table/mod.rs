@@ -98,11 +98,13 @@ impl Table {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
 
         if self.headless {
-            result.push(into_v32("<table class=\"headless-table\">"));
+            // into_v32("<table class=\"headless-table\">")
+            result.push(vec![60, 116, 97, 98, 108, 101, 32, 99, 108, 97, 115, 115, 61, 34, 104, 101, 97, 100, 108, 101, 115, 115, 45, 116, 97, 98, 108, 101, 34, 62]);
         }
 
         else {
-            result.push(into_v32("<table>"));
+            // into_v32("<table>")
+            result.push(vec![60, 116, 97, 98, 108, 101, 62]);
         }
 
         let collapsible_head = if self.collapsible {
@@ -121,14 +123,14 @@ impl Table {
             result.push(into_v32(&format!("<thead{collapsible_head}>")));
             self.header.iter().for_each(
                 |row| {
-                    result.push(into_v32("<tr>"));
+                    result.push(vec![60, 116, 114, 62]);  // into_v32("<tr>")
                     result.push(row.iter().map(
                         |c| c.to_html(true, toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat());
-                    result.push(into_v32("</tr>"));
+                    result.push(vec![60, 47, 116, 114, 62]);  // into_v32("</tr>")
                 }
             );
-            result.push(into_v32("</thead>"));
+            result.push(vec![60, 47, 116, 104, 101, 97, 100, 62]);  // into_v32("</thead>")
         }
 
         let collapsible_body = if self.collapsible {
@@ -147,17 +149,17 @@ impl Table {
             result.push(into_v32(&format!("<tbody{collapsible_body}>")));
             self.cells.iter().for_each(
                 |row| {
-                    result.push(into_v32("<tr>"));
+                    result.push(vec![60, 116, 114, 62]);  // into_v32("<tr>")
                     result.push(row.iter().map(
                         |c| c.to_html(false, toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat());
-                    result.push(into_v32("</tr>"));
+                    result.push(vec![60, 47, 116, 114, 62]);  // into_v32("</tr>")
                 }
             );
-            result.push(into_v32("</tbody>"));
+            result.push(vec![60, 47, 116, 98, 111, 100, 121, 62]);  // into_v32("</tbody>")
         }
 
-        result.push(into_v32("</table>"));
+        result.push(vec![60, 47, 116, 97, 98, 108, 101, 62]);  // into_v32("</table>")
         result.concat()
     }
 
