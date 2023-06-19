@@ -1,6 +1,6 @@
 use super::{normalize_macro, parse_arguments, get_macro_name, MACROS};
 use crate::inline::InlineNode;
-use crate::utils::{get_bracket_end_index, into_v32, remove_whitespaces};
+use crate::utils::{get_bracket_end_index, remove_whitespaces};
 use crate::render::render_option::RenderOption;
 use crate::ast::doc_data::DocData;
 
@@ -163,7 +163,7 @@ pub fn is_special_macro(content: &[u32]) -> bool {
 
     }
 
-    if prefix != into_v32("!![[") {
+    if prefix != &[33, 33, 91, 91] {  // into_v32("!![[")
         return false;
     }
 

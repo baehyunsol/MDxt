@@ -106,7 +106,7 @@ impl Macro {
 
     pub fn get_closing_macro(&self) -> Vec<u32> {
         vec![
-            into_v32("/"),
+            vec![47],  // into_v32("/")
             self.name.clone()
         ].concat()
     }

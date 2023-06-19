@@ -135,8 +135,8 @@ impl Line {
                     Some(n) if n < 1_000_000_000 => true,
                     _ => false
                 }
-                || marker == into_v32("a") || marker == into_v32("A")
-                || marker == into_v32("i") || marker == into_v32("I")
+                || marker == &[97] || marker == &[65]
+                || marker == &[105] || marker == &[73]
             },
             _ => false,
         }
