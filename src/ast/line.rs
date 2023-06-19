@@ -46,6 +46,14 @@ impl Line {
         vec![vec![' ' as u32; self.indent], self.content.to_vec()].concat()
     }
 
+    // if self.indent > n, it subtracts n, otherwise, it sets indent to 0
+    pub fn try_sub_indent(&self, n: usize) -> Self {
+        Line {
+            content: self.content.clone(),
+            indent: self.indent.max(n) - n
+        }
+    }
+
     #[cfg(test)]
     pub fn from_raw_string(string: &str) -> Line {
         Line::from_raw(&into_v32(string))

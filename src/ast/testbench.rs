@@ -954,8 +954,118 @@ function mdxt_close_sidebar() {
   mdxt_sidebar_open = false;
 }</script>
 "), ("
+    - a
+    a -
+    - a
+
+interrupt 
+
+  - a
+  a -
+  - a
+
+interrupt
+
+    a -
+    - a
+    a -
+
+interrupt
+
+  a -
+  - a
+  a -
+", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- a</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">a -</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- a</span></span>
+    </code>
+</pre>
+
+<p>interrupt </p>
+
+<ul>
+    <li>a a -</li>
+    <li>a</li>
+</ul>
+
+<p>interrupt</p>
+
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">a -</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- a</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">a -</span></span>
+    </code>
+</pre>
+
+<p>interrupt</p>
+
+<p>a -</p>
+
+<ul>
+    <li>a a -</li>
+</ul>
+"), ("
+a paragraph
+    it cannot interrupt a paragraph
+a paragraph
+
+interrupt
+
+    blank lines do not interrupt a code block
+
+
+    blank lines do not interrupt a code block
+", "
+<p>a paragraph it cannot interrupt a paragraph a paragraph</p>
+
+<p>interrupt</p>
+
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">blank lines do not interrupt a code block</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\"></span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">blank lines do not interrupt a code block</span></span>
+    </code>
+</pre>
+"), ("
+      If it has 6 initial whitespaces,
+      2 are included to the code block
+", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">  If it has 6 initial whitespaces,</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">  2 are included to the code block</span></span>
+    </code>
+</pre>
+" /* this case doesn't make much sense because the test code ignores all the whitespaces... */), ("
+Empty indented code blocks are ignored
+
+      
+       
+      
+       
+", "
+<p>Empty indented code blocks are ignored</p>
+"
+), ("
+      
+      Trailing and preceding whitespaces are ignored
+
+
+", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">  Trailing and preceding whitespaces are ignored</span></span>
+    </code>
+</pre>
+"), ("
 [[sidebar]] inline sidebar? [[/sidebar]]
-", "<p></p>"), /*("
+", "<p></p>"), ("
 [[collapsible]]
 
 Do you see me?
@@ -973,7 +1083,7 @@ collapsiblable
 [[/collapsible]]
 
 [[/collapsible]]
-", ""),*/ ("", "")
+", ""), ("", "")
     ];
 
     result.into_iter().map(

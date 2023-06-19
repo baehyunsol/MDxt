@@ -20,6 +20,7 @@ impl Line {
         }
     }
 
+    // indented empty lines must be considered an empty line -> regarding indented code blocks
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.content.len() == 0
@@ -160,7 +161,7 @@ impl Line {
 
     #[inline]
     pub fn is_multiline_macro(&self) -> bool {
-        read_macro(&self.content, 0).is_some() && {
+        self.indent == 0 && read_macro(&self.content, 0).is_some() && {
 
             // trailing whitespaces are okay, but the other characters are not allowed
             let mut curr_index = get_bracket_end_index(&self.content, 0).unwrap() + 1;

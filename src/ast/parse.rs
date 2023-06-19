@@ -26,6 +26,7 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         is_tilde_fence: bool,
         index: usize  // index is used when making `copy to clipboard` buttons
     },
+    IndentedCodeBlock,
     Table {
         header_lines: Vec<Line>,
         alignments: Line,
@@ -69,7 +70,6 @@ impl AST {
 
                         if end_code_fence_size >= *code_fence_size && is_tilde_end_fence == *is_tilde_fence {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
-                            curr_parse_state = ParseState::None;
                             fenced_code_count += 1;
                             index += 1;
                             continue;
@@ -79,6 +79,22 @@ impl AST {
 
                     curr_lines.push(lines[index].clone());
                 },
+                ParseState::IndentedCodeBlock => {
+
+                    if lines[index].is_empty() {
+                        curr_lines.push(lines[index].try_sub_indent(4));
+                    }
+
+                    else if lines[index].indent < 4 {
+                        add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        continue;
+                    }
+
+                    else {
+                        curr_lines.push(lines[index].try_sub_indent(4));
+                    }
+
+                }
                 ParseState::Paragraph | ParseState::None => {
 
                     if macro_closing_indexes.contains(&index) {
@@ -87,6 +103,17 @@ impl AST {
                         macro_closing_indexes.remove(&index);
                         index += 1;
                         continue;
+                    }
+
+                    // an indented code block cannot interrupt a paragraph
+                    else if lines[index].indent >= 4 && curr_parse_state == ParseState::None {
+
+                        if curr_lines.len() > 0 {
+                            add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
+                        }
+
+                        curr_parse_state = ParseState::IndentedCodeBlock;
+                        curr_lines.push(lines[index].try_sub_indent(4));
                     }
 
                     else if lines[index].is_code_fence_begin() {
@@ -100,7 +127,6 @@ impl AST {
                         let (level, content) = parse_header(&lines[index]);
                         doc_data.headers.push((level, content.clone()));
                         curr_nodes.push(Node::new_header(level, content));
-                        curr_parse_state = ParseState::None;
                     }
 
                     else if curr_parse_state == ParseState::None && lines[index].is_thematic_break() {
@@ -165,13 +191,16 @@ impl AST {
 
                     // a single line of an ordered list is not rendered to `<ol>`
                     // a single line of an unordered list is fine
-                    else if lines[index].is_unordered_list()
+                    else if (lines[index].is_unordered_list()
                         || lines[index].is_ordered_list()
                         && index + 1 < lines.len()
                         && (
                             lines[index + 1].is_ordered_list()
                             || lines[index + 1].is_unordered_list()
-                        )
+
+                        // the indentation of the first element must be less than 4
+                        // otherwise, it's an indented code block
+                        )) && lines[index].indent < 4
                     {
 
                         if curr_lines.len() > 0 {
@@ -416,6 +445,30 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
+        ParseState::IndentedCodeBlock => {
+
+            // removes trailing empty lines
+            while curr_lines.len() > 0 && curr_lines[curr_lines.len() - 1].is_empty() {
+                curr_lines.pop().unwrap();
+            }
+
+            let mut preceding_empty_lines = 0;
+
+            while preceding_empty_lines < curr_lines.len() && curr_lines[preceding_empty_lines].is_empty() {
+                preceding_empty_lines += 1;
+            }
+
+            *curr_lines = curr_lines[preceding_empty_lines..].to_vec();
+
+            // empty code blocks are ignored
+            if curr_lines.len() > 0 {
+                // a code fence without any decoration
+                curr_nodes.push(Node::new_code_fence(curr_lines, &vec![], &None, &vec![], false, usize::MAX));
+                *curr_lines = vec![];
+            }
+
+            *curr_parse_state = ParseState::None;
+        }
         ParseState::None => if curr_lines.len() != 0 {
             panic!("What should I do?");
         },

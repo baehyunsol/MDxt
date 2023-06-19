@@ -24,7 +24,7 @@ d[^b][^d]
 [^e]: It's never used.
 
 [^ff^]: It's not a valid label for a footnote.
-        ".to_string(), "
+".to_string(), "
 <p>
     a
         <span class=\"footnote-ref\" id=\"footnote-ref-0\">

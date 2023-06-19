@@ -1,5 +1,5 @@
 ---
-date: [2023, 6, 15]
+date: [2023, 6, 19]
 hide: true
 ---
 
@@ -321,7 +321,7 @@ Paragraph
 
 ### Unlike GFM...
 
-MDxt doesn't support setext headers and indented code blocks.
+MDxt doesn't support setext headers, underscore emphasis, and auto urls. (but coming soon!)
 
 ## Macros
 

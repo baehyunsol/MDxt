@@ -45,9 +45,9 @@ underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 
 
 ---
 
-indented code blocks -> why not?
+auto links
 
-https://github.github.com/gfm/#indented-code-blocks
+https://github.github.com/gfm/#autolinks-extension-
 
 ---
 

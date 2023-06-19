@@ -38,8 +38,12 @@ fn list_samples() -> Vec<(String, String)> {
  - 1
 - 1
 ", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- 1</span></span>
+    </code>
+</pre>
 <ul>
-    <li>1</li>
     <li>1</li>
     <li>1</li>
     <li>1</li>
@@ -151,33 +155,14 @@ fn list_samples() -> Vec<(String, String)> {
   - 1
 - 1
 ", "
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">    - 1</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">  - 1</span></span>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- 1</span></span>
+    </code>
+</pre>
 <ul>
-    <li>1</li>
-    <li>1</li>
-    <li>1</li>
-    <li>1</li>
-    <li>1</li>
-</ul>
-"), ("
-        - 1
-      - 1
-        - 2
-        - 2
-        - 2
-    - 1
-  - 1
-- 1
-", "
-<ul>
-    <li>1</li>
-    <li>1
-        <ul>
-            <li>2</li>
-            <li>2</li>
-            <li>2</li>
-        </ul>
-    </li>
-    <li>1</li>
     <li>1</li>
     <li>1</li>
 </ul>
@@ -209,8 +194,12 @@ fn list_samples() -> Vec<(String, String)> {
         </ul>
     </li>
 </ul>
+<pre class=\"fenced-code-block\">
+    <code>
+        <span class=\"code-fence-row\"><span class=\"code-fence-code\">- 1</span></span>
+    </code>
+</pre>
 <ul>
-    <li>1</li>
     <li>1</li>
     <li>1</li>
     <li></li>
