@@ -663,7 +663,7 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
         }
 
         else {
-            todo!()
+            unreachable!()
         }
 
     }

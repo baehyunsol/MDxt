@@ -180,46 +180,46 @@ impl InlineNode {
 
             InlineNode::Decoration { deco_type, content } => match deco_type {
                 DecorationType::Italic => vec![
-                    into_v32("<em>"),
+                    vec![60, 101, 109, 62],  // into_v32("<em>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</em>")
+                    vec![60, 47, 101, 109, 62],  // into_v32("</em>")
                 ].concat(),
                 DecorationType::Bold => vec![
-                    into_v32("<strong>"),
+                    vec![60, 115, 116, 114, 111, 110, 103, 62],  // into_v32("<strong>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</strong>")
+                    vec![60, 47, 115, 116, 114, 111, 110, 103, 62],  // into_v32("</strong>")
                 ].concat(),
                 DecorationType::Underline => vec![
-                    into_v32("<u>"),
+                    vec![60, 117, 62],  // into_v32("<u>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</u>")
+                    vec![60, 47, 117, 62],  // into_v32("</u>")
                 ].concat(),
                 DecorationType::Deletion => vec![
-                    into_v32("<del>"),
+                    vec![60, 100, 101, 108, 62],  // into_v32("<del>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</del>")
+                    vec![60, 47, 100, 101, 108, 62],  // into_v32("</del>")
                 ].concat(),
                 DecorationType::Subscript => vec![
-                    into_v32("<sub>"),
+                    vec![60, 115, 117, 98, 62],  // into_v32("<sub>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</sub>")
+                    vec![60, 47, 115, 117, 98, 62],  // into_v32("</sub>")
                 ].concat(),
                 DecorationType::Superscript => vec![
-                    into_v32("<sup>"),
+                    vec![60, 115, 117, 112, 62],  // into_v32("<sup>")
                     content.iter().map(
                         |node| node.to_html(toc_rendered, class_prefix)
                     ).collect::<Vec<Vec<u32>>>().concat(),
-                    into_v32("</sup>")
+                    vec![60, 47, 115, 117, 112, 62],  // into_v32("</sup>")
                 ].concat(),
                 DecorationType::None => {
                     #[cfg(test)] assert!(content.len() == 0);
@@ -304,10 +304,11 @@ impl InlineNode {
                     InlineMacro::HTML { tag, class, id } => {
                         let mut result = vec![];
 
-                        result.push(into_v32("<"));
+                        result.push(vec![60]);  // into_v32("<")
 
-                        if tag == &into_v32("anchor") {
-                            result.push(into_v32("a"));
+                        // into_v32("anchor") -> [97, 110, 99, 104, 111, 114]
+                        if tag == &[97, 110, 99, 104, 111, 114] {
+                            result.push(vec![97]);  // into_v32("a")
                         }
 
                         else {
@@ -317,13 +318,13 @@ impl InlineNode {
                         if class.len() > 0 {
                             result.push(into_v32(&format!(" class=\"{class_prefix}")));
                             result.push(class.clone());
-                            result.push(into_v32("\""));
+                            result.push(vec![34]);  // into_v32("\"")
                         }
 
                         if id.len() > 0 {
-                            result.push(into_v32(" id=\""));
+                            result.push(vec![32, 105, 100, 61, 34]);  // into_v32(" id=\"")
                             result.push(id.clone());
-                            result.push(into_v32("\""));
+                            result.push(vec![34]);  // into_v32("\"")
                         }
 
                         result.push(vec![62]);  // into_v32(">")
@@ -332,15 +333,16 @@ impl InlineNode {
                         ).collect::<Vec<Vec<u32>>>().concat());
                         result.push(vec![60, 47]);  // into_v32("</")
 
-                        if tag == &into_v32("anchor") {
-                            result.push(into_v32("a"));
+                        // into_v32("anchor") -> [97, 110, 99, 104, 111, 114]
+                        if tag == &[97, 110, 99, 104, 111, 114] {
+                            result.push(vec![97]);  // into_v32("a")
                         }
 
                         else {
                             result.push(tag.clone());
                         }
 
-                        result.push(into_v32(">"));
+                        result.push(vec![62]);  // into_v32(">")
 
                         result.concat()
                     }
@@ -363,19 +365,23 @@ impl InlineNode {
                     ].concat(),
                     InlineMacro::Char(character) => if character[0] < 'A' as u32 {
                         vec![
-                            into_v32("&#"),
+                            vec![38, 35],  // into_v32("&#")
                             character.clone(),
-                            into_v32(";")
+                            vec![59],  // into_v32(";")
                         ].concat()
                     } else {
                         vec![
-                            into_v32("&"),
+                            vec![38],  // into_v32("&")
                             character.clone(),
-                            into_v32(";")
+                            vec![59],  // into_v32(";")
                         ].concat()
                     },
-                    InlineMacro::Br { repeat } => vec![into_v32("<br/>"); *repeat].concat(),
-                    InlineMacro::Blank { repeat } => vec![into_v32("&nbsp;"); *repeat].concat(),
+
+                    // into_v32("<br/>") -> [60, 98, 114, 47, 62]
+                    InlineMacro::Br { repeat } => vec![vec![60, 98, 114, 47, 62]; *repeat].concat(),
+
+                    // into_v32("&nbsp;") -> [38, 110, 98, 115, 112, 59]
+                    InlineMacro::Blank { repeat } => vec![vec![38, 110, 98, 115, 112, 59]; *repeat].concat(),
                     InlineMacro::Math (content) => render_math(content),
                     InlineMacro::Toc => toc_rendered.to_vec(),
                     InlineMacro::Icon { name, size } => get_icon(name, *size as usize, None, false).unwrap()

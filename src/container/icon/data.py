@@ -5,7 +5,8 @@ def main():
 
     for k, v in icons.items():
         svg = [ord(c) if ord(c) < 0xd000 else ord(c) - 0xdf00 + 0x600_000 for c in v]
-        result.append(f'result.insert(into_v32("{k.lower()}"), (vec!{svg}, {sources[k]}));')
+        icon_name = [ord(c) for c in k.lower()]
+        result.append(f'result.insert(vec!{icon_name}, (vec!{svg}, {sources[k]}));')
 
     with open('./template.rs', 'r') as f:
         rust_file = f.read()
