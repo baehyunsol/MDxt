@@ -1,7 +1,8 @@
 use super::{Math, md_to_math};
 use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
 use crate::utils::{from_v32, into_v32, remove_whitespaces};
-use crate::render_to_html_with_default_options;
+use crate::{render_to_html, RenderOption, RenderResult};
+use crate::testbench::HXML_LOCK;
 
 fn samples() -> Vec<(Vec<u32>, Vec<u32>)> {  // Vec<(test_case, answer)>
     let result = vec![
@@ -413,7 +414,7 @@ fn render_math_reference() -> Vec<u32> {
 }
 
 #[test]
-fn render_to_html() {
+fn render_math_to_html() {
     use std::fs::File;
     use std::io::{Read, Write};
 
@@ -422,6 +423,24 @@ fn render_to_html() {
     if crate::PRINT_TEST_PAGES { println!("\n\n{}\n\n", from_v32(&md)); }
 
     let md = from_v32(&md);
+    let RenderResult {
+        content: html,
+        ..
+    } = render_to_html(
+        &md,
+        RenderOption {
+            xml: true,
+            ..RenderOption::default()
+        }
+    );
+
+    let lock = unsafe { HXML_LOCK.lock().unwrap() };
+
+    hxml::into_dom(html.clone()).unwrap();
+
+    // TODO: be sure that all the math ml entities are properly rendered
+
+    drop(lock);
 
     let mut f = File::open("./styles/markdown.css").unwrap();
     let mut css = String::new();
@@ -435,11 +454,10 @@ fn render_to_html() {
     <style>{css}</style>
 </head>
 <body>
-    <article class=\"markdown\">{}</article>
+    <article class=\"markdown\">{html}</article>
 </body>
 </html>
 ",
-        render_to_html_with_default_options(&md)
     );
 
     let mut f = File::create("math_test.html").unwrap();

@@ -38,8 +38,8 @@ fn render_reference_test() {
     // TODO: more queries
     // TODO: same stuff for math_test.html, icon_test.html, and character_test.html
 
+    drop(lock);
+
     let mut f = File::create("./reference.html").unwrap();
     f.write_all(reference.as_bytes()).unwrap();
-
-    drop(lock);
 }

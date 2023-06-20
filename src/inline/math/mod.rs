@@ -26,8 +26,9 @@ lazy_static! {
             "and", "or", "cap", "cup", "therefore", "because", "simeq", "asymp", "ne", "neq",
             "equiv", "nequiv", "lt", "gt", "le", "leq", "ge", "geq", "llt", "ggt",
             "sub", "sup", "nsub", "nsup", "sube", "supe", "nsube", "nsupe",
-            "oplus", "ominus", "otimes", "odiv", "odot", "dot", "star",
-            "lcb", "rcb", "br"
+            "oplus", "ominus", "otimes", "odiv", "odot", "dot", "star", "br",
+            "lcb",  // left curly brace
+            "rcb",  // right curly brace
         ];
         let mut result = HashSet::with_capacity(vec.len());
 
