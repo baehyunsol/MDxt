@@ -34,7 +34,6 @@ pub fn render_reference() -> String {
     use std::io::Read;
 
     let mut s = String::new();
-
     let mut f = File::open("reference.md").unwrap();
     f.read_to_string(&mut s).unwrap();
 

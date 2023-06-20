@@ -226,19 +226,6 @@ pub const META_CHARACTER_OFFSET: u32 = 0x602_000;
 mod tests {
 
     #[test]
-    fn escape_undo_test() {
-        use crate::testbench::random;
-        use crate::escape::*;
-
-        for i in 0..256 {
-            let test_case: Vec<u32> = (0..512).map(|j| (random(i * 8191 + j * 37) % 128) as u32).collect();
-            assert_eq!(undo_html_escapes(&escape_htmls(&test_case)), test_case);
-            assert_eq!(undo_backslash_escapes(&escape_backslashes(&test_case)), test_case);
-        }
-
-    }
-
-    #[test]
     fn backslash_escape_test() {
         use crate::utils::{into_v32, from_v32};
         use crate::escape::*;

@@ -71,30 +71,49 @@ fn count_code_span_end(content: &[u32], mut index: usize) -> (usize, usize) {  /
     (result, index - 1)
 }
 
-pub fn is_italic(content: &[u32], index: usize) -> Bool {
+macro_rules! inline_predicate {
+    ($f_name: ident, $pred_start: ident, $pred_end: ident, $decorator_length: expr, $decorator_offset: expr) => (
+        pub fn $f_name(content: &[u32], index: usize) -> Bool {
 
-    if !is_italic_start(content, index) {
-        return Bool::False;
-    }
+            if !$pred_start(content, index) {
+                return Bool::False;
+            }
 
-    let mut end_index = index + 1;
+            let mut end_index = index + $decorator_length + $decorator_offset;
 
-    while end_index < content.len() {
+            while end_index < content.len() {
 
-        if is_code_span_marker_begin(content, end_index) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
+                if is_code_span_marker_begin(content, end_index - $decorator_offset) {
+                    end_index = get_code_span_marker_end_index(content, end_index);
+                    continue;
+                }
+
+                if $pred_end(content, end_index) {
+                    return Bool::True(end_index);
+                }
+
+                end_index += 1;
+            }
+
+            Bool::False
         }
-
-        if is_italic_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
+    )
 }
+
+// 1 means italic is `*`, which is a 1-character long decorator
+inline_predicate!(is_italic, is_italic_start, is_italic_end, 1, 0);
+
+// 2 means bold is `**`, which is a 2-characters long decorator
+inline_predicate!(is_bold, is_bold_start, is_bold_end, 2, 0);
+
+// 3 means bold is `***`, which is a 3-characters long decorator
+// in order to properly deal with `****`, it starts searching `end_index` with offset 1
+inline_predicate!(is_bold_italic, is_bold_italic_start, is_bold_italic_end, 3, 1);
+
+inline_predicate!(is_underline, is_underline_start, is_underline_end, 2, 1);
+inline_predicate!(is_superscript, is_superscript_start, is_superscript_end, 1, 0);
+inline_predicate!(is_subscript, is_subscript_start, is_subscript_end, 1, 0);
+inline_predicate!(is_deletion_subscript, is_deletion_subscript_start, is_deletion_subscript_end, 3, 1);
 
 fn is_italic_start(content: &[u32], index: usize) -> bool {
     content[index] == '*' as u32
@@ -112,31 +131,6 @@ fn is_italic_end(content: &[u32], index: usize) -> bool {
     && (index + 1 == content.len() || content[index + 1] != '*' as u32)
 }
 
-pub fn is_bold(content: &[u32], index: usize) -> Bool {
-
-    if !is_bold_start(content, index) {
-        return Bool::False;
-    }
-
-    let mut end_index = index + 2;
-
-    while end_index < content.len() {
-
-        if is_code_span_marker_begin(content, end_index) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_bold_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
-}
-
 fn is_bold_start(content: &[u32], index: usize) -> bool {
     content[index] == '*' as u32
     && index + 2 < content.len()
@@ -151,33 +145,6 @@ fn is_bold_end(content: &[u32], index: usize) -> bool {
     && content[index - 1] == '*' as u32
     && content[index - 2] != ' ' as u32
     && content[index - 2] != '*' as u32
-}
-
-pub fn is_bold_italic(content: &[u32], index: usize) -> Bool {
-
-    if !is_bold_italic_start(content, index) {
-        return Bool::False;
-    }
-
-    // in order to ignore `****`, it has to be 4, not 3
-    let mut end_index = index + 4;
-
-    while end_index < content.len() {
-
-        // since we've added 4 instead of 3, we should start searching at `end_index - 1`
-        if is_code_span_marker_begin(content, end_index - 1) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_bold_italic_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
 }
 
 fn is_bold_italic_start(content: &[u32], index: usize) -> bool {
@@ -215,6 +182,7 @@ pub fn is_deletion(content: &[u32], index: usize) -> Bool {
             continue;
         }
 
+        // this function cannot be defined with macro due to this branch
         if is_deletion_end(content, end_index) && end_index - index > 3 {
             return Bool::True(end_index);
         }
@@ -241,31 +209,6 @@ fn is_deletion_end(content: &[u32], index: usize) -> bool {
     && content[index - 2] != '_' as u32
 }
 
-pub fn is_underline(content: &[u32], index: usize) -> Bool {
-
-    if !is_underline_start(content, index) {
-        return Bool::False;
-    }
-
-    let mut end_index = index + 3;
-
-    while end_index < content.len() {
-
-        if is_code_span_marker_begin(content, end_index) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_underline_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
-}
-
 fn is_underline_start(content: &[u32], index: usize) -> bool {
     content[index] == '~' as u32
     && index + 2 < content.len()
@@ -278,31 +221,6 @@ fn is_underline_end(content: &[u32], index: usize) -> bool {
     && index > 1
     && content[index - 1] == '_' as u32
     && content[index - 2] != ' ' as u32
-}
-
-pub fn is_superscript(content: &[u32], index: usize) -> Bool {
-
-    if !is_superscript_start(content, index) {
-        return Bool::False;
-    }
-
-    let mut end_index = index + 1;
-
-    while end_index < content.len() {
-
-        if is_code_span_marker_begin(content, end_index) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_superscript_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
 }
 
 fn is_superscript_start(content: &[u32], index: usize) -> bool {
@@ -319,31 +237,6 @@ fn is_superscript_end(content: &[u32], index: usize) -> bool {
     && content[index - 1] != ' ' as u32
 }
 
-pub fn is_subscript(content: &[u32], index: usize) -> Bool {
-
-    if !is_subscript_start(content, index) {
-        return Bool::False;
-    }
-
-    let mut end_index = index + 1;
-
-    while end_index < content.len() {
-
-        if is_code_span_marker_begin(content, end_index) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_subscript_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
-}
-
 fn is_subscript_start(content: &[u32], index: usize) -> bool {
     content[index] == '~' as u32
     && index + 1 < content.len()
@@ -358,33 +251,6 @@ fn is_subscript_end(content: &[u32], index: usize) -> bool {
     && content[index - 1] != '~' as u32
     && content[index - 1] != ' ' as u32
     && (index == content.len() - 1 || content[index + 1] != '~' as u32)
-}
-
-pub fn is_deletion_subscript(content: &[u32], index: usize) -> Bool {
-
-    if !is_deletion_subscript_start(content, index) {
-        return Bool::False;
-    }
-
-    // in order to ignore `~~~~`, it has to be 4, not 3
-    let mut end_index = index + 4;
-
-    while end_index < content.len() {
-
-        // since we've added 4 instead of 3, we should start searching at `end_index - 1`
-        if is_code_span_marker_begin(content, end_index - 1) {
-            end_index = get_code_span_marker_end_index(content, end_index);
-            continue;
-        }
-
-        if is_deletion_subscript_end(content, end_index) {
-            return Bool::True(end_index);
-        }
-
-        end_index += 1;
-    }
-
-    Bool::False
 }
 
 fn is_deletion_subscript_start(content: &[u32], index: usize) -> bool {
