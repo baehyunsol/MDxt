@@ -8,11 +8,11 @@ use crate::utils::from_v32;
 use render_option::RenderOption;
 use render_result::RenderResult;
 
-pub fn render_to_html_with_default_options(content: &String) -> String {
+pub fn render_to_html_with_default_options(content: &str) -> String {
     render_to_html(content, RenderOption::default()).content
 }
 
-pub fn render_to_html(content: &String, mut options: RenderOption) -> RenderResult {
+pub fn render_to_html(content: &str, mut options: RenderOption) -> RenderResult {
     let mut u32_content = preprocess(content);
     u32_content = escape_backslashes(&u32_content);
 

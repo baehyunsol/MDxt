@@ -101,7 +101,8 @@ pub fn escape_backslashes(content: &[u32]) -> Vec<u32> {
             index += 1;
         }
 
-        else {
+        // unescaped normal character
+        else if content[index + 1] < HTML_ESCAPE_OFFSET {
             result.push(BACKSLASH_ESCAPE_OFFSET + content[index + 1]);
             index += 1;
         }
@@ -174,7 +175,7 @@ pub fn render_backslash_escapes_raw(content: &[u32]) -> Vec<u32> {
 // handle characters that may collide with meta characters
 //  -> MDxt uses \0xdfe0 ~ \0xdfff as meta characters
 // it also does what `escape_htmls` does
-pub fn preprocess(content: &String) -> Vec<u32> {
+pub fn preprocess(content: &str) -> Vec<u32> {
     let mut result = Vec::with_capacity(content.len() * 5 / 4);
 
     for c in content.chars() {
@@ -210,14 +211,16 @@ pub fn preprocess(content: &String) -> Vec<u32> {
 
 /*
  *  0x000_000 ~ 0x1ff_fff: normal characters
- *  0x200_000 ~ 0x3ff_fff: html escapes       // always escaped
- *  0x400_000 ~ 0x5ff_fff: backslash escapes  // not escaped inside code spans
- *  0x600_000 ~ 0x600_fff: meta characters
+ *  0x202_000 ~ 0x3ff_fff: html escapes       // always escaped
+ *  0x402_000 ~ 0x5ff_fff: backslash escapes  // not escaped inside code spans
+ *  0x602_000 ~ 0x602_fff: meta characters
  */
 
-pub const HTML_ESCAPE_OFFSET: u32 = 0x200_000;
-pub const BACKSLASH_ESCAPE_OFFSET: u32 = 0x400_000;
-pub const META_CHARACTER_OFFSET: u32 = 0x600_000;
+// 0x202_000 and 0x402_000, not 0x200_000 and 0x400_000
+// -> that's for easier debugging: if I accidently escape_html twice, that should be different from escape_backslash
+pub const HTML_ESCAPE_OFFSET: u32 = 0x202_000;
+pub const BACKSLASH_ESCAPE_OFFSET: u32 = 0x402_000;
+pub const META_CHARACTER_OFFSET: u32 = 0x602_000;
 
 #[cfg(test)]
 mod tests {

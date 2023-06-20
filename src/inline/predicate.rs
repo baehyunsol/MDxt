@@ -159,11 +159,13 @@ pub fn is_bold_italic(content: &[u32], index: usize) -> Bool {
         return Bool::False;
     }
 
+    // in order to ignore `****`, it has to be 4, not 3
     let mut end_index = index + 4;
 
     while end_index < content.len() {
 
-        if is_code_span_marker_begin(content, end_index) {
+        // since we've added 4 instead of 3, we should start searching at `end_index - 1`
+        if is_code_span_marker_begin(content, end_index - 1) {
             end_index = get_code_span_marker_end_index(content, end_index);
             continue;
         }
@@ -202,11 +204,13 @@ pub fn is_deletion(content: &[u32], index: usize) -> Bool {
         return Bool::False;
     }
 
+    // in order not to parse `~~~`, it has to be 3 instead of 2
     let mut end_index = index + 3;
 
     while end_index < content.len() {
 
-        if is_code_span_marker_begin(content, end_index) {
+        // since we've added 3 instead of 2, we should start searching at `end_index - 1`
+        if is_code_span_marker_begin(content, end_index - 1) {
             end_index = get_code_span_marker_end_index(content, end_index);
             continue;
         }
@@ -362,11 +366,13 @@ pub fn is_deletion_subscript(content: &[u32], index: usize) -> Bool {
         return Bool::False;
     }
 
+    // in order to ignore `~~~~`, it has to be 4, not 3
     let mut end_index = index + 4;
 
     while end_index < content.len() {
 
-        if is_code_span_marker_begin(content, end_index) {
+        // since we've added 4 instead of 3, we should start searching at `end_index - 1`
+        if is_code_span_marker_begin(content, end_index - 1) {
             end_index = get_code_span_marker_end_index(content, end_index);
             continue;
         }

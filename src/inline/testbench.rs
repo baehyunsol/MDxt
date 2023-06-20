@@ -28,6 +28,13 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*\\**", "<em>&#42;</em>"),
         ("****", "****"),
 
+        // Found by AFL
+        ("****`*)****$ab`-", "****<code class=\"inline-code-span\">*)****$ab</code>-"),
+        ("[`)[]]()`", "[<code class=\"inline-code-span\">)[]]()</code>"),
+        ("~~~`~~~`", "~~~<code class=\"inline-code-span\">~~~</code>"),
+        ("*a*b`a``a` `a``a`", "<em>a</em>b<code class=\"inline-code-span\">a``a</code> <code class=\"inline-code-span\">a``a</code>"),
+        ("[a](`[`)", "<a href=\"\">a</a>"),
+
         ("****abcde****", "*<em><strong>abcde</strong></em>*"),
         ("`a` `a`", "<code class=\"inline-code-span\">a</code> <code class=\"inline-code-span\">a</code>"),
         ("*abc*", "<em>abc</em>"),
@@ -59,6 +66,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("`\\`", "<code class=\"inline-code-span\">\\</code>"),
         ("`` ` `` `` ` ``", "<code class=\"inline-code-span\">`</code> <code class=\"inline-code-span\">`</code>"),
         ("``` `` ```", "<code class=\"inline-code-span\">``</code>"),
+        ("` `` `", "<code class=\"inline-code-span\">``</code>"),
         ("``` `code span?` ```", "<code class=\"inline-code-span\">`code span?`</code>"),
         ("`\\no escape`", "<code class=\"inline-code-span\">\\no escape</code>"),
         ("`no escape\\`", "<code class=\"inline-code-span\">no escape\\</code>"),

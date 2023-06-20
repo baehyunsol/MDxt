@@ -488,6 +488,18 @@ pub fn escape_code_spans(content: &[u32]) -> Vec<u32> {
 
     while index < content.len() {
 
+        // "*a*b`a``a` `a``a`"
+        if is_code_span_marker_begin(content, index) {
+            let end_index = get_code_span_marker_end_index(content, index);
+
+            while index <= end_index {
+                result.push(content[index]);
+                index += 1;
+            }
+
+            continue;
+        }
+
         match is_code_span(content, index) {
             Bool::True(end) => {
                 result.push(INLINE_CODE_SPAN_MARKER1);
@@ -547,6 +559,8 @@ pub fn is_code_span_marker_end(content: &[u32], index: usize) -> bool {
     && content[index + 1] == INLINE_CODE_SPAN_MARKER4
 }
 
+// it doesn't check boundary because it assumes that `content` is always valid
+// it assumes that it's called after `get_code_span_marker_begin_index` returned something
 pub fn get_code_span_marker_end_index(content: &[u32], mut index: usize) -> usize {
 
     while content[index] != INLINE_CODE_SPAN_MARKER3 || content[index + 1] != INLINE_CODE_SPAN_MARKER4 {

@@ -4,7 +4,7 @@ def main():
     result = [""]
 
     for k, v in icons.items():
-        svg = [ord(c) if ord(c) < 0xd000 else ord(c) - 0xdf00 + 0x600_000 for c in v]
+        svg = [ord(c) if ord(c) < 0xd000 else ord(c) - 0xdf00 + 0x602_000 for c in v]
         icon_name = [ord(c) for c in k.lower()]
         result.append(f'result.insert(vec!{icon_name}, (vec!{svg}, {sources[k]}));')
 
@@ -169,9 +169,9 @@ color_token_chr = 0xdf02
 size_token_chr = 0xdf03
 xmlns_token_chr = 0xdf04
 
-color_token = 0x600_002
-size_token = 0x600_003
-xmlns_token = 0x600_004
+color_token = 0x602_002
+size_token = 0x602_003
+xmlns_token = 0x602_004
 
 EVA = 0x1000
 MATERIAL = 0x1001

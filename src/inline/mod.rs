@@ -631,7 +631,7 @@ impl InlineNode {
 }
 
 // those are illegal unicodes, which are appropriate to be used as internal meta characters
-const INLINE_CODE_SPAN_MARKER1: u32 = 0x600_005;
-const INLINE_CODE_SPAN_MARKER2: u32 = 0x600_006;
-const INLINE_CODE_SPAN_MARKER3: u32 = 0x600_007;
-const INLINE_CODE_SPAN_MARKER4: u32 = 0x600_008;
+const INLINE_CODE_SPAN_MARKER1: u32 = 0x602_005;
+const INLINE_CODE_SPAN_MARKER2: u32 = 0x602_006;
+const INLINE_CODE_SPAN_MARKER3: u32 = 0x602_007;
+const INLINE_CODE_SPAN_MARKER4: u32 = 0x602_008;

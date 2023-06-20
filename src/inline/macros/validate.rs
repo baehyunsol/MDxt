@@ -66,7 +66,8 @@ impl Macro {
             MacroType::Highlight => arguments.len() == 1 && arguments[0].len() == 2 && COLOR_NAMES.contains(&arguments[0][1]),
 
             MacroType::Icon => arguments[0].len() == 2 && ICONS.contains_key(&arguments[0][1]) && (
-                arguments.len() == 1 || arguments.len() == 2 && arguments[1][0] == into_v32("size") && match to_int(&arguments[1][1]) {
+                arguments.len() == 1  // no size
+                || arguments.len() == 2 && arguments[1].len() == 2 && arguments[1][0] == into_v32("size") && match to_int(&arguments[1][1]) {
                     Some(n) if n < u32::MAX => true,
                     _ => false
                 }

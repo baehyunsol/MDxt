@@ -280,7 +280,12 @@ fn get_list_type_and_start_index(line: &Line) -> (ListType, usize) {
 
 fn remove_marker(line: &Line) -> Line {
     let content = match line.content[0] {
-        x if x == '-' as u32 || x == '*' as u32 => line.content[2..line.content.len()].to_vec(),
+        x if x == '-' as u32 || x == '*' as u32 => if line.content.len() == 1 {
+            // `-` is a valid list element
+            vec![]
+        } else {
+            line.content[2..line.content.len()].to_vec()
+        },
         _ => {
             let marker_end_index = line.content.iter().position(|c| *c == '.' as u32).unwrap();
 

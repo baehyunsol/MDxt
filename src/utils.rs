@@ -1,3 +1,5 @@
+use crate::inline::parse::{is_code_span_marker_begin, get_code_span_marker_end_index};
+
 #[inline]
 pub fn into_v32(s: &str) -> Vec<u32> {
     s.chars().map(|c| c as u32).collect()
@@ -5,14 +7,7 @@ pub fn into_v32(s: &str) -> Vec<u32> {
 
 #[inline]
 pub fn from_v32(v: &[u32]) -> String {
-    #[cfg(test)] {
-        v.iter().map(|n| char::from_u32(*n).unwrap_or_else(|| '?')).collect()
-    }
-
-    #[cfg(not(test))] {
-        v.iter().map(|n| char::from_u32(*n).unwrap()).collect()
-    }
-
+    v.iter().map(|n| char::from_u32(*n).expect(&format!("{n:#x} is not a valid char-point"))).collect()
 }
 
 pub fn drop_while(v: &[u32], c: u32) -> Vec<u32> {
@@ -77,13 +72,18 @@ pub fn get_curly_brace_end_index(v: &[u32], index: usize) -> Option<usize> {
 }
 
 fn get_partner_index(v: &[u32], begin_index: usize, s: u32, p: u32) -> Option<usize> {
-
     let mut stack: i32 = 0;
+    let mut index = begin_index;
 
-    for index in begin_index..v.len() {
+    while index < v.len() {
 
         if v[index] == s {
             stack += 1;
+        }
+
+        // ignores brackets inside code spans
+        else if is_code_span_marker_begin(v, index) {
+            index = get_code_span_marker_end_index(v, index);
         }
 
         else if v[index] == p {
@@ -95,6 +95,7 @@ fn get_partner_index(v: &[u32], begin_index: usize, s: u32, p: u32) -> Option<us
 
         }
 
+        index += 1;
     }
 
     None

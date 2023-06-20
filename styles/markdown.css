@@ -674,7 +674,6 @@ body .markdown img, body .markdown video, body .markdown iframe {
   width: 90%;
   overflow: auto;
   line-height: 1;
-  /* TODO: it's not affected by [[line height]], but I want it to */
   margin-top: 1.571rem;
   margin-bottom: 1.571rem;
   /* Not affected by themes */
