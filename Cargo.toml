@@ -16,4 +16,4 @@ syntect = "5.0.0"
 yaml-rust = "0.4.5"
 
 [dev-dependencies]
-hxml = "0.3.2"
+hxml = "0.3.3"
