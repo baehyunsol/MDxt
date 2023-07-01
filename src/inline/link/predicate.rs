@@ -198,7 +198,7 @@ pub fn read_link_reference(content: &[u32]) -> (Vec<u32>, Vec<u32>) {  // (link_
 
     // TODO: `render_backslash_escapes` vs `undo_backslash_escapes`?
     let link_destination = render_backslash_escapes(
-        &render_html_escapes(&drop_while(&content[bracket_end_index + 2..content.len()], ' ' as u32))
+        &render_html_escapes(&drop_while(&content[(bracket_end_index + 2)..], ' ' as u32))
     );
 
     (link_label, link_destination)
@@ -207,7 +207,7 @@ pub fn read_link_reference(content: &[u32]) -> (Vec<u32>, Vec<u32>) {  // (link_
 fn is_valid_link_text(content: &[u32], link_references: &HashMap<Vec<u32>, Vec<u32>>) -> bool {
 
     !contains_link(content, link_references)  // it makes sure that the links are not nested
-    && (content.len() == 0
+    && (content.is_empty()
     || if content[0] == '[' as u32
         && content[content.len() - 1] == ']' as u32
     {
@@ -251,7 +251,7 @@ fn contains_link(content: &[u32], link_references: &HashMap<Vec<u32>, Vec<u32>>)
             read_direct_link(content, index, link_references).is_some()
             || read_reference_link(content, index, link_references).is_some()
             || read_shortcut_reference_link(content, index, link_references).is_some()
-            || contains_link(&content[index + 1..content.len()], link_references)
+            || contains_link(&content[(index + 1)..], link_references)
         },
         _ => false,
     }

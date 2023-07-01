@@ -222,7 +222,7 @@ impl InlineNode {
                     vec![60, 47, 115, 117, 112, 62],  // into_v32("</sup>")
                 ].concat(),
                 DecorationType::None => {
-                    #[cfg(test)] assert!(content.len() == 0);
+                    #[cfg(test)] assert!(content.is_empty());
 
                     vec![]
                 }
@@ -285,12 +285,12 @@ impl InlineNode {
                             } else {
                                 String::new()
                             },
-                            if width.len() > 0 {
+                            if !width.is_empty() {
                                 format!(" {class_prefix}width-{}", from_v32(&width))
                             } else {
                                 String::new()
                             },
-                            if height.len() > 0 {
+                            if !height.is_empty() {
                                 format!(" {class_prefix}height-{}", from_v32(&height))
                             } else {
                                 String::new()
@@ -315,13 +315,13 @@ impl InlineNode {
                             result.push(tag.clone());
                         }
 
-                        if class.len() > 0 {
+                        if !class.is_empty() {
                             result.push(into_v32(&format!(" class=\"{class_prefix}")));
                             result.push(class.clone());
                             result.push(vec![34]);  // into_v32("\"")
                         }
 
-                        if id.len() > 0 {
+                        if !id.is_empty() {
                             result.push(vec![32, 105, 100, 61, 34]);  // into_v32(" id=\"")
                             result.push(id.clone());
                             result.push(vec![34]);  // into_v32("\"")
@@ -482,7 +482,7 @@ impl InlineNode {
                     into_v32("^")
                 ].concat(),
                 DecorationType::None => {
-                    #[cfg(test)] assert!(content.len() == 0);
+                    #[cfg(test)] assert!(content.is_empty());
 
                     vec![]
                 }
@@ -538,12 +538,12 @@ impl InlineNode {
                             } else {
                                 ""
                             },
-                            if width.len() > 0 {
+                            if !width.is_empty() {
                                 from_v32(&width)
                             } else {
                                 String::new()
                             },
-                            if height.len() > 0 {
+                            if !height.is_empty() {
                                 from_v32(&height)
                             } else {
                                 String::new()

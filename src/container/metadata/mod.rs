@@ -34,7 +34,7 @@ pub fn parse_metadata(lines: &Vec<Line>) -> Option<(Yaml, usize)> {  // Option<(
         yaml = undo_backslash_escapes(&undo_html_escapes(&yaml));
 
         match YamlLoader::load_from_str(&from_v32(&yaml)) {
-            Ok(data) if data.len() > 0 => Some((data[0].clone(), index)),
+            Ok(data) if !data.is_empty() => Some((data[0].clone(), index)),
             _ => None
         }
 

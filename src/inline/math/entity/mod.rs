@@ -164,7 +164,7 @@ fn get_string_state(character: &u32) -> StringState {
 
 pub fn parse_raw_data(string: &[u32]) -> Vec<Entity> {
 
-    if string.len() == 0 {
+    if string.is_empty() {
         vec![]
     }
 

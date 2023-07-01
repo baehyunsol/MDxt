@@ -46,16 +46,16 @@ pub fn highlight_syntax(content: &[u32], language: &[u32], class_prefix: &str) -
                 for (style, content) in styled_line.into_iter() {
                     let curr_stack_len = curr_stack.len();
 
-                    if curr_stack_len == 0 {
+                    if curr_stack.is_empty() {
                         curr_stack.push((style.foreground.clone(), content.to_string()));
                     }
 
-                    else if curr_stack[curr_stack_len - 1].0 == style.foreground {
-                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack[curr_stack_len - 1].1);
+                    else if curr_stack.last().unwrap().0 == style.foreground {
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack.last().unwrap().1);
                     }
 
                     else if content.chars().all(|c| c == ' ') {
-                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack[curr_stack_len - 1].1);
+                        curr_stack[curr_stack_len - 1].1 = format!("{}{content}", curr_stack.last().unwrap().1);
                     }
 
                     else {
@@ -112,7 +112,7 @@ fn classify_style_to_css(color: &Color, content: &str, class_prefix: &str) -> Ve
     // otherwise the result html will have redundant `\n`s.
 
     // it doesn't touch empty pieces
-    if content_v32.len() == 0 {
+    if content_v32.is_empty() {
         vec![]
     }
 

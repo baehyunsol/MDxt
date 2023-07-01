@@ -70,7 +70,7 @@ pub fn row_to_cells(row: &Line, num_of_cells: usize, alignments: &Vec<TableAlign
     // the empty elements should be eliminated
     let cells = content.split(|c| *c == '|' as u32).collect::<Vec<&[u32]>>();
 
-    let mut cells = cells[1..cells.len() - 1].iter().map(
+    let mut cells = cells[1..(cells.len() - 1)].iter().map(
         |c| Cell::new(c)
     ).collect::<Vec<Cell>>();
 
@@ -140,7 +140,7 @@ pub fn remove_colspan_macro(content: &[u32]) -> Vec<u32> {
             {
 
                 match to_int(&macro_arguments[0][1]) {
-                    Some(n) if n > 0 => content[macro_end_index + 1..content.len()].to_vec(),
+                    Some(n) if n > 0 => content[(macro_end_index + 1)..].to_vec(),
                     _ => content.to_vec()
                 }
 

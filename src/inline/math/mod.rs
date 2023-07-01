@@ -201,12 +201,12 @@ pub fn escape_inside_math_blocks(content: Vec<u32>) -> Vec<u32> {
         index += 1;
     }
 
-    if result.len() == 0 {
+    if result.is_empty() {
         content
     }
 
     else {
-        result.push(content[last_index..content.len()].to_vec());
+        result.push(content[last_index..].to_vec());
         result.concat()
     }
 }

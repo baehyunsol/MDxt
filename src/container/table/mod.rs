@@ -46,8 +46,8 @@ impl Table {
         let (mut collapsible, mut default_hidden, mut headless) = (false, false, false);
 
         // if rows[0] is `|!![[whatever macro ...]] [[another macro...]]|`
-        if rows.len() > 0
-            && rows[0].content.len() > 0
+        if !rows.is_empty()
+            && !rows[0].content.is_empty()
             && is_special_macro(&rows[0].content[1..(rows[0].content.len() - 1)])
         {
             let (collapsible_, default_hidden_, headless_) = try_parse_macro(&rows[0].content);
@@ -145,7 +145,7 @@ impl Table {
             String::new()
         };
 
-        if self.cells.len() > 0 {
+        if !self.cells.is_empty() {
             result.push(into_v32(&format!("<tbody{collapsible_body}>")));
             self.cells.iter().for_each(
                 |row| {

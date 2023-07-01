@@ -180,7 +180,7 @@ is_code_fence_end: answer: {is_code_fence_end}, actual: {}",
 
     }
 
-    if failures.len() > 0 {
+    if !failures.is_empty() {
         panic!(
             "Codefence fence test: {} case(s) out of {} cases have failed!\n\n{}",
             failures.len(),

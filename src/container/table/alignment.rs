@@ -31,17 +31,17 @@ pub fn parse_alignments(line: &Line) -> Vec<TableAlignment> {
 
     // the first and the last elements are due to the trailing and leading pipes
     // they should be removed
-    let cells = &cells[1..cells.len() - 1];
+    let cells = &cells[1..(cells.len() - 1)];
     
     cells.iter().map(
         |c| {
             let c = strip_whitespaces(c);
 
-            if c[0] == ':' as u32 && c[c.len() - 1] == ':' as u32 {
+            if c[0] == ':' as u32 && c.last() == Some(&(':' as u32)) {
                 TableAlignment::Center
             }
 
-            else if c[c.len() - 1] == ':' as u32 {
+            else if c.last() == Some(&(':' as u32)) {
                 TableAlignment::Right
             }
 

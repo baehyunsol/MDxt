@@ -130,7 +130,7 @@ fn default_link_handler(link: &str) -> String {
 
     if is_valid_link_destination(&link_v32) {
 
-        if link_v32.len() > 0 && link_v32[0] == '#' as u32 {
+        if link_v32.get(0) == Some(&('#' as u32)) {
             from_v32(&vec![
                 vec![35],  // into_v32("#")
                 normalize_header(&link_v32[1..])

@@ -74,7 +74,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -99,7 +99,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -120,7 +120,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -141,7 +141,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -162,7 +162,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -183,7 +183,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -204,7 +204,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -225,7 +225,7 @@ impl InlineNode {
                 }));
 
                 if end + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[end + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(end + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -262,7 +262,7 @@ impl InlineNode {
                 }
 
                 if last_index + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(last_index + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -303,7 +303,7 @@ impl InlineNode {
                 }
 
                 if last_index + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(last_index + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -336,7 +336,7 @@ impl InlineNode {
                 }
 
                 if bracket_end_index + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[bracket_end_index + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(bracket_end_index + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -377,7 +377,7 @@ impl InlineNode {
                 }
 
                 if last_index + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(last_index + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -393,7 +393,7 @@ impl InlineNode {
                 result.push(Box::new(parsed));
 
                 if last_index + 1 < content.len() {
-                    result.push(Box::new(Self::from_mdxt(&content[last_index + 1..content.len()], doc_data, render_option)));
+                    result.push(Box::new(Self::from_mdxt(&content[(last_index + 1)..], doc_data, render_option)));
                 }
 
                 return InlineNode::Complex(result).render_code_spans();
@@ -450,14 +450,14 @@ impl InlineNode {
                     index += 1;
                 }
 
-                if complex_contents.len() == 0 {
+                if complex_contents.is_empty() {
                     InlineNode::Raw(content)
                 }
 
                 else {
 
                     if content.len() > last_index {
-                        complex_contents.push(Box::new(InlineNode::Raw(content[last_index..content.len()].to_vec())));
+                        complex_contents.push(Box::new(InlineNode::Raw(content[last_index..].to_vec())));
                     }
 
                     InlineNode::Complex(complex_contents)
@@ -507,7 +507,7 @@ pub fn escape_code_spans(content: &[u32]) -> Vec<u32> {
                 let code_span_code = undo_backslash_escapes(&content[index..end + 1]);
                 let backtick_string_size = count_code_span_start(content, index);
 
-                for c in code_span_code[backtick_string_size..code_span_code.len() - backtick_string_size].iter() {
+                for c in code_span_code[backtick_string_size..(code_span_code.len() - backtick_string_size)].iter() {
                     result.push(*c);
                 }
 
@@ -548,15 +548,13 @@ pub fn undo_code_span_escapes(content: &[u32]) -> Vec<u32> {
 }
 
 pub fn is_code_span_marker_begin(content: &[u32], index: usize) -> bool {
-    content[index] == INLINE_CODE_SPAN_MARKER1
-    && index + 1 < content.len()
-    && content[index + 1] == INLINE_CODE_SPAN_MARKER2
+    content.get(index) == Some(&INLINE_CODE_SPAN_MARKER1)
+    && content.get(index + 1) == Some(&INLINE_CODE_SPAN_MARKER2)
 }
 
 pub fn is_code_span_marker_end(content: &[u32], index: usize) -> bool {
-    content[index] == INLINE_CODE_SPAN_MARKER3
-    && index + 1 < content.len()
-    && content[index + 1] == INLINE_CODE_SPAN_MARKER4
+    content.get(index) == Some(&INLINE_CODE_SPAN_MARKER3)
+    && content.get(index + 1) == Some(&INLINE_CODE_SPAN_MARKER4)
 }
 
 // it doesn't check boundary because it assumes that `content` is always valid

@@ -44,7 +44,7 @@ impl AST {
         );
 
         // I couldn't find any better way to avoid the borrow checker
-        if self.doc_data.footnote_references.len() > 0 {
+        if !self.doc_data.footnote_references.is_empty() {
             let mut doc_data_cloned = self.doc_data.clone();
             let render_option_cloned = self.render_option.clone();
 
@@ -98,21 +98,21 @@ impl AST {
 
         // 3. It renders footnote_references
 
-        if self.doc_data.footnote_references.len() > 0 {
+        if !self.doc_data.footnote_references.is_empty() {
             buffer.push(footnotes_to_html(&mut self.doc_data.footnote_references, &toc_rendered, class_prefix));
         }
 
         // 4. It renders a sidebar if exists
 
-        if self.sidebar.len() > 0 {
+        if !self.sidebar.is_empty() {
             buffer.push(sidebar_to_html(&self.sidebar, &toc_rendered, &self.render_option, &mut self.doc_data));
         }
 
         // 5. It appends scripts if needed
 
-        let enabel_js_for_sidebar = self.sidebar.len() > 0 && self.render_option.javascript_for_sidebar;
+        let enabel_js_for_sidebar = !self.sidebar.is_empty() && self.render_option.javascript_for_sidebar;
         let enable_js_for_tables = self.doc_data.has_collapsible_table && self.render_option.javascript_for_collapsible_tables;
-        let enable_js_for_copy_buttons = self.doc_data.fenced_code_contents.len() > 0 && self.render_option.javascript_for_copy_buttons;
+        let enable_js_for_copy_buttons = !self.doc_data.fenced_code_contents.is_empty() && self.render_option.javascript_for_copy_buttons;
         let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_for_collapsible_tables;
 
         if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips || enabel_js_for_sidebar {

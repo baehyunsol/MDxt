@@ -162,7 +162,7 @@ impl Node {
             }
             Node::Header { level, content, anchor } => {
 
-                let anchor = if render_option.header_anchor && anchor.len() > 0 {
+                let anchor = if render_option.header_anchor && !anchor.is_empty() {
                     vec![
                         vec![32, 105, 100, 61, 34],  // into_v32(&format!(" id=\"")),
                         anchor.to_vec(),

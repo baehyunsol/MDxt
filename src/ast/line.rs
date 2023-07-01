@@ -71,14 +71,14 @@ pub fn code_to_lines(code: &[u32]) -> Vec<Line> {
 }
 
 pub fn add_br_if_needed(line: &[u32]) -> Vec<u32> {
-    if line.len() > 1 && line[line.len() - 1] == '\\' as u32 {
+    if line.len() > 1 && line.last() == Some(&('\\' as u32)) {
         vec![
             line[0..(line.len() - 1)].to_vec(),
             into_v32("[[br]]")  // will later be converted to `<br/>`
         ].concat()
     }
 
-    else if line.len() > 2 && line[line.len() - 1] == ' ' as u32 && line[line.len() - 2] == ' ' as u32 {
+    else if line.len() > 2 && line.last() == Some(&(' ' as u32)) && line[line.len() - 2] == ' ' as u32 {
         vec![
             line[0..(line.len() - 2)].to_vec(),
             into_v32("[[br]]")  // will later be converted to `<br/>`

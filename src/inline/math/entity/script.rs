@@ -24,9 +24,9 @@ impl Script {
 
     pub fn to_math_ml(&self) -> Vec<u32> {
 
-        if self.pre_sup.len() == 0 && self.pre_sub.len() == 0 {
+        if self.pre_sup.is_empty() && self.pre_sub.is_empty() {
 
-            if self.post_sup.len() == 0 {
+            if self.post_sup.is_empty() {
                 vec![
                     vec![60, 109, 115, 117, 98, 62],  // into_v32("<msub>")
                     vec_to_math_ml(&self.content, true),
@@ -35,7 +35,7 @@ impl Script {
                 ].concat()
             }
 
-            else if self.post_sub.len() == 0 {
+            else if self.post_sub.is_empty() {
                 vec![
                     vec![60, 109, 115, 117, 112, 62],  // into_v32("<msup>")
                     vec_to_math_ml(&self.content, true),
@@ -75,7 +75,7 @@ impl Script {
 
 fn script_or_none(vec: &Vec<Entity>) -> Vec<u32> {
 
-    if vec.len() == 0 {
+    if vec.is_empty() {
         vec![60, 110, 111, 110, 101, 47, 62]  // into_v32("<none/>")
     }
 

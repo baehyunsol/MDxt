@@ -23,12 +23,12 @@ impl Line {
     // indented empty lines must be considered an empty line -> regarding indented code blocks
     #[inline]
     pub fn is_empty(&self) -> bool {
-        self.content.len() == 0
+        self.content.is_empty()
     }
 
     #[inline]
     pub fn is_code_fence_begin(&self) -> bool {
-        self.is_code_fence() && is_valid_info_string(&drop_while(&self.content[3..self.content.len()], self.content[0]))
+        self.is_code_fence() && is_valid_info_string(&drop_while(&self.content[3..], self.content[0]))
     }
 
     #[inline]
@@ -84,11 +84,11 @@ impl Line {
                 |delim| {
                     let stripped = strip_whitespaces(delim);
 
-                    stripped.len() > 0 && (
+                    !stripped.is_empty() && (
                         (stripped.len() == 1 && stripped[0] == '-' as u32) || (
                             stripped[1..stripped.len() - 1].iter().all(|c| *c == '-' as u32)
                             && (stripped[0] == '-' as u32 || stripped[0] == ':' as u32)
-                            && (stripped[stripped.len() - 1] == '-' as u32 || stripped[stripped.len() - 1] == ':' as u32)
+                            && (stripped.last() == Some(&('-' as u32)) || stripped.last() == Some(&(':' as u32)))
                         )
                     )
                 }
@@ -111,8 +111,8 @@ impl Line {
 
     #[inline]
     pub fn is_blockquote(&self) -> bool {
-        self.indent < 4 && self.content.len() > 0
-        && self.content[0] == '>' as u32 + HTML_ESCAPE_OFFSET
+        self.indent < 4
+        && self.content.get(0) == Some(&('>' as u32 + HTML_ESCAPE_OFFSET))
     }
 
     #[inline]
@@ -129,7 +129,7 @@ impl Line {
 
         // `1. ` ~ `999999999. `, `a. `, `A. `, `i. `, `I. `
         match self.content.iter().position(|c| *c == '.' as u32) {
-            Some(ind) if ind + 1 < self.content.len() && self.content[ind + 1] == ' ' as u32 => {
+            Some(ind) if self.content.get(ind + 1) == Some(&(' ' as u32)) => {
                 let marker = &self.content[0..ind];
 
                 marker.iter().all(is_numeric) && match to_int(marker) {

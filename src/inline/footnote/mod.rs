@@ -25,7 +25,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u32>, Footnote>, toc_render
 
     for Footnote {index, inverse_index, content} in notes.into_iter() {
 
-        if inverse_index.len() == 0 {
+        if inverse_index.is_empty() {
             continue;
         }
 
@@ -50,7 +50,7 @@ pub fn footnotes_to_html(footnotes: &mut HashMap<Vec<u32>, Footnote>, toc_render
 
     // footnotes are defined, but none of them are used
     // in this case, nothing has to be rendered
-    if footnote_cites.len() == 0 {
+    if footnote_cites.is_empty() {
         result.pop();
     }
 

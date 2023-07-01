@@ -85,7 +85,7 @@ fn render_line(line: &[u32], mut curr_line: usize, line_num: &Option<usize>, hig
 pub fn copy_button_javascript(codes: &HashMap<usize, Vec<u32>>) -> String {
 
     #[cfg(test)]
-    assert!(codes.len() > 0);
+    assert!(!codes.is_empty());
 
     let codes = codes.iter().map(
         |(index, code)| (*index, from_v32(code))

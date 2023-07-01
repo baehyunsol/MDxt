@@ -25,7 +25,7 @@ pub fn try_parse_macro(content: &[u32]) -> (bool, bool, bool) {  // (collapsible
     let mut headless = false;
 
     let macros = remove_whitespaces(content);
-    let macros = macros[3..macros.len() - 1].to_vec();  // remove `!`s and `|`s.
+    let macros = macros[3..(macros.len() - 1)].to_vec();  // remove `!`s and `|`s.
 
     let mut index = 0;
 

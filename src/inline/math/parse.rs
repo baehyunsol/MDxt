@@ -17,7 +17,7 @@ pub fn md_to_math(content: &[u32]) -> Vec<Entity> {
             if last_index < curr_index {
                 let string = remove_whitespaces(&content[last_index..curr_index]);
 
-                if string.len() > 0 {
+                if !string.is_empty() {
 
                     for entity in parse_raw_data(&string) {
                         result.push(entity);
@@ -61,7 +61,7 @@ pub fn md_to_math(content: &[u32]) -> Vec<Entity> {
             else {
                 let string = remove_whitespaces(&content[last_index..curr_index]);
 
-                if string.len() > 0 {
+                if !string.is_empty() {
 
                     for entity in parse_raw_data(&string) {
                         result.push(entity);
@@ -76,7 +76,7 @@ pub fn md_to_math(content: &[u32]) -> Vec<Entity> {
         else {
             let string = remove_whitespaces(&content[last_index..curr_index]);
 
-            if string.len() > 0 {
+            if !string.is_empty() {
 
                 for entity in parse_raw_data(&string) {
                     result.push(entity);
@@ -97,7 +97,7 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
         Entity::Space(word.len() - 4)
     }
 
-    else if ZERO_ARG_FUNCTIONS.contains(word) && arguments.len() == 0 {
+    else if ZERO_ARG_FUNCTIONS.contains(word) && arguments.is_empty() {
 
         if *word == into_v32("br") {
             Entity::new_br()
@@ -666,11 +666,11 @@ pub fn get_arguments(content: &[u32], mut index: usize) -> (Vec<Vec<u32>>, usize
 
     loop {
 
-        while index < content.len() && content[index] == ' ' as u32 {
+        while content.get(index) == Some(&(' ' as u32)) {
             index += 1;
         }
 
-        if index < content.len() && content[index] == '{' as u32  {
+        if content.get(index) == Some(&('{' as u32)) {
             let arg_end_index = match get_curly_brace_end_index(content, index) {
                 Some(end_index) => end_index,
                 None => {
@@ -692,7 +692,7 @@ pub fn get_arguments(content: &[u32], mut index: usize) -> (Vec<Vec<u32>>, usize
 
 pub fn is_space(word: &[u32]) -> bool {
     word.len() > 4
-    && &word[(word.len() - 5)..(word.len())] == &[115, 112, 97, 99, 101]  // into_v32("space")
+    && &word[(word.len() - 5)..] == &[115, 112, 97, 99, 101]  // into_v32("space")
     && word[0..(word.len() - 5)].iter().all(|c| *c == 's' as u32)
 }
 

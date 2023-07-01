@@ -7,7 +7,7 @@ use crate::ast::doc_data::DocData;
 // "[[div, id = def]]" -> "div,id=def"
 pub fn read_macro(content: &[u32], index: usize) -> Option<Vec<u32>> {
 
-    if content.len() > 0 && content[index] == '[' as u32 && index + 1 < content.len() && content[index + 1] == '[' as u32 {
+    if content.get(index) == Some(&('[' as u32)) && content.get(index + 1) == Some(&('[' as u32)) {
 
         match get_bracket_end_index(content, index) {
             None => { return None; }
@@ -15,7 +15,7 @@ pub fn read_macro(content: &[u32], index: usize) -> Option<Vec<u32>> {
                 Some(end_index2) if end_index2 + 1 == end_index1 && content[index + 2..end_index2].iter().all(is_valid_macro_character) => {
                     let macro_content = normalize_macro(&content[index + 2..end_index2]);
 
-                    if macro_content.len() > 0 {
+                    if !macro_content.is_empty() {
                         Some(macro_content)
                     }
 

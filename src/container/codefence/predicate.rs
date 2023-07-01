@@ -23,7 +23,7 @@ pub fn is_line_num(content: &[u32]) -> bool {
 
     else if content.len() > 10 {
         content[0..9] == into_v32("line_num(")
-        && content[content.len() - 1] == ')' as u32
+        && content.last() == Some(&(')' as u32))
         && content[9..content.len() - 1].iter().all(is_numeric)
     }
 
@@ -74,7 +74,7 @@ pub fn parse_arguments(content: &[u32]) -> Vec<Vec<u32>> {
     }
 
     if last_index < content.len() {
-        result.push(content[last_index..content.len()].to_vec());
+        result.push(content[last_index..].to_vec());
     }
 
     result

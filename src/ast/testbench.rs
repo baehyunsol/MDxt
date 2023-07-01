@@ -1181,7 +1181,7 @@ fn line_predicate_test() {
 
     }
 
-    if failures.len() > 0 {
+    if !failures.is_empty() {
         panic!(
             "{} out of {} line_predicate_test case(s) have failed!\n{}",
             failures.len(),

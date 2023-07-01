@@ -4,7 +4,7 @@ use crate::utils::get_bracket_end_index;
 use std::collections::HashMap;
 
 pub fn is_valid_footnote_label(content: &[u32]) -> bool {
-    content[0] == '^' as u32 && content[1..content.len()].iter().all(is_valid_footnote_character)
+    content[0] == '^' as u32 && content[1..].iter().all(is_valid_footnote_character)
 }
 
 pub fn read_footnote(content: &[u32], index: usize, footnote_references: &HashMap<Vec<u32>, Footnote>) -> Option<usize> {  // footnote_index

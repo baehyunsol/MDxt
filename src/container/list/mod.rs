@@ -189,7 +189,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
 
         if lines[curr_index].is_ordered_list() || lines[curr_index].is_unordered_list() {
 
-            if curr_element.len() > 0 {
+            if !curr_element.is_empty() {
                 elements.push(
                     ElementOrSublist::new_element(
                         &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u32>>>().join(&[' ' as u32][..]),
@@ -229,7 +229,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
         curr_index += 1;
     }
 
-    if curr_element.len() > 0 {
+    if !curr_element.is_empty() {
         elements.push(
             ElementOrSublist::new_element(
                 &curr_element.iter().map(|line| add_br_if_needed(&line.content)).collect::<Vec<Vec<u32>>>().join(&[' ' as u32][..]),
@@ -284,12 +284,12 @@ fn remove_marker(line: &Line) -> Line {
             // `-` is a valid list element
             vec![]
         } else {
-            line.content[2..line.content.len()].to_vec()
+            line.content[2..].to_vec()
         },
         _ => {
             let marker_end_index = line.content.iter().position(|c| *c == '.' as u32).unwrap();
 
-            line.content[marker_end_index + 2..line.content.len()].to_vec()
+            line.content[(marker_end_index + 2)..].to_vec()
         }
     };
 

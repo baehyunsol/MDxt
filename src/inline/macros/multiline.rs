@@ -247,12 +247,12 @@ impl MultiLineMacro {
                     } else {
                         String::new()
                     },
-                    if width.len() > 0 {
+                    if !width.is_empty() {
                         format!(" {class_prefix}width-{}", from_v32(&width))
                     } else {
                         String::new()
                     },
-                    if height.len() > 0 {
+                    if !height.is_empty() {
                         format!(" {class_prefix}height-{}", from_v32(&height))
                     } else {
                         String::new()
@@ -316,13 +316,13 @@ impl MultiLineMacro {
                     result.push(vec![60]);  // into_v32("<") -> [60]
                     result.push(tag.clone());
 
-                    if class.len() > 0 {
+                    if !class.is_empty() {
                         result.push(into_v32(&format!(" class=\"{class_prefix}")));
                         result.push(class.clone());
                         result.push(vec![34]);  // into_v32("\"") -> [34]
                     }
 
-                    if id.len() > 0 {
+                    if !id.is_empty() {
                         result.push(vec![32, 105, 100, 61, 34]);  // into_v32(" id=\"") -> [32, 105, 100, 61, 34]
                         result.push(id.clone());
                         result.push(vec![34]);  // into_v32("\"") -> [34]

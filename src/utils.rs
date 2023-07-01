@@ -149,7 +149,7 @@ pub fn collapse_whitespaces(content: &[u32]) -> Vec<u32> {
 
 pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
 
-    if content.len() == 0 {
+    if content.is_empty() {
         return vec![];
     }
 
@@ -187,7 +187,7 @@ pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
 
 pub fn to_int(string: &[u32]) -> Option<u32> {
 
-    if string.len() == 0 {
+    if string.is_empty() {
         return None;
     }
 
@@ -231,7 +231,7 @@ pub fn inclusive_split(content: &[u32], delim: u32) -> Vec<&[u32]> {
         result.push(&content[last_index..]);
     }
 
-    if result.len() == 0 {
+    if result.is_empty() {
         // i want to return `vec![vec![]]` this case, but the borrow checker doesn't let me `result.push(&vec![])`
         result.push(&content[0..0]);
     }
@@ -353,7 +353,7 @@ mod tests {
                 splits2[i].push(delim);
             }
 
-            if string.len() > 0 && delim == string[string.len() - 1] {
+            if string.last() == Some(&delim) {
                 splits2.pop();
             }
 

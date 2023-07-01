@@ -108,7 +108,7 @@ impl AST {
                     // an indented code block cannot interrupt a paragraph
                     else if lines[index].indent >= 4 && curr_parse_state == ParseState::None {
 
-                        if curr_lines.len() > 0 {
+                        if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
 
@@ -135,7 +135,7 @@ impl AST {
 
                     else if lines[index].is_empty() {
 
-                        if curr_lines.len() > 0 {
+                        if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
 
@@ -160,7 +160,7 @@ impl AST {
                             && count_cells(&lines[index].content, false) == count_delimiter_cells(&lines[header_end_index].content)
                         {
 
-                            if curr_lines.len() > 0 {
+                            if !curr_lines.is_empty() {
                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                             }
 
@@ -181,7 +181,7 @@ impl AST {
 
                     else if lines[index].is_blockquote() {
 
-                        if curr_lines.len() > 0 {
+                        if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
 
@@ -203,7 +203,7 @@ impl AST {
                         )) && lines[index].indent < 4
                     {
 
-                        if curr_lines.len() > 0 {
+                        if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
 
@@ -261,7 +261,7 @@ impl AST {
                                         if curr_macro == curr_closing_macro {
                                             inner_macro_stack.pop().unwrap();
 
-                                            if inner_macro_stack.len() == 0 {
+                                            if inner_macro_stack.is_empty() {
                                                 add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
 
                                                 // into_v32("math") -> [109, 97, 116, 104]
@@ -281,7 +281,7 @@ impl AST {
                                             }
 
                                             else {
-                                                curr_closing_macro = inner_macro_stack[inner_macro_stack.len() - 1].get_closing_macro();
+                                                curr_closing_macro = inner_macro_stack.last().unwrap().get_closing_macro();
                                                 macro_closing_index += 1;
                                                 continue;
                                             }
@@ -448,20 +448,28 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
         ParseState::IndentedCodeBlock => {
 
             // removes trailing empty lines
-            while curr_lines.len() > 0 && curr_lines[curr_lines.len() - 1].is_empty() {
-                curr_lines.pop().unwrap();
+            while let Some(line) = curr_lines.last() {
+
+                if line.is_empty() { curr_lines.pop().unwrap(); }
+
+                else { break; }
+
             }
 
             let mut preceding_empty_lines = 0;
 
-            while preceding_empty_lines < curr_lines.len() && curr_lines[preceding_empty_lines].is_empty() {
-                preceding_empty_lines += 1;
+            while let Some(line) = curr_lines.get(preceding_empty_lines) {
+
+                if line.is_empty() { preceding_empty_lines += 1; }
+
+                else { break; }
+
             }
 
             *curr_lines = curr_lines[preceding_empty_lines..].to_vec();
 
             // empty code blocks are ignored
-            if curr_lines.len() > 0 {
+            if !curr_lines.is_empty() {
                 // a code fence without any decoration
                 curr_nodes.push(Node::new_code_fence(curr_lines, &vec![], &None, &vec![], false, usize::MAX));
                 *curr_lines = vec![];
@@ -469,7 +477,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
 
             *curr_parse_state = ParseState::None;
         }
-        ParseState::None => if curr_lines.len() != 0 {
+        ParseState::None => if !curr_lines.is_empty() {
             panic!("What should I do?");
         },
         ParseState::Math { .. } => {
@@ -537,7 +545,7 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<N
 
         }
 
-        if stack_of_nodes.len() > 0 {
+        if !stack_of_nodes.is_empty() {
             let last_index = stack_of_nodes.len() - 1;
 
             // TODO: this is O(n^2)

@@ -467,6 +467,6 @@ fn render_math_to_html() {
 
 #[test]
 fn md_to_math_test() {
-    assert!(md_to_math(&[]).len() == 0);
-    assert!(md_to_math(&into_v32("   ")).len() == 0);
+    assert!(md_to_math(&[]).is_empty());
+    assert!(md_to_math(&into_v32("   ")).is_empty());
 }

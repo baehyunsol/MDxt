@@ -43,7 +43,7 @@ pub fn render_to_html(content: &str, mut options: RenderOption) -> RenderResult 
         content: from_v32(&clean_html),
         has_collapsible_table: ast.doc_data.has_collapsible_table,
         has_tooltip: ast.doc_data.tooltip_count > 0,
-        has_sidebar: ast.sidebar.len() > 0,
+        has_sidebar: !ast.sidebar.is_empty(),
         metadata,
         fenced_code_contents
     }

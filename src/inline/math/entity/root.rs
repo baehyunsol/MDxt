@@ -14,7 +14,7 @@ impl Root {
 
     pub fn to_math_ml(&self) -> Vec<u32> {
 
-        if self.index.len() == 0 {
+        if self.index.is_empty() {
             vec![
                 vec![60, 109, 115, 113, 114, 116, 62],  // into_v32("<msqrt>")
                 vec_to_math_ml(&self.content, false),  // <msqrt> has several children, `single_element` doesn't have to be true.

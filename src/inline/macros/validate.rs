@@ -3,6 +3,8 @@ use crate::color::COLOR_NAMES;
 use crate::container::icon::ICONS;
 use crate::utils::{into_v32, to_int};
 
+// TODO: inline `into_v32`s here
+
 impl Macro {
 
     pub fn is_valid(&self, arguments: &Vec<Vec<Vec<u32>>>) -> bool {

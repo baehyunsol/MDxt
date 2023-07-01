@@ -143,7 +143,7 @@ fn inline_render_test() {
 
     }
 
-    if failures.len() > 0 {
+    if !failures.is_empty() {
         panic!(
             "Inline render test: {} case(s) out of {} cases have failed!\n\n{}",
             failures.len(),
@@ -182,7 +182,7 @@ fn inline_inversion_test() {
 
     }
 
-    if failures.len() > 0 {
+    if !failures.is_empty() {
         panic!(
             "Inline inversion test: {} case(s) out of {} cases have failed!\n\n{}",
             failures.len(),

@@ -41,7 +41,7 @@ pub fn is_code_span(content: &[u32], index: usize) -> Bool {
 pub fn count_code_span_start(content: &[u32], mut index: usize) -> usize {
     let mut result = 0;
 
-    while index != content.len() && content[index] == '`' as u32 {
+    while content.get(index) == Some(&('`' as u32)) {
         index += 1;
         result += 1;
     }

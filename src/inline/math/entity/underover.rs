@@ -23,7 +23,7 @@ impl UnderOver {
             ""
         };
 
-        if self.under.len() == 0 {
+        if self.under.is_empty() {
             vec![
                 into_v32(&format!("<mover{display_style}>")),
                 vec_to_math_ml(&self.content, true),  // `<mover>` has exactly two children, so `single_element` is true.
@@ -32,7 +32,7 @@ impl UnderOver {
             ].concat()
         }
 
-        else if self.over.len() == 0 {
+        else if self.over.is_empty() {
             vec![
                 into_v32(&format!("<munder{display_style}>")),
                 vec_to_math_ml(&self.content, true),  // `<munder>` has exactly two children, so `single_element` is true.
