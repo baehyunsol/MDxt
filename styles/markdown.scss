@@ -21,7 +21,7 @@ body .markdown {
     }
 
     img, video, iframe {
-        max-width: $image-medium;
+        max-width: min($image-medium, 90%);
         max-height: $image-medium;
     }
 
@@ -505,7 +505,7 @@ body .markdown {
         font-size: $font-tiny;
 
         img, video, iframe {
-            max-width: $image-tiny;
+            max-width: min($image-tiny, 90%);
             max-height: $image-tiny;
         }
     }
@@ -530,7 +530,7 @@ body .markdown {
         font-size: $font-small;
 
         img, video, iframe {
-            max-width: $image-small;
+            max-width: min($image-small, 90%);
             max-height: $image-small;
         }
     }
@@ -555,7 +555,7 @@ body .markdown {
         font-size: $font-medium;
 
         img, video, iframe {
-            max-width: $image-medium;
+            max-width: min($image-medium, 90%);
             max-height: $image-medium;
         }
     }
@@ -580,7 +580,7 @@ body .markdown {
         font-size: $font-big;
 
         img, video, iframe {
-            max-width: $image-big;
+            max-width: min($image-big, 90%);
             max-height: $image-big;
         }
     }
@@ -605,7 +605,7 @@ body .markdown {
         font-size: $font-giant;
 
         img, video, iframe {
-            max-width: $image-giant;
+            max-width: min($image-giant, 90%);
             max-height: $image-giant;
         }
     }

@@ -100,7 +100,7 @@ body .markdown ::selection {
   text-decoration-color: var(--white-compl);
 }
 body .markdown img, body .markdown video, body .markdown iframe {
-  max-width: 21.43rem;
+  max-width: min(21.43rem, 90%);
   max-height: 21.43rem;
 }
 
@@ -429,7 +429,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   font-size: 0.619rem;
 }
 .markdown .size-tiny img, .markdown .size-tiny video, .markdown .size-tiny iframe {
-  max-width: 11.9rem;
+  max-width: min(11.9rem, 90%);
   max-height: 11.9rem;
 }
 .markdown .line-height-tiny {
@@ -448,7 +448,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   font-size: 0.762rem;
 }
 .markdown .size-small img, .markdown .size-small video, .markdown .size-small iframe {
-  max-width: 16.67rem;
+  max-width: min(16.67rem, 90%);
   max-height: 16.67rem;
 }
 .markdown .line-height-small {
@@ -467,7 +467,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   font-size: 1rem;
 }
 .markdown .size-medium img, .markdown .size-medium video, .markdown .size-medium iframe {
-  max-width: 21.43rem;
+  max-width: min(21.43rem, 90%);
   max-height: 21.43rem;
 }
 .markdown .line-height-medium {
@@ -486,7 +486,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   font-size: 1.19rem;
 }
 .markdown .size-big img, .markdown .size-big video, .markdown .size-big iframe {
-  max-width: 28.57rem;
+  max-width: min(28.57rem, 90%);
   max-height: 28.57rem;
 }
 .markdown .line-height-big {
@@ -505,7 +505,7 @@ body .markdown img, body .markdown video, body .markdown iframe {
   font-size: 1.571rem;
 }
 .markdown .size-giant img, .markdown .size-giant video, .markdown .size-giant iframe {
-  max-width: 34.29rem;
+  max-width: min(34.29rem, 90%);
   max-height: 34.29rem;
 }
 .markdown .line-height-giant {
