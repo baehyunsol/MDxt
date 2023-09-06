@@ -58,6 +58,7 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("*abc`abcd*abc`", "*abc<code class=\"inline-code-span\">abcd*abc</code>"),
         ("*abc``abcd*abc``", "*abc<code class=\"inline-code-span\">abcd*abc</code>"),
         ("*abc\\*", "*abc&#42;"),
+        ("`  https://github.github.com/gfm/  `", "<code class=\"inline-code-span\"> https://github.github.com/gfm/ </code>"),
 
         ("``", "``"),
         ("` `", "<code class=\"inline-code-span\"> </code>"),

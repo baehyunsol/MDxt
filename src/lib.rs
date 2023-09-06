@@ -39,22 +39,5 @@ pub fn render_reference() -> String {
 
     let raw_html = render_to_html_with_default_options(&s);
 
-    let mut f = File::open("./styles/markdown.css").unwrap();
-    let mut css = String::new();
-    f.read_to_string(&mut css).unwrap();
-
-    format!(
-"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MDxt Reference</title>
-    <style>{css}</style>
-</head>
-<body style=\"padding-left: 16px\">
-    <article class=\"markdown\">{raw_html}</article>
-</body>
-</html>
-",
-    )
+    utils::add_styles_to_html(&raw_html)
 }

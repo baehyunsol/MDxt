@@ -57,7 +57,7 @@ impl AST {
             ).collect::<Vec<(Vec<u32>, InlineNode)>>();
 
             for (label, content) in footnote_parsed.into_iter() {
-                let mut footnote_reference = self.doc_data.footnote_references.get_mut(&label).unwrap();
+                let footnote_reference = self.doc_data.footnote_references.get_mut(&label).unwrap();
                 footnote_reference.content = content;
             }
 

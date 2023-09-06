@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{Read, Write};
 use crate::{render_to_html, RenderOption, RenderResult};
+use crate::utils::add_styles_to_html;
 
 // hxml is not thread-safe
 pub static mut HXML_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
@@ -39,6 +40,8 @@ fn render_reference_test() {
     // TODO: same stuff for math_test.html, icon_test.html, and character_test.html
 
     drop(lock);
+
+    let reference = add_styles_to_html(&reference);
 
     let mut f = File::create("./reference.html").unwrap();
     f.write_all(reference.as_bytes()).unwrap();

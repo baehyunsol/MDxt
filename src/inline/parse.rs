@@ -1,7 +1,9 @@
 use super::{
     InlineNode, DecorationType, InlineMacro, MediaType,
-    INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4
+    INLINE_CODE_SPAN_MARKER1, INLINE_CODE_SPAN_MARKER2, INLINE_CODE_SPAN_MARKER3, INLINE_CODE_SPAN_MARKER4,
+    render_auto_urls,
 };
+use super::auto_url::UrlOrNot;
 use super::footnote::predicate::read_footnote;
 use super::link::normalize_link_label;
 use super::link::predicate::{
@@ -402,8 +404,40 @@ impl InlineNode {
             index += 1;
         }
 
+        // TODO: How about toggling auto_urls?
+        let auto_url_rendered = match render_auto_urls(&content) {
+            UrlOrNot::NoUrl(result) => {
+                #[cfg(test)] assert_eq!(content, result);
+
+                result
+            },
+            UrlOrNot::HasUrl(prefix, url, suffix) => {
+                #[cfg(test)] assert_eq!(
+                    vec![prefix.clone(), url.clone(), suffix.clone()].concat(),
+                    content.clone(),
+                );
+
+                let mut result = vec![];
+
+                if !prefix.is_empty() {
+                    result.push(Box::new(InlineNode::Raw(render_backslash_escapes(&prefix))));
+                }
+
+                result.push(Box::new(InlineNode::Link {
+                    text: vec![Box::new(InlineNode::Raw(url.clone()))],
+                    destination: url,
+                }));
+
+                if !suffix.is_empty() {
+                    result.push(Box::new(Self::from_mdxt(&suffix, doc_data, render_option)));
+                }
+
+                return InlineNode::Complex(result).render_code_spans();
+            },
+        };
+
         // there're no inline element in the content
-        InlineNode::Raw(render_backslash_escapes(&content)).render_code_spans()
+        InlineNode::Raw(render_backslash_escapes(&auto_url_rendered)).render_code_spans()
     }
 
     pub fn render_code_spans(self) -> Self {

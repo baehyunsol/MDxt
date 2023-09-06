@@ -45,12 +45,6 @@ underscore로 emphasis하는 문법도 넣을까? 그냥 test case 무지무지 
 
 ---
 
-auto links
-
-https://github.github.com/gfm/#autolinks-extension-
-
----
-
 list/table/blockquote 안에 list/table/blockquote/fenced_code_block 넣기! ...how?
 
 `[[define, id = table1]]`이랑 `[[reference, id = table1]]`를 만들까? `[[define]]` 안에서 table을 만들고 `[[reference]]`로 그 table을 재활용하는 거임. 이러면 table in table 등등도 전부 구현 가능!
@@ -161,7 +155,11 @@ collapsible
 
 ---
 
-multiline macro에 id 부여한다고 까불던 거 없애기! -> dependency에서 rand를 통째로 없애기!
+htmx처럼 내용 바꿔치기 구현
+
+e.g) 표 2개를 만들어 두고, (날짜순 정렬, 금액순 정렬) 화면에는 하나만 표시. 버튼을 누르거나 체크박스를 선택하면 표의 내용이 바꿔치기가 됨
+
+구현 자체는 쉬울 거 같은데 mdxt 문법 깔끔하게 만드는게 힘들 듯??
 
 ---
 

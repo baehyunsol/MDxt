@@ -17,17 +17,17 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("[github](https://github.com)", "<a href=\"https://github.com\">github</a>"),
         ("[*github*](https://github.com)", "<a href=\"https://github.com\"><em>github</em></a>"),
         ("*[github](https://github.com)*", "<em><a href=\"https://github.com\">github</a></em>"),
-        ("*[github*](https://github.com)", "<em>[github</em>](https://github.com)"),
+        ("*[github*](https://github.com)", "<em>[github</em>](<a href=\"https://github.com\">https://github.com</a>)"),
         ("[github](*https://github.com*)", "<a href=\"\">github</a>"),
         ("[link] [no link] `[link]` [`link`][link]", "<a href=\"https://example\">link</a> [no link] <code class=\"inline-code-span\">[link]</code> <a href=\"https://example\"><code class=\"inline-code-span\">link</code></a>"),
-        ("*[github](https://github.com*)", "<em>[github](https://github.com</em>)"),  // Add this to the document
+        ("*[github](https://github.com*)", "<em>[github](<a href=\"https://github.com\">https://github.com</a></em>)"),  // Add this to the document
 
         ("[invalid url](*bold*~subscript~)", "<a href=\"\">invalid url</a>"),
 
-        ("[[macro]](https://github.com)", "[[macro]](https://github.com)"),
+        ("[[macro]](https://github.com)", "[[macro]](<a href=\"https://github.com\">https://github.com</a>)"),
         ("[not [macro]](https://github.com)", "<a href=\"https://github.com\">not [macro]</a>"),
         ("[not [macro], but *bold*](https://github.com)", "<a href=\"https://github.com\">not [macro], but <em>bold</em></a>"),
-        ("[no nested [link]](https://github.com)", "[no nested <a href=\"https://example\">link</a>](https://github.com)"),
+        ("[no nested [link]](https://github.com)", "[no nested <a href=\"https://example\">link</a>](<a href=\"https://github.com\">https://github.com</a>)"),
         ("[no nested [link]][link]", "[no nested <a href=\"https://example\">link</a>]<a href=\"https://example\">link</a>"),
 
         ("[link]", "<a href=\"https://example\">link</a>"),
@@ -60,17 +60,17 @@ fn samples() -> Vec<(String, String)> {  // (test_case, answer)
         ("![github](https://github.com)", "<img src=\"https://github.com\" alt=\"github\"/>"),
         ("![*github*](https://github.com)", "<img src=\"https://github.com\" alt=\"*github*\"/>"),
         ("*![github](https://github.com)*", "<em><img src=\"https://github.com\" alt=\"github\"/></em>"),
-        ("*![github*](https://github.com)", "<em>![github</em>](https://github.com)"),
+        ("*![github*](https://github.com)", "<em>![github</em>](<a href=\"https://github.com\">https://github.com</a>)"),
         ("![github](*https://github.com*)", "<img src=\"\" alt=\"github\"/>"),
         ("![link] ![no link] `![link]` ![`link`][link]", "<img src=\"https://example\" alt=\"link\"/> ![no link] <code class=\"inline-code-span\">![link]</code> <img src=\"https://example\" alt=\"`link`\"/>"),
-        ("*![github](https://github.com*)", "<em>![github](https://github.com</em>)"),  // Add this to the document
+        ("*![github](https://github.com*)", "<em>![github](<a href=\"https://github.com\">https://github.com</a></em>)"),  // Add this to the document
 
         ("![invalid url](*bold*~subscript~)", "<img src=\"\" alt=\"invalid url\"/>"),
 
-        ("![[macro]](https://github.com)", "![[macro]](https://github.com)"),
+        ("![[macro]](https://github.com)", "![[macro]](<a href=\"https://github.com\">https://github.com</a>)"),
         ("![not [macro]](https://github.com)", "<img src=\"https://github.com\" alt=\"not [macro]\"/>"),
         ("![not [macro], but *bold*](https://github.com)", "<img src=\"https://github.com\" alt=\"not [macro], but *bold*\"/>"),
-        ("![no nested [link]](https://github.com)", "![no nested <a href=\"https://example\">link</a>](https://github.com)"),
+        ("![no nested [link]](https://github.com)", "![no nested <a href=\"https://example\">link</a>](<a href=\"https://github.com\">https://github.com</a>)"),
         ("![no nested [link]][link]", "![no nested <a href=\"https://example\">link</a>]<a href=\"https://example\">link</a>"),
 
         ("![link]", "<img src=\"https://example\" alt=\"link\"/>"),

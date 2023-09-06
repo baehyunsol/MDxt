@@ -1,3 +1,4 @@
+mod auto_url;
 pub mod footnote;
 pub mod link;
 pub mod macros;
@@ -8,6 +9,7 @@ mod predicate;
 #[cfg(test)]
 mod testbench;
 
+pub use auto_url::render_auto_urls;
 use crate::container::icon::get_icon;
 use crate::utils::{from_v32, into_v32};
 use crate::file_ext::{FileExt, read_file_extension};

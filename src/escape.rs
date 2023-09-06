@@ -1,3 +1,4 @@
+// c -> <special_form>
 pub fn escape_htmls(content: &[u32]) -> Vec<u32> {
     content.iter().map(
         // into_v32("&<>\"\'") -> [38, 60, 62, 34, 39]

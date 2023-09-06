@@ -1,5 +1,103 @@
 use crate::inline::parse::{is_code_span_marker_begin, get_code_span_marker_end_index};
 
+/*
+ * (' ', 32)
+ * ('!', 33)
+ * ('"', 34)
+ * ('#', 35)
+ * ('$', 36)
+ * ('%', 37)
+ * ('&', 38)
+ * ("'", 39)
+ * ('(', 40)
+ * (')', 41)
+ * ('*', 42)
+ * ('+', 43)
+ * (',', 44)
+ * ('-', 45)
+ * ('.', 46)
+ * ('/', 47)
+ * ('0', 48)
+ * ('1', 49)
+ * ('2', 50)
+ * ('3', 51)
+ * ('4', 52)
+ * ('5', 53)
+ * ('6', 54)
+ * ('7', 55)
+ * ('8', 56)
+ * ('9', 57)
+ * (':', 58)
+ * (';', 59)
+ * ('<', 60)
+ * ('=', 61)
+ * ('>', 62)
+ * ('?', 63)
+ * ('@', 64)
+ * ('A', 65)
+ * ('B', 66)
+ * ('C', 67)
+ * ('D', 68)
+ * ('E', 69)
+ * ('F', 70)
+ * ('G', 71)
+ * ('H', 72)
+ * ('I', 73)
+ * ('J', 74)
+ * ('K', 75)
+ * ('L', 76)
+ * ('M', 77)
+ * ('N', 78)
+ * ('O', 79)
+ * ('P', 80)
+ * ('Q', 81)
+ * ('R', 82)
+ * ('S', 83)
+ * ('T', 84)
+ * ('U', 85)
+ * ('V', 86)
+ * ('W', 87)
+ * ('X', 88)
+ * ('Y', 89)
+ * ('Z', 90)
+ * ('[', 91)
+ * ('\\', 92)
+ * (']', 93)
+ * ('^', 94)
+ * ('_', 95)
+ * ('`', 96)
+ * ('a', 97)
+ * ('b', 98)
+ * ('c', 99)
+ * ('d', 100)
+ * ('e', 101)
+ * ('f', 102)
+ * ('g', 103)
+ * ('h', 104)
+ * ('i', 105)
+ * ('j', 106)
+ * ('k', 107)
+ * ('l', 108)
+ * ('m', 109)
+ * ('n', 110)
+ * ('o', 111)
+ * ('p', 112)
+ * ('q', 113)
+ * ('r', 114)
+ * ('s', 115)
+ * ('t', 116)
+ * ('u', 117)
+ * ('v', 118)
+ * ('w', 119)
+ * ('x', 120)
+ * ('y', 121)
+ * ('z', 122)
+ * ('{', 123)
+ * ('|', 124)
+ * ('}', 125)
+ * ('~', 126)
+ */
+
 #[inline]
 pub fn into_v32(s: &str) -> Vec<u32> {
     s.chars().map(|c| c as u32).collect()
@@ -120,6 +218,10 @@ pub fn is_alphabet(c: &u32) -> bool {
 
 pub fn is_numeric(c: &u32) -> bool {
     '0' as u32 <= *c && *c <= '9' as u32
+}
+
+pub fn is_alpha_numeric(c: &u32) -> bool {
+    is_alphabet(c) || is_numeric(c)
 }
 
 pub fn collapse_whitespaces(content: &[u32]) -> Vec<u32> {
@@ -263,6 +365,30 @@ pub fn log10(n: usize) -> usize {
         log10(n / 1_000) + 3
     }
 
+}
+
+pub fn add_styles_to_html(html: &str) -> String {
+    use std::fs::File;
+    use std::io::Read;
+
+    let mut f = File::open("./styles/markdown.css").unwrap();
+    let mut css = String::new();
+    f.read_to_string(&mut css).unwrap();
+
+    format!(
+"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MDxt Reference</title>
+    <style>{css}</style>
+</head>
+<body style=\"padding-left: 36px\">
+    <article class=\"markdown\">{html}</article>
+</body>
+</html>
+",
+    )
 }
 
 #[cfg(test)]
