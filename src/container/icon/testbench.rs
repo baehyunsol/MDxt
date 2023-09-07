@@ -63,6 +63,7 @@ fn render_icon_test() {
             src if *src == DEV_ICON => ("DEV", "MIT"),
             src if *src == ION_ICON => ("ION", "MIT"),
             src if *src == BOOTSTRAP_ICON => ("BOOTSTRAP", "MIT"),
+            src if *src == SVG_SILH => ("SVG_SILH", "Public Domain"),
             _ => unreachable!()
         };
 
@@ -79,6 +80,7 @@ fn render_icon_test() {
     strings.push(String::from("\n[DEV]: https://devicon.dev"));
     strings.push(String::from("\n[BOOTSTRAP]: https://icons.getbootstrap.com"));
     strings.push(String::from("\n[MATERIAL]: https://fonts.google.com/icons"));
+    strings.push(String::from("\n[SVG_SILH]: https://svgsilh.com"));
 
     let raw_md = strings.concat();
 
