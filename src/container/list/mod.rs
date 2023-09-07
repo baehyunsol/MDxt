@@ -207,7 +207,7 @@ fn from_lines_recursive(lines: &[Line], mut curr_index: usize) -> (List, usize) 
             // sublist
             else if curr_indent + 1 < lines[curr_index].indent {
                 let (sublist, new_index) = from_lines_recursive(lines, curr_index);
-                elements.push(ElementOrSublist::new_sublist(Box::new(sublist)));
+                elements.push(ElementOrSublist::new_sublist(sublist));
                 curr_index = new_index;
                 continue;
             }
@@ -313,7 +313,7 @@ enum ElementOrSublist {
         content: InlineNode,
         task_list: Option<TaskMarker>
     },
-    Sublist(Box<List>)
+    Sublist(List)
 }
 
 impl ElementOrSublist {
@@ -325,7 +325,7 @@ impl ElementOrSublist {
         }
     }
 
-    fn new_sublist(list: Box<List>) -> Self {
+    fn new_sublist(list: List) -> Self {
         ElementOrSublist::Sublist(list)
     }
 

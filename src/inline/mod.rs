@@ -53,11 +53,11 @@ impl MediaType {
 #[derive(Clone)]
 pub enum InlineNode {
     Raw(Vec<u32>),
-    Complex(Vec<Box<InlineNode>>),
+    Complex(Vec<InlineNode>),
     CodeSpan(Vec<u32>),
     Footnote((usize, usize, Vec<u32>)),  // index, inverse_index, label
     Link {
-        text: Vec<Box<InlineNode>>,
+        text: Vec<InlineNode>,
         destination: Vec<u32>
     },
     Image {
@@ -67,7 +67,7 @@ pub enum InlineNode {
     },
     Decoration {
         deco_type: DecorationType,
-        content: Vec<Box<InlineNode>>
+        content: Vec<InlineNode>
     }
 }
 
@@ -98,7 +98,7 @@ pub enum InlineMacro {
     },
     Toc,
     Tooltip {
-        message: Vec<Box<InlineNode>>,
+        message: Vec<InlineNode>,
         index: usize,
         label: Vec<u32>
     },
@@ -620,10 +620,10 @@ impl InlineNode {
         }
     }
 
-    pub fn to_vec(self) -> Vec<Box<InlineNode>> {
+    pub fn to_vec(self) -> Vec<InlineNode> {
 
         match self {
-            InlineNode::Raw(_) => vec![Box::new(self)],
+            InlineNode::Raw(_) => vec![self],
             InlineNode::Complex(vec) => vec,
             _ => unreachable!()
         }

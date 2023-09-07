@@ -31,7 +31,7 @@ pub enum MultiLineMacroType {
     Math(Vec<u32>),
     Tooltip {
         container: Vec<Node>,  // outside
-        label: Vec<u32>,  // inside, the actual message, which is `Vec<Box<InlineNode>>` will be loaded later
+        label: Vec<u32>,  // inside, the actual message, which is `Vec<InlineNode>` will be loaded later
         index: usize
     },
     Sidebar,

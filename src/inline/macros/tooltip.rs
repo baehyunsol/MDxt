@@ -12,7 +12,7 @@ pub fn dummy_tooltip(label: &[u32]) -> Footnote {
     }
 }
 
-pub fn load_tooltip_message(label: &[u32], doc_data: &mut DocData, render_option: &RenderOption) -> Vec<Box<InlineNode>> {
+pub fn load_tooltip_message(label: &[u32], doc_data: &mut DocData, render_option: &RenderOption) -> Vec<InlineNode> {
     let label_key = vec![vec![94] /* = into_v32("^") */, label.to_vec()].concat();
     let mut message = match doc_data.footnote_references.get(&label_key) {
         Some(f) => f.clone(),

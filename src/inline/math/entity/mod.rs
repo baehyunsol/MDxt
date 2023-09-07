@@ -12,10 +12,10 @@ use underover::UnderOver;
 
 #[derive(Clone)]
 pub enum Entity {
-    Root(Box<Root>),
-    Fraction(Box<Fraction>),
-    Script(Box<Script>),
-    UnderOver(Box<UnderOver>),
+    Root(Root),
+    Fraction(Fraction),
+    Script(Script),
+    UnderOver(UnderOver),
     Space(usize),
     Br,
     Identifier(Vec<u32>),    // <mi>
@@ -28,11 +28,11 @@ pub enum Entity {
 impl Entity {
 
     pub fn new_root(index: Vec<Entity>, content: Vec<Entity>) -> Self {
-        Entity::Root(Box::new(Root::new(index, content)))
+        Entity::Root(Root::new(index, content))
     }
 
     pub fn new_fraction(numer: Vec<Entity>, denom: Vec<Entity>, display_style: bool, no_line: bool) -> Self {
-        Entity::Fraction(Box::new(Fraction::new(numer, denom, display_style, no_line)))
+        Entity::Fraction(Fraction::new(numer, denom, display_style, no_line))
     }
 
     pub fn new_br() -> Self {
@@ -46,11 +46,11 @@ impl Entity {
         pre_sub: Vec<Entity>,
         post_sub: Vec<Entity>
     ) -> Self {
-        Entity::Script(Box::new(Script::new(content, pre_sup, post_sup, pre_sub, post_sub)))
+        Entity::Script(Script::new(content, pre_sup, post_sup, pre_sub, post_sub))
     }
 
     pub fn new_underover(content: Vec<Entity>, under: Vec<Entity>, over: Vec<Entity>, display_style: bool) -> Self {
-        Entity::UnderOver(Box::new(UnderOver::new(content, under, over, display_style)))
+        Entity::UnderOver(UnderOver::new(content, under, over, display_style))
     }
 
     pub fn new_character(character: u32) -> Self {
