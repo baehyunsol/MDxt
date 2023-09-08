@@ -1,4 +1,5 @@
 mod fraction;
+pub mod matrix;
 mod root;
 mod script;
 mod underover;
@@ -6,6 +7,7 @@ mod underover;
 use crate::escape::{escape_htmls, render_html_escapes};
 use crate::utils::{into_v32, is_alphabet, is_numeric};
 use fraction::Fraction;
+use matrix::Matrix;
 use root::Root;
 use script::Script;
 use underover::UnderOver;
@@ -16,6 +18,7 @@ pub enum Entity {
     Fraction(Fraction),
     Script(Script),
     UnderOver(UnderOver),
+    Matrix(Matrix),
     Space(usize),
     Br,
     Identifier(Vec<u32>),    // <mi>
@@ -53,6 +56,10 @@ impl Entity {
         Entity::UnderOver(UnderOver::new(content, under, over, display_style))
     }
 
+    pub fn new_matrix(elements: Vec<Vec<Vec<Entity>>>) -> Self {
+        Entity::Matrix(Matrix::new(elements))
+    }
+
     pub fn new_character(character: u32) -> Self {
         Entity::Character(character)
     }
@@ -77,6 +84,7 @@ impl Entity {
             Entity::Fraction(fraction) => fraction.to_math_ml(),
             Entity::UnderOver(underover) => underover.to_math_ml(),
             Entity::Script(script) => script.to_math_ml(),
+            Entity::Matrix(matrix) => matrix.to_math_ml(),
             Entity::Character(character) => {
                 let tag = if 913 <= *character && *character <= 969 {  // Alpha to omega
                     "mi"

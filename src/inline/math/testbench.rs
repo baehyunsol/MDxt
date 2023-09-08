@@ -6,7 +6,40 @@ use crate::testbench::HXML_LOCK;
 
 fn samples() -> Vec<(Vec<u32>, Vec<u32>)> {  // Vec<(test_case, answer)>
     let result = vec![
-("sum{n=1}{+inf} frac{1}{sup{n}{2}} = frac{sup{pi}{2}}{6}", "
+("sum{x}", "
+<math>
+    <mi>sum</mi>
+    <mo>{</mo>
+    <mi>x</mi>
+    <mo>}</mo>
+</math>
+"), ("sqrt{3}{4}{5}", "
+<math>
+    <mi>sqrt</mi>
+    <mo>{</mo>
+    <mn>3</mn>
+    <mo>}</mo>
+    <mo>{</mo>
+    <mn>4</mn>
+    <mo>}</mo>
+    <mo>{</mo>
+    <mn>5</mn>
+    <mo>}</mo>
+</math>
+"), ("frac{1}{1}{1}", "
+<math>
+    <mi>frac</mi>
+    <mo>{</mo>
+    <mn>1</mn>
+    <mo>}</mo>
+    <mo>{</mo>
+    <mn>1</mn>
+    <mo>}</mo>
+    <mo>{</mo>
+    <mn>1</mn>
+    <mo>}</mo>
+</math>
+"), ("sum{n=1}{+inf} frac{1}{sup{n}{2}} = frac{sup{pi}{2}}{6}", "
 <math>
     <munderover displaystyle=\"true\">
         <mo>∑</mo>
@@ -270,7 +303,32 @@ fn samples() -> Vec<(Vec<u32>, Vec<u32>)> {  // Vec<(test_case, answer)>
         <mo>&#8594;</mo>
     </mover>
 </math>
-"), ("", "<math></math>")
+"), ("mat{}{}{}", "
+<math>
+    <mtext>Error: Empty Row</mtext>
+</math>
+"), ("(mat{{1}{2}{3}}{{4}{5}{6}}{{7}{9}{10}})", "
+<math>
+    <mo>(</mo>
+    <mtable>
+        <mtr>
+            <mtd><mn>1</mn></mtd>
+            <mtd><mn>2</mn></mtd>
+            <mtd><mn>3</mn></mtd>
+        </mtr>
+        <mtr>
+            <mtd><mn>4</mn></mtd>
+            <mtd><mn>5</mn></mtd>
+            <mtd><mn>6</mn></mtd>
+        </mtr>
+        <mtr>
+            <mtd><mn>7</mn></mtd>
+            <mtd><mn>9</mn></mtd>
+            <mtd><mn>10</mn></mtd>
+        </mtr>
+    </mtable>
+    <mo>)</mo>
+</math>"), ("", "<math></math>")
     ];
 
     result.iter().map(
@@ -408,6 +466,20 @@ fn render_math_reference() -> Vec<u32> {
             '{', '}', '{', '}', '{', '}', '{', '}', '{', '}',
             '{', '}', '{', '}', '{', '}', '{', '}', '{', '}'
         )));
+    }
+
+    result.push(into_v32("\n\n## Matrices\n\n"));
+    let mut mats = vec![];
+    mats.push("{{1}{2}{3}}{{4}{5}{6}}{{7}{8}{9}}".to_string());
+    mats.push("{{1}{2}{3}}{{4}{5}{6}}{{7}{8}{9}}{{a}{b}{c}}".to_string());
+    mats.push("{{1}{2}{3}{4}}{{5}{6}{7}{8}}{{9}{a}{b}{c}}".to_string());
+    mats.push("{{1}{2}{3}{4}}{{5}{6}{7}}".to_string());
+    mats.push("{}{}{}".to_string());
+
+    for mat in mats.into_iter() {
+        result.push(into_v32(&format!("
+            \n`[[math]](mat{mat})[[/math]]` [[char=rarr]] [[math]](mat{mat})[[/math]]\n
+        ")));
     }
 
     result.concat()

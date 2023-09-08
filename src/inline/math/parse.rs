@@ -1,4 +1,4 @@
-use super::entity::{Entity, parse_raw_data};
+use super::entity::{Entity, matrix::try_parse_matrix, parse_raw_data};
 use super::validate::is_valid;
 use super::{ZERO_ARG_FUNCTIONS, ONE_ARG_FUNCTIONS, TWO_ARG_FUNCTIONS, THREE_ARG_FUNCTIONS, FIVE_ARG_FUNCTIONS};
 use crate::utils::{get_curly_brace_end_index, into_v32, is_alphabet, remove_whitespaces};
@@ -95,6 +95,14 @@ pub fn parse(word: &[u32], arguments: &Vec<Vec<u32>>) -> Entity {
 
     if is_space(word) {
         Entity::Space(word.len() - 4)
+    }
+
+    // "mat"
+    else if word == &[109, 97, 116] {
+        match try_parse_matrix(arguments) {
+            Ok(elements) => Entity::new_matrix(elements),
+            Err(e) => Entity::RawString(into_v32(&format!("Error: {e}"))),
+        }
     }
 
     else if ZERO_ARG_FUNCTIONS.contains(word) && arguments.is_empty() {
@@ -690,6 +698,7 @@ pub fn get_arguments(content: &[u32], mut index: usize) -> (Vec<Vec<u32>>, usize
 
 }
 
+// 's'+ 'pace'
 pub fn is_space(word: &[u32]) -> bool {
     word.len() > 4
     && &word[(word.len() - 5)..] == &[115, 112, 97, 99, 101]  // into_v32("space")

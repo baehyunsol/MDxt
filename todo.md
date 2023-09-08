@@ -168,3 +168,11 @@ reference에 extra syntax set 관련된 것도 언급 ㄱㄱ
 ---
 
 SVG: (모든 아이콘에 대해서) 우측 상단에 작게 '+' 모양 추가하기 -> 새로운 아이콘 나옴!
+
+---
+
+multiline math
+
+math::parse::get_arguments가 '\n'도 읽게 하고,
+
+`[[math]]` 안에 있는 '\n'도 읽기
