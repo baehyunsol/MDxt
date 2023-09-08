@@ -102,11 +102,11 @@ impl MultiLineMacro {
         let Macro {
             name: macro_name,
             macro_type,
-            has_closing  // supposed to be true
+            has_closing: _has_closing,  // supposed to be true
         } = MACROS.get(&macro_name).unwrap();
 
         #[cfg(test)]
-        assert!(has_closing);
+        assert!(_has_closing);
 
         match macro_type {
             MacroType::Box => MultiLineMacro {

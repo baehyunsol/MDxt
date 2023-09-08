@@ -486,7 +486,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             // since the above line only generates an opening macro, it adds a closing one
             curr_nodes.push(Node::MultiLineMacro(
                 MultiLineMacro {
-                    macro_type: MultiLineMacroType::Math(into_v32("[[/math]]")),
+                    macro_type: MultiLineMacroType::Math(vec![91, 91, 47, 109, 97, 116, 104, 93, 93]),  // into_v32("[[/math]]")
                     is_closing: true,
                 }
             ));

@@ -116,10 +116,10 @@ impl AST {
         let enable_js_for_tooltips = self.doc_data.tooltip_count > 0 && self.render_option.javascript_for_collapsible_tables;
 
         if enable_js_for_copy_buttons || enable_js_for_tables || enable_js_for_tooltips || enabel_js_for_sidebar {
-            buffer.push(into_v32("<script>"));
+            buffer.push(vec![60, 115, 99, 114, 105, 112, 116, 62]);  // into_v32("<script>")
 
             if self.render_option.xml {
-                buffer.push(into_v32("/*<![CDATA[*/"));
+                buffer.push(vec![47, 42, 60, 33, 91, 67, 68, 65, 84, 65, 91, 42, 47]);  // into_v32("/*<![CDATA[*/")
             }
 
             if enable_js_for_tables {
@@ -140,10 +140,10 @@ impl AST {
 
             // TODO: if self.doc_data.fenced_code_contents has `']]>'` inside, it wouldn't work
             if self.render_option.xml {
-                buffer.push(into_v32("/*]]>*/"));
+                buffer.push(vec![47, 42, 93, 93, 62, 42, 47]);  // into_v32("/*]]>*/")
             }
 
-            buffer.push(into_v32("</script>"));
+            buffer.push(vec![60, 47, 115, 99, 114, 105, 112, 116, 62]);  // into_v32("</script>")
         }
 
         buffer.concat()

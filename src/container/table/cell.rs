@@ -105,7 +105,8 @@ pub fn get_colspan(content: &[u32]) -> usize {
             let macro_arguments = parse_arguments(&m);
             let macro_name = get_macro_name(&macro_arguments);
 
-            if macro_arguments.len() == 1 && macro_arguments[0].len() == 2 && macro_name == into_v32("colspan") {
+            // into_v32("colspan") -> [99, 111, 108, 115, 112, 97, 110]
+            if macro_arguments.len() == 1 && macro_arguments[0].len() == 2 && macro_name == [99, 111, 108, 115, 112, 97, 110] {
 
                 match to_int(&macro_arguments[0][1]) {
                     Some(n) if n > 0 => n as usize,

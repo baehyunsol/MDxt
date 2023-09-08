@@ -1,4 +1,4 @@
-use crate::utils::{lowercase, into_v32};
+use crate::utils::lowercase;
 
 #[derive(Copy, Clone)]
 pub enum FileExt {
@@ -11,11 +11,11 @@ impl FileExt {
     pub fn mime_type(&self) -> Vec<u32> {
 
         match self {
-            FileExt::Mp4 | FileExt::M4a => into_v32("mp4"),
-            FileExt::Mp3 => into_v32("mpeg"),
-            FileExt::Webm => into_v32("webm"),
-            FileExt::Wav => into_v32("wav"),
-            FileExt::Ogg => into_v32("ogg"),
+            FileExt::Mp4 | FileExt::M4a => vec![109, 112, 52],  // into_v32("mp4")
+            FileExt::Mp3 => vec![109, 112, 101, 103],  // into_v32("mpeg")
+            FileExt::Webm => vec![119, 101, 98, 109],  // into_v32("webm")
+            FileExt::Wav => vec![119, 97, 118],  // into_v32("wav")
+            FileExt::Ogg => vec![111, 103, 103],  // into_v32("ogg")
             _ => unreachable!()
         }
 

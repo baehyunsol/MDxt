@@ -3,8 +3,6 @@ use crate::color::COLOR_NAMES;
 use crate::container::icon::ICONS;
 use crate::utils::{into_v32, to_int};
 
-// TODO: inline `into_v32`s here
-
 impl Macro {
 
     pub fn is_valid(&self, arguments: &Vec<Vec<Vec<u32>>>) -> bool {
@@ -30,9 +28,10 @@ impl Macro {
             ),
 
             MacroType::Sidebar => arguments.len() == 1 || (
-                arguments.len() == 2 && arguments[1][0] == into_v32("default") && (
-                    arguments[1][1] == into_v32("hidden") ||
-                    arguments[1][1] == into_v32("shown")
+                // into_v32("default")
+                arguments.len() == 2 && arguments[1][0] == [100, 101, 102, 97, 117, 108, 116] && (
+                    arguments[1][1] == [104, 105, 100, 100, 101, 110] ||  // into_v32("hidden")
+                    arguments[1][1] == [115, 104, 111, 119, 110]  // into_v32("shown")
                 )
             ),
 
@@ -41,8 +40,8 @@ impl Macro {
 
                 for argument in arguments[1..].iter() {
                     result = argument.len() == 2
-                        && (argument[0] == into_v32("class")
-                        || argument[0] == into_v32("id"));
+                        && (argument[0] == [99, 108, 97, 115, 115]  // into_v32("class")
+                        || argument[0] == [105, 100]);  // into_v32("id")
 
                     if !result {
                         break;
@@ -54,11 +53,11 @@ impl Macro {
             },
 
             MacroType::LineHeight => arguments.len() == 1 && arguments[0].len() == 2 && [
-                into_v32("tiny"),
-                into_v32("small"),
-                into_v32("medium"),
-                into_v32("big"),
-                into_v32("giant"),
+                vec![116, 105, 110, 121],            // into_v32("tiny")
+                vec![115, 109, 97, 108, 108],        // into_v32("small")
+                vec![109, 101, 100, 105, 117, 109],  // into_v32("medium")
+                vec![98, 105, 103],                  // into_v32("big")
+                vec![103, 105, 97, 110, 116],        // into_v32("giant")
             ].contains(&arguments[0][1]),
 
             // for `[[tooltip = aabb]]`, it doesn't check whether `aabb` is valid or not,
@@ -85,17 +84,23 @@ fn is_valid_box_arguments(arguments: &Vec<Vec<Vec<u32>>>) -> bool {
 
     for argument in arguments[1..].iter() {
 
-        if (argument[0] == into_v32("noborder") || argument[0] == into_v32("inline")) && argument.len() == 1 {
+        if (
+            argument[0] == [110, 111, 98, 111, 114, 100, 101, 114] ||  // into_v32("noborder")
+            argument[0] == [105, 110, 108, 105, 110, 101]  // into_v32("inline")
+        ) && argument.len() == 1 {
             //
         }
 
-        else if (argument[0] == into_v32("width") || argument[0] == into_v32("height")) && argument.len() == 2 {
+        else if (
+            argument[0] == [119, 105, 100, 116, 104] ||    // into_v32("width")
+            argument[0] == [104, 101, 105, 103, 104, 116]  // into_v32("height")
+        ) && argument.len() == 2 {
 
-            if argument[1] != into_v32("tiny")
-                && argument[1] != into_v32("small")
-                && argument[1] != into_v32("medium")
-                && argument[1] != into_v32("big")
-                && argument[1] != into_v32("giant")
+            if argument[1] != [116, 105, 110, 121]                // into_v32("tiny")
+                && argument[1] != [115, 109, 97, 108, 108]        // into_v32("small")
+                && argument[1] != [109, 101, 100, 105, 117, 109]  // into_v32("medium")
+                && argument[1] != [98, 105, 103]                  // into_v32("big")
+                && argument[1] != [103, 105, 97, 110, 116]        // into_v32("giant")
             {
                 result = false;
                 break;
