@@ -409,7 +409,7 @@ fn render_math_reference() -> Vec<u32> {
         result.push(into_v32(&format!(
             "\n\n### {entity}\n\n{}`[[math]]{entity}[[/math]]` [[char=rarr]] [[math]]{entity}[[/math]]",
             if entity == "br" {
-                "TODO: This entity may not be seen on some browsers.\n\n"
+                "It works only with multiline math macros. It breaks new line.[[br]]TODO: This entity may not be seen on some browsers.\n\n"
             } else {
                 ""
             }

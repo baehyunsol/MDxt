@@ -674,8 +674,12 @@ pub fn get_arguments(content: &[u32], mut index: usize) -> (Vec<Vec<u32>>, usize
 
     loop {
 
-        while content.get(index) == Some(&(' ' as u32)) {
-            index += 1;
+        match content.get(index) {
+            Some(c) if *c == ' ' as u32 || *c == '\n' as u32 => {
+                index += 1;
+                continue;
+            }
+            _ => {}
         }
 
         if content.get(index) == Some(&('{' as u32)) {

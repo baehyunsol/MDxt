@@ -45,8 +45,6 @@ pub fn try_parse_matrix(arguments: &Vec<Vec<u32>>) -> Result<Vec<Vec<Vec<Entity>
     for row in arguments.iter() {
         let (elements, end_index) = get_arguments(row, 0);
 
-        // TODO: make sure that there's no extra stuff after `end_index`
-
         if let Some(e) = find_extra_stuff(row, end_index) {
             return Err(format!("Unexpected input: {}", from_v32(&e)));
         }
