@@ -24,6 +24,8 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         code_fence_size: usize,
         copy_button: bool,
         is_tilde_fence: bool,
+        id: Option<Vec<u32>>,
+        classes: Vec<Vec<u32>>,
         index: usize  // index is used when making `copy to clipboard` buttons
     },
     IndentedCodeBlock,
@@ -440,8 +442,8 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
-        ParseState::CodeFence { language, line_num, highlights, copy_button, index, .. } => {
-            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights, *copy_button, *index));
+        ParseState::CodeFence { language, line_num, highlights, copy_button, id, classes, index, .. } => {
+            curr_nodes.push(Node::new_code_fence(curr_lines, &language, &line_num, &highlights, *copy_button, &id, &classes, *index));
             *curr_lines = vec![];
             *curr_parse_state = ParseState::None;
         },
@@ -471,7 +473,7 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             // empty code blocks are ignored
             if !curr_lines.is_empty() {
                 // a code fence without any decoration
-                curr_nodes.push(Node::new_code_fence(curr_lines, &vec![], &None, &vec![], false, usize::MAX));
+                curr_nodes.push(Node::new_code_fence(curr_lines, &vec![], &None, &vec![], false, &None, &vec![], usize::MAX));
                 *curr_lines = vec![];
             }
 

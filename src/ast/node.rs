@@ -70,6 +70,8 @@ impl Node {
         line_num: &Option<usize>,
         highlights: &Vec<usize>,
         copy_button: bool,
+        id: &Option<Vec<u32>>,
+        classes: &Vec<Vec<u32>>,
         index: usize
     ) -> Node {
         Node::FencedCode(FencedCode::new(
@@ -78,6 +80,8 @@ impl Node {
             line_num.clone(),
             highlights.clone(),
             copy_button,
+            id.clone(),
+            classes.clone(),
             index
         ))
     }

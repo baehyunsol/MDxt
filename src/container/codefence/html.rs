@@ -36,14 +36,27 @@ impl FencedCode {
             vec![]
         };
 
+        let mut classes = vec![];
+
+        classes.push(format!("{class_prefix}fenced-code-block"));
+
         // so that each index has the same width
-        let line_num_width = match self.line_num {
-            None => String::new(),
-            Some(n) => format!(" {class_prefix}line-num-width-{}", log10(n + rows.len()))
+        if let Some(n) = self.line_num {
+            classes.push(format!("{class_prefix}line-num-width-{}", log10(n + rows.len())));
+        }
+
+        for class in self.classes.iter() {
+            classes.push(from_v32(class));
+        }
+
+        let id = if let Some(id) = &self.id {
+            format!(" id=\"{}\"", from_v32(id))
+        } else {
+            String::new()
         };
 
         vec![
-            into_v32(&format!("<pre class=\"{class_prefix}fenced-code-block{line_num_width}\"><code>")),
+            into_v32(&format!("<pre class=\"{}\"{id}><code>", classes.join(" "))),
             rows.concat(),
             vec![60, 47, 99, 111, 100, 101, 62],  // into_v32("</code>"),
             copy_button,

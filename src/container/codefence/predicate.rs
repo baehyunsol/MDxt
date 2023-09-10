@@ -15,6 +15,7 @@ fn is_valid_info_string_character(chr: &u32) -> bool {
     || '-' as u32 == *chr
 }
 
+// TODO: allow whitespaces
 pub fn is_line_num(content: &[u32]) -> bool {
 
     if content.len() == 8 {
@@ -33,13 +34,25 @@ pub fn is_line_num(content: &[u32]) -> bool {
 
 }
 
+// TODO: allow whitespaces
 pub fn is_highlight(content: &[u32]) -> bool {
     content.len() > 11
     && content[0..10] == into_v32("highlight(")
-    && content[content.len() - 1] == ')' as u32
+    && content.last() == Some(&(')' as u32))
     && content[10..content.len() - 1].iter().all(|c| is_numeric(c) || *c == ',' as u32)
 }
 
+// TODO: allow whitespaces
+pub fn is_html_attribute(content: &[u32]) -> bool {
+    content.len() > 4
+    && (
+        content[0..3] == into_v32("id(")
+        || content.len() > 7
+        && content[0..6] == into_v32("class(")
+    ) && content.last() == Some(&(')' as u32))
+}
+
+// TODO: allow whitespaces
 pub fn is_copy_button(content: &[u32]) -> bool {
     content == into_v32("copy_button")
     || content == into_v32("copy_button(true)")

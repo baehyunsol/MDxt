@@ -4,7 +4,7 @@ MarkdDown eXTended
 
 MDxt is an extended markdown format. Though not a strict superset of [gfm], MDxt supports most of its features. You can read more about it [here](#gfm-compatibility)
 
-Some elements require proper CSS files to be rendered. You can either write your own, or use CSS files in this repo.
+Many features of MDxt require proper style sheets and script files. I highly recommend you use MDxt with a dedicated [web framework](https://github.com/baehyunsol/engine).
 
 If you wanna know more about MDxt, see these articles.
 
@@ -20,9 +20,15 @@ MDxt can read most gfm documents, but the output is different. (ex: unlike gfm, 
 I won't make any compatibility layers for gfm (ex: GFM <-> MDxt converter). Because some elements are impossible to convert to GFM formats. They require `<script>` tags in their output HTML, which are not supported in GFM and most other markdown extensions.
 
 [GFM]: https://github.github.com/gfm
-[Reference]: https://blog.baehyunsol.repl.co/MDxt-Reference.html
+[Reference]: https://baehyunsol.github.io/MDxt-Reference.html
 [API Doc]: https://docs.rs/mdxt/latest/mdxt/index.html
-[my blog]: https://blog.baehyunsol.repl.co/
+[my blog]: https://baehyunsol.github.io/
+
+## Frontend Framework
+
+If you want a fully-featured frontend framework with MDxt, try [this project](https://github.com/baehyunsol/engine).
+
+TODO: remove `./styles`
 
 ## Contributing
 

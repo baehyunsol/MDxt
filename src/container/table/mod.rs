@@ -14,7 +14,7 @@ use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code
 use crate::inline::macros::predicate::is_special_macro;
 use crate::inline::math::escape_inside_math_blocks;
 use crate::render::render_option::RenderOption;
-use crate::utils::into_v32;
+use crate::utils::{from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct Table {
@@ -23,6 +23,11 @@ pub struct Table {
     collapsible: bool,
     default_hidden: bool,
     headless: bool,
+
+    // html attributes
+    id: Option<Vec<u32>>,
+    classes: Vec<Vec<u32>>,
+
     index: usize
 }
 
@@ -43,17 +48,25 @@ impl Table {
         ).collect::<Vec<Vec<Cell>>>();
 
         // configured by table-wide macros
-        let (mut collapsible, mut default_hidden, mut headless) = (false, false, false);
+        let (mut collapsible, mut default_hidden, mut headless, mut id, mut classes) = (false, false, false, None, vec![]);
 
         // if rows[0] is `|!![[whatever macro ...]] [[another macro...]]|`
         if !rows.is_empty()
             && !rows[0].content.is_empty()
             && is_special_macro(&rows[0].content[1..(rows[0].content.len() - 1)])
         {
-            let (collapsible_, default_hidden_, headless_) = try_parse_macro(&rows[0].content);
+            let (
+                collapsible_,
+                default_hidden_,
+                headless_,
+                id_,
+                classes_,
+            ) = try_parse_macro(&rows[0].content);
             collapsible = collapsible_;
             default_hidden = default_hidden_;
             headless = headless_;
+            id = id_;
+            classes = classes_;
 
             rows = &rows[1..];
         }
@@ -65,6 +78,7 @@ impl Table {
         Table {
             header, cells,
             collapsible, default_hidden, headless,
+            id, classes,
             index
         }
     }
@@ -96,16 +110,35 @@ impl Table {
 
     pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
         let mut result = Vec::with_capacity(6 + self.header.len() + 3 * self.cells.len());
+        let mut classes = vec![];
 
         if self.headless {
-            // into_v32("<table class=\"headless-table\">")
-            result.push(vec![60, 116, 97, 98, 108, 101, 32, 99, 108, 97, 115, 115, 61, 34, 104, 101, 97, 100, 108, 101, 115, 115, 45, 116, 97, 98, 108, 101, 34, 62]);
+            classes.push(format!("{class_prefix}headless-table"));
         }
 
-        else {
-            // into_v32("<table>")
-            result.push(vec![60, 116, 97, 98, 108, 101, 62]);
+        for class in self.classes.iter() {
+            classes.push(format!("{class_prefix}{}", from_v32(class)));
         }
+
+        result.push(into_v32(&format!(
+            "<table{}{}>",
+            if classes.len() > 0 {
+                format!(
+                    " class=\"{}\"",
+                    classes.join(" "),
+                )
+            } else {
+                String::new()
+            },
+            if let Some(id) = &self.id {
+                format!(
+                    " id=\"{}\"",
+                    from_v32(id),
+                )
+            } else {
+                String::new()
+            }
+        )));
 
         let collapsible_head = if self.collapsible {
             let default_value = if self.default_hidden {

@@ -9,7 +9,7 @@ use crate::ast::line::Line;
 use crate::ast::parse::ParseState;
 use crate::escape::{undo_backslash_escapes, undo_html_escapes};
 use crate::utils::{lowercase, remove_whitespaces, take_and_drop_while, to_int};
-use predicate::{is_copy_button, is_highlight, is_line_num, parse_arguments};
+use predicate::{is_copy_button, is_highlight, is_html_attribute, is_line_num, parse_arguments};
 
 #[derive(Clone)]
 pub struct FencedCode {
@@ -18,6 +18,11 @@ pub struct FencedCode {
     line_num: Option<usize>,
     pub copy_button: bool,
     highlights: Vec<usize>,
+
+    // html attributes
+    id: Option<Vec<u32>>,
+    classes: Vec<Vec<u32>>,
+
     pub index: usize,
 }
 
@@ -29,6 +34,8 @@ impl FencedCode {
         line_num: Option<usize>,
         highlights: Vec<usize>,
         copy_button: bool,
+        id: Option<Vec<u32>>,
+        classes: Vec<Vec<u32>>,
         index: usize
     ) -> Self {
         FencedCode {
@@ -37,6 +44,8 @@ impl FencedCode {
             line_num,
             copy_button,
             highlights,
+            id,
+            classes,
             index
         }
     }
@@ -56,6 +65,8 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
     let mut line_num = None;
     let mut highlights = vec![];
     let mut copy_button = None;
+    let mut id = None;
+    let mut classes = vec![];
 
     let arguments = parse_arguments(&info_string);
 
@@ -94,6 +105,14 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
 
         }
 
+        else if is_html_attribute(argument) {
+            if argument[0] == 'i' as u32 {
+                id = Some(argument[3..(argument.len() - 1)].to_vec());
+            } else {
+                classes.push(argument[6..(argument.len() - 1)].to_vec());
+            }
+        }
+
         else {
             language = argument.to_vec();
         }
@@ -114,6 +133,8 @@ pub fn read_code_fence_info(line: &Line, fenced_code_count: usize) -> ParseState
         copy_button,
         code_fence_size: fence.len(),
         is_tilde_fence: line.content[0] == '~' as u32,
+        id,
+        classes,
         index: fenced_code_count
     }
 }

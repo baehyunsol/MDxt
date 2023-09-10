@@ -1,5 +1,5 @@
 ---
-date: [2023, 9, 6]
+date: [2023, 9, 10]
 hide: true
 ---
 
@@ -13,6 +13,8 @@ MDxt is an extended version of Markdown.
 |-------------------|
 |!![[collapsible]]  |
 | [[toc]]           |
+
+Most features require extra style sheets and scripts. For better experience, I recommend you to use [this framework](https://github.com/baehyunsol/engine). It's a full-featured frontend framework that uses MDxt.
 
 ## Inline Elements
 
@@ -179,6 +181,28 @@ The previous example contains colspan macros.
 
 If both `headless` and `collapsible` are enabled, `headless` is ignored.
 
+#### Extra HTML Attributes
+
+You can set ids and classes of tables, using `[[id]]` and `[[class]]`
+
+```
+| A table head                 |
+|------------------------------|
+|!![[id=abcd]] [[class=efgh]]  |
+| When rendered to html,       |
+| the `<table>` tag has an id  |
+| and a class.                 |
+```
+
+| A table head                 |
+|------------------------------|
+|!![[id=abcd]] [[class=efgh]] [[class=ijkl]]  |
+| When rendered to html,       |
+| the `<table>` tag has an id  |
+| and a class.                 |
+
+An id and class name may only contain lower case alphabets and numbers.
+
 ### Lists
 
 #### Task list
@@ -241,6 +265,8 @@ which looks like
 
 ### Fenced Code Blocks
 
+Use 3 or more `` ` `` or `~` to start and end a fenced code block. An info-string may follow after the starting code fence. An info-string may contain the name of the language (for syntax highlighting), "line_num" (if enabled, it shows the line numbers), and highlighted lines (which ones to highlight). If a block has line numbers, a copy-button is enabled by default. If you want to disable it, use `copy_button(false)`. Info-strings don't allow whitespaces between an identifer and parenthesis.
+
 ````
 ```rust, line_num, highlight(6, 17, 22)
 /*
@@ -294,6 +320,24 @@ pub struct Point {
 
 pub const CONST: u32 = 1;
 ```
+
+If you want custom syntax highlightings, add `.sublime-syntax` files to `./extra_syntaxes` directory.
+
+You can also set ids and classes of fenced code blocks using info-strings. See the example below.
+
+````md
+
+```id(abcd), class(efgh), class(ijkl)
+Use the developer tool to check its attributes!
+```
+
+````
+
+```id(abcd), class(efgh), class(ijkl)
+Use the developer tool to check its attributes!
+```
+
+An id and class name may only contain lower case alphabets and numbers.
 
 ### Blockquotes
 

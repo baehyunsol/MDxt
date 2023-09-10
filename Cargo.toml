@@ -1,6 +1,6 @@
 [package]
 name = "mdxt"
-version = "0.7.2"
+version = "0.7.3"
 edition = "2021"
 authors = ["Baehyunsol <baehyunsol@naver.com>"]
 description = "Custom Markdown Engine for my personal blog."
@@ -12,7 +12,7 @@ repository = "https://github.com/baehyunsol/MDxt"
 
 [dependencies]
 lazy_static = "1.4.0"
-syntect = "5.0.0"
+syntect = { version = "5.1.0", default-features = false, features = ["default-fancy"]}
 yaml-rust = "0.4.5"
 
 [dev-dependencies]

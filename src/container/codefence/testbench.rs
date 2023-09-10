@@ -5,51 +5,55 @@ use crate::utils::{into_v32, from_v32, remove_whitespaces};
 use crate::render_to_html_with_default_options;
 
 fn fence_samples() -> Vec<(
-    String,         // case
-    bool,           // is_valid
-    bool,           // is_code_fence_begin
-    bool,           // is_code_fence_end
-    String,         // language
-    Option<usize>,  // line_num
-    Vec<usize>,     // highlights
-    usize,          // fence_size
-    bool,           // copy_button
-    bool            // is_tilde_fence
+    String,            // case
+    bool,              // is_valid
+    bool,              // is_code_fence_begin
+    bool,              // is_code_fence_end
+    String,            // language
+    Option<usize>,     // line_num
+    Vec<usize>,        // highlights
+    usize,             // fence_size
+    bool,              // copy_button
+    Option<String>,    // id
+    Vec<String>,       // classes
+    bool               // is_tilde_fence
 )> {
     let samples = vec![
-        ("```", true, true, true, "", None, vec![], 3, false, false),
-        ("````", true, true, true, "", None, vec![], 4, false, false),
-        ("~~~", true, true, true, "", None, vec![], 3, false, true),
-        ("~~~~", true, true, true, "", None, vec![], 4, false, true),
-        ("``", false, false, false, "", None, vec![], 0, false, false),
-        ("``` `", false, false, false, "", None, vec![], 0, false, false),
-        ("```rust `", false, false, false, "", None, vec![], 0, false, false),
-        ("`~~", false, false, false, "", None, vec![], 0, false, false),
-        ("~~`", false, false, false, "", None, vec![], 0, false, false),
-        ("```Rust", true, true, false, "rust", None, vec![], 3, false, false),
-        ("``` rust", true, true, false, "rust", None, vec![], 3, false, false),
-        ("``` line_num", true, true, false, "", Some(1), vec![], 3, true, false),
-        ("```line_num(5)", true, true, false, "", Some(5), vec![], 3, true, false),
-        ("```rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, true, false),
-        ("```line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, true, false),
-        ("~~~Rust", true, true, false, "rust", None, vec![], 3, false, true),
-        ("~~~ rust", true, true, false, "rust", None, vec![], 3, false, true),
-        ("~~~ line_num", true, true, false, "", Some(1), vec![], 3, true, true),
-        ("~~~line_num(5)", true, true, false, "", Some(5), vec![], 3, true, true),
-        ("~~~rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, true, true),
-        ("~~~line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, true, true),
-        ("```highlight(4), line_num", true, true, false, "", Some(1), vec![4], 3, true, false),
-        ("```highlight(4, 5), line_num", true, true, false, "", Some(1), vec![4, 5], 3, true, false),
-        ("```line_num, highlight(4)", true, true, false, "", Some(1), vec![4], 3, true, false),
-        ("```line_num, highlight(4, 5)", true, true, false, "", Some(1), vec![4, 5], 3, true, false),
-        ("```highlight(4", true, true, false, "highlight(4", None, vec![], 3, false, false),
-        ("```!!", false, false, false, "", None, vec![], 0, false, false),
-        ("```sublime-syntax", true, true, false, "sublime-syntax", None, vec![], 3, false, false),
-        ("```.bash_login", true, true, false, ".bash_login", None, vec![], 3, false, false),
-        ("```copy_button", true, true, false, "", None, vec![], 3, true, false),
-        ("```copy_button(true)", true, true, false, "", None, vec![], 3, true, false),
-        ("```copy_button(false)", true, true, false, "", None, vec![], 3, false, false),
-        ("```copy_button(okay)", true, true, false, "copy_button(okay)", None, vec![], 3, false, false),
+        ("```", true, true, true, "", None, vec![], 3, false, None, vec![], false),
+        ("````", true, true, true, "", None, vec![], 4, false, None, vec![], false),
+        ("~~~", true, true, true, "", None, vec![], 3, false, None, vec![], true),
+        ("~~~~", true, true, true, "", None, vec![], 4, false, None, vec![], true),
+        ("``", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("``` `", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("```rust `", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("`~~", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("~~`", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("```Rust", true, true, false, "rust", None, vec![], 3, false, None, vec![], false),
+        ("``` rust", true, true, false, "rust", None, vec![], 3, false, None, vec![], false),
+        ("``` line_num", true, true, false, "", Some(1), vec![], 3, true, None, vec![], false),
+        ("```line_num(5)", true, true, false, "", Some(5), vec![], 3, true, None, vec![], false),
+        ("```rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, true, None, vec![], false),
+        ("```line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, true, None, vec![], false),
+        ("~~~Rust", true, true, false, "rust", None, vec![], 3, false, None, vec![], true),
+        ("~~~ rust", true, true, false, "rust", None, vec![], 3, false, None, vec![], true),
+        ("~~~ line_num", true, true, false, "", Some(1), vec![], 3, true, None, vec![], true),
+        ("~~~line_num(5)", true, true, false, "", Some(5), vec![], 3, true, None, vec![], true),
+        ("~~~rust, line_num(5)", true, true, false, "rust", Some(5), vec![], 3, true, None, vec![], true),
+        ("~~~line_num(5), rust", true, true, false, "rust", Some(5), vec![], 3, true, None, vec![], true),
+        ("```highlight(4), line_num", true, true, false, "", Some(1), vec![4], 3, true, None, vec![], false),
+        ("```highlight(4, 5), line_num", true, true, false, "", Some(1), vec![4, 5], 3, true, None, vec![], false),
+        ("```line_num, highlight(4)", true, true, false, "", Some(1), vec![4], 3, true, None, vec![], false),
+        ("```line_num, highlight(4, 5)", true, true, false, "", Some(1), vec![4, 5], 3, true, None, vec![], false),
+        ("```highlight(4", true, true, false, "highlight(4", None, vec![], 3, false, None, vec![], false),
+        ("```!!", false, false, false, "", None, vec![], 0, false, None, vec![], false),
+        ("```sublime-syntax", true, true, false, "sublime-syntax", None, vec![], 3, false, None, vec![], false),
+        ("```.bash_login", true, true, false, ".bash_login", None, vec![], 3, false, None, vec![], false),
+        ("```copy_button", true, true, false, "", None, vec![], 3, true, None, vec![], false),
+        ("```copy_button(true)", true, true, false, "", None, vec![], 3, true, None, vec![], false),
+        ("```copy_button(false)", true, true, false, "", None, vec![], 3, false, None, vec![], false),
+        ("```copy_button(okay)", true, true, false, "copy_button(okay)", None, vec![], 3, false, None, vec![], false),
+        ("```id(abcd)", true, true, false, "", None, vec![], 3, false, Some("abcd"), vec![], false),
+        ("```class(abc), class(def)", true, true, false, "", None, vec![], 3, false, None, vec!["abc", "def"], false),
     ];
 
     samples.into_iter().map(
@@ -63,6 +67,8 @@ fn fence_samples() -> Vec<(
             highlights,
             fence_size,
             copy_button,
+            id,
+            classes,
             is_tilde_fence
         )| (
             case.to_string(),
@@ -74,6 +80,8 @@ fn fence_samples() -> Vec<(
             highlights,
             fence_size,
             copy_button,
+            id.map(|i| i.to_string()),
+            classes.into_iter().map(|c| c.to_string()).collect(),
             is_tilde_fence
         )
     ).collect()
@@ -94,6 +102,8 @@ fn fence_test() {
         highlights_answer,
         fence_size_answer,
         copy_button_answer,
+        id_answer,
+        classes_answer,
         is_tilde_fence_answer
     ) in test_cases.iter() {
         let v32 = into_v32(&case);
@@ -128,10 +138,19 @@ is_code_fence_end: answer: {is_code_fence_end}, actual: {}",
             highlights_actual,
             fence_size_actual,
             copy_button_actual,
+            id_actual,
+            classes_actual,
             is_tilde_fence_actual
         ) = match read_code_fence_info(&line, 0) {
-            ParseState::CodeFence { language, line_num, highlights, code_fence_size, copy_button, is_tilde_fence, index: _index } => (
-                from_v32(&language), line_num, highlights, code_fence_size, copy_button, is_tilde_fence
+            ParseState::CodeFence { language, line_num, highlights, code_fence_size, copy_button, is_tilde_fence, id, classes, index: _index } => (
+                from_v32(&language),
+                line_num,
+                highlights,
+                code_fence_size,
+                copy_button,
+                id.as_ref().map(|i| from_v32(i)),
+                classes.iter().map(|c| from_v32(c)).collect::<Vec<String>>(),
+                is_tilde_fence,
             ),
             _ => unreachable!(),
         };
@@ -167,6 +186,20 @@ is_code_fence_end: answer: {is_code_fence_end}, actual: {}",
         if copy_button_answer != &copy_button_actual {
             failures.push(format!(
                 "case: {case}\ncopy_button: answer: {copy_button_answer:?}, actual: {copy_button_actual:?}"
+            ));
+            continue;
+        }
+
+        if id_answer != &id_actual {
+            failures.push(format!(
+                "case: {case}\nid: answer: {id_answer:?}, actual: {id_actual:?}"
+            ));
+            continue;
+        }
+
+        if classes_answer != &classes_actual {
+            failures.push(format!(
+                "case: {case}\nclasses: answer: {classes_answer:?}, actual: {classes_actual:?}"
             ));
             continue;
         }
