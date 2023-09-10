@@ -7,14 +7,14 @@ mod testbench;
 
 use alignment::parse_alignments;
 use cell::{Cell, get_colspan, row_to_cells};
-use macros::try_parse_macro;
+use macros::{TableMacros, try_parse_macro};
 use crate::ast::{doc_data::DocData, line::Line};
 use crate::escape::BACKSLASH_ESCAPE_OFFSET;
 use crate::inline::parse::{escape_code_spans, is_code_span_marker_begin, is_code_span_marker_end};
 use crate::inline::macros::predicate::is_special_macro;
 use crate::inline::math::escape_inside_math_blocks;
 use crate::render::render_option::RenderOption;
-use crate::utils::{from_v32, into_v32};
+use crate::utils::{drop_while, from_v32, into_v32};
 
 #[derive(Clone)]
 pub struct Table {
@@ -55,13 +55,13 @@ impl Table {
             && !rows[0].content.is_empty()
             && is_special_macro(&rows[0].content[1..(rows[0].content.len() - 1)])
         {
-            let (
-                collapsible_,
-                default_hidden_,
-                headless_,
-                id_,
-                classes_,
-            ) = try_parse_macro(&rows[0].content);
+            let TableMacros {
+                collapsible: collapsible_,
+                default_hidden: default_hidden_,
+                headless: headless_,
+                id: id_,
+                classes: classes_,
+            } = try_parse_macro(&rows[0].content);
             collapsible = collapsible_;
             default_hidden = default_hidden_;
             headless = headless_;
@@ -207,7 +207,7 @@ pub fn count_cells(row: &[u32], pipes_escaped: bool) -> usize {
 
     // the `.split` method generates 2 extra elements, the trailing and leading empty cells
     // they should be removed
-    row.split(|c| *c == '|' as u32).map(|cell| get_colspan(cell)).sum::<usize>() - 2
+    row.split(|c| *c == '|' as u32).map(|cell| get_colspan(&drop_while(cell, ' ' as u32))).sum::<usize>() - 2
 }
 
 // it does not check whether the delimiter is valid

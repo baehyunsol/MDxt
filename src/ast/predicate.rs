@@ -80,7 +80,7 @@ impl Line {
             // the empty elements should be eliminated
             let cells = self.content.split(|c| *c == '|' as u32).collect::<Vec<&[u32]>>();
 
-            cells[1..cells.len() - 1].iter().all(
+            cells[1..(cells.len() - 1)].iter().all(
                 |delim| {
                     let stripped = strip_whitespaces(delim);
 

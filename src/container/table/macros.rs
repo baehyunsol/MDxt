@@ -18,8 +18,15 @@ use crate::inline::macros::{
 };
 use crate::utils::{get_bracket_end_index, into_v32, remove_whitespaces};
 
-pub fn try_parse_macro(content: &[u32]) -> (bool, bool, bool, Option<Vec<u32>>, Vec<Vec<u32>>) {  // (collapsible, default_hidden, headless, id, class)  // I'll define a struct for it when it gets more complicated
+pub struct TableMacros {
+    pub collapsible: bool,
+    pub default_hidden: bool,
+    pub headless: bool,
+    pub id: Option<Vec<u32>>,
+    pub classes: Vec<Vec<u32>>,
+}
 
+pub fn try_parse_macro(content: &[u32]) -> TableMacros {
     let mut collapsible = false;
     let mut default_hidden = false;
     let mut headless = false;
@@ -79,7 +86,7 @@ pub fn try_parse_macro(content: &[u32]) -> (bool, bool, bool, Option<Vec<u32>>, 
         headless = false;
     }
 
-    (collapsible, default_hidden, headless, id, classes)
+    TableMacros { collapsible, default_hidden, headless, id, classes }
 }
 
 /// You can also write your own.

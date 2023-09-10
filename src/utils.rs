@@ -250,7 +250,6 @@ pub fn collapse_whitespaces(content: &[u32]) -> Vec<u32> {
 }
 
 pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
-
     if content.is_empty() {
         return vec![];
     }
@@ -258,7 +257,6 @@ pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
     let mut start_index = 0;
 
     while start_index < content.len() {
-
         if content[start_index] != ' ' as u32 {
             break;
         }
@@ -269,7 +267,6 @@ pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
     let mut end_index = content.len() - 1;
 
     while end_index > 0 {
-
         if content[end_index] != ' ' as u32 {
             break;
         }
@@ -284,7 +281,6 @@ pub fn strip_whitespaces(content: &[u32]) -> Vec<u32> {
     else {
         vec![]
     }
-
 }
 
 pub fn to_int(string: &[u32]) -> Option<u32> {

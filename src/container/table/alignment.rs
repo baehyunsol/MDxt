@@ -7,7 +7,6 @@ pub enum TableAlignment {
 }
 
 impl TableAlignment {
-
     pub fn opening_tag(&self, class_prefix: &str) -> Vec<u32> {
         match self {
             TableAlignment::Left => into_v32(&format!("<div class=\"{class_prefix}align-left\">")),
@@ -23,7 +22,6 @@ impl TableAlignment {
             TableAlignment::Left | TableAlignment::Center | TableAlignment::Right => into_v32("</div>")
         }
     }
-
 }
 
 pub fn parse_alignments(line: &Line) -> Vec<TableAlignment> {
