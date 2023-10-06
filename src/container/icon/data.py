@@ -30,6 +30,7 @@ def get_icons(size, color):
     color = chr(color_token_chr)
 
     return {
+        'ABC': f"<svg{xmlns}{size} viewBox=\"0 -960 960 960\"><path{color} d=\"M680-360q-17 0-28.5-11.5T640-400v-160q0-17 11.5-28.5T680-600h120q17 0 28.5 11.5T840-560v40h-60v-20h-80v120h80v-20h60v40q0 17-11.5 28.5T800-360H680Zm-300 0v-240h160q17 0 28.5 11.5T580-560v40q0 17-11.5 28.5T540-480q17 0 28.5 11.5T580-440v40q0 17-11.5 28.5T540-360H380Zm60-150h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-320 60v-200q0-17 11.5-28.5T160-600h120q17 0 28.5 11.5T320-560v200h-60v-60h-80v60h-60Zm60-120h80v-60h-80v60Z\"/></svg>",
         'Airplane': f"<svg{xmlns} enable-background=\"new 0 0 24 24\" viewBox=\"0 0 24 24\"{size}><path{color} d=\"M21.48,13.7L13.5,9V3.5C13.5,2.67,12.83,2,12,2c-0.83,0-1.5,0.67-1.5,1.5V9l-7.98,4.7C2.2,13.88,2,14.23,2,14.6 c0,0.7,0.67,1.2,1.34,1.01l7.16-2.1V19l-2.26,1.35C8.09,20.44,8,20.61,8,20.78l0,0.5h0v0.08c0,0.33,0.31,0.57,0.62,0.49l2.92-0.73 L12,21l0.38,0.09c0,0,0,0,0,0l0.42,0.11l1.9,0.48l0,0l0.67,0.17c0.32,0.08,0.62-0.16,0.62-0.49v-0.37c0,0,0,0,0,0v-0.21 c0-0.18-0.09-0.34-0.24-0.43L13.5,19v-5.5l7.16,2.1C21.33,15.8,22,15.3,22,14.6C22,14.23,21.8,13.88,21.48,13.7z\"/></svg>",
         'Alert': f"<svg{xmlns} viewBox=\"0 0 24 24\"{size}><path d=\"M22.56 16.3L14.89 3.58a3.43 3.43 0 0 0-5.78 0L1.44 16.3a3 3 0 0 0-.05 3A3.37 3.37 0 0 0 4.33 21h15.34a3.37 3.37 0 0 0 2.94-1.66 3 3 0 0 0-.05-3.04zM12 17a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm1-4a1 1 0 0 1-2 0V9a1 1 0 0 1 2 0z\"{color}/></svg>",
         'ArrowBack': f"<svg{xmlns} viewBox=\"0 0 24 24\"{size}><path d=\"M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z\"{color}/></svg>",
@@ -160,7 +161,7 @@ def get_sources():
     for icon in get_icons(0, 0).keys():
         sources[icon] = EVA
 
-    for icon in ["Airplane", "Burger", "Cup", "Electricity", "Flower", "Forest", "Liquor", "Pen", "Rocket", "Run", "Smoke", "SmokeFree", "Swords", "ThumbDown", "ThumbUp", "University"]:
+    for icon in ["ABC", "Airplane", "Burger", "Cup", "Electricity", "Flower", "Forest", "Liquor", "Pen", "Rocket", "Run", "Smoke", "SmokeFree", "Swords", "ThumbDown", "ThumbUp", "University"]:
         sources[icon] = MATERIAL
 
     for icon in ["C", "CPP", "CSS", "Google", "HTML", "Javascript", "Python", "Rust"]:

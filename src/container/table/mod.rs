@@ -1,6 +1,7 @@
 mod alignment;
 mod cell;
 pub mod macros;
+mod sort;
 
 #[cfg(test)]
 mod testbench;
@@ -20,6 +21,9 @@ use crate::utils::{drop_while, from_v32, into_v32};
 pub struct Table {
     header: Vec<Vec<Cell>>,
     cells: Vec<Vec<Cell>>,
+
+    // `cells[i].len()` differs due to colspans
+    cols: usize,
     collapsible: bool,
     default_hidden: bool,
     headless: bool,
@@ -28,10 +32,37 @@ pub struct Table {
     id: Option<Vec<u32>>,
     classes: Vec<Vec<u32>>,
 
-    index: usize
+    sort: bool,
+    index: usize,
 }
 
 impl Table {
+
+    // if the colspan of cells[0][0] is 3, get(0, 0), get(0, 1) and get(0, 2) would all return the same cell
+    fn get_cell(&self, row: usize, col: usize) -> Option<&Cell> {
+        match self.cells.get(row) {
+            Some(row) => {
+                let mut curr_col = 0;
+
+                for cell in row.iter() {
+                    if curr_col >= col {
+                        return Some(cell);
+                    }
+
+                    curr_col += cell.colspan;
+                }
+
+                if curr_col >= col {
+                    row.last()
+                }
+
+                else {
+                    None
+                }
+            },
+            _ => None,
+        }
+    }
 
     // it has at least two lines: header, and delimiter
     // it assumes all the lines are valid table rows
@@ -39,16 +70,24 @@ impl Table {
         headers: &Vec<Line>,
         mut rows: &[Line],
         alignments: &Line,
-        index: usize
+        index: usize,
     ) -> Self {
         let alignments = parse_alignments(&alignments);
+        let cols = alignments.len();
 
         let header = headers.iter().map(
-            |row| row_to_cells(row, alignments.len(), &alignments)
+            |row| row_to_cells(row, cols, &alignments)
         ).collect::<Vec<Vec<Cell>>>();
 
         // configured by table-wide macros
-        let (mut collapsible, mut default_hidden, mut headless, mut id, mut classes) = (false, false, false, None, vec![]);
+        let (
+            mut collapsible,
+            mut default_hidden,
+            mut headless,
+            mut id,
+            mut classes,
+            mut sort,
+        ) = (false, false, false, None, vec![], false);
 
         // if rows[0] is `|!![[whatever macro ...]] [[another macro...]]|`
         if !rows.is_empty()
@@ -61,25 +100,27 @@ impl Table {
                 headless: headless_,
                 id: id_,
                 classes: classes_,
+                sort: sort_,
             } = try_parse_macro(&rows[0].content);
             collapsible = collapsible_;
             default_hidden = default_hidden_;
             headless = headless_;
             id = id_;
             classes = classes_;
+            sort = sort_;
 
             rows = &rows[1..];
         }
 
         let cells = rows.iter().map(
-            |row| row_to_cells(row, alignments.len(), &alignments)
+            |row| row_to_cells(row, cols, &alignments)
         ).collect::<Vec<Vec<Cell>>>();
 
         Table {
-            header, cells,
+            header, cells, cols,
             collapsible, default_hidden, headless,
-            id, classes,
-            index
+            id, classes, sort,
+            index,
         }
     }
 
@@ -106,6 +147,10 @@ impl Table {
             }
         );
 
+        if self.sort {
+            let sort_data = self.get_sort_data();
+            todo!();
+        }
     }
 
     pub fn to_html(&self, toc_rendered: &[u32], class_prefix: &str) -> Vec<u32> {
@@ -195,12 +240,10 @@ impl Table {
         result.push(vec![60, 47, 116, 97, 98, 108, 101, 62]);  // into_v32("</table>")
         result.concat()
     }
-
 }
 
 // it does not check whether the row is valid
 pub fn count_cells(row: &[u32], pipes_escaped: bool) -> usize {
-
     if !pipes_escaped {
         return count_cells(&escape_pipes(row), true);
     }
@@ -217,7 +260,6 @@ pub fn count_delimiter_cells(delimiter: &[u32]) -> usize {
 
 // it escapes `|` inside code spans and math macros
 pub fn escape_pipes(content: &[u32]) -> Vec<u32> {
-
     let mut content = escape_code_spans(content);
     content = escape_inside_math_blocks(content);
 
@@ -226,7 +268,6 @@ pub fn escape_pipes(content: &[u32]) -> Vec<u32> {
     let mut is_inside_code_span = false;
 
     while index < content.len() {
-
         if is_code_span_marker_begin(&content, index) {
             is_inside_code_span = true;
         }

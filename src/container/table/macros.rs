@@ -24,6 +24,7 @@ pub struct TableMacros {
     pub headless: bool,
     pub id: Option<Vec<u32>>,
     pub classes: Vec<Vec<u32>>,
+    pub sort: bool,
 }
 
 pub fn try_parse_macro(content: &[u32]) -> TableMacros {
@@ -32,6 +33,7 @@ pub fn try_parse_macro(content: &[u32]) -> TableMacros {
     let mut headless = false;
     let mut id = None;
     let mut classes = vec![];
+    let mut sort = false;
 
     let macros = remove_whitespaces(content);
     let macros = macros[3..(macros.len() - 1)].to_vec();  // remove `!`s and `|`s.
@@ -47,13 +49,16 @@ pub fn try_parse_macro(content: &[u32]) -> TableMacros {
         let arguments = parse_arguments(&macro_content);
 
         for argument in arguments.iter() {
-
             if argument[0] == into_v32("collapsible") {
                 collapsible = true;
             }
 
             else if argument[0] == into_v32("headless") {
                 headless = true;
+            }
+
+            else if argument[0] == into_v32("sort") {
+                sort = true;
             }
 
             else if argument.len() == 2 && argument[0] == into_v32("id") {
@@ -65,7 +70,6 @@ pub fn try_parse_macro(content: &[u32]) -> TableMacros {
             }
 
             else if argument.len() == 2 && argument[0] == into_v32("default") {
-
                 if argument[1] == into_v32("shown") {
                     default_hidden = false;
                 }
@@ -73,9 +77,7 @@ pub fn try_parse_macro(content: &[u32]) -> TableMacros {
                 else if argument[1] == into_v32("hidden") {
                     default_hidden = true;
                 }
-
             }
-
         }
 
         index = get_bracket_end_index(&macros, index).unwrap() + 1;
@@ -86,7 +88,7 @@ pub fn try_parse_macro(content: &[u32]) -> TableMacros {
         headless = false;
     }
 
-    TableMacros { collapsible, default_hidden, headless, id, classes }
+    TableMacros { collapsible, default_hidden, headless, id, classes, sort }
 }
 
 /// You can also write your own.

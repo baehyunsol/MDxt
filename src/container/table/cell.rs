@@ -9,7 +9,7 @@ use crate::utils::{get_bracket_end_index, into_v32, strip_whitespaces, to_int};
 pub struct Cell {
     pub content: InlineNode,
     pub alignment: TableAlignment,
-    pub colspan: usize
+    pub colspan: usize,
 }
 
 impl Default for Cell {
@@ -58,6 +58,10 @@ impl Cell {
             ].concat()
         }
 
+    }
+
+    pub fn extract_text(&self) -> Vec<u32> {
+        self.content.extract_text()
     }
 }
 

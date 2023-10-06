@@ -213,9 +213,9 @@ TODO: not implemented yet
 |!![[sort]]                         |
 | 2023.07.16  | 12$    | Dinner     |
 | 2023.07.16  | 6$     | Coffee     |
-| 2023.07.16  | 11$    | Taxi       |
-| 2023.07.16  | 19$    | [[green]]Movie[[/green]]   |
-| 2023.07.16  | 4$     | Ice Cream  |
+| 2023.07.16  | 21$    | Taxi       |
+| 2023.07.17  | 11$    | [[green]]Movie[[/green]]   |
+| 2023.07.17  | 4$     | Ice Cream  |
 ```
 
 | Date        | Money  | Stuff      |
@@ -223,13 +223,13 @@ TODO: not implemented yet
 |!![[sort]]                         |
 | 2023.07.16  | 12$    | Dinner     |
 | 2023.07.16  | 6$     | Coffee     |
-| 2023.07.16  | 11$    | Taxi       |
-| 2023.07.16  | 19$    | [[green]]Movie[[/green]]   |
-| 2023.07.16  | 4$     | Ice Cream  |
+| 2023.07.16  | 21$    | Taxi       |
+| 2023.07.17  | 11$    | [[green]]Movie[[/green]]   |
+| 2023.07.17  | 4$     | Ice Cream  |
 
 MDxt doesn't know anything about dates. It sorts dates by alphabetic order. So you should use `YYYYMMDD` format if you want it to be sortable.
 
-If all the rows have the same format: `NUMBER + SUFFIX` and the suffix is the same, it only reads the numbers. It uses Rust's number parser to parse the numbers. If it doesn't understand the format, it sorts the rows in alphabetic order.
+If all the rows have the same format: `NUMBER + SUFFIX` and the suffix is the same, it only reads the numbers. It uses Rust's f64 parser to parse the numbers. If it doesn't understand the format, it sorts the rows in alphabetic order.
 
 It ignores all the decorations. It only reads the inner text. If a cell is hidden due to a colspan macro, it considers that as an empty string.
 

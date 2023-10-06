@@ -135,7 +135,7 @@ impl InlineNode {
                 |node| node.to_html(toc_rendered, class_prefix)
             ).collect::<Vec<Vec<u32>>>().concat(),
 
-            InlineNode::Link {text, destination} => vec![
+            InlineNode::Link { text, destination } => vec![
                 vec![60, 97, 32, 104, 114, 101, 102, 61, 34],  // into_v32("<a href=\""),
                 destination.clone(),
                 vec![34, 62],  // into_v32("\">")
@@ -145,7 +145,7 @@ impl InlineNode {
                 vec![60, 47, 97, 62],  // into_v32("</a>")
             ].concat(),
 
-            InlineNode::Image {description, address, media_type} => match media_type {
+            InlineNode::Image { description, address, media_type } => match media_type {
                 MediaType::Image => vec![
                     vec![60, 105, 109, 103, 32, 115, 114, 99, 61, 34],  // into_v32("<img src=\""),
                     address.clone(),
@@ -617,6 +617,20 @@ impl InlineNode {
                     ].concat(),
                 }
             }
+        }
+    }
+
+    pub fn extract_text(&self) -> Vec<u32> {
+        match self {
+            InlineNode::Raw(content) => content.clone(),
+            InlineNode::Complex(nodes)
+            | InlineNode::Link { text: nodes, .. }
+            | InlineNode::Decoration { content: nodes, .. } => nodes.iter().map(
+                |node| node.extract_text()
+            ).collect::<Vec<Vec<u32>>>().concat(),
+            InlineNode::CodeSpan(code) => code.clone(),
+            InlineNode::Footnote(_)
+            | InlineNode::Image { .. } => vec![],
         }
     }
 

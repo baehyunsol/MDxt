@@ -3,7 +3,7 @@ use crate::inline::{
     footnote::{Footnote, predicate::is_valid_footnote_label},
     InlineNode,
     link::{normalize_link_label, predicate::read_link_reference},
-    macros::{get_macro_name, parse_arguments, predicate::read_macro, MACROS, multiline::{MultiLineMacro, MultiLineMacroType}}
+    macros::{get_macro_name, parse_arguments, predicate::read_macro, MACROS, multiline::{MultiLineMacro, MultiLineMacroType}},
 };
 use crate::container::{
     codefence::read_code_fence_info,
@@ -26,20 +26,20 @@ pub enum ParseState {  // this enum is only used internally by `AST::from_lines`
         is_tilde_fence: bool,
         id: Option<Vec<u32>>,
         classes: Vec<Vec<u32>>,
-        index: usize  // index is used when making `copy to clipboard` buttons
+        index: usize,  // index is used when making `copy to clipboard` buttons
     },
     IndentedCodeBlock,
     Table {
         header_lines: Vec<Line>,
         alignments: Line,
-        index: usize  // index is used when making collapsible tables
+        index: usize,  // index is used when making collapsible tables
     },
     Math {  // multiline [[math]] macro
-        end_index: usize
+        end_index: usize,
     },
     Blockquote,
     List,
-    None
+    None,
 }
 
 impl AST {
@@ -60,10 +60,8 @@ impl AST {
         let mut index = 0;
 
         'outer_loop: while index < lines.len() {
-
             match &curr_parse_state {
                 ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => {
-
                     if lines[index].is_code_fence_end() {
                         let (end_code_fence_size, is_tilde_end_fence) = match read_code_fence_info(&lines[index], fenced_code_count) {
                             ParseState::CodeFence { code_fence_size, is_tilde_fence, .. } => (code_fence_size, is_tilde_fence),
@@ -76,13 +74,11 @@ impl AST {
                             index += 1;
                             continue;
                         }
-
                     }
 
                     curr_lines.push(lines[index].clone());
                 },
                 ParseState::IndentedCodeBlock => {
-
                     if lines[index].is_empty() {
                         curr_lines.push(lines[index].try_sub_indent(4));
                     }
@@ -95,10 +91,8 @@ impl AST {
                     else {
                         curr_lines.push(lines[index].try_sub_indent(4));
                     }
-
                 }
                 ParseState::Paragraph | ParseState::None => {
-
                     if macro_closing_indexes.contains(&index) {
                         add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         curr_nodes.push(Node::new_macro(&lines[index], &mut doc_data));
@@ -109,7 +103,6 @@ impl AST {
 
                     // an indented code block cannot interrupt a paragraph
                     else if lines[index].indent >= 4 && curr_parse_state == ParseState::None {
-
                         if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
@@ -136,7 +129,6 @@ impl AST {
                     }
 
                     else if lines[index].is_empty() {
-
                         if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
@@ -178,11 +170,9 @@ impl AST {
                             curr_lines.push(lines[index].clone());
                             curr_parse_state = ParseState::Paragraph;
                         }
-
                     }
 
                     else if lines[index].is_blockquote() {
-
                         if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
@@ -204,7 +194,6 @@ impl AST {
                         // otherwise, it's an indented code block
                         )) && lines[index].indent < 4
                     {
-
                         if !curr_lines.is_empty() {
                             add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
                         }
@@ -238,7 +227,6 @@ impl AST {
                         else {
                             doc_data.link_references.insert(normalize_link_label(&link_label), into_v32(&options.handle_link(&from_v32(&link_destination))));
                         }
-
                     }
 
                     // All the closing macros are handled up there
@@ -256,7 +244,6 @@ impl AST {
                                 let mut curr_closing_macro = macro_.get_closing_macro();
 
                                 while macro_closing_index < lines.len() {
-
                                     if lines[macro_closing_index].is_multiline_macro() {
                                         let curr_macro = read_macro(&lines[macro_closing_index].content, 0).unwrap();
 
@@ -287,7 +274,6 @@ impl AST {
                                                 macro_closing_index += 1;
                                                 continue;
                                             }
-
                                         }
 
                                         let curr_macro_arguments = parse_arguments(&curr_macro);
@@ -314,17 +300,13 @@ impl AST {
                                                         }
                                                         _ => {}
                                                     }
-
                                                 }
-
                                             }
                                         }
-
                                     }
 
                                     macro_closing_index += 1;
                                 }
-
                             },
 
                             // otherwise it's just a paragraph
@@ -340,7 +322,6 @@ impl AST {
                         curr_lines.push(lines[index].clone());
                         curr_parse_state = ParseState::Paragraph;
                     }
-
                 },
                 ParseState::Math { end_index } => if index == *end_index {
                     add_curr_node_to_ast(&mut curr_nodes, &mut curr_lines, &mut curr_parse_state);
@@ -350,7 +331,6 @@ impl AST {
                     curr_lines.push(lines[index].clone());
                 },
                 ParseState::Table { .. } => {
-
                     if lines[index].is_table_row() {
                         curr_lines.push(lines[index].clone());
                     }
@@ -360,10 +340,8 @@ impl AST {
                         table_count += 1;
                         continue;
                     }
-
                 },
                 ParseState::List => {
-
                     if lines[index].is_empty()
                         || lines[index].is_code_fence_begin()
                         || lines[index].is_header() || lines[index].is_thematic_break()
@@ -377,10 +355,8 @@ impl AST {
                     else {
                         curr_lines.push(lines[index].clone());
                     }
-
                 },
                 ParseState::Blockquote => {
-
                     if lines[index].is_empty() || lines[index].is_code_fence_begin()
                         || lines[index].is_header() || lines[index].is_thematic_break()
                         || lines[index].is_table_row() || lines[index].is_ordered_list()
@@ -393,7 +369,6 @@ impl AST {
                     else {
                         curr_lines.push(lines[index].clone());
                     }
-
                 }
             }
 
@@ -416,11 +391,9 @@ impl AST {
             is_inline_parsed: false
         }
     }
-
 }
 
 fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, curr_parse_state: &mut ParseState) {
-
     match curr_parse_state {
         ParseState::Paragraph => {
             curr_nodes.push(Node::new_paragraph(curr_lines));
@@ -496,7 +469,6 @@ fn add_curr_node_to_ast(curr_nodes: &mut Vec<Node>, curr_lines: &mut Vec<Line>, 
             *curr_parse_state = ParseState::None;
         }
     }
-
 }
 
 /*
@@ -517,11 +489,8 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<N
     let mut stack_of_nodes = vec![];
 
     while index < nodes.len() {
-
         if let Node::MultiLineMacro(MultiLineMacro { macro_type, is_closing, .. }) = &nodes[index] {
-
             if macro_type.has_inner_nodes() {
-
                 if *is_closing {
 
                     // contents of a sidebar is stored in AST, not in the MacroType
@@ -534,7 +503,6 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<N
                         // `nodes[index - 1]` must be the opening multiline-macro 
                         nodes[index - 1].set_inner_nodes(stack_of_nodes.pop().unwrap());
                     }
-
                 }
 
                 else {
@@ -542,7 +510,6 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<N
                     index += 1;
                     continue;
                 }
-
             }
 
         }
@@ -562,7 +529,5 @@ fn collect_nodes_for_multiline_macros(nodes: &mut Vec<Node>, sidebar: &mut Vec<N
         else {
             index += 1;
         }
-
     }
-
 }
